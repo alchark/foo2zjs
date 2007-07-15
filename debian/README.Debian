@@ -1,10 +1,10 @@
 foo2zjs for Debian
 ---------------
 
-Please understand that I had to delete some files which the author is 
+Please understand that I had to delete some files which the author is
 still providing, because I got no source code for them.
 This is necessary to get the package into Debian main.
-If you really need the oakdecode and foo2oak programs please download 
+If you really need the oakdecode and foo2oak programs please download
 them from http://foo2zjs.rkkda.com/foo2zjs.tar.gz.
 In addition to that I also deleted all  binary files (.e.g. .icm).
 (Type "wget http://foo2zjs.rkkda.com/foo2zjs.tar.gz").
@@ -18,7 +18,12 @@ Then just copy the oakdecode and foo2oak to /usr/local/bin and use them,
 but notice that they are not under packaging control.
 
 I also reformated the manpages to stop lintian warnings.
-The context of the manpages is the same and the author is still 
+The context of the manpages is the same and the author is still
 copyright holder of them.
+
+For getting the correct PPD file for your printer, you'd to use the getweb
+script. Simply type getweb, and then a list of the available PPD's is
+showed. This service will connect to the web, download and install to the
+right location all the required files for your printer.
 
 -- Steffen Joeris <steffen.joeris@skolelinux.de>, Sun, 01 Jan 2006 14:40:17 +0100

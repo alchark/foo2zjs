@@ -1,3 +1,15 @@
+foo2zjs (20070624dfsg-1) unstable; urgency=low
+
+  * Modified patches to fit with new version.
+  * Removed Finn-Arne Johansen (Requested on #427678)
+  * Added me (Luca Bedogni) as co-maintainer.
+  * Added Sam Morris as co-maintainer
+  * Added Michael Koch as co-maintainer
+  * New upstream version (Closes: #427678).
+  * Removed CLP-300cms and CLP-600cms due to legal problems
+
+ -- Luca Bedogni <me@lucabedogni.it>  Tue, 26 Jun 2007 22:54:11 +1000
+
 foo2zjs (20061224-3) unstable; urgency=low
 
   * Make sure that the patches are cleaned up before the general
@@ -14,7 +26,7 @@ foo2zjs (20061224-2) unstable; urgency=low
   * Upload to unstable
 
  -- Steffen Joeris <white@debian.org>  Sun, 06 May 2007 18:57:46 +1000
-
+ 
 foo2zjs (20061224-1) experimental; urgency=low
 
   * New upstream release

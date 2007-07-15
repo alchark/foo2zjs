@@ -33,7 +33,7 @@ clean:
 	rm -f build-stamp configure-stamp
 	dpatch deapply-all
 	rm -rf debian/patched
-	-$(MAKE) clean
+	[ ! -f Makefile ] || $(MAKE) clean
 	-rm -f foo2hp
 	-rm -f foo2hp.o
 	-rm -f arm2hpdl
@@ -52,7 +52,7 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source
+	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/foo2zjs/usr/share/ppd
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx

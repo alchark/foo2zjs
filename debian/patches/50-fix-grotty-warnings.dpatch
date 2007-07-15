@@ -1,0 +1,195 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50-fix-grotty-warnings.dpatch by  <sam@tycho.robots.org.uk>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Prevent grotty from bleating "X command with `tty:' tag ignored"
+## DP: warnings.
+
+@DPATCH@
+diff -urNad foo2zjs-20070601~/foo2hp.1in foo2zjs-20070601/foo2hp.1in
+--- foo2zjs-20070601~/foo2hp.1in	2007-03-08 14:57:44.000000000 +0000
++++ foo2zjs-20070601/foo2hp.1in	2007-06-05 19:21:04.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2hp2600-wrapper.1in foo2zjs-20070601/foo2hp2600-wrapper.1in
+--- foo2zjs-20070601~/foo2hp2600-wrapper.1in	2007-03-08 14:58:43.000000000 +0000
++++ foo2zjs-20070601/foo2hp2600-wrapper.1in	2007-06-05 19:21:09.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2lava-wrapper.1in foo2zjs-20070601/foo2lava-wrapper.1in
+--- foo2zjs-20070601~/foo2lava-wrapper.1in	2007-03-08 14:59:14.000000000 +0000
++++ foo2zjs-20070601/foo2lava-wrapper.1in	2007-06-05 19:21:19.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2lava.1in foo2zjs-20070601/foo2lava.1in
+--- foo2zjs-20070601~/foo2lava.1in	2007-03-08 14:59:01.000000000 +0000
++++ foo2zjs-20070601/foo2lava.1in	2007-06-05 19:21:15.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2oak-wrapper.1in foo2zjs-20070601/foo2oak-wrapper.1in
+--- foo2zjs-20070601~/foo2oak-wrapper.1in	2007-03-08 14:59:37.000000000 +0000
++++ foo2zjs-20070601/foo2oak-wrapper.1in	2007-06-05 19:21:26.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2oak.1in foo2zjs-20070601/foo2oak.1in
+--- foo2zjs-20070601~/foo2oak.1in	2007-03-08 14:59:28.000000000 +0000
++++ foo2zjs-20070601/foo2oak.1in	2007-06-05 19:21:23.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2qpdl-wrapper.1in foo2zjs-20070601/foo2qpdl-wrapper.1in
+--- foo2zjs-20070601~/foo2qpdl-wrapper.1in	2007-03-08 15:00:05.000000000 +0000
++++ foo2zjs-20070601/foo2qpdl-wrapper.1in	2007-06-05 19:21:34.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2qpdl.1in foo2zjs-20070601/foo2qpdl.1in
+--- foo2zjs-20070601~/foo2qpdl.1in	2007-03-08 14:59:47.000000000 +0000
++++ foo2zjs-20070601/foo2qpdl.1in	2007-06-05 19:21:30.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2xqx-wrapper.1in foo2zjs-20070601/foo2xqx-wrapper.1in
+--- foo2zjs-20070601~/foo2xqx-wrapper.1in	2007-03-08 15:00:31.000000000 +0000
++++ foo2zjs-20070601/foo2xqx-wrapper.1in	2007-06-05 19:21:40.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2xqx.1in foo2zjs-20070601/foo2xqx.1in
+--- foo2zjs-20070601~/foo2xqx.1in	2007-03-08 15:00:13.000000000 +0000
++++ foo2zjs-20070601/foo2xqx.1in	2007-06-05 19:21:38.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2zjs-wrapper.1in foo2zjs-20070601/foo2zjs-wrapper.1in
+--- foo2zjs-20070601~/foo2zjs-wrapper.1in	2007-03-08 14:56:41.000000000 +0000
++++ foo2zjs-20070601/foo2zjs-wrapper.1in	2007-06-05 19:21:47.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/foo2zjs.1in foo2zjs-20070601/foo2zjs.1in
+--- foo2zjs-20070601~/foo2zjs.1in	2007-03-08 15:00:50.000000000 +0000
++++ foo2zjs-20070601/foo2zjs.1in	2007-06-05 19:21:44.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/lavadecode.1in foo2zjs-20070601/lavadecode.1in
+--- foo2zjs-20070601~/lavadecode.1in	2007-03-08 15:01:12.000000000 +0000
++++ foo2zjs-20070601/lavadecode.1in	2007-06-05 19:21:50.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/oakdecode.1in foo2zjs-20070601/oakdecode.1in
+--- foo2zjs-20070601~/oakdecode.1in	2007-03-08 15:01:23.000000000 +0000
++++ foo2zjs-20070601/oakdecode.1in	2007-06-05 19:21:54.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/qpdldecode.1in foo2zjs-20070601/qpdldecode.1in
+--- foo2zjs-20070601~/qpdldecode.1in	2007-03-08 15:01:38.000000000 +0000
++++ foo2zjs-20070601/qpdldecode.1in	2007-06-05 19:21:57.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/xqxdecode.1in foo2zjs-20070601/xqxdecode.1in
+--- foo2zjs-20070601~/xqxdecode.1in	2007-03-08 15:01:51.000000000 +0000
++++ foo2zjs-20070601/xqxdecode.1in	2007-06-05 19:22:00.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE
+diff -urNad foo2zjs-20070601~/zjsdecode.1in foo2zjs-20070601/zjsdecode.1in
+--- foo2zjs-20070601~/zjsdecode.1in	2007-03-08 15:02:03.000000000 +0000
++++ foo2zjs-20070601/zjsdecode.1in	2007-06-05 19:22:03.000000000 +0100
+@@ -81,7 +81,6 @@
+ '\"	Macros for doing pdfmarks
+ '\"
+ .de specialps
+-\\k_\X'ps: \\$*'\h'|\\n_u'\c
+ ..
+ '\"
+ '\" pdfmark PDFMARKCODE

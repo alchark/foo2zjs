@@ -2,3 +2,4 @@
 20-honour-papersize
 30-udev-rules
 40-path-correction
+50-fix-grotty-warnings

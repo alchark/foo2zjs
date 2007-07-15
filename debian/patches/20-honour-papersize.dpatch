@@ -24,7 +24,7 @@ exit 0
 
 @DPATCH@
 --- foo2zjs.clean/foo2hp2600-wrapper.in	2005-11-26 23:04:38.000000000 +0100
-+++ foo2zjs-20051120dfsg/foo2hp2600-wrapper.in	2005-11-26 23:16:26.000000000 +0100
++++ foo2zjs-20070624/foo2hp2600-wrapper.in	2005-11-26 23:16:26.000000000 +0100
 @@ -155,7 +155,8 @@
  
  MEDIA=1
