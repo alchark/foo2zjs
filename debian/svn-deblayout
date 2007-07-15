@@ -1,3 +1,3 @@
-origDir=upstream
+origDir=../upstream
 origUrl=svn+ssh://svn.debian.org/svn/foo2zjs/trunk/foo2zjs_20061224/upstream
 tagsUrl=svn+ssh://svn.debian.org/svn/foo2zjs/tags/foo2zjs_20061224
