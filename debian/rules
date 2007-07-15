@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	dpatch apply-all
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+	$(MAKE) CFLAGS="$(CFLAGS)"
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	dpatch deapply-all
+	rm -rf debian/patched
+	-$(MAKE) clean
+	-rm -f foo2hp
+	-rm -f foo2hp.o
+	-rm -f arm2hpdl
+	-rm -f usb_printerid
+	-rm -f foo2oak
+	-rm -f oakdecode
+	-rm -f oakdecode.o
+	-rm -f foo2hp2600-wrapper
+	-rm -f foo2oak-wrapper
+	-rm -f foo2zjs-wrapper
+	-rm -f okidecode
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source
+	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
+	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
+	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx
+	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/etc/udev/rules.d/11-hplj10xx.rules
+	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
+	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link usr/sbin/hplj1000 usr/sbin/hplj1005
+	dh_link usr/sbin/hplj1000 usr/sbin/hplj1018
+	dh_link usr/sbin/hplj1000 usr/sbin/hplj1020
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

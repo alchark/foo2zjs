@@ -1,0 +1,40 @@
+#!/bin/sh -e
+## 30-udev-rules.dpatch, by Steffen Joeris <steffen.joeris@skolelinux.de>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Correct the udev rules
+
+if [ $# -lt 1 ]; then
+echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+      -patch) patch $patch_opts -p1 < $0;;
+      -unpatch) patch $patch_opts -p1 -R < $0;;
+      *)
+      echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+      exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- hplj10xx.rules.orig	2007-01-05 22:00:14.000000000 +0100
++++ foo2zjs-20061224/hplj10xx.rules	2007-01-05 22:00:41.000000000 +0100
+@@ -1,8 +1,8 @@
+ #Own udev rule for HP Laserjet 1000
+-KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="hp LaserJet 1000", NAME="usb/%k", SYMLINK="hplj1000%e", MODE="0666", RUN+="/etc/hotplug/usb/hplj1000" 
++KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="hp LaserJet 1000", NAME="usb/%k", SYMLINK="hplj1000%e", MODE="0666", RUN+="/usr/sbin/hplj1000" 
+ #Own udev rule for HP Laserjet 1005
+-KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="hp LaserJet 1005 series", NAME="usb/%k", SYMLINK="hplj1005%e", MODE="0666", RUN+="/etc/hotplug/usb/hplj1005" 
++KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="hp LaserJet 1005 series", NAME="usb/%k", SYMLINK="hplj1005%e", MODE="0666", RUN+="/usr/sbin/hplj1005" 
+ #Own udev rule for HP Laserjet 1018
+-KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="HP LaserJet 1018", NAME="usb/%k", SYMLINK="hplj1018%e", MODE="0666", RUN+="/etc/hotplug/usb/hplj1018" 
++KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="HP LaserJet 1018", NAME="usb/%k", SYMLINK="hplj1018%e", MODE="0666", RUN+="/usr/sbin/hplj1018" 
+ #Own udev rule for HP Laserjet 1020
+-KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="HP LaserJet 1020", NAME="usb/%k", SYMLINK="hplj1020%e", MODE="0666", RUN+="/etc/hotplug/usb/hplj1020" 
++KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", SYSFS{product}=="HP LaserJet 1020", NAME="usb/%k", SYMLINK="hplj1020%e", MODE="0666", RUN+="/usr/sbin/hplj1020" 

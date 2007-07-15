@@ -1,0 +1,172 @@
+foo2zjs (20061224-3) unstable; urgency=low
+
+  * Make sure that the patches are cleaned up before the general
+    cleanup and therefore avoid FTBFS during second build
+    (Closes: #424277)
+  * Make sure that upstream documentation and copyright information are
+    not installed as they are not needed for debian
+  * Make sure that the cleanup target is complete
+
+ -- Steffen Joeris <white@debian.org>  Wed, 16 May 2007 15:44:32 +1000
+
+foo2zjs (20061224-2) unstable; urgency=low
+
+  * Upload to unstable
+
+ -- Steffen Joeris <white@debian.org>  Sun, 06 May 2007 18:57:46 +1000
+
+foo2zjs (20061224-1) experimental; urgency=low
+
+  * New upstream release
+  * Bump debhelper level to 5
+  * Change my maintainer address
+  * Change 30-udev-rules.dpatch to patch the path for the program
+  * Change the path for the hplj1000 script (Closes: #402633)
+  * Install the ChangeLog file from upstream
+  * Still provide the hplj1000 script
+  * Improve package description (Closes: #400036)
+  * Remove old debian diversions file
+  * Update debian/copyright
+  * Patch the build system properly (10-makefile.dpatch)
+
+ -- Steffen Joeris <white@debian.org>  Sat,  6 Jan 2007 00:56:38 +0100
+
+foo2zjs (20060625dfsg-4) unstable; urgency=medium
+
+  * Make sure that the symlinks are available (Closes: #390948)
+    Thanks to Petre Todorov
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Sun,  8 Oct 2006 14:21:29 +1000
+
+foo2zjs (20060625dfsg-3) unstable; urgency=medium
+
+  * Correct the udev rules (30-udev-rules.dpatch) to make sure all of 
+    the supported hp models work as expected (Closes: #390948)
+  * Correct the path of the program location in hplj1000
+    (40-path-correction.dpatch)
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Fri,  6 Oct 2006 19:21:40 +1000
+
+foo2zjs (20060625dfsg-2) unstable; urgency=low
+
+  * Upload this version to unstable
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Fri, 11 Aug 2006 20:58:53 +1000
+
+foo2zjs (20060625dfsg-1) experimental; urgency=low
+
+  * New upstream release
+  * Bump standards version, no changes needed
+  * Repack for DFSG compatibility
+  * Provide usb_printerid again (Closes: #355576)
+  * Provide the new firmware download scripts from upstream
+  * Use modified hp10xx.rules file from upstream
+  * Thanks for suggestions from Philippe Teuwen
+  * Add build-dependency against foomatic-filters to make sure foomatic-rip
+    is available
+
+  * Upload sponsored by Morten Werner Olsen.
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Thu, 27 Jul 2006 18:20:54 +1000
+
+foo2zjs (20060124dfsg-1) unstable; urgency=low
+
+  * new upstream release (Closes: #351413)
+  * repack for DFSG compatibility
+  * wrote manpage for okidecode, used authors description
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Sun,  5 Feb 2006 15:31:09 +0100
+
+foo2zjs (20051220dfsg-1) unstable; urgency=low
+
+  * new upstream release
+  * again have to repack it for DFSG compatibility
+  * add additional explanation 
+    (e.g. reason for repack and reformat of manpages) to README.Debian
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Sun, 01 Jan 2006 14:45:28 +0100
+
+foo2zjs (20051120dfsg-1) unstable; urgency=low
+
+  [ Changes by Steffen Joeris ]
+  * new upstream release
+  * add some clean targets to debian/rules
+  * modify make install in debian/rules
+  * repack and rename to *dfsg because of binaries in source ;(
+  * modify Makefile to recognize the dfsg changes
+  * wrote README.Debian to inform users about the changes
+
+  [ Changes by Finn-Arne Johansen ]
+  * Added code to honour /etc/papersize (Closes: #237967)
+    (20-honour-papersize.dpatch)
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Finn-Arne Johansen <faj@bzz.no>  Fri,  2 Dec 2005 16:16:09 +0100
+
+foo2zjs (20051113-1) unstable; urgency=low
+
+  * New Maintainer and Co-Maintainer (Closes: #294813) 
+  * New upstream release (Closes: #339761)
+  * Added new clean rules because of new version
+  * bumped standard version
+  * cleaned up the debian/control
+  * provide the full source from the author (Closes: #279830, #279829)
+  * wrote all authors to debian/copyright
+  * reformat the manpages to make the package completely lintian clean
+
+ -- Steffen Joeris <steffen.joeris@skolelinux.de>  Fri, 18 Nov 2005 18:40:40 +0100
+
+foo2zjs (20050217-1) unstable; urgency=low
+
+  * New upstream release.
+  * Please note that there is an RFA for this package.
+
+ -- Chris Lawrence <lawrencc@debian.org>  Thu, 17 Feb 2005 23:26:51 -0600
+
+foo2zjs (20040210-2) unstable; urgency=low
+
+  * Remove the binary-only components from the generated package; if you
+    need foo2oak, see http://foo2oak.rkkda.com/.  (Closes: #233311)
+
+ -- Chris Lawrence <lawrencc@debian.org>  Tue, 17 Feb 2004 21:05:36 -0600
+
+foo2zjs (20040210-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lawrence <lawrencc@debian.org>  Sun, 15 Feb 2004 02:04:03 -0600
+
+foo2zjs (20030807-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lawrence <lawrencc@debian.org>  Sun,  7 Sep 2003 12:32:07 -0500
+
+foo2zjs (20030702-1) unstable; urgency=low
+
+  * New upstream release:
+  	+ Add XML files for Minolta Color PageWorks/Pro L
+        + If color has been selected, but there isn't any color on the page,
+	  then produce a monochrome ZjStream.
+
+ -- Chris Lawrence <lawrencc@debian.org>  Wed,  2 Jul 2003 22:55:33 -0500
+
+foo2zjs (20030531-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lawrence <lawrencc@debian.org>  Fri,  6 Jun 2003 22:55:43 -0500
+
+foo2zjs (20030526-1) unstable; urgency=low
+
+  * Initial Release.  (Closes: #194572)
+
+ -- Chris Lawrence <lawrencc@debian.org>  Tue, 27 May 2003 16:03:54 -0500
+

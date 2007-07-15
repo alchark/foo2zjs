@@ -1,0 +1,87 @@
+#!/bin/sh -e
+## 10-makefile.dpatch, by Steffen Joeris <white@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Patch the Makefile 
+
+if [ $# -lt 1 ]; then
+echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+      -patch) patch $patch_opts -p1 < $0;;
+      -unpatch) patch $patch_opts -p1 -R < $0;;
+      *)
+      echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+      exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- Makefile.orig	2007-01-06 00:51:53.000000000 +0100
++++ foo2zjs-20061224/Makefile	2007-01-06 00:50:36.000000000 +0100
+@@ -156,9 +156,9 @@
+ # sihp1000.img sihp1005.img sihp1020.img sihp1018.img
+ 
+ # Programs and libraries
+-PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode
++PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode okidecode
+ PROGS+=		foo2lava lavadecode
+-PROGSOAK=	okidecode
++#PROGSOAK=	okidecode
+ SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
+ 		foo2xqx-wrapper foo2lava-wrapper
+ MANPAGES=	foo2zjs-wrapper.1 foo2zjs.1 zjsdecode.1
+@@ -373,7 +373,7 @@
+ 	#
+ 	install -c $(PROGS) $(SHELLS) $(BIN)/
+ 	if [ "$(BINPROGS)" != "" ]; then \
+-	    install -c $(BINPROGS) /bin/; \
++	    install -c $(BINPROGS) $(PREFIX)/bin/; \
+ 	fi
+ 	#
+ 	# Install gamma correction files.  These are just templates,
+@@ -831,22 +831,22 @@
+ 	#
+ 	# Install manual pages
+ 	#
+-	install -d -m 755 $(MANDIR)
+-	install -d -m 755 $(MANDIR)/man1/
+-	install -c -m 644 foo2zjs.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
+-	install -c -m 644 zjsdecode.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2oak.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
+-	install -c -m 644 oakdecode.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2hp.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
+-	install -c -m 644 xqxdecode.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2xqx.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
+-	install -c -m 644 lavadecode.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2lava.1 $(MANDIR)/man1/
+-	install -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
++#	install -d -m 755 $(MANDIR)
++#	install -d -m 755 $(MANDIR)/man1/
++#	install -c -m 644 foo2zjs.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
++#	install -c -m 644 zjsdecode.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2oak.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
++#	install -c -m 644 oakdecode.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2hp.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
++#	install -c -m 644 xqxdecode.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2xqx.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
++#	install -c -m 644 lavadecode.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2lava.1 $(MANDIR)/man1/
++#	install -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
+ 
+ doc: README INSTALL manual.pdf
+ 

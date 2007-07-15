@@ -1,0 +1,16 @@
+debian/arm2hpdl.1
+debian/foo2hp.1
+debian/foo2hp2600-wrapper.1
+debian/foo2zjs-icc2ps.1
+debian/usb_printerid.1
+debian/zjsdecode.1
+debian/foo2oak-wrapper.1
+debian/foo2zjs.1
+debian/foo2zjs-wrapper.1
+debian/okidecode.1
+debian/lavadecode.1
+debian/foo2lava.1
+debian/foo2lava-wrapper.1
+debian/foo2xqx.1
+debian/foo2xqx-wrapper.1
+debian/xqxdecode.1

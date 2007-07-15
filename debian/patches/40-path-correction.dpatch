@@ -1,0 +1,36 @@
+#!/bin/sh -e
+## 40-path-correction.dpatch, by Steffen Joeris <steffen.joeris@skolelinux.de>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Correct the path for the usb_printerid program
+
+if [ $# -lt 1 ]; then
+echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+      -patch) patch $patch_opts -p1 < $0;;
+      -unpatch) patch $patch_opts -p1 -R < $0;;
+      *)
+      echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+      exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- hplj1000	2006-10-06 19:27:13.000000000 +1000
++++ foo2zjs-20060625dfsg/hplj1000	2006-10-06 19:27:29.000000000 +1000
+@@ -40,7 +40,7 @@
+ #
+ # Program used to determine USB id information
+ #
+-USBID=/bin/usb_printerid
++USBID=/usr/bin/usb_printerid
+ 
+ #
+ #	Figure out how to log our messages

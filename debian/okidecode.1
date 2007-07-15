@@ -1,0 +1,35 @@
+.TH OKIDECODE 1 "February 05, 2006" OKIDECODE 1
+.SH NAME
+okidecode \- Decode a ZjStream into human readable form
+.SH SYNOPSIS
+.B okidecode
+.RI okidecode [options] < oki-file
+.SH DESCRIPTION
+.B okidecode
+Decode a ZjStream into human readable form.
+A ZjStream is the printer langauge used by some Minolta/QMS and
+HP printers, such as the 2300DL and LJ-1000.
+More information on Zenographics ZjStream can be found at:
+http://ddk.zeno.com
+.SH COMMAND LINE OPTIONS
+.TP
+.BI \-D\0 level
+Set Debug level [0].
+.TP
+.BI \-d\0 basename
+Basename of .pbm file for saving decompressed planes.
+.TP
+.BI \-r\0 basename
+Basename of .jbg file for saving raw planes.
+.TP
+.BI \-o 
+Print file offsets.
+.TP
+.BI \-h
+Print hexfile offsets.
+.SH SEE ALSO
+.BR foo2zjs (1),
+.BR zjsdecode (1)
+.SH "AUTHOR"
+Rick Richardson <rickr@mn.rr.com>
+.br
