@@ -1,16 +1,18 @@
-foo2zjs (20070624dfsg-1) unstable; urgency=low
+foo2zjs (20070624dfsg-1) experimental; urgency=low
 
   [ Luca Bedogni ]
-  * Modified patches to fit with new version.
+  * Modified patches to fit with new version
   * Removed Finn-Arne Johansen (Requested on #427678)
-  * Added me (Luca Bedogni) as co-maintainer.
+  * Added me (Luca Bedogni) as co-maintainer
   * Added Michael Koch as co-maintainer
-  * New upstream version (Closes: #427678).
-  * Removed CLP-300cms and CLP-600cms due to legal problems
 
   [ Steffen Joeris ]
   * Put the alioth list as maintainer and myself as co-maintainer
    - The package is now team maintained (Closes: #429872)
+  * New upstream version (Closes: #427678)
+  * DFSG repack
+   - Removed binary file c5200mono.prn
+   - Removed crd/qpdl/CLP* , because copyright is unclear
 
  -- Luca Bedogni <me@lucabedogni.it>  Tue, 26 Jun 2007 22:54:11 +1000
 
