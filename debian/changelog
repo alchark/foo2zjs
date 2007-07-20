@@ -3,7 +3,6 @@ foo2zjs (20070624dfsg-1) unstable; urgency=low
   * Modified patches to fit with new version.
   * Removed Finn-Arne Johansen (Requested on #427678)
   * Added me (Luca Bedogni) as co-maintainer.
-  * Added Sam Morris as co-maintainer
   * Added Michael Koch as co-maintainer
   * New upstream version (Closes: #427678).
   * Removed CLP-300cms and CLP-600cms due to legal problems
