@@ -15,7 +15,7 @@ foo2zjs (20070718dfsg-1) experimental; urgency=low
    - Removed crd/qpdl/CLP* , because copyright is unclear
   * Make sure that the PPD files are installed (Closes: #427665)
 
- -- Luca Bedogni <me@lucabedogni.it>  Tue, 26 Jun 2007 22:54:11 +1000
+ -- Steffen Joeris <white@debian.org>  Fri, 20 Jul 2007 18:07:24 +0200
 
 foo2zjs (20061224-3) unstable; urgency=low
 
