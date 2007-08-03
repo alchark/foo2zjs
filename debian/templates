@@ -1,0 +1,6 @@
+Template: foo2zjs/list
+Type: select
+Choices: Samsung CLP-300, Samsung CLP-600, Samsung CLX-3160, Xerox Phaser 3160, Hp Laserjet 1000, Hp Laserjet 1005, Hp Laserjet 1018, Hp Laserjet 1020
+Description: Choose your printer
+ Choose from the list below your printer, and the PPD file for it will be
+ downloaded and installed.
