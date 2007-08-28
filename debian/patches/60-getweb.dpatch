@@ -5,8 +5,8 @@
 ## DP: Improve getweb also for installing the firmware
 
 @DPATCH@
---- foo2zjs_20070718/getweb	2007-08-15 23:44:04.000000000 +0200
-+++ foo2zjs_20070718/getweb	2007-08-16 00:06:01.000000000 +0200
+--- foo2zjs_20070718/getweb.in	2007-08-15 23:44:04.000000000 +0200
++++ foo2zjs_20070718/getweb.in	2007-08-16 00:06:01.000000000 +0200
 @@ -63,6 +63,18 @@
  fi
  
