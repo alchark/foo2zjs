@@ -1,7 +1,7 @@
-foo2zjs (20070718dfsg-1) experimental; urgency=low
+foo2zjs (20070718dfsg-2) unstable; urgency=low
 
-  * Added 60-getweb.dpatch, for improving the getweb script to install the
-    firmware too instead of only downloading it (Closes: #419038)
+  * Added 60-getweb.dpatch for improving the getweb script to install the
+    firmware too, instead of download-only (Closes: #419038)
 
  -- Luca Bedogni <me@lucabedogni.it>  Tue, 28 Aug 2007 08:48:11 +0200
 
