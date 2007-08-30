@@ -56,9 +56,6 @@ install: build
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx
-	mkdir -p $(CURDIR)/debian/foo2zjs/DEBIAN
-	install -m 755 debian/config $(CURDIR)/debian/foo2zjs/DEBIAN
-	install -m 755 debian/templates $(CURDIR)/debian/foo2zjs/DEBIAN
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/etc/udev/rules.d/11-hplj10xx.rules
 	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
