@@ -1,7 +1,11 @@
 foo2zjs (20070718dfsg-2) unstable; urgency=low
 
+  [ Luca Bedogni ]
   * Added 60-getweb.dpatch for improving the getweb script to install the
     firmware too, instead of download-only (Closes: #419038)
+
+  [ Steffen Joeris ]
+  * Update README.Debian and remove some useless information
 
  -- Luca Bedogni <me@lucabedogni.it>  Tue, 28 Aug 2007 08:48:11 +0200
 
