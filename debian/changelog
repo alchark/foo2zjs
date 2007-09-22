@@ -7,7 +7,11 @@ foo2zjs (20070718dfsg-2) unstable; urgency=low
   [ Steffen Joeris ]
   * Update README.Debian and remove some useless information
 
- -- Luca Bedogni <me@lucabedogni.it>  Tue, 28 Aug 2007 08:48:11 +0200
+  [ Michael Koch ]
+  * Improved 60-getweb.dpatch to delete local files after putting them into
+    firmware directory
+
+ -- Michael Koch <konqueror@gmx.de>  Sat, 22 Sep 2007 21:58:30 +0200
 
 foo2zjs (20070718dfsg-1) experimental; urgency=low
 
