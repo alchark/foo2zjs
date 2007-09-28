@@ -6,6 +6,7 @@ foo2zjs (20070718dfsg-3) experimental; urgency=low
    - Add Hannah code to debian/hannah/*
    - Modify debian/rules to build hannah from source
    - Add build-depends against libqt4-dev
+   - Generate the standard directory for .desktop files in debian/dirs
    - Install hannah.desktop into the standard desktop directory
    - Update README.Debian to point to Hannah
 
