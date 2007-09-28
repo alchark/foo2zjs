@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
         :QWidget(parent)
 {
 	int check = QMessageBox::question(this, tr("Hannah - Firmware downloader"),
-			tr("Do you want to proceed? (Fill me with text)"), tr("&Yes"), tr("&No"),
+			tr("Do you want to download and install potential non-free printer firmware?"), tr("&Yes"), tr("&No"),
 			QString::null, 0, 1);
 
 	
