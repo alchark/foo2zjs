@@ -34,8 +34,6 @@
 #include <QMenuBar>
 #include <QStatusBar>
 
-#include <QDebug>
-
 class MainWindow : public QWidget
 {
 	Q_OBJECT
