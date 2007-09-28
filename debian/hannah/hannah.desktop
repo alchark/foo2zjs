@@ -5,4 +5,4 @@ Exec=/usr/bin/hannah
 Type=Application
 Comment=Foo2ZJS Firmware Downloader and Installer
 Terminal=0
-Categories=System;Utilities;Settings;
+Categories=System;Settings;
