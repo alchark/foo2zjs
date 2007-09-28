@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Hannah
+Exec=/usr/bin/hannah
+Type=Application
+Comment=Foo2ZJS Firmware Downloader and Installer
+Terminal=0
+Categories=System;Utilities;Settings;

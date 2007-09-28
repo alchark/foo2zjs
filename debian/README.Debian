@@ -15,9 +15,8 @@ cd foo2zjs
 make
 
 
-For getting the correct PPD file for your printer, you'd to use the getweb
-script. Simply type getweb, and then a list of the available PPD's is
-showed. This service will connect to the web, download and install to the
-right location all the required files for your printer.
+For downloading and installing the right firmware for your printer, you
+can use the Foo2ZJS firmware downloader and installer (codename Hannah).
+You will find it in your Desktop Menu or by running the command "hannah".
 
--- Steffen Joeris <steffen.joeris@skolelinux.de>, Sun, 01 Jan 2006 14:40:17 +0100
+-- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 01:40:18 +1000

@@ -1,3 +1,16 @@
+foo2zjs (20070718dfsg-3) experimental; urgency=low
+
+  [ Steffen Joeris ]
+  * Include first version of Hannah (GUI for downloading and installing
+    the printer firmware) (Closes: #443994)
+   - Add Hannah code to debian/hannah/*
+   - Modify debian/rules to build hannah from source
+   - Add build-depends against libqt4-dev
+   - Install hannah.desktop into the standard desktop directory
+   - Update README.Debian to point to Hannah
+
+ -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 01:25:20 +1000
+
 foo2zjs (20070718dfsg-2) unstable; urgency=low
 
   [ Luca Bedogni ]
