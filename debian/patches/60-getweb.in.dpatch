@@ -1,0 +1,146 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 60-getweb.dpatch by Debian FOO2ZJS Maintainers
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Improve getweb also for installing the firmware
+
+@DPATCH@
+--- getweb.in.orig	2007-09-29 23:26:02.000000000 +1000
++++ foo2zjs_20070718dfsg/getweb.in	2007-09-29 23:25:36.000000000 +1000
+@@ -1,6 +1,13 @@
+ #!/bin/sh
+ 
+ WGETOPTS=--passive-ftp
++ARM2HPDL="/usr/bin/arm2hpdl"
++
++if [ $UID -ne 0 ]; then
++       echo "You need to be root"
++       exit 0
++fi
++
+ 
+ usage() {
+ cat <<EOF
+@@ -62,6 +69,13 @@
+     }
+ fi
+ 
++putfw() {
++    inputname=$1
++    outputname=$2
++    $ARM2HPDL /usr/share/foo2zjs/tmp/$inputname > /usr/share/foo2zjs/firmware/$outputname
++    rm -f /usr/share/foo2zjs/tmp/*.img
++}
++
+ #
+ #	Download a .EXE file from the web, unzip it, and extract the
+ #	files we want
+@@ -84,15 +98,22 @@
+     file="$2"
+     what="$3"
+     
+-    wget $WGETOPTS -O $file "$url/$file" ||
+-	error "Couldn't download $url/$file"
+-    gunzip <$file | tar xvf - $what
+-    rm $file
++    if ! [ -d /tmp/foo2zjs ] ; then
++       wget $WGETOPTS -O /usr/share/foo2zjs/tmp/$file "$url/$file" ||
++               error "Couldn't download $url/$file"
++       cd /usr/share/foo2zjs/tmp && gunzip </usr/share/foo2zjs/tmp/$file | tar xvf - $what
++       CHECK=`ls /usr/share/foo2zjs/tmp/*.icm 2>/dev/null`
++       if [ -n "$CHECK" ] ; then
++               mv /usr/share/foo2zjs/tmp/*.icm /usr/share/foo2zjs/icm/
++       fi
++       rm /usr/share/foo2zjs/tmp/$file
++    fi
++
+ }
+ 
+ getone() {
+     case "$1" in
+-    lj1000|1000)
++    lj1000|1000|hp1000)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com sihp1000.tar.gz \
+ 	    ""
+@@ -102,7 +123,7 @@
+ 	    #lj1488en.exe \
+ 	    #sihp1000.img
+ 	;;
+-    lj1005|1005)
++    lj1005|1005|hp1005)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com sihp1005.tar.gz \
+ 	    ""
+@@ -112,22 +133,22 @@
+ 	    #lj1005hostbased-en.exe \
+ 	    #sihp1005.img
+ 	;;
+-    lj1018|1018)
++    lj1018|1018|hp1018)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com sihp1018.tar.gz \
+ 	    ""
+ 	;;
+-    lj1020|1020)
++    lj1020|1020|hp1020)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com sihp1020.tar.gz \
+ 	    ""
+ 	;;
+-    2200dl|2200)
++    2200dl|2200|minolta2200)
+ 	getexe \
+ 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
+ 	    "*.icm"
+ 	;;
+-    2300dl|2300)
++    2300dl|2300|minolta2300)
+ 	getexe \
+ 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win m23dlicc.exe \
+ 	    "*.icm"
+@@ -144,7 +165,7 @@
+ 	wget $WGETOPTS "$URL" || error "Couldn't download $URL"
+ 	echo "*** Now use a windows box to unzip and install $FILE ***"
+ 	;;
+-    cpwl|pageworks)
++    cpwl|pageworks|minoltapro)
+ 	getexe \
+ 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/windows cpplxp.exe \
+ 	    "*.IC_"
+@@ -156,17 +177,17 @@
+ 	    rm -f $base.ic_
+ 	done
+ 	;;
+-    2430)
++    2430|minolta2430)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com km2430.tar.gz \
+ 	    ""
+ 	;;
+-    2530|2490|6115|2480)
++    2530|2490|6115|2480|minolta2530|minolta2490|minolta|xerox6115|minolta2480)
+ 	gettgz \
+ 	    http://foo2lava.rkkda.com km2530.tar.gz \
+ 	    ""
+ 	;;
+-    1600|2600n)
++    1600|2600n|hp1600|hp2600)
+ 	gettgz \
+ 	    http://foo2hp.rkkda.com hpclj2600n.tar.gz \
+ 	    ""
+@@ -174,12 +195,12 @@
+ 	    http://foo2zjs.rkkda.com km2430.tar.gz \
+ 	    "km2430_2.icm"
+ 	;;
+-    300|3160|6110)
++    300|3160|6110|samsung300|samsung3160|xerox6110)
+ 	gettgz \
+ 	    http://foo2qpdl.rkkda.com samclp300.tar.gz \
+ 	    ""
+ 	;;
+-    600)
++    600|samsung600)
+ 	;;
+ 
+     xPPD)

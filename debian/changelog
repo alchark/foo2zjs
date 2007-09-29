@@ -1,4 +1,4 @@
-foo2zjs (20070718dfsg-3) experimental; urgency=low
+foo2zjs (20070718dfsg-3) UNRELEASED; urgency=low
 
   [ Steffen Joeris ]
   * Include first version of Hannah (GUI for downloading and installing
@@ -9,8 +9,12 @@ foo2zjs (20070718dfsg-3) experimental; urgency=low
    - Generate the standard directory for .desktop files in debian/dirs
    - Install hannah.desktop into the standard desktop directory
    - Update README.Debian to point to Hannah
+   - Renamed dpatch to 60-getweb.in.dpatch and adjusted it to match
+     for Hannah
+   - Use tmp file under /usr/share/foo2zjs/tmp for unpacking and
+     preparing downloaded firmware
 
- -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 01:25:20 +1000
+ -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 23:30:57 +1000
 
 foo2zjs (20070718dfsg-2) unstable; urgency=low
 
