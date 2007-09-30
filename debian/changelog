@@ -13,6 +13,8 @@ foo2zjs (20070718dfsg-3) UNRELEASED; urgency=low
      for Hannah
    - Use tmp file under /usr/share/foo2zjs/tmp for unpacking and
      preparing downloaded firmware
+   - Add a depends against kdebase-bin | gksu to use either of both
+     programs to become root, when calling hannah
 
  -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 23:30:57 +1000
 

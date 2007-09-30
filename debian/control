@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 
 Package: foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, kdebase-bin
+Depends: ${shlibs:Depends}, kdebase-bin | gksu
 Recommends: foomatic-db-engine
 Suggests: psutils
 Description: Support for printing to ZjStream-based printers
