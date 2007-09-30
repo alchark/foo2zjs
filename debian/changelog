@@ -1,6 +1,5 @@
-foo2zjs (20070718dfsg-3) UNRELEASED; urgency=low
+foo2zjs (20070718dfsg-3) experimental; urgency=low
 
-  [ Steffen Joeris ]
   * Include first version of Hannah (GUI for downloading and installing
     the printer firmware) (Closes: #443994)
    - Add Hannah code to debian/hannah/*
@@ -18,7 +17,7 @@ foo2zjs (20070718dfsg-3) UNRELEASED; urgency=low
   * Fix breaking line in 11-hplj10xx.rules to repair it
    (Closes: #443917) Thanks to Cristian Ionescu-Idbohrn for the patch
 
- -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 23:30:57 +1000
+ -- Steffen Joeris <white@debian.org>  Sun, 30 Sep 2007 18:10:33 +1000
 
 foo2zjs (20070718dfsg-2) unstable; urgency=low
 
