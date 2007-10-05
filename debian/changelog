@@ -1,3 +1,11 @@
+foo2zjs (20070718dfsg-4) experimental; urgency=low
+
+  * Now hannah is a standalone package
+  * Moved debian/hannah to debian/hannah-package
+  * Added the clean call for hannah-package in debian/rules
+
+ -- Luca Bedogni <me@lucabedogni.it>  Fri, 05 Oct 2007 11:00:43 +1000
+
 foo2zjs (20070718dfsg-3) experimental; urgency=low
 
   * Include first version of Hannah (GUI for downloading and installing
@@ -16,6 +24,7 @@ foo2zjs (20070718dfsg-3) experimental; urgency=low
      programs to become root, when calling hannah
   * Fix breaking line in 11-hplj10xx.rules to repair it
    (Closes: #443917) Thanks to Cristian Ionescu-Idbohrn for the patch
+
 
  -- Steffen Joeris <white@debian.org>  Sun, 30 Sep 2007 18:10:33 +1000
 
