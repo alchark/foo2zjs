@@ -3,6 +3,8 @@ foo2zjs (20070718dfsg-4) experimental; urgency=low
   * Now hannah is a standalone package
   * Moved debian/hannah to debian/hannah-package
   * Added the clean call for hannah-package in debian/rules
+  * Modified menu file for opening hannah with with kdesu or gksu (Closes:
+    #444850).
 
  -- Luca Bedogni <me@lucabedogni.it>  Fri, 05 Oct 2007 11:00:43 +1000
 
