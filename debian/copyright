@@ -36,6 +36,13 @@ icc2ps/lcms.
 		  List of files:
 icc2ps/icc34.h
 
+		  Steffen Joeris Copyright (c) 2007
+		  List of files:
+debian/hannah-package/*
+
+The rest of the debian packaging is also licensed under the
+GPL v. 2 as listed below.
+
 Copyright:
 
    This package is free software; you can redistribute it and/or modify

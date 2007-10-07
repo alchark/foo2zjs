@@ -14,6 +14,7 @@ foo2zjs (20070718dfsg-4) experimental; urgency=low
     this is satisfied via hannah now
   * Add hannah as a suggests for foo2zjs
   * Add foo2zjs as a depends to hannah
+  * Add debian/copyright information
 
  -- Luca Bedogni <me@lucabedogni.it>  Sun, 07 Oct 2007 16:24:58 +1000
 
