@@ -38,7 +38,7 @@ clean:
 	rm -f build-stamp configure-stamp
 	dpatch deapply-all
 	rm -rf debian/patched
-	cd debian/hannah-package/ && make clean
+	[ ! -f debian/hannah-package/Makefile ] || (cd debian/hannah-package/ && $(MAKE) distclean)
 	rm -rf debian/hannah-package/hannah
 	[ ! -f Makefile ] || $(MAKE) clean
 	-rm -f foo2hp

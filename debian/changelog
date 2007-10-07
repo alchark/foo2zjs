@@ -1,5 +1,6 @@
 foo2zjs (20070718dfsg-4) experimental; urgency=low
 
+  [ Luca Bedogni ]
   * Now hannah is a standalone package
    - Moved debian/hannah to debian/hannah-package
    - Added the clean call for hannah-package in debian/rules
@@ -7,7 +8,14 @@ foo2zjs (20070718dfsg-4) experimental; urgency=low
   * Modified menu file for opening hannah with kdesu or gksu
     (Closes: #444850)
 
- -- Luca Bedogni <me@lucabedogni.it>  Fri, 05 Oct 2007 11:00:43 +1000
+  [ Steffen Joeris ]
+  * Fix cleanup for hannah and call it with make distclean
+  * Remove dependency against kdebase-bin | gksu from foo2zjs, because
+    this is satisfied via hannah now
+  * Add hannah as a suggests for foo2zjs
+  * Add foo2zjs as a depends to hannah
+
+ -- Luca Bedogni <me@lucabedogni.it>  Sun, 07 Oct 2007 16:24:58 +1000
 
 foo2zjs (20070718dfsg-3) experimental; urgency=low
 
