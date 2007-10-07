@@ -1,3 +1,11 @@
+foo2zjs (20070718dfsg-5) experimental; urgency=low
+
+  * Change name of package hannah to hannah-foo2zjs to make
+    it more related to foo2zjs (and because there is already
+    a package in the archive called hannah)
+
+ -- Steffen Joeris <white@debian.org>  Sun, 07 Oct 2007 17:13:46 +1000
+
 foo2zjs (20070718dfsg-4) experimental; urgency=low
 
   [ Luca Bedogni ]

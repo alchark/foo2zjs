@@ -66,8 +66,8 @@ install: build
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/etc/udev/rules.d/11-hplj10xx.rules
 	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
-	install -m 755 debian/hannah-package/hannah $(CURDIR)/debian/hannah/usr/bin/hannah
-	install -m 644 debian/hannah-package/hannah.desktop $(CURDIR)/debian/hannah/usr/share/applications/hannah.desktop
+	install -m 755 debian/hannah-package/hannah $(CURDIR)/debian/hannah-foo2zjs/usr/bin/hannah
+	install -m 644 debian/hannah-package/hannah.desktop $(CURDIR)/debian/hannah-foo2zjs/usr/share/applications/hannah-foo2zjs.desktop
 	touch $(CURDIR)/debian/foo2zjs/usr/share/foo2zjs/tmp/.placeholder
 
 # Build architecture-independent files here.

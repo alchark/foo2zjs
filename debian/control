@@ -10,7 +10,7 @@ Package: foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}
 Recommends: foomatic-db-engine
-Suggests: psutils, hannah
+Suggests: psutils, hannah-foo2zjs
 Description: Support for printing to ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the
  Zenographics ZjStream wire protocol for their print data, such as the
@@ -24,7 +24,7 @@ Description: Support for printing to ZjStream-based printers
  .
   Home Page: http://foo2zjs.rkkda.com/
 
-Package: hannah
+Package: hannah-foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}, kdebase-bin | gksu, foo2zjs
 Description: Graphical firmware downloader for the foo2zjs package
