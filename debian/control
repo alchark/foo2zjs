@@ -6,6 +6,7 @@ Uploaders: Luca Bedogni <me@lucabedogni.it>, Michael Koch <konqueror@gmx.de>, St
 Build-Depends: debhelper (>= 5), gs-gpl, dpatch, foomatic-filters, libcupsys2-dev, libqt4-dev
 Standards-Version: 3.7.2
 Homepage: http://foo2zjs.rkkda.com/
+Vcs-Svn: svn://svn.debian.org/foo2zjs
 
 Package: foo2zjs
 Architecture: any
