@@ -1,4 +1,4 @@
-foo2zjs (20070718dfsg-6) experimental; urgency=low
+foo2zjs (20070718dfsg-6) unstable; urgency=low
 
   * debian/control:
         - Added the Homepage tag insted of displaing it in the long description
