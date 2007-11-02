@@ -4,8 +4,9 @@ foo2zjs (20070718dfsg-6) experimental; urgency=low
         - Added the Homepage tag insted of displaing it in the long description
           (Closes: #439579).
         - Added Vcs-Svn tag.
+  * Now hannah-foo2zjs display the output of an error (Closes:444852) 
 
- -- Luca Bedogni <me@lucabedogni.it>  Thu, 01 Nov 2007 16:18:03 +0100
+ -- Luca Bedogni <me@lucabedogni.it>  Fri, 02 Nov 2007 01:06:58 +0100
 
 foo2zjs (20070718dfsg-5) experimental; urgency=low
 

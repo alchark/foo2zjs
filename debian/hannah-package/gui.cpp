@@ -246,7 +246,6 @@ void MainWindow::callGetweb()
 
 void MainWindow::checkProgram()
 {
- 	
 	switch ( callProgram->exitCode() ) {
 		case 0:
 			QMessageBox::information(this, tr("Hannah - Firmware downloader"),
@@ -255,6 +254,8 @@ void MainWindow::checkProgram()
 			statusBar->showMessage(tr("Download and installation finished."));
 			break;
 		default:
+                        QMessageBox::critical(this, tr("Hannah - Firmware downloader"),
+                                tr(callProgram->readAllStandardError()));
 			QMessageBox::critical(this, tr("Hannah - Firmware downloader"),
 				tr("Something went wrong during the download and installation process for the following printers:\n"
 					"%1\n").arg(string), QMessageBox::Ok);
