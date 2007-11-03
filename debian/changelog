@@ -1,3 +1,9 @@
+foo2zjs (20070718dfsg-7) unstable; urgency=low
+
+  * Added menu file (Closes: #444850).
+
+ -- Luca Bedogni <me@lucabedogni.it>  Sat, 03 Nov 2007 15:23:35 +0100
+
 foo2zjs (20070718dfsg-6) unstable; urgency=low
 
   * debian/control:
