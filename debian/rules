@@ -68,8 +68,6 @@ install: build
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
 	install -m 755 debian/hannah-package/hannah $(CURDIR)/debian/hannah-foo2zjs/usr/bin/hannah-foo2zjs
 	install -m 644 debian/hannah-package/hannah.desktop $(CURDIR)/debian/hannah-foo2zjs/usr/share/applications/hannah-foo2zjs.desktop
-	mkdir -p $(CURDIR)/debian/hannah-foo2zjs/usr/share/menu
-	install -m 644 debian/hannah-package/hannah.menu $(CURDIR)/debian/hannah-foo2zjs/usr/share/menu/hannah-foo2zjs
 	touch $(CURDIR)/debian/foo2zjs/usr/share/foo2zjs/tmp/.placeholder
 
 # Build architecture-independent files here.
