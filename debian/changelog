@@ -1,6 +1,8 @@
-foo2zjs (20070718dfsg-7) unstable; urgency=low
+foo2zjs (20070718dfsg-7) unstable; urgency=medium
 
-  * Added menu file (Closes: #444850).
+  * Added menu file for hannah-foo2zjs package (Closes: #444850).
+   - Call dh_installmenu in debian/rules
+   - Adjust debian/hannah-foo2zjs.dirs accordingly
 
  -- Luca Bedogni <me@lucabedogni.it>  Sat, 03 Nov 2007 15:23:35 +0100
 
