@@ -1,8 +1,10 @@
 foo2zjs (20070718dfsg-8) unstable; urgency=low
 
   * Modified debian/rules to use /usr/share/dpatch/dpatch.make
+  * Added a patch from a newer getweb because the firmware location has
+  changed (Closes: #449426).
 
- -- Luca Bedogni <me@lucabedogni.it>  Wed, 07 Nov 2007 17:09:49 +0100
+ -- Luca Bedogni <me@lucabedogni.it>  Wed, 07 Nov 2007 19:05:46 +0100
 
 foo2zjs (20070718dfsg-7) unstable; urgency=medium
 
