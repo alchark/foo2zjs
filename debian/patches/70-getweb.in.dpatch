@@ -1,8 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 70-getweb.in.dpatch by  <me@lucabedogni.it>
+## 70-getweb.in.dpatch by Luca Bedogni <me@lucabedogni.it>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: update from the last getweb.in script
 
 @DPATCH@
 diff -urNad foo2zjs_20070718dfsg~/getweb.in foo2zjs_20070718dfsg/getweb.in
