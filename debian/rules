@@ -3,6 +3,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+include /usr/share/dpatch/dpatch.make
+
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -18,9 +20,8 @@ MAKE = make
 QMAKE = qmake-qt4
 
 configure: configure-stamp
-configure-stamp:
+configure-stamp: patch-stamp
 	dh_testdir
-	dpatch apply-all
 	cd debian/hannah-package/ && $(QMAKE)
 	touch configure-stamp
 
@@ -32,11 +33,10 @@ build-stamp: configure-stamp
 	cd debian/hannah-package && $(MAKE)
 	touch build-stamp
 
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	dpatch deapply-all
 	rm -rf debian/patched
 	[ ! -f debian/hannah-package/Makefile ] || (cd debian/hannah-package/ && $(MAKE) distclean)
 	rm -rf debian/hannah-package/hannah
