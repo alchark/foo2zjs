@@ -1,3 +1,9 @@
+foo2zjs (20070718dfsg-8) unstable; urgency=low
+
+  * Modified debian/rules to use /usr/share/dpatch/dpatch.make
+
+ -- Luca Bedogni <me@lucabedogni.it>  Wed, 07 Nov 2007 17:09:49 +0100
+
 foo2zjs (20070718dfsg-7) unstable; urgency=medium
 
   * Added menu file for hannah-foo2zjs package (Closes: #444850).
