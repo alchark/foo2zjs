@@ -1,3 +1,15 @@
+foo2zjs (20070718dfsg-8) UNRELEASED; urgency=low
+
+  * Fixed bashism in debian/patches/60-getweb.in.dpatch. Closes: #489576
+  * Use su-to-root in debian/hannah-foo2zjs.menu and
+    debian/hannah-package/hannah.desktop.
+  * Use menu section Applications/System/Administration instead of
+    Applications/System.
+  * Build-Depends on ghostscript instead of gs-gpl.
+  * Added Recommends for foo2zjs on wget. Neede by getweb script.
+
+ -- Michael Koch <konqueror@gmx.de>  Mon, 07 Jul 2008 13:09:27 +0200
+
 foo2zjs (20070718dfsg-7.1) unstable; urgency=medium
 
   * Non-maintainer upload.

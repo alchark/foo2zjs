@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Foo2ZJS Firmware Installer (Hannah)
-Exec=if [ -x /usr/bin/kdesu ] ; then `which kdesu` /usr/bin/hannah-foo2zjs ; else `which gksu` /usr/bin/hannah-foo2zjs ; fi
+Exec=/usr/bin/su-to-root -X -c /usr/bin/hannah-foo2zjs
 Type=Application
 Comment=Foo2ZJS Firmware Downloader and Installer
 Terminal=0

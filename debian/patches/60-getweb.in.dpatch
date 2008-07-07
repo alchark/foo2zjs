@@ -13,7 +13,7 @@
  WGETOPTS=--passive-ftp
 +ARM2HPDL="/usr/bin/arm2hpdl"
 +
-+if [ $UID -ne 0 ]; then
++if [ $(id -ru) -ne 0 ]; then
 +       echo "You need to be root"
 +       exit 0
 +fi
@@ -21,6 +21,15 @@
  
  usage() {
  cat <<EOF
+@@ -52,7 +59,7 @@
+ }
+ 
+ SYSTEM=$(uname -s)
+-WGET=$(type wget 2>/dev/null)
++WGET=/usr/bin/wget
+ if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
+ then
+     WGETOPTS=
 @@ -62,6 +69,13 @@
      }
  fi

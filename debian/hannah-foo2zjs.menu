@@ -1,6 +1,6 @@
 ?package(hannah-foo2zjs):\
     needs="X11"\
-    section="Applications/System"\
+    section="Applications/System/Administration"\
     title="Hannah-foo2zjs"\
     longtitle="Foo2ZJS Firmware Installer (Hannah)"\
-    command="if [ -x /usr/bin/kdesu ] ; then `which kdesu` /usr/bin/hannah-foo2zjs ; else `which gksu` /usr/bin/hannah-foo2zjs ; fi"
+    command="/usr/bin/su-to-root -X -c /usr/bin/hannah-foo2zjs"
