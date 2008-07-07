@@ -1,0 +1,151 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 70-getweb.in.dpatch by Luca Bedogni <me@lucabedogni.it>
+##
+## DP: update from the last getweb.in script
+
+@DPATCH@
+diff -urNad foo2zjs_20070718dfsg~/getweb.in foo2zjs_20070718dfsg/getweb.in
+--- foo2zjs_20070718dfsg~/getweb.in	2007-11-07 17:14:58.000000000 +0100
++++ foo2zjs_20070718dfsg/getweb.in	2007-11-07 19:01:29.000000000 +0100
+@@ -1,7 +1,8 @@
+ #!/bin/sh
+ 
+-WGETOPTS=--passive-ftp
++WGETOPTS="--passive-ftp -q"
+ ARM2HPDL="/usr/bin/arm2hpdl"
++VERSION='$Id: getweb.in,v 1.51 2007/11/04 01:58:16 rick Exp $'
+ 
+ if [ $UID -ne 0 ]; then
+        echo "You need to be root"
+@@ -19,6 +20,7 @@
+ 
+     $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
+     $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
++    $ ./getweb 1500     # Get HP Color LaserJet 1500 .ICM files
+ 
+     $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
+     $ ./getweb 2490	# Get Konica Minolta 2490 MF .ICM files
+@@ -32,6 +34,7 @@
+ 
+     $ ./getweb 300	# Get Samsung CLP-300 .ICM files
+     $ ./getweb 600	# Get Samsung CLP-600 .ICM files
++    $ ./getweb 2160     # Get Samsung CLX-2160 .ICM files
+     $ ./getweb 3160	# Get Samsung CLX-3160 .ICM files
+     $ ./getweb 6110	# Get Xerox Phaser 6110 and 6110MFP .ICM files
+ 
+@@ -111,11 +114,19 @@
+ 
+ }
+ 
++copyright() {
++    echo
++    echo "$1"
++    echo
++}
++
++
++
+ getone() {
+     case "$1" in
+     lj1000|1000|hp1000)
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com sihp1000.tar.gz \
++	    http://foo2zjs.rkkda.com/firmware sihp1000.tar.gz \
+ 	    ""
+ 	putfw sihp1000.img sihp1000.dl
+ 	#echo "provided"
+@@ -123,10 +134,11 @@
+ 	    #ftp://ftp.hp.com/pub/softlib/software1/lj1488/lj-1145-2 \
+ 	    #lj1488en.exe \
+ 	    #sihp1000.img
++        copyright "(c) Copyright Hewlett-Packard 2001"
+ 	;;
+     lj1005|1005|hp1005)
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com sihp1005.tar.gz \
++	    http://foo2zjs.rkkda.com/firmware sihp1005.tar.gz \
+ 	    ""
+ 	putfw sihp1005.img sihp1005.dl
+ 	#echo "provided"
+@@ -134,31 +146,36 @@
+ 	    #ftp://ftp.hp.com/pub/softlib/software2/COL2222/lj-10067-2 \
+ 	    #lj1005hostbased-en.exe \
+ 	    #sihp1005.img
++        copyright "(c) Copyright Hewlett-Packard 2002"
+ 	;;
+     lj1018|1018|hp1018)
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com sihp1018.tar.gz \
++	    http://foo2zjs.rkkda.com/firmware sihp1018.tar.gz \
+ 	    ""
+ 	putfw sihp1018.img sihp1018.dl
++        copyright "(c) Copyright Hewlett-Packard 2005"
+ 	;;
+     lj1020|1020|hp1020)
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com sihp1020.tar.gz \
++	    http://foo2zjs.rkkda.com/firmware sihp1020.tar.gz \
+ 	    ""
+ 	putfw sihp1020.img sihp1020.dl
++        copyright "(c) Copyright Hewlett-Packard 2005"
+ 	;;
+     2200dl|2200|minolta2200)
+ 	getexe \
+ 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
+ 	    "*.icm"
++        copyright "(c) Copyright Minolta-QMS 1999"
+ 	;;
+     2300dl|2300|minolta2300)
+ 	getexe \
+ 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win m23dlicc.exe \
+ 	    "*.icm"
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com km2430.tar.gz \
++	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
+ 	    ""
++        copyright "(c) Copyright Minolta-QMS 2001"
+ 	;;
+     2300dl_fw)
+ 	# 2300DL firmware upgrade to v2.55
+@@ -180,29 +197,36 @@
+ 	    ./msexpand $base.ic_
+ 	    rm -f $base.ic_
+ 	done
++        copyright "(c) Copyright Minolta-QMS 1998"
+ 	;;
+     2430|minolta2430)
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com km2430.tar.gz \
++	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
+ 	    ""
++        copyright "(c) Copyright Minolta-QMS 2003"
+ 	;;
+     2530|2490|6115|2480|minolta2530|minolta2490|minolta|xerox6115|minolta2480)
+ 	gettgz \
+-	    http://foo2lava.rkkda.com km2530.tar.gz \
++	    http://foo2lava.rkkda.com/icm km2530.tar.gz \
+ 	    ""
++        copyright "(c) Copyright Konica Minolta 2005"
++        copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
+ 	;;
+     1600|2600n|hp1600|hp2600)
+ 	gettgz \
+-	    http://foo2hp.rkkda.com hpclj2600n.tar.gz \
++	    http://foo2hp.rkkda.com/icm hpclj2600n.tar.gz \
+ 	    ""
+ 	gettgz \
+-	    http://foo2zjs.rkkda.com km2430.tar.gz \
++	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
+ 	    "km2430_2.icm"
++        copyright "(c) Copyright Konica Minolta 2003"
++        copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
+ 	;;
+     300|3160|6110|samsung300|samsung3160|xerox6110)
+ 	gettgz \
+-	    http://foo2qpdl.rkkda.com samclp300.tar.gz \
++	    http://foo2qpdl.rkkda.com/icm samclp300.tar.gz \
+ 	    ""
++        copyright "(c) Copyright Samsung 2006"
+ 	;;
+     600|samsung600)
+ 	;;

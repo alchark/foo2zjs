@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Foo2zjs Maintainers <foo2zjs-maintainer@lists.alioth.debian.org>
 Uploaders: Luca Bedogni <me@lucabedogni.it>, Michael Koch <konqueror@gmx.de>, Steffen Joeris <white@debian.org>
 Build-Depends: debhelper (>= 5), gs-gpl, dpatch, foomatic-filters, libcupsys2-dev, libqt4-dev
-Standards-Version: 3.7.2
+Standards-Version: 3.8.0
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Svn: svn://svn.debian.org/foo2zjs
 

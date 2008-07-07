@@ -1,3 +1,12 @@
+foo2zjs (20070718dfsg-7.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add '80-getweb.in.dpatch' to fix bashism in /bin/sh script
+    (Closes: #472895)
+  * Bump Standards-Version to 3.8.0.
+
+ -- Chris Lamb <chris@chris-lamb.co.uk>  Sat, 07 Jun 2008 20:17:48 +0100
+
 foo2zjs (20070718dfsg-7) unstable; urgency=medium
 
   * Added menu file for hannah-foo2zjs package (Closes: #444850).
