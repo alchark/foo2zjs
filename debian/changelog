@@ -7,6 +7,7 @@ foo2zjs (20070718dfsg-8) UNRELEASED; urgency=low
     Applications/System.
   * Build-Depends on ghostscript instead of gs-gpl.
   * Added Recommends for foo2zjs on wget. Neede by getweb script.
+  * Exclude the manual.pdf from dh_compress.
 
  -- Michael Koch <konqueror@gmx.de>  Mon, 07 Jul 2008 13:09:27 +0200
 
