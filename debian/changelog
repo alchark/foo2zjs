@@ -5,6 +5,8 @@ foo2zjs (20070718dfsg-8) UNRELEASED; urgency=low
     debian/hannah-package/hannah.desktop.
   * Use menu section Applications/System/Administration instead of
     Applications/System.
+  * Use the Suggests from menu package for the Depends of hannah-foo2zjs
+    to make su-to-root -X work always.
   * Build-Depends on ghostscript instead of gs-gpl.
   * Added Recommends for foo2zjs on wget. Neede by getweb script.
   * Exclude the manual.pdf from dh_compress.
