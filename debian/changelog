@@ -8,6 +8,7 @@ foo2zjs (20070718dfsg-8) UNRELEASED; urgency=low
   * Use the Suggests from menu package for the Depends of hannah-foo2zjs
     to make su-to-root -X work always.
   * Build-Depends on ghostscript instead of gs-gpl.
+  * Build-Depends on libcups2-dev instead of libcupsys2-dev.
   * Added Recommends for foo2zjs on wget. Neede by getweb script.
   * Exclude the manual.pdf from dh_compress.
 
