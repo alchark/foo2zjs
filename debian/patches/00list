@@ -2,7 +2,6 @@
 20-honour-papersize
 30-udev-rules
 40-path-correction
-50-fix-grotty-warnings
 60-getweb.in.dpatch
 70-getweb.in.dpatch
 80-getweb.in.dpatch

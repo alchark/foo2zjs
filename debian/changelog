@@ -4,11 +4,19 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
+  * debian/*.1:
+    - remove, use upstream instead.
   * debian/control:
     + add myself to Uploaders:.
+  * debian/manpages:
+    + install foo2zjs-icc2ps.1 only.
+  * debian/patches/00list: update.
   * debian/patches/10-makefile.dpatch: refresh.
   * debian/patches/30-udevs-rules.dpatch: refresh.
   * debian/patches/40-path-correction.dpatch: refresh.
+  * debian/patches/50-fix-grotty-warnings:
+    - do not apply, it requires a too long refresh and a better
+      solution would be to fix the upstream manpage generation system.
 
  --
 
