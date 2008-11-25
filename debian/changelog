@@ -2,8 +2,8 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
 
   * New upstream version (Closes: #466758)
   * DFSG repack
-    - Removed binary file c5200mono.prn
-    - Removed crd/qpdl/CLP* , because copyright is unclear
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
 
  --
 
