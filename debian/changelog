@@ -18,6 +18,8 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
     - do not apply, it requires a too long refresh and a better
       solution would be to fix the upstream manpage generation system.
   * debian/patches/60-getweb.in.dpatch: refresh.
+  * debian/patches/70-getweb.in.dpatch:
+    - remove, no more needed.
 
  --
 
