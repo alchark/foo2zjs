@@ -1,3 +1,12 @@
+foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
+
+  * New upstream version (Closes: #466758)
+  * DFSG repack
+   - Removed binary file c5200mono.prn
+   - Removed crd/qpdl/CLP* , because copyright is unclear
+
+ --
+
 foo2zjs (20070718dfsg-8) UNRELEASED; urgency=low
 
   * Fixed bashism in debian/patches/60-getweb.in.dpatch. Closes: #489576
