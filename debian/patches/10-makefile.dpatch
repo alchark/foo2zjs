@@ -1,5 +1,6 @@
 #!/bin/sh -e
-## 10-makefile.dpatch, by Steffen Joeris <white@debian.org>
+## 10-makefile.dpatch, by Steffen Joeris <white@debian.org> and
+## Luca Capello <luca@pca.it>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Patch the Makefile 
@@ -23,79 +24,134 @@ esac
 exit 0
 
 @DPATCH@
---- Makefile	2007-06-26 22:40:33.000000000 +0200
-+++ foo2zjs-20070624/Makefile	2007-06-26 22:43:20.000000000 +0200
-@@ -167,12 +167,12 @@
- # sihp1000.img sihp1005.img sihp1020.img sihp1018.img
+--- foo2zjs-20081007dfsg/Makefile.ORG	2008-11-25 22:29:53.000000000 +0100
++++ foo2zjs-20081007dfsg/Makefile	2008-11-25 22:39:32.000000000 +0100
+@@ -16,9 +16,7 @@
+ VERSION=0.0
  
- # Programs and libraries
--PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode
-+PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode okidecode
- PROGS+=		foo2lava lavadecode foo2qpdl qpdldecode opldecode
--ifeq ($(SYSNAME),amd.rkkda.org)
--    PROGS+=	okidecode
--endif
--PROGSOAK=	okidecode
-+#ifeq ($(SYSNAME),amd.rkkda.org)
-+#    PROGS+=	okidecode
-+#endif
-+#PROGSOAK=	okidecode
- SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
- 		foo2xqx-wrapper foo2lava-wrapper foo2qpdl-wrapper
- MANPAGES=	foo2zjs-wrapper.1 foo2zjs.1 zjsdecode.1
-@@ -416,7 +416,7 @@
+ # Installation prefix...
+-PREFIX=/usr/local
+ PREFIX=/usr
+-PREFIX=$(DESTDIR)/usr
+ 
+ # Pathnames for this package...
+ BIN=$(PREFIX)/bin
+@@ -35,7 +33,7 @@
+ INSTALL=install
+ 
+ # Pathnames for referenced packages...
+-FOODB=$(DESTDIR)/usr/share/foomatic/db/source
++FOODB=$(PREFIX)/share/foomatic/db/source
+ 
+ # User ID's
+ LPuid=-olp
+@@ -540,8 +538,6 @@
  	#
- 	install -c $(PROGS) $(SHELLS) $(BIN)/
+     
+ 
+-UDEVBIN=$(DESTDIR)/bin/
+-
+ install-prog:
+ 	#
+ 	# Install driver, wrapper, and development tools
+@@ -549,8 +545,7 @@
+ 	$(INSTALL) -d $(BIN)
+ 	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
--	    install -c $(BINPROGS) /bin/; \
-+	    install -c $(BINPROGS) $(PREFIX)/bin/; \
+-	    $(INSTALL) -d $(UDEVBIN); \
+-	    $(INSTALL) -c $(BINPROGS) $(UDEVBIN); \
++	    $(INSTALL) -c $(BINPROGS) $(BIN); \
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -907,26 +907,26 @@
+@@ -718,9 +713,9 @@
+ 	    fi; \
+ 	done
+ 
+-MODEL=$(DESTDIR)/usr/share/cups/model
+-LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
+-PPD=$(DESTDIR)/usr/share/ppd
++MODEL=$(PREFIX)/share/cups/model
++LOCALMODEL=$(PREFIX)/local/share/cups/model
++PPD=$(PREFIX)/share/ppd
+ VARPPD=/var/lp/ppd
+ install-ppd:
+ 	#
+@@ -763,9 +758,9 @@
+ 	    done; \
+ 	fi
+ 
+-APPL=$(DESTDIR)/usr/share/applications
+-OLDAPPL=$(DESTDIR)/usr/share/gnome/apps/System
+-PIXMAPS=$(DESTDIR)/usr/share/pixmaps
++APPL=$(PREFIX)/share/applications
++OLDAPPL=$(PREFIX)/share/gnome/apps/System
++PIXMAPS=$(PREFIX)/share/pixmaps
+ 
+ install-desktop:
+ 	#
+@@ -1179,35 +1174,35 @@
  	#
  	# Install manual pages
  	#
--	install -d -m 755 $(MANDIR)
--	install -d -m 755 $(MANDIR)/man1/
--	install -c -m 644 foo2zjs.1 $(MANDIR)/man1/
--	install -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 zjsdecode.1 $(MANDIR)/man1/
--	install -c -m 644 foo2oak.1 $(MANDIR)/man1/
--	install -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 oakdecode.1 $(MANDIR)/man1/
--	install -c -m 644 foo2hp.1 $(MANDIR)/man1/
--	install -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 xqxdecode.1 $(MANDIR)/man1/
--	install -c -m 644 foo2xqx.1 $(MANDIR)/man1/
--	install -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 lavadecode.1 $(MANDIR)/man1/
--	install -c -m 644 foo2lava.1 $(MANDIR)/man1/
--	install -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 qpdldecode.1 $(MANDIR)/man1/
--	install -c -m 644 foo2qpdl.1 $(MANDIR)/man1/
--	install -c -m 644 foo2qpdl-wrapper.1 $(MANDIR)/man1/
--	install -c -m 644 opldecode.1 $(MANDIR)/man1/
-+#	install -d -m 755 $(MANDIR)
-+#	install -d -m 755 $(MANDIR)/man1/
-+#	install -c -m 644 foo2zjs.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 zjsdecode.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2oak.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 oakdecode.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2hp.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 xqxdecode.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2xqx.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 lavadecode.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2lava.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 qpdldecode.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2qpdl.1 $(MANDIR)/man1/
-+#	install -c -m 644 foo2qpdl-wrapper.1 $(MANDIR)/man1/
-+#	install -c -m 644 opldecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -d -m 755 $(MANDIR)
+-	$(INSTALL) -d -m 755 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2zjs.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 zjsdecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2oak.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 oakdecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2hp.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 xqxdecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2xqx.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 lavadecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2lava.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 qpdldecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2qpdl.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2qpdl-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 opldecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 slxdecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2slx.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2slx-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2hiperc.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2hiperc-wrapper.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 hipercdecode.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
+-	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
++#	$(INSTALL) -d -m 755 $(MANDIR)
++#	$(INSTALL) -d -m 755 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2zjs.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2zjs-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 zjsdecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2oak.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2oak-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 oakdecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2hp.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2hp2600-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 xqxdecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2xqx.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2xqx-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 lavadecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2lava.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2lava-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 qpdldecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2qpdl.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2qpdl-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 opldecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 slxdecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2slx.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2slx-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2hiperc.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2hiperc-wrapper.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 hipercdecode.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
++#	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
  
  doc: README INSTALL manual.pdf
  

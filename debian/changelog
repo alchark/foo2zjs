@@ -6,6 +6,7 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
     - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/control:
     + add myself to Uploaders:.
+  * debian/patches/10-makefile.dpatch: refresh.
 
  --
 
