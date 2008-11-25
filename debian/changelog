@@ -4,6 +4,8 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
+  * debian/control:
+    + add myself to Uploaders:.
 
  --
 
