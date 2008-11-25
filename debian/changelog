@@ -17,6 +17,7 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
   * debian/patches/50-fix-grotty-warnings:
     - do not apply, it requires a too long refresh and a better
       solution would be to fix the upstream manpage generation system.
+  * debian/patches/60-getweb.in.dpatch: refresh.
 
  --
 

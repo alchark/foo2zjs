@@ -5,32 +5,41 @@
 ## DP: Improve getweb also for installing the firmware
 
 @DPATCH@
---- getweb.in.orig	2007-09-30 16:11:40.000000000 +1000
-+++ foo2zjs-20070718dfsg/getweb.in	2007-09-30 16:16:38.000000000 +1000
-@@ -1,6 +1,13 @@
- #!/bin/sh
+--- foo2zjs-20081007dfsg/getweb.in.ORG	2008-10-17 16:49:33.000000000 +0200
++++ foo2zjs-20081007dfsg/getweb.in	2008-10-17 16:50:05.000000000 +0200
+@@ -2,7 +2,7 @@
  
- WGETOPTS=--passive-ftp
+ #
+ # (c) Copyright Rick Richardson 2008
+-#
++# This version has been modified by Debian
+ 
+ #
+ # PLEASE don't remove the copyright statements.  They should 
+@@ -12,6 +12,13 @@
+ VERSION='$Id: getweb.in,v 1.77 2008/07/23 03:46:10 rick Exp $'
+ 
+ WGETOPTS="--passive-ftp -q"
 +ARM2HPDL="/usr/bin/arm2hpdl"
 +
 +if [ $(id -ru) -ne 0 ]; then
-+       echo "You need to be root"
-+       exit 0
++    echo "You need to be root"
++    exit 0
 +fi
 +
  
  usage() {
  cat <<EOF
-@@ -52,7 +59,7 @@
+@@ -87,7 +94,7 @@
  }
  
- SYSTEM=$(uname -s)
--WGET=$(type wget 2>/dev/null)
-+WGET=/usr/bin/wget
+ SYSTEM=`uname -s`
+-WGET=`type wget 2>/dev/null`
++WGET=`which wget`
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -62,6 +69,13 @@
+@@ -97,6 +104,13 @@
      }
  fi
  
@@ -44,7 +53,7 @@
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -84,50 +98,61 @@
+@@ -119,10 +133,16 @@
      file="$2"
      what="$3"
      
@@ -53,111 +62,53 @@
 -    gunzip <$file | tar xvf - $what
 -    rm $file
 +    if ! [ -d /tmp/foo2zjs ] ; then
-+       wget $WGETOPTS -O /usr/share/foo2zjs/tmp/$file "$url/$file" ||
-+               error "Couldn't download $url/$file"
-+       cd /usr/share/foo2zjs/tmp && gunzip </usr/share/foo2zjs/tmp/$file | tar xvf - $what
-+       CHECK=`ls /usr/share/foo2zjs/tmp/*.icm 2>/dev/null`
-+       if [ -n "$CHECK" ] ; then
-+               mv /usr/share/foo2zjs/tmp/*.icm /usr/share/foo2zjs/icm/
-+       fi
-+       rm /usr/share/foo2zjs/tmp/$file
++	wget $WGETOPTS -O /usr/share/foo2zjs/tmp/$file "$url/$file" ||
++            error "Couldn't download $url/$file"
++	cd /usr/share/foo2zjs/tmp && gunzip </usr/share/foo2zjs/tmp/$file | tar xvf - $what
++	CHECK=`ls /usr/share/foo2zjs/tmp/*.icm 2>/dev/null`
++	if [ -n "$CHECK" ] ; then
++            mv /usr/share/foo2zjs/tmp/*.icm /usr/share/foo2zjs/icm/
++	fi
++	rm /usr/share/foo2zjs/tmp/$file
 +    fi
-+
  }
  
- getone() {
-     case "$1" in
--    lj1000|1000)
-+    lj1000|1000|hp1000)
- 	gettgz \
- 	    http://foo2zjs.rkkda.com sihp1000.tar.gz \
- 	    ""
-+	putfw sihp1000.img sihp1000.dl
- 	#echo "provided"
- 	#getexe \
- 	    #ftp://ftp.hp.com/pub/softlib/software1/lj1488/lj-1145-2 \
+ copyright() {
+@@ -143,6 +163,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
+ 	copyright "(c) Copyright Hewlett-Packard 2001"
++	putfw sihp1000.img sihp1000.dl
  	;;
--    lj1005|1005)
-+    lj1005|1005|hp1005)
+     lj1005|1005)
  	gettgz \
- 	    http://foo2zjs.rkkda.com sihp1005.tar.gz \
- 	    ""
-+	putfw sihp1005.img sihp1005.dl
- 	#echo "provided"
- 	#getexe \
- 	    #ftp://ftp.hp.com/pub/softlib/software2/COL2222/lj-10067-2 \
+@@ -154,18 +175,21 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
+ 	copyright "(c) Copyright Hewlett-Packard 2002"
++	putfw sihp1005.img sihp1005.dl
  	;;
--    lj1018|1018)
-+    lj1018|1018|hp1018)
+     lj1018|1018)
  	gettgz \
- 	    http://foo2zjs.rkkda.com sihp1018.tar.gz \
+ 	    http://foo2zjs.rkkda.com/firmware sihp1018.tar.gz \
  	    ""
+ 	copyright "(c) Copyright Hewlett-Packard 2005"
 +	putfw sihp1018.img sihp1018.dl
  	;;
--    lj1020|1020)
-+    lj1020|1020|hp1020)
+     lj1020|1020)
  	gettgz \
- 	    http://foo2zjs.rkkda.com sihp1020.tar.gz \
+ 	    http://foo2zjs.rkkda.com/firmware sihp1020.tar.gz \
  	    ""
+ 	copyright "(c) Copyright Hewlett-Packard 2005"
 +	putfw sihp1020.img sihp1020.dl
  	;;
--    2200dl|2200)
-+    2200dl|2200|minolta2200)
- 	getexe \
+     [pP]100[57])
+ 	gettgz \
+@@ -190,6 +214,7 @@
  	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
  	    "*.icm"
+ 	copyright "(c) Copyright Minolta-QMS 1999"
++	putfw sihp1020.img sihp1020.dl
  	;;
--    2300dl|2300)
-+    2300dl|2300|minolta2300)
+     2300dl|2300)
  	getexe \
- 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win m23dlicc.exe \
- 	    "*.icm"
-@@ -144,7 +169,7 @@
- 	wget $WGETOPTS "$URL" || error "Couldn't download $URL"
- 	echo "*** Now use a windows box to unzip and install $FILE ***"
- 	;;
--    cpwl|pageworks)
-+    cpwl|pageworks|minoltapro)
- 	getexe \
- 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/windows cpplxp.exe \
- 	    "*.IC_"
-@@ -156,17 +181,17 @@
- 	    rm -f $base.ic_
- 	done
- 	;;
--    2430)
-+    2430|minolta2430)
- 	gettgz \
- 	    http://foo2zjs.rkkda.com km2430.tar.gz \
- 	    ""
- 	;;
--    2530|2490|6115|2480)
-+    2530|2490|6115|2480|minolta2530|minolta2490|minolta|xerox6115|minolta2480)
- 	gettgz \
- 	    http://foo2lava.rkkda.com km2530.tar.gz \
- 	    ""
- 	;;
--    1600|2600n)
-+    1600|2600n|hp1600|hp2600)
- 	gettgz \
- 	    http://foo2hp.rkkda.com hpclj2600n.tar.gz \
- 	    ""
-@@ -174,12 +199,12 @@
- 	    http://foo2zjs.rkkda.com km2430.tar.gz \
- 	    "km2430_2.icm"
- 	;;
--    300|3160|6110)
-+    300|3160|6110|samsung300|samsung3160|xerox6110)
- 	gettgz \
- 	    http://foo2qpdl.rkkda.com samclp300.tar.gz \
- 	    ""
- 	;;
--    600)
-+    600|samsung600)
- 	;;
- 
-     xPPD)
