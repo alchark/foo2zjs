@@ -1,5 +1,6 @@
 #!/bin/sh -e
 ## 40-path-correction.dpatch, by Steffen Joeris <steffen.joeris@skolelinux.de>
+## and Luca Capello <luca@pca.it>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Correct the path for the usb_printerid program
@@ -23,14 +24,14 @@ esac
 exit 0
 
 @DPATCH@
---- hplj1000	2006-10-06 19:27:13.000000000 +1000
-+++ foo2zjs-20070624/hplj1000	2006-10-06 19:27:29.000000000 +1000
-@@ -40,7 +40,7 @@
+--- foo2zjs-20081007dfsg/hplj1000.ORG	2008-10-17 15:52:29.000000000 +0200
++++ foo2zjs-20081007dfsg/hplj1000	2008-10-17 15:52:47.000000000 +0200
+@@ -47,7 +47,7 @@
+ #    [snip]
+ #    # Mount all other filesystems (except for NFS and /proc, which is already
  #
- # Program used to determine USB id information
- #
--USBID=/bin/usb_printerid
-+USBID=/usr/bin/usb_printerid
+-PRINTERID=/bin/usb_printerid
++PRINTERID=`which usb_printerid`
  
  #
  #	Figure out how to log our messages
