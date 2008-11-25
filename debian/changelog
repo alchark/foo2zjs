@@ -7,6 +7,7 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
   * debian/control:
     + add myself to Uploaders:.
   * debian/patches/10-makefile.dpatch: refresh.
+  * debian/patches/30-udevs-rules.dpatch: refresh.
 
  --
 
