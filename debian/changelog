@@ -6,8 +6,6 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
     - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/*.1:
     - remove, use upstream instead.
-  * debian/control:
-    + add myself to Uploaders:.
   * debian/manpages:
     + install foo2zjs-icc2ps.1 only.
   * debian/patches/00list: update.
@@ -22,6 +20,16 @@ foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
     - remove, no more needed.
 
  --
+
+foo2zjs (20070718dfsg-9) unstable; urgency=low
+
+  * debian/control:
+    + add myself to Uploaders:.
+  * debian/patches/30-udev-rules.dpatch:
+    + backport upstream fix to support udev hotplugging, thanks to
+      ilf <ilf@zeromail.org> (Closes: #477923).
+
+ -- Luca Capello <luca@pca.it>  Mon, 22 Dec 2008 13:13:25 +0100
 
 foo2zjs (20070718dfsg-8) unstable; urgency=low
 

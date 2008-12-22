@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Foo2ZJS Firmware Installer (Hannah)
 Exec=/usr/bin/su-to-root -X -c /usr/bin/hannah-foo2zjs
 Type=Application
