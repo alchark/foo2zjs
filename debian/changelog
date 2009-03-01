@@ -1,4 +1,4 @@
-foo2zjs (20081007dfsg-1) UNRELEASED; urgency=low
+foo2zjs (20090103dfsg-1) UNRELEASED; urgency=low
 
   * New upstream version (Closes: #466758)
   * DFSG repack
