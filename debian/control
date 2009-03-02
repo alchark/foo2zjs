@@ -11,7 +11,7 @@ Vcs-Svn: svn://svn.debian.org/foo2zjs
 Package: foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}
-Recommends: foomatic-db-engine, wget
+Recommends: foomatic-db-engine, wget, tk8.4, tik
 Suggests: psutils, hannah-foo2zjs
 Description: Support for printing to ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the

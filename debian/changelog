@@ -6,6 +6,8 @@ foo2zjs (20090301dfsg-1) UNRELEASED; urgency=low
     - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/*.1:
     - remove, use upstream instead.
+  * debian/control:
+    + Recommends: tk8.4 and tik for hplj10xx_gui.tcl, thanks to lintian.
   * debian/hannah-package/hanna.desktop:
     - remove now useless Encoding key, thanks to lintian.
   * debian/manpages:
