@@ -22,6 +22,8 @@ foo2zjs (20090301dfsg-1) UNRELEASED; urgency=low
   * debian/patches/60-getweb.in.dpatch: refresh.
   * debian/patches/70-getweb.in.dpatch:
     - remove, no more needed.
+  * debian/watch:
+    + new dummy file, thanks to lintian.
 
  --
 
