@@ -1,4 +1,4 @@
-foo2zjs (20090301dfsg-1) UNRELEASED; urgency=low
+foo2zjs (20090301dfsg-1) unstable; urgency=low
 
   * New upstream version (Closes: #466758)
   * DFSG repack
@@ -27,7 +27,7 @@ foo2zjs (20090301dfsg-1) UNRELEASED; urgency=low
   * debian/watch:
     + new dummy file, thanks to lintian.
 
- --
+ -- Luca Capello <luca@pca.it>  Tue, 03 Mar 2009 09:43:35 +0100
 
 foo2zjs (20070718dfsg-9) unstable; urgency=low
 
