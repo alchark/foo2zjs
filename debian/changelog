@@ -1,3 +1,11 @@
+foo2zjs (20090301dfsg-2) UNRELEASED; urgency=low
+
+  * debian/patches/30-udev-rules.dpatch:
+    + for some printers, HP is lowercase, thanks to ilf
+      <ilf@zeromail.org> (Closes: #519628).
+
+ --
+
 foo2zjs (20090301dfsg-1) unstable; urgency=low
 
   * New upstream version (Closes: #466758)

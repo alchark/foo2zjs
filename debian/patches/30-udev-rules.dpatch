@@ -30,13 +30,13 @@ exit 0
  KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", \
 -	SYSFS{product}=="hp LaserJet 1000", NAME="usb/%k", \
 -	SYMLINK+="hplj1000-%n", MODE="0666", RUN+="/etc/hotplug/usb/hplj1000" 
-+	SYSFS{product}=="HP LaserJet 1000", NAME="usb/%k", \
++	SYSFS{product}=="hp LaserJet 1000", NAME="usb/%k", \
 +	SYMLINK+="hplj1000-%n", MODE="0666", RUN+="/usr/sbin/hplj1000" 
  #Own udev rule for HP Laserjet 1005
  KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", \
 -	SYSFS{product}=="hp LaserJet 1005 series", NAME="usb/%k", \
 -	SYMLINK+="hplj1005-%n", MODE="0666", RUN+="/etc/hotplug/usb/hplj1005" 
-+	SYSFS{product}=="HP LaserJet 1005 series", NAME="usb/%k", \
++	SYSFS{product}=="hp LaserJet 1005 series", NAME="usb/%k", \
 +	SYMLINK+="hplj1005-%n", MODE="0666", RUN+="/usr/sbin/hplj1005" 
  #Own udev rule for HP Laserjet 1018
  KERNEL=="lp*", BUS=="usb", SYSFS{idVendor}=="03f0", \
