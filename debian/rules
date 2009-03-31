@@ -83,9 +83,7 @@ binary-arch: build install
 	dh_installexamples
 	dh_installmenu
 	dh_installman
-	dh_link usr/sbin/hplj1000 usr/sbin/hplj1005
-	dh_link usr/sbin/hplj1000 usr/sbin/hplj1018
-	dh_link usr/sbin/hplj1000 usr/sbin/hplj1020
+	dh_link
 	dh_strip
 	dh_compress -Xmanual.pdf
 	dh_fixperms

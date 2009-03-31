@@ -1,3 +1,12 @@
+foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
+
+  * debian/foo2zjs.links:
+    + list all links to be created for the hplj* helper programs.
+  * debian/rules:
+    + call dh_link only once.
+
+ --
+
 foo2zjs (20090301dfsg-2) unstable; urgency=low
 
   * debian/patches/30-udev-rules.dpatch:
