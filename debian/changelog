@@ -2,6 +2,7 @@ foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
 
   * debian/foo2zjs.links:
     + list all links to be created for the hplj* helper programs.
+    + install links for HP LaserJet P1xxx printers.
   * debian/rules:
     + call dh_link only once.
 
