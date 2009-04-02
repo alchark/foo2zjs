@@ -5,8 +5,8 @@
 ## DP: Improve getweb also for installing the firmware
 
 @DPATCH@
---- foo2zjs-20081007dfsg/getweb.in.ORG	2008-10-17 16:49:33.000000000 +0200
-+++ foo2zjs-20081007dfsg/getweb.in	2008-10-17 16:50:05.000000000 +0200
+--- foo2zjs-20090301dfsg.orig/getweb.in.ORG	2009-04-02 16:01:37.000000000 +0200
++++ foo2zjs-20090301dfsg.orig/getweb.in	2009-04-02 16:02:55.000000000 +0200
 @@ -2,7 +2,7 @@
  
  #
@@ -17,7 +17,7 @@
  #
  # PLEASE don't remove the copyright statements.  They should 
 @@ -12,6 +12,13 @@
- VERSION='$Id: getweb.in,v 1.77 2008/07/23 03:46:10 rick Exp $'
+ VERSION='$Id: getweb.in,v 1.82 2008/12/31 07:14:19 rick Exp $'
  
  WGETOPTS="--passive-ftp -q"
 +ARM2HPDL="/usr/bin/arm2hpdl"
@@ -30,7 +30,7 @@
  
  usage() {
  cat <<EOF
-@@ -87,7 +94,7 @@
+@@ -89,7 +96,7 @@
  }
  
  SYSTEM=`uname -s`
@@ -39,7 +39,7 @@
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -97,6 +104,13 @@
+@@ -99,6 +106,13 @@
      }
  fi
  
@@ -53,7 +53,7 @@
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -119,10 +133,16 @@
+@@ -121,10 +135,16 @@
      file="$2"
      what="$3"
      
@@ -74,7 +74,7 @@
  }
  
  copyright() {
-@@ -143,6 +163,7 @@
+@@ -145,6 +165,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
  	copyright "(c) Copyright Hewlett-Packard 2001"
@@ -82,7 +82,7 @@
  	;;
      lj1005|1005)
  	gettgz \
-@@ -154,18 +175,21 @@
+@@ -156,24 +177,28 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
  	copyright "(c) Copyright Hewlett-Packard 2002"
@@ -104,7 +104,14 @@
  	;;
      [pP]100[57])
  	gettgz \
-@@ -190,6 +214,7 @@
+ 	    http://foo2zjs.rkkda.com/firmware sihpP1005.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Hewlett-Packard 2008"
++	putfw sihpP1005.img sihpP1005.dl
+ 	;;
+     [pP]100[68])
+ 	gettgz \
+@@ -192,6 +217,7 @@
  	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
  	    "*.icm"
  	copyright "(c) Copyright Minolta-QMS 1999"
