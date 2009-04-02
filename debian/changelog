@@ -4,6 +4,7 @@ foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
     + s/tik/tix/ in Recommends:, my fault.
   * debian/foo2zjs.dirs:
     + sort alphabetically.
+    + add /usr/share/pixmaps (Closes: #521992).
   * debian/foo2zjs.links:
     + list all links to be created for the hplj* helper programs.
     + install links for HP LaserJet P1xxx printers.
