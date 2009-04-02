@@ -8,8 +8,11 @@ foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
   * debian/foo2zjs.links:
     + list all links to be created for the hplj* helper programs.
     + install links for HP LaserJet P1xxx printers.
+  * debian/patches/00list: update.
   * debian/patches/60-getweb.in.dpatch:
     + extract firmware for HP LaserJet P1005/1007 printers as well.
+  * debian/patches/60-hplj1000.dpatch:
+    + always load firmwares from /usr/share/foo2zjs/firmware.
   * debian/rules:
     + call dh_link only once.
 
