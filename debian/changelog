@@ -1,4 +1,4 @@
-foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
+foo2zjs (20090301dfsg-3) unstable; urgency=low
 
   * debian/control:
     + s/tik/tix/ in Recommends:, my fault.
@@ -16,7 +16,7 @@ foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
   * debian/rules:
     + call dh_link only once.
 
- --
+ -- Luca Capello <luca@pca.it>  Thu, 02 Apr 2009 18:07:52 +0200
 
 foo2zjs (20090301dfsg-2) unstable; urgency=low
 
