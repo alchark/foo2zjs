@@ -1,5 +1,7 @@
 foo2zjs (20090301dfsg-3) UNRELEASED; urgency=low
 
+  * debian/control:
+    + s/tik/tix/ in Recommends:, my fault.
   * debian/foo2zjs.links:
     + list all links to be created for the hplj* helper programs.
     + install links for HP LaserJet P1xxx printers.
