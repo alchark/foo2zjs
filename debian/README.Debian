@@ -14,10 +14,10 @@ tar -xvvzf foo2zjs.tar.gz
 cd foo2zjs
 make
 
-
 For downloading and installing the right firmware for your printer, you
 can use the Foo2ZJS firmware downloader and installer (codename Hannah).
 You will find it in your Desktop Menu or by running the command "hannah-foo2zjs"
-as the root user.
+as the root user. Note that "hannah-foo2zjs" is not part of the "foo2zjs"
+package but in its own package also called "hannah-foo2zjs".
 
 -- Steffen Joeris <white@debian.org>  Sat, 29 Sep 2007 01:40:18 +1000
