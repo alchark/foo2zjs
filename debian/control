@@ -26,7 +26,7 @@ Description: Support for printing to ZjStream-based printers
 
 Package: hannah-foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, gksu | kdebase-bin | kdebase-runtime | ktsuss | sux
+Depends: ${shlibs:Depends}, gksu | kdebase-bin (<< 4:4.4.0-1) | kdebase-runtime | ktsuss | sux
 Description: Graphical firmware downloader for the foo2zjs package
  Hannah is a graphical firmware downloader for the foo2zjs package. You
  can select one or more firmware(s) from a list, and let hannah download

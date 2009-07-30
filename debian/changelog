@@ -2,7 +2,10 @@ foo2zjs (20090301dfsg-4) UNRELEASED; urgency=low
 
   * debian/copyright: Link to /usr/share/common-licenses/GPL-2
     instead of /usr/share/common-licenses/GPL.
-  * debian/control: Updated Standards-Version to 3.8.2.
+  * debian/control:
+    + hannah-foo2zjs: Tighten Depends on kdebase-bin to (<< 4:4.4.0-1)
+      (Closes: 460480).
+    + Updated Standards-Version to 3.8.2.
   * debian/patches/90-manpages.dpatch: New dpatch to fix manpage errors.
 
  -- Michael Koch <konqueror@gmx.de>  Thu, 30 Jul 2009 15:59:52 +0200
