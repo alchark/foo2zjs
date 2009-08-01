@@ -10,6 +10,8 @@ foo2zjs (20090301dfsg-5) UNRELEASED; urgency=low
     + hannah-foo2zjs: Tighten Depends on kdebase-bin to (<< 4:4.4.0-1)
       (Closes: 460480).
     + Updated Standards-Version to 3.8.2.
+  * debian/patches/60-getweb.in.dpatch: Exit with failure when called
+    as non-root.
   * debian/patches/90-manpages.dpatch: New dpatch to fix manpage errors.
 
  -- Michael Koch <konqueror@gmx.de>  Thu, 30 Jul 2009 21:44:44 +0200

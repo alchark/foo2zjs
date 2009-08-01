@@ -24,7 +24,7 @@
 +
 +if [ $(id -ru) -ne 0 ]; then
 +    echo "You need to be root"
-+    exit 0
++    exit 1
 +fi
 +
  
