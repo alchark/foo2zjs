@@ -1,4 +1,4 @@
-foo2zjs (20090301dfsg-6) UNRELEASED; urgency=low
+foo2zjs (20090301dfsg-4) unstable; urgency=low
 
   * debian/hannah-package/gui.cpp: Fix list of argument names for getweb
     (Closes: #537325).
