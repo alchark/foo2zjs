@@ -210,7 +210,7 @@ void MainWindow::callGetweb()
 	QAbstractButton *temporary_button;
 	int count = 0;
 	QStringList current_list;
-	current_list << "hp2600" << "hp1600" << "hp1020" << "hp1018" << "hp1005" << "hp1000" << "minolta2530" << "minolta2490" << "minolta2480" << "minolta2430" << "minolta2300" << "minolta2200" << "minoltapro" << "samsung3160" << "samsung600" << "samsung300" << "xerox6115" << "xerox6110";
+	current_list << "2600n" << "1600" << "1020" << "1018" << "1005" << "1000" << "2530" << "2490" << "2480" << "2430" << "2300" << "2200" << "cpwl" << "3160" << "600" << "300" << "6115" << "6110";
 	QStringList arguments;
 
 	foreach( temporary_button, buttonGroup->buttons() ) {
@@ -254,13 +254,12 @@ void MainWindow::checkProgram()
 			statusBar->showMessage(tr("Download and installation finished."));
 			break;
 		default:
-                        QMessageBox::critical(this, tr("Hannah - Firmware downloader"),
-                                tr(callProgram->readAllStandardError()));
+			QMessageBox::critical(this, tr("Hannah - Firmware downloader"),
+				tr(callProgram->readAllStandardError()));
 			QMessageBox::critical(this, tr("Hannah - Firmware downloader"),
 				tr("Something went wrong during the download and installation process for the following printers:\n"
 					"%1\n").arg(string), QMessageBox::Ok);
 			statusBar->showMessage(tr("An error occured during download and installation process."));
 			break;
 	}
-
 };

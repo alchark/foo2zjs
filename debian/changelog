@@ -1,20 +1,22 @@
-foo2zjs (20090301dfsg-5) UNRELEASED; urgency=low
+foo2zjs (20090301dfsg-6) UNRELEASED; urgency=low
 
+  * debian/hannah-package/gui.cpp: Fix list of argument names for getweb
+    (Closes: #537325).
   * debian/patches/40-hplj1000.dpatch: Updated to also guard globbered
-    names in find call (Closes: 526781).
+    names in find call (Closes: #526781).
   * debian/README.Debian: Clarify how hannah-foo2zjs is available
     (Closes: #529300).
   * debian/copyright: Link to /usr/share/common-licenses/GPL-2
     instead of /usr/share/common-licenses/GPL.
   * debian/control:
     + hannah-foo2zjs: Tighten Depends on kdebase-bin to (<< 4:4.4.0-1)
-      (Closes: 460480).
+      (Closes: #460480).
     + Updated Standards-Version to 3.8.2.
   * debian/patches/60-getweb.in.dpatch: Exit with failure when called
     as non-root.
   * debian/patches/90-manpages.dpatch: New dpatch to fix manpage errors.
 
- -- Michael Koch <konqueror@gmx.de>  Thu, 30 Jul 2009 21:44:44 +0200
+ -- Michael Koch <konqueror@gmx.de>  Sat, 01 Aug 2009 14:01:43 +0200
 
 foo2zjs (20090301dfsg-3) unstable; urgency=low
 
