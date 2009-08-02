@@ -4,8 +4,8 @@ foo2zjs (20090301dfsg-4) unstable; urgency=low
     (Closes: #537325).
   * debian/patches/40-hplj1000.dpatch: Updated to also guard globbered
     names in find call (Closes: #526781).
-  * debian/README.Debian: Clarify how hannah-foo2zjs is available
-    (Closes: #529300).
+  * debian/README.Debian: Clarify how hannah-foo2zjs and getweb are used
+    (Closes: #503373, #529300).
   * debian/copyright: Link to /usr/share/common-licenses/GPL-2
     instead of /usr/share/common-licenses/GPL.
   * debian/control:
