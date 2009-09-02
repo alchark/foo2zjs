@@ -1,3 +1,12 @@
+foo2zjs (20090301dfsg-5) unstable; urgency=low
+
+  * Remove hannah-foo2zjs package as its now in its own source package.
+  * debian/README.Debian-source: New file to describe usage of dpatch.
+  * debian/control: Updated Standards-Version to 3.8.3.
+  * debian/control: Add Vcs-Browser field.
+
+ -- Michael Koch <konqueror@gmx.de>  Wed, 02 Sep 2009 08:49:26 +0200
+
 foo2zjs (20090301dfsg-4) unstable; urgency=low
 
   * debian/hannah-package/gui.cpp: Fix list of argument names for getweb

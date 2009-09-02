@@ -22,7 +22,6 @@ QMAKE = qmake-qt4
 configure: configure-stamp
 configure-stamp: patch-stamp
 	dh_testdir
-	cd debian/hannah-package/ && $(QMAKE)
 	touch configure-stamp
 
 build: build-stamp
@@ -30,7 +29,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 	$(MAKE) CFLAGS="$(CFLAGS)"
-	cd debian/hannah-package && $(MAKE)
 	touch build-stamp
 
 clean: unpatch
@@ -38,8 +36,6 @@ clean: unpatch
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	rm -rf debian/patched
-	[ ! -f debian/hannah-package/Makefile ] || (cd debian/hannah-package/ && $(MAKE) distclean)
-	rm -rf debian/hannah-package/hannah
 	[ ! -f Makefile ] || $(MAKE) clean
 	-rm -f foo2hp
 	-rm -f foo2hp.o
@@ -66,8 +62,6 @@ install: build
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/etc/udev/rules.d/11-hplj10xx.rules
 	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
-	install -m 755 debian/hannah-package/hannah $(CURDIR)/debian/hannah-foo2zjs/usr/bin/hannah-foo2zjs
-	install -m 644 debian/hannah-package/hannah.desktop $(CURDIR)/debian/hannah-foo2zjs/usr/share/applications/hannah-foo2zjs.desktop
 	touch $(CURDIR)/debian/foo2zjs/usr/share/foo2zjs/tmp/.placeholder
 
 # Build architecture-independent files here.

@@ -3,10 +3,11 @@ Section: text
 Priority: optional
 Maintainer: Debian Foo2zjs Maintainers <foo2zjs-maintainer@lists.alioth.debian.org>
 Uploaders: Luca Bedogni <me@lucabedogni.it>, Michael Koch <konqueror@gmx.de>, Steffen Joeris <white@debian.org>, Luca Capello <luca@pca.it>
-Build-Depends: debhelper (>= 5), ghostscript, dpatch, foomatic-filters, libcups2-dev, libqt4-dev
-Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 5), ghostscript, dpatch, foomatic-filters, libcups2-dev
+Standards-Version: 3.8.3
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Svn: svn://svn.debian.org/foo2zjs
+Vcs-Browser: http://svn.debian.org/viewsvn/foo2zjs/
 
 Package: foo2zjs
 Architecture: any
@@ -23,14 +24,3 @@ Description: Support for printing to ZjStream-based printers
  The foomatic-db-engine package is recommended to simplify configuring
  this printer driver.  The psutils package is needed to enable n-up
  printing support.
-
-Package: hannah-foo2zjs
-Architecture: any
-Depends: ${shlibs:Depends}, gksu | kdebase-bin (<< 4:4.4.0-1) | kdebase-runtime | ktsuss | sux
-Description: Graphical firmware downloader for the foo2zjs package
- Hannah is a graphical firmware downloader for the foo2zjs package. You
- can select one or more firmware(s) from a list, and let hannah download
- and install them.
- .
- With this software you can potentially install non-free software, so
- beware of that.
