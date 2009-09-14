@@ -28,6 +28,7 @@ build: build-stamp
 
 build-stamp: configure-stamp 
 	dh_testdir
+	cp printer-profile.in printer-profile
 	$(MAKE) CFLAGS="$(CFLAGS)"
 	touch build-stamp
 

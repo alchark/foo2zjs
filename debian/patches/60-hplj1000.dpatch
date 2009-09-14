@@ -63,12 +63,3 @@ exit 0
      ;;
  *1000)
      MODEL=1000; FWMODEL=$MODEL
-@@ -207,7 +207,7 @@
-     #
-     # Sniff around for printers that need a firmware download
-     #
--    usblps=`find /dev/usb -name lp*`" "`find /dev -name usblp*`
-+    usblps=`find /dev/usb -name 'lp*'`" "`find /dev -name 'usblp*'`
-     for dev in $usblps; do
- 	status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
- 	if [ "$status" != "" ]; then

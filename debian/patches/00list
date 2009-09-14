@@ -5,5 +5,6 @@
 40-path-correction
 60-getweb.in.dpatch
 60-hplj1000.dpatch
+70-printer-profile.dpatch
 80-getweb.in.dpatch
 90-manpages.dpatch

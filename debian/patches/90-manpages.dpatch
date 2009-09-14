@@ -23,9 +23,8 @@ esac
 exit 0
 
 @DPATCH@
---- foo2zjs-20081007dfsg/Makefile.ORG	2008-11-25 22:29:53.000000000 +0100
---- foo2zjs-20090301dfsg.orig/foo2hp.1in
-+++ foo2zjs-20090301dfsg/foo2hp.1in
+--- foo2zjs-20090908dfsg.orig/foo2hp.1in
++++ foo2zjs-20090908dfsg/foo2hp.1in
 @@ -195,7 +195,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -34,8 +33,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2qpdl-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2qpdl-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2qpdl-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2qpdl-wrapper.1in
 @@ -217,7 +217,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -44,8 +43,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/arm2hpdl.1in
-+++ foo2zjs-20090301dfsg/arm2hpdl.1in
+--- foo2zjs-20090908dfsg.orig/arm2hpdl.1in
++++ foo2zjs-20090908dfsg/arm2hpdl.1in
 @@ -38,7 +38,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -54,8 +53,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2hp2600-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2hp2600-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2hp2600-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2hp2600-wrapper.1in
 @@ -230,7 +230,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -64,8 +63,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/hipercdecode.1in
-+++ foo2zjs-20090301dfsg/hipercdecode.1in
+--- foo2zjs-20090908dfsg.orig/hipercdecode.1in
++++ foo2zjs-20090908dfsg/hipercdecode.1in
 @@ -162,7 +162,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -74,8 +73,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2hiperc-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2hiperc-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2hiperc-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2hiperc-wrapper.1in
 @@ -205,7 +205,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -84,8 +83,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2xqx.1in
-+++ foo2zjs-20090301dfsg/foo2xqx.1in
+--- foo2zjs-20090908dfsg.orig/foo2xqx.1in
++++ foo2zjs-20090908dfsg/foo2xqx.1in
 @@ -152,7 +152,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -94,8 +93,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/qpdldecode.1in
-+++ foo2zjs-20090301dfsg/qpdldecode.1in
+--- foo2zjs-20090908dfsg.orig/qpdldecode.1in
++++ foo2zjs-20090908dfsg/qpdldecode.1in
 @@ -126,7 +126,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -104,8 +103,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/usb_printerid.1in
-+++ foo2zjs-20090301dfsg/usb_printerid.1in
+--- foo2zjs-20090908dfsg.orig/usb_printerid.1in
++++ foo2zjs-20090908dfsg/usb_printerid.1in
 @@ -44,7 +44,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -114,8 +113,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2hiperc.1in
-+++ foo2zjs-20090301dfsg/foo2hiperc.1in
+--- foo2zjs-20090908dfsg.orig/foo2hiperc.1in
++++ foo2zjs-20090908dfsg/foo2hiperc.1in
 @@ -173,7 +173,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -124,8 +123,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/oakdecode.1in
-+++ foo2zjs-20090301dfsg/oakdecode.1in
+--- foo2zjs-20090908dfsg.orig/oakdecode.1in
++++ foo2zjs-20090908dfsg/oakdecode.1in
 @@ -92,7 +92,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -134,8 +133,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2oak.1in
-+++ foo2zjs-20090301dfsg/foo2oak.1in
+--- foo2zjs-20090908dfsg.orig/foo2oak.1in
++++ foo2zjs-20090908dfsg/foo2oak.1in
 @@ -182,7 +182,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -144,8 +143,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/zjsdecode.1in
-+++ foo2zjs-20090301dfsg/zjsdecode.1in
+--- foo2zjs-20090908dfsg.orig/zjsdecode.1in
++++ foo2zjs-20090908dfsg/zjsdecode.1in
 @@ -99,7 +99,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -154,8 +153,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2zjs-pstops.1in
-+++ foo2zjs-20090301dfsg/foo2zjs-pstops.1in
+--- foo2zjs-20090908dfsg.orig/foo2zjs-pstops.1in
++++ foo2zjs-20090908dfsg/foo2zjs-pstops.1in
 @@ -45,7 +45,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -164,8 +163,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2zjs.1in
-+++ foo2zjs-20090301dfsg/foo2zjs.1in
+--- foo2zjs-20090908dfsg.orig/foo2zjs.1in
++++ foo2zjs-20090908dfsg/foo2zjs.1in
 @@ -186,7 +186,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -174,8 +173,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2qpdl.1in
-+++ foo2zjs-20090301dfsg/foo2qpdl.1in
+--- foo2zjs-20090908dfsg.orig/foo2qpdl.1in
++++ foo2zjs-20090908dfsg/foo2qpdl.1in
 @@ -184,7 +184,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -184,8 +183,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2oak-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2oak-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2oak-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2oak-wrapper.1in
 @@ -214,7 +214,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -194,8 +193,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2zjs-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2zjs-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2zjs-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2zjs-wrapper.1in
 @@ -224,7 +224,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -204,8 +203,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/xqxdecode.1in
-+++ foo2zjs-20090301dfsg/xqxdecode.1in
+--- foo2zjs-20090908dfsg.orig/xqxdecode.1in
++++ foo2zjs-20090908dfsg/xqxdecode.1in
 @@ -105,7 +105,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -214,8 +213,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2slx-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2slx-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2slx-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2slx-wrapper.1in
 @@ -190,7 +190,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -224,8 +223,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2xqx-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2xqx-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2xqx-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2xqx-wrapper.1in
 @@ -153,7 +153,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -234,8 +233,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2lava-wrapper.1in
-+++ foo2zjs-20090301dfsg/foo2lava-wrapper.1in
+--- foo2zjs-20090908dfsg.orig/foo2lava-wrapper.1in
++++ foo2zjs-20090908dfsg/foo2lava-wrapper.1in
 @@ -216,7 +216,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -244,8 +243,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2slx.1in
-+++ foo2zjs-20090301dfsg/foo2slx.1in
+--- foo2zjs-20090908dfsg.orig/foo2slx.1in
++++ foo2zjs-20090908dfsg/foo2slx.1in
 @@ -157,7 +157,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -254,8 +253,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/foo2lava.1in
-+++ foo2zjs-20090301dfsg/foo2lava.1in
+--- foo2zjs-20090908dfsg.orig/foo2lava.1in
++++ foo2zjs-20090908dfsg/foo2lava.1in
 @@ -177,7 +177,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -264,8 +263,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/slxdecode.1in
-+++ foo2zjs-20090301dfsg/slxdecode.1in
+--- foo2zjs-20090908dfsg.orig/slxdecode.1in
++++ foo2zjs-20090908dfsg/slxdecode.1in
 @@ -103,7 +103,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -274,8 +273,8 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/lavadecode.1in
-+++ foo2zjs-20090301dfsg/lavadecode.1in
+--- foo2zjs-20090908dfsg.orig/lavadecode.1in
++++ foo2zjs-20090908dfsg/lavadecode.1in
 @@ -96,7 +96,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -284,12 +283,22 @@ exit 0
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs-20090301dfsg.orig/opldecode.1in
-+++ foo2zjs-20090301dfsg/opldecode.1in
+--- foo2zjs-20090908dfsg.orig/opldecode.1in
++++ foo2zjs-20090908dfsg/opldecode.1in
 @@ -115,7 +115,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLRO}/
+-'/"
+-'/"
+-'/"
+ .em pdf_outline
+--- foo2zjs-20090908dfsg.orig/printer-profile.1in
++++ foo2zjs-20090908dfsg/printer-profile.1in
+@@ -50,7 +50,4 @@
+ Rick Richardson <rick.richardson@comcast.net>
+ .br
+ ${URLZJS}/
 -'/"
 -'/"
 -'/"
