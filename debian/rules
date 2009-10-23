@@ -54,7 +54,7 @@ clean: unpatch
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/foo2zjs/usr/share/ppd
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING

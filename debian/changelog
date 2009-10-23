@@ -1,3 +1,11 @@
+foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
+
+  * Removed Luca Bedogni from Uploaders as he is MIA (Closes: 550268).
+  * Updated Build-Depends on debhelper to level 7.
+  * Replaced dh_clean -h by dh_prep.
+
+ -- Michael Koch <konqueror@gmx.de>  Fri, 23 Oct 2009 07:59:03 +0200
+
 foo2zjs (20090908dfsg-1) unstable; urgency=low
 
   * New upstream release.
