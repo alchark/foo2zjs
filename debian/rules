@@ -60,7 +60,7 @@ install: build
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx
-	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/etc/udev/rules.d/11-hplj10xx.rules
+	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/lib/udev/rules.d/85-hplj10xx.rules
 	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
 	touch $(CURDIR)/debian/foo2zjs/usr/share/foo2zjs/tmp/.placeholder
