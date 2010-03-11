@@ -3,7 +3,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-include /usr/share/dpatch/dpatch.make
+include /usr/share/quilt/quilt.make
 
 CFLAGS = -Wall -g
 
@@ -20,7 +20,7 @@ MAKE = make
 QMAKE = qmake-qt4
 
 configure: configure-stamp
-configure-stamp: patch-stamp
+configure-stamp: $(QUILT_STAMPFN)
 	dh_testdir
 	touch configure-stamp
 

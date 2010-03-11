@@ -1,28 +1,4 @@
-#!/bin/sh -e
-## 90-manpages.dpatch, by Michael Koch <konqueror@gmx.de>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Fixes errors in manpages
-
-if [ $# -lt 1 ]; then
-echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
-exit 1
-fi
-
-[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
-patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
-
-case "$1" in
-      -patch) patch $patch_opts -p1 < $0;;
-      -unpatch) patch $patch_opts -p1 -R < $0;;
-      *)
-      echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
-      exit 1;;
-esac
-
-exit 0
-
-@DPATCH@
+Fixes errors in manpages
 --- foo2zjs-20090908dfsg.orig/foo2hp.1in
 +++ foo2zjs-20090908dfsg/foo2hp.1in
 @@ -195,7 +195,4 @@
@@ -35,7 +11,7 @@ exit 0
  .em pdf_outline
 --- foo2zjs-20090908dfsg.orig/foo2qpdl-wrapper.1in
 +++ foo2zjs-20090908dfsg/foo2qpdl-wrapper.1in
-@@ -217,7 +217,4 @@
+@@ -224,7 +224,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLQPDL}/
@@ -175,7 +151,7 @@ exit 0
  .em pdf_outline
 --- foo2zjs-20090908dfsg.orig/foo2qpdl.1in
 +++ foo2zjs-20090908dfsg/foo2qpdl.1in
-@@ -184,7 +184,4 @@
+@@ -191,7 +191,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
  ${URLQPDL}/

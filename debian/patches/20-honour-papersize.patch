@@ -1,0 +1,37 @@
+Support /etc/papersize
+--- foo2zjs-20090908dfsg.orig/foo2hp2600-wrapper.in
++++ foo2zjs-20090908dfsg/foo2hp2600-wrapper.in
+@@ -203,7 +203,8 @@
+ 
+ MEDIA=1
+ COPIES=1
+-PAPER=1
++test -r /etc/papersize && PAPER=$(cat /etc/papersize)
++test "$PAPER" || PAPER=1
+ RES=600x600
+ SOURCE=7
+ NUP=
+--- foo2zjs-20090908dfsg.orig/foo2oak-wrapper.in
++++ foo2zjs-20090908dfsg/foo2oak-wrapper.in
+@@ -157,7 +157,8 @@
+ QUALITY=wts
+ MEDIA=1
+ COPIES=1
+-PAPER=1
++test -r /etc/papersize && PAPER=$(cat /etc/papersize)
++test "$PAPER" || PAPER=1
+ RES=600x600
+ SOURCE=7
+ NUP=
+--- foo2zjs-20090908dfsg.orig/foo2zjs-wrapper.in
++++ foo2zjs-20090908dfsg/foo2zjs-wrapper.in
+@@ -168,7 +168,8 @@
+ QUALITY=wts
+ MEDIA=1
+ COPIES=1
+-PAPER=1
++test -r /etc/papersize && PAPER=$(cat /etc/papersize)
++test "$PAPER" || PAPER=1
+ RES=1200x600
+ SOURCE=7
+ NUP=

@@ -1,5 +1,13 @@
 foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
 
+  [ Luca Capello ]
+  * debian/control:
+    + Build-Depends: on quilt to manage patches.
+  * debian/patches/*:
+    + convert to quilt and refresh.
+  * debian/rules:
+    + adapt to quilt.
+
   [ Michael Koch ]
   * Removed Luca Bedogni from Uploaders as he is MIA (Closes: 550268).
   * Updated Build-Depends on debhelper to level 7.

@@ -1,0 +1,10 @@
+10-makefile.patch
+20-honour-papersize.patch
+30-udev-rules.patch
+40-desktop-encoding-correction.patch
+40-path-correction.patch
+60-getweb.in.patch
+60-hplj1000.patch
+70-printer-profile.patch
+80-getweb.in.patch
+90-manpages.patch

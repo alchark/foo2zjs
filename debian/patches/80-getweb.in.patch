@@ -1,0 +1,12 @@
+Fix bashism
+--- foo2zjs-20090908dfsg.orig/getweb.in
++++ foo2zjs-20090908dfsg/getweb.in
+@@ -419,7 +419,7 @@
+ 	tar zxf $HERE/$file
+ 	cd $HERE
+ 	echo "The tarball is extracted and the current directory is up to date."
+-	echo -e "Remove the tarball (y/n)? \c"
++	printf "Remove the tarball (y/n)? "
+ 	read ans
+ 	if [ "$ans" = y ]; then
+ 	    rm -f $file

@@ -1,12 +1,6 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 60-getweb.dpatch by Debian FOO2ZJS Maintainers
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Improve getweb also for installing the firmware
-
-@DPATCH@
---- foo2zjs-20090301dfsg.orig/getweb.in.ORG	2009-04-02 16:01:37.000000000 +0200
-+++ foo2zjs-20090301dfsg.orig/getweb.in	2009-04-02 16:02:55.000000000 +0200
+Improve getweb also for installing the firmware
+--- foo2zjs-20090908dfsg.orig/getweb.in
++++ foo2zjs-20090908dfsg/getweb.in
 @@ -2,7 +2,7 @@
  
  #
@@ -17,7 +11,7 @@
  #
  # PLEASE don't remove the copyright statements.  They should 
 @@ -12,6 +12,13 @@
- VERSION='$Id: getweb.in,v 1.82 2008/12/31 07:14:19 rick Exp $'
+ VERSION='$Id: getweb.in,v 1.89 2009/06/23 18:31:20 rick Exp $'
  
  WGETOPTS="--passive-ftp -q"
 +ARM2HPDL="/usr/bin/arm2hpdl"
@@ -30,7 +24,7 @@
  
  usage() {
  cat <<EOF
-@@ -89,7 +96,7 @@
+@@ -94,7 +101,7 @@
  }
  
  SYSTEM=`uname -s`
@@ -39,7 +33,7 @@
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -99,6 +106,13 @@
+@@ -104,6 +111,13 @@
      }
  fi
  
@@ -53,7 +47,7 @@
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -121,10 +135,16 @@
+@@ -126,10 +140,16 @@
      file="$2"
      what="$3"
      
@@ -74,7 +68,7 @@
  }
  
  copyright() {
-@@ -145,6 +165,7 @@
+@@ -150,6 +170,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
  	copyright "(c) Copyright Hewlett-Packard 2001"
@@ -82,7 +76,7 @@
  	;;
      lj1005|1005)
  	gettgz \
-@@ -156,24 +177,28 @@
+@@ -161,24 +182,28 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
  	copyright "(c) Copyright Hewlett-Packard 2002"
@@ -111,11 +105,11 @@
  	;;
      [pP]100[68])
  	gettgz \
-@@ -192,6 +217,7 @@
- 	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
- 	    "*.icm"
+@@ -203,6 +228,7 @@
+ 		"*.icm"
+ 	fi
  	copyright "(c) Copyright Minolta-QMS 1999"
 +	putfw sihp1020.img sihp1020.dl
  	;;
      2300dl|2300)
- 	getexe \
+ 	if false; then
