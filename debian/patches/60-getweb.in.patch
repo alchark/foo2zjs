@@ -33,7 +33,7 @@ Improve getweb also for installing the firmware
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -104,6 +111,13 @@
+@@ -104,6 +111,17 @@
      }
  fi
  
@@ -44,20 +44,13 @@ Improve getweb also for installing the firmware
 +    rm $inputname
 +}
 +
++puticm() {
++    mv *.icm /usr/share/foo2zjs/icm/
++}
++
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -129,6 +143,10 @@
-     wget $WGETOPTS -O $file "$url/$file" ||
- 	error "Couldn't download $url/$file"
-     gunzip <$file | tar xvf - $what
-+    CHECK=`ls *.icm 2>/dev/null`
-+    if [ -n "$CHECK" ] ; then
-+    	mv *.icm /usr/share/foo2zjs/icm/
-+    fi
-     rm $file
- }
- 
 @@ -150,6 +168,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
@@ -109,7 +102,99 @@ Improve getweb also for installing the firmware
  	;;
      2200dl|2200)
  	if false; then
-@@ -413,6 +438,10 @@
+@@ -203,6 +228,7 @@
+ 		"*.icm"
+ 	fi
+ 	copyright "(c) Copyright Minolta-QMS 1999"
++	puticm
+ 	;;
+     2300dl|2300)
+ 	if false; then
+@@ -218,6 +244,7 @@
+ 	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Minolta-QMS 2001"
++	puticm
+ 	;;
+     2300dl_fw)
+ 	# 2300DL firmware upgrade to v2.55
+@@ -246,12 +273,14 @@
+ 	    done
+ 	fi
+ 	copyright "(c) Copyright Minolta-QMS 1998"
++	puticm
+ 	;;
+     2430)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Konica Minolta 2003"
++	puticm
+ 	;;
+     2530|2490|6115|2480|1600w|1680|1690|4690)
+ 	gettgz \
+@@ -263,6 +292,7 @@
+ 	    http://foo2lava.rkkda.com/icm km-1600.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Rick Richardson 2009.  All Rights Reserved"
++	puticm
+ 	;;
+     1215|1500|1600|2600*)
+ 	gettgz \
+@@ -277,6 +307,7 @@
+ 	    http://foo2hp.rkkda.com/icm hp1215.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
++	puticm
+ 	;;
+     300|310|315|2160|3160|3175|6110)
+ 	gettgz \
+@@ -287,6 +318,7 @@
+ 	    http://foo2qpdl.rkkda.com/icm samclp315.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
++	puticm
+ 	;;
+     600|610)
+ 	;;
+@@ -296,6 +328,7 @@
+ 	    http://foo2slx.rkkda.com/icm lexc500.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Lexmark 2006"
++	puticm
+ 	;;
+ 
+     oki)
+@@ -311,24 +344,28 @@
+ 	    mv "$base.ICM" "$base.icm"
+ 	done
+ 	copyright "(c) Copyright Okidata 2005, 2006"
++	puticm
+ 	;;
+     3100|3200|5100|5150|5200|5250)
+ 	gettgz \
+ 	    http://foo2hiperc.rkkda.com/icm okic3200.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Okidata 2005"
++	puticm
+ 	;;
+     3300|3400|3530)
+ 	gettgz \
+ 	    http://foo2hiperc.rkkda.com/icm okic3400.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Okidata 2006"
++	puticm
+ 	;;
+     5500|5600|5800)
+ 	gettgz \
+ 	    http://foo2hiperc.rkkda.com/icm okic5600.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Okidata 2006"
++	puticm
+ 	;;
+ 
+     xPPD)
+@@ -413,6 +450,10 @@
      usage
  fi
  
@@ -120,7 +205,7 @@ Improve getweb also for installing the firmware
  for i in $*
  do
      case "$1" in
-@@ -451,3 +480,5 @@
+@@ -451,3 +492,5 @@
  	;;
      esac
  done
