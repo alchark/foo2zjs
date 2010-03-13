@@ -6,6 +6,8 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
     + Recommends: unzip for 'getexe' function in getweb script.
   * debian/patches/*:
     + convert to quilt and refresh.
+  * debian/patches/60-getweb.in.patch:
+    + use /tmp/foo2zjs/ for firmware extraction.
   * debian/README.source:
     + adapt to quilt.
   * debian/rules:

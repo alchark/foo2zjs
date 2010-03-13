@@ -40,35 +40,32 @@ Improve getweb also for installing the firmware
 +putfw() {
 +    inputname=$1
 +    outputname=$2
-+    $ARM2HPDL /usr/share/foo2zjs/tmp/$inputname > /usr/share/foo2zjs/firmware/$outputname
-+    rm -f /usr/share/foo2zjs/tmp/*.img
++    $ARM2HPDL /tmp/foo2zjs/$inputname > /usr/share/foo2zjs/firmware/$outputname
++    rm -f /tmp/foo2zjs/*.img
 +}
 +
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -126,10 +140,16 @@
+@@ -126,10 +140,14 @@
      file="$2"
      what="$3"
      
 -    wget $WGETOPTS -O $file "$url/$file" ||
--	error "Couldn't download $url/$file"
++    wget $WGETOPTS -O /tmp/foo2zjs/$file "$url/$file" ||
+ 	error "Couldn't download $url/$file"
 -    gunzip <$file | tar xvf - $what
 -    rm $file
-+    if ! [ -d /tmp/foo2zjs ] ; then
-+	wget $WGETOPTS -O /usr/share/foo2zjs/tmp/$file "$url/$file" ||
-+            error "Couldn't download $url/$file"
-+	cd /usr/share/foo2zjs/tmp && gunzip </usr/share/foo2zjs/tmp/$file | tar xvf - $what
-+	CHECK=`ls /usr/share/foo2zjs/tmp/*.icm 2>/dev/null`
-+	if [ -n "$CHECK" ] ; then
-+            mv /usr/share/foo2zjs/tmp/*.icm /usr/share/foo2zjs/icm/
-+	fi
-+	rm /usr/share/foo2zjs/tmp/$file
++    cd /tmp/foo2zjs && gunzip </tmp/foo2zjs/$file | tar xvf - $what
++    CHECK=`ls /tmp/foo2zjs/*.icm 2>/dev/null`
++    if [ -n "$CHECK" ] ; then
++	mv /tmp/foo2zjs/*.icm /usr/share/foo2zjs/icm/
 +    fi
++    rm /tmp/foo2zjs/$file
  }
  
  copyright() {
-@@ -150,6 +170,7 @@
+@@ -150,6 +168,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
  	copyright "(c) Copyright Hewlett-Packard 2001"
@@ -76,7 +73,7 @@ Improve getweb also for installing the firmware
  	;;
      lj1005|1005)
  	gettgz \
-@@ -161,24 +182,28 @@
+@@ -161,24 +180,28 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
  	copyright "(c) Copyright Hewlett-Packard 2002"
@@ -105,7 +102,7 @@ Improve getweb also for installing the firmware
  	;;
      [pP]100[68])
  	gettgz \
-@@ -203,6 +228,7 @@
+@@ -203,6 +226,7 @@
  		"*.icm"
  	fi
  	copyright "(c) Copyright Minolta-QMS 1999"
@@ -113,3 +110,12 @@ Improve getweb also for installing the firmware
  	;;
      2300dl|2300)
  	if false; then
+@@ -413,6 +437,8 @@
+     usage
+ fi
+ 
++mkdir -p /tmp/foo2zjs
++
+ for i in $*
+ do
+     case "$1" in
