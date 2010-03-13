@@ -3,6 +3,7 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
   [ Luca Capello ]
   * debian/control:
     + Build-Depends: on quilt to manage patches.
+    + Recommends: unzip for 'getexe' function in getweb script.
   * debian/patches/*:
     + convert to quilt and refresh.
   * debian/README.source:
