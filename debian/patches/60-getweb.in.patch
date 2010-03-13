@@ -40,31 +40,24 @@ Improve getweb also for installing the firmware
 +putfw() {
 +    inputname=$1
 +    outputname=$2
-+    $ARM2HPDL /tmp/foo2zjs/$inputname > /usr/share/foo2zjs/firmware/$outputname
-+    rm -f /tmp/foo2zjs/*.img
++    $ARM2HPDL $inputname > /usr/share/foo2zjs/firmware/$outputname
++    rm $inputname
 +}
 +
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -126,10 +140,14 @@
-     file="$2"
-     what="$3"
-     
--    wget $WGETOPTS -O $file "$url/$file" ||
-+    wget $WGETOPTS -O /tmp/foo2zjs/$file "$url/$file" ||
+@@ -129,6 +143,10 @@
+     wget $WGETOPTS -O $file "$url/$file" ||
  	error "Couldn't download $url/$file"
--    gunzip <$file | tar xvf - $what
--    rm $file
-+    cd /tmp/foo2zjs && gunzip </tmp/foo2zjs/$file | tar xvf - $what
-+    CHECK=`ls /tmp/foo2zjs/*.icm 2>/dev/null`
+     gunzip <$file | tar xvf - $what
++    CHECK=`ls *.icm 2>/dev/null`
 +    if [ -n "$CHECK" ] ; then
-+	mv /tmp/foo2zjs/*.icm /usr/share/foo2zjs/icm/
++    	mv *.icm /usr/share/foo2zjs/icm/
 +    fi
-+    rm /tmp/foo2zjs/$file
+     rm $file
  }
  
- copyright() {
 @@ -150,6 +168,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
@@ -116,12 +109,20 @@ Improve getweb also for installing the firmware
  	;;
      2200dl|2200)
  	if false; then
-@@ -413,6 +438,8 @@
+@@ -413,6 +438,10 @@
      usage
  fi
  
++OLDPWD=`pwd`
 +mkdir -p /tmp/foo2zjs
++cd /tmp/foo2zjs
 +
  for i in $*
  do
      case "$1" in
+@@ -451,3 +480,5 @@
+ 	;;
+     esac
+ done
++
++cd "$OLDPWD"
