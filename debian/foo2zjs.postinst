@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = configure ]; then
+	mv /usr/share/foo2zjs/firmware/*.dl /lib/firmware/hp/ 2>/dev/null
+fi
+
+#DEBHELPER#

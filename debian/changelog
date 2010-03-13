@@ -4,6 +4,11 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
   * debian/control:
     + Build-Depends: on quilt to manage patches.
     + Recommends: unzip for 'getexe' function in getweb script.
+  * debian/foo2zjs.dirs:
+    + add /lib/firmware/hp/.
+    - remove now useless /usr/share/foo2zjs/tmp/.
+  * debian/foo2zjs.postinst:
+    + move user-downloaded firmwares to /lib/firwmare/hp/.
   * debian/patches/*:
     + convert to quilt and refresh.
   * debian/patches/60-getweb.in.patch:
@@ -11,10 +16,13 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
     + new 'puticm' function to install ICM files.
     + extract firmware for HP LaserJet P1006/1008/1505 printers as well.
     - remove wrong 'putfw' call for Minolta 2200 DL.
+  * debian/patches/70-lib-firmware-hp.patch:
+    + firmware directory is /lib/firmware/hp/ (Closes: #517957).
   * debian/README.source:
     + adapt to quilt.
   * debian/rules:
     + adapt to quilt.
+    - remove touch call for /usr/share/foo2zjs/tmp/.placeholder.
 
   [ Michael Koch ]
   * Removed Luca Bedogni from Uploaders as he is MIA (Closes: 550268).

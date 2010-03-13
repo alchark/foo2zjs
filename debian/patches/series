@@ -5,6 +5,7 @@
 40-path-correction.patch
 60-getweb.in.patch
 60-hplj1000.patch
+70-lib-firwmare-hp.patch
 70-printer-profile.patch
 80-getweb.in.patch
 90-manpages.patch

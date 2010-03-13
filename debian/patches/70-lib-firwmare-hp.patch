@@ -1,0 +1,53 @@
+--- foo2zjs-20090908dfsg.orig/getweb.in
++++ foo2zjs-20090908dfsg/getweb.in
+@@ -114,7 +114,7 @@
+ putfw() {
+     inputname=$1
+     outputname=$2
+-    $ARM2HPDL $inputname > /usr/share/foo2zjs/firmware/$outputname
++    $ARM2HPDL $inputname > /lib/firmware/hp/$outputname
+     rm $inputname
+ }
+ 
+--- foo2zjs-20090908dfsg.orig/hplj1000
++++ foo2zjs-20090908dfsg/hplj1000
+@@ -35,7 +35,7 @@
+ #
+ # Directory to find downloadable HP firmware files sihpMMMM.dl
+ #
+-FWDIR=/usr/share/foo2zjs/firmware
++FWDIR=/lib/firmware/hp
+ 
+ #
+ # Program used to determine USB printer id information
+--- foo2zjs-20090908dfsg.orig/usb_printerid.1in
++++ foo2zjs-20090908dfsg/usb_printerid.1in
+@@ -26,7 +26,7 @@
+ MFG:Hewlett-Packard;MDL:HP LaserJet 1020;CMD:ACL;CLS:PRINTER;\e
+ DES:HP LaserJet 1020;
+ 
+-# cp /usr/share/foo2zjs/firmware/sihp1020.dl /dev/usb/lp0
++# cp /lib/firmware/hp/sihp1020.dl /dev/usb/lp0
+ 
+ # usb_printerid /dev/usb/lp0
+ GET_DEVICE_ID string:
+@@ -37,7 +37,7 @@
+ 
+ .SH FILES
+ .BR /usr/bin/usb_printerid,
+-.BR /usr/share/foo2*/firmware/*
++.BR /lib/firmware/hp/*
+ .SH SEE ALSO
+ .BR arm2hpdl (1)
+ .SH "AUTHOR"
+--- foo2zjs-20090908dfsg.orig/arm2hpdl.1in
++++ foo2zjs-20090908dfsg/arm2hpdl.1in
+@@ -31,7 +31,7 @@
+ 
+ .SH FILES
+ .BR /usr/bin/arm2hpdl,
+-.BR /usr/share/foo2*/firmware/
++.BR /lib/firmware/hp/*
+ .SH SEE ALSO
+ .BR foo2zjs (1)
+ .SH "AUTHOR"
