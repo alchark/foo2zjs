@@ -5,6 +5,8 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
     + Build-Depends: on quilt to manage patches.
   * debian/patches/*:
     + convert to quilt and refresh.
+  * debian/README.source:
+    + adapt to quilt.
   * debian/rules:
     + adapt to quilt.
 
