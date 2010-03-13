@@ -102,15 +102,7 @@ Improve getweb also for installing the firmware
  	;;
      [pP]100[68])
  	gettgz \
-@@ -203,6 +226,7 @@
- 		"*.icm"
- 	fi
- 	copyright "(c) Copyright Minolta-QMS 1999"
-+	putfw sihp1020.img sihp1020.dl
- 	;;
-     2300dl|2300)
- 	if false; then
-@@ -413,6 +437,8 @@
+@@ -413,6 +436,8 @@
      usage
  fi
  
