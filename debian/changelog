@@ -8,6 +8,7 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
     + convert to quilt and refresh.
   * debian/patches/60-getweb.in.patch:
     + use /tmp/foo2zjs/ for firmware extraction.
+    + extract firmware for HP LaserJet P1006/1008/1505 printers as well.
     - remove wrong 'putfw' call for Minolta 2200 DL.
   * debian/README.source:
     + adapt to quilt.

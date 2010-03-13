@@ -73,7 +73,7 @@ Improve getweb also for installing the firmware
  	;;
      lj1005|1005)
  	gettgz \
-@@ -161,24 +180,28 @@
+@@ -161,36 +180,42 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
  	copyright "(c) Copyright Hewlett-Packard 2002"
@@ -102,7 +102,21 @@ Improve getweb also for installing the firmware
  	;;
      [pP]100[68])
  	gettgz \
-@@ -413,6 +436,8 @@
+ 	    http://foo2zjs.rkkda.com/firmware sihpP1006.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Hewlett-Packard 2008"
++	putfw sihpP1006.img sihpP1006.dl
+ 	;;
+     [pP]1505)
+ 	gettgz \
+ 	    http://foo2zjs.rkkda.com/firmware sihpP1505.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Hewlett-Packard 2008"
++	putfw sihpP1505.img sihpP1505.dl
+ 	;;
+     2200dl|2200)
+ 	if false; then
+@@ -413,6 +438,8 @@
      usage
  fi
  
