@@ -1,3 +1,4 @@
+Firmware directory is /lib/firmware/hp/ (Closes: #517957)
 --- foo2zjs-20090908dfsg.orig/getweb.in
 +++ foo2zjs-20090908dfsg/getweb.in
 @@ -114,7 +114,7 @@

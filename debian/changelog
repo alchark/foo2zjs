@@ -2,8 +2,10 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
 
   [ Luca Capello ]
   * debian/control:
+    + Standards-Version to 3.8.4, no changes needed, thanks to lintian.
     + Build-Depends: on quilt to manage patches.
     + Recommends: unzip for 'getexe' function in getweb script.
+    + add ${misc:Depends}, thanks to lintian.
   * debian/foo2zjs.dirs:
     + add /lib/firmware/hp/.
     - remove now useless /usr/share/foo2zjs/tmp/.
