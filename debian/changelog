@@ -1,4 +1,4 @@
-foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
+foo2zjs (20090908dfsg-2) unstable; urgency=low
 
   [ Luca Capello ]
   * debian/control:
@@ -47,7 +47,7 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
   * debian/rules: install the udev rules file as
     /lib/udev/rules.d/85-hplj10xx.rules.
 
- --
+ -- Luca Capello <luca@pca.it>  Mon, 22 Mar 2010 17:09:44 +0100
 
 foo2zjs (20090908dfsg-1) unstable; urgency=low
 
