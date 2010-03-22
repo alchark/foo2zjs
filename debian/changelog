@@ -9,6 +9,8 @@ foo2zjs (20090908dfsg-2) UNRELEASED; urgency=low
     - remove now useless /usr/share/foo2zjs/tmp/.
   * debian/foo2zjs.postinst:
     + move user-downloaded firmwares to /lib/firwmare/hp/.
+  * debian/NEWS:
+    + notice the new location for firmwares.
   * debian/patches/*:
     + convert to quilt and refresh.
   * debian/patches/60-getweb.in.patch:
