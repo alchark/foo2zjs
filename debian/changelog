@@ -1,3 +1,11 @@
+foo2zjs (20090908dfsg-3) UNRELEASED; urgency=low
+
+  * debian/foo2zjs.postinst:
+    + move firmware files only if they are present, thus avoiding a
+      "No such file or directory" error from mv during upgrades.
+
+ --
+
 foo2zjs (20090908dfsg-2) unstable; urgency=low
 
   [ Luca Capello ]
