@@ -3,6 +3,8 @@ foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
   * debian/control:
     + list all the provided drivers for better searching, thanks to
       Sam Morris <sam@robots.org.uk> (Closes: #579962).
+  * debian/README.Debian:
+    + add paragraph titles.
 
  --
 
