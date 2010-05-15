@@ -1,4 +1,4 @@
-foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
+foo2zjs (20090908dfsg-4) unstable; urgency=low
 
   * debian/control:
     + list all the provided drivers for better searching, thanks to
@@ -14,7 +14,7 @@ foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
   * debian/source/format:
     + new file, keep 1.0 format for now, thanks to lintian.
 
- --
+ -- Luca Capello <luca@pca.it>  Sat, 15 May 2010 19:21:25 +0200
 
 foo2zjs (20090908dfsg-3) unstable; urgency=low
 
