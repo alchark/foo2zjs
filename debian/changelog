@@ -7,7 +7,7 @@ foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
     + add paragraph titles.
     + add paragraph about "HPLJ 10xx Replaced Paper" icon (see #579154).
   * debian/source/format:
-    + new file, keep 1.0 format for now.
+    + new file, keep 1.0 format for now, thanks to lintian.
 
  --
 
