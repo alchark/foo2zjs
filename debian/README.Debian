@@ -31,4 +31,19 @@ tools allows download and installation without using a graphical user
 interface, e.g. on servers.
 
 
- -- Luca Capello <luca@pca.it>, Sat, 15 May 2010 14:02:32 +0200
+* Replacing paper for the HP LaserJet 10xx printers
+
+Upstream provides a GUI to replace the paper on HP LaserJet 10xx
+printers, whose entry is available in the "Applications -> System
+Tools" menu.
+
+However, the GNOME maintainers thinks this entry clutters the default
+GNOME menu on Debian and thus they have disabled it:
+
+  http://bugs.debian.org/579154
+
+To re-enable it, please use the menu editor available via the
+"System -> Preferences -> Main Menu" entry.
+
+
+ -- Luca Capello <luca@pca.it>, Sat, 15 May 2010 15:30:28 +0200

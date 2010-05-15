@@ -5,6 +5,7 @@ foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
       Sam Morris <sam@robots.org.uk> (Closes: #579962).
   * debian/README.Debian:
     + add paragraph titles.
+    + add paragraph about "HPLJ 10xx Replaced Paper" icon (see #579154).
 
  --
 
