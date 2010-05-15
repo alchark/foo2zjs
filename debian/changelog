@@ -3,6 +3,9 @@ foo2zjs (20090908dfsg-4) UNRELEASED; urgency=low
   * debian/control:
     + list all the provided drivers for better searching, thanks to
       Sam Morris <sam@robots.org.uk> (Closes: #579962).
+  * debian/foo2zjs.doc-base:
+    + new file to register the documentation via doc-base, thanks to
+      lintian.
   * debian/NEWS:
     + add trailing blank line for apt-listchanges, thanks to lintian.
   * debian/README.Debian:
