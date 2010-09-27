@@ -56,13 +56,20 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs
-	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/foo2zjs/usr/share/ppd
+	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/foo2zjs/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/foo2zjs/usr/lib/cups
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
 	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx
+	# Install some useful extra scripts which "make install" does not
+	# install
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/lib/udev/rules.d/85-hplj10xx.rules
 	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
+	# Correct link
+	dh_link /usr/bin/command2foo2lava-pjl /usr/lib/cups/filter/command2foo2lava-pjl
+	# Install PPD files for additional printers and compress them
+	install -D -m 644 debian/local/*.ppd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs/
+	gzip -9 $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs/*.ppd
 
 # Build architecture-independent files here.
 binary-indep: build install

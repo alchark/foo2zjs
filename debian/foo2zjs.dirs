@@ -1,5 +1,6 @@
 lib/firmware/hp
 usr/bin
+usr/lib/cups/filter
 usr/sbin
 usr/share/applications
 usr/share/man/man1

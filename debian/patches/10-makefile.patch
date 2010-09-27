@@ -1,7 +1,7 @@
 Patch the Makefile
---- foo2zjs-20090908dfsg.orig/Makefile
-+++ foo2zjs-20090908dfsg/Makefile
-@@ -16,9 +16,7 @@
+--- foo2zjs_20100728.orig/Makefile
++++ foo2zjs_20100728/Makefile
+@@ -17,9 +17,7 @@
  VERSION=0.0
  
  # Installation prefix...
@@ -11,8 +11,8 @@ Patch the Makefile
  
  # Pathnames for this package...
  BIN=$(PREFIX)/bin
-@@ -35,7 +33,7 @@
- INSTALL=install
+@@ -37,7 +35,7 @@
+ ROOT=root
  
  # Pathnames for referenced packages...
 -FOODB=$(DESTDIR)/usr/share/foomatic/db/source
@@ -20,7 +20,7 @@ Patch the Makefile
  
  # User ID's
  LPuid=-oroot
-@@ -544,8 +542,6 @@
+@@ -565,8 +563,6 @@
  	#
      
  
@@ -29,7 +29,7 @@ Patch the Makefile
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -553,8 +549,7 @@
+@@ -574,8 +570,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -39,7 +39,7 @@ Patch the Makefile
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -722,9 +717,9 @@
+@@ -745,9 +740,9 @@
  	    fi; \
  	done
  
@@ -52,7 +52,7 @@ Patch the Makefile
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -767,9 +762,9 @@
+@@ -793,9 +788,9 @@
  	    done; \
  	fi
  

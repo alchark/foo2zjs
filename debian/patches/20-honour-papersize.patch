@@ -1,7 +1,7 @@
 Support /etc/papersize
---- foo2zjs-20090908dfsg.orig/foo2hp2600-wrapper.in
-+++ foo2zjs-20090908dfsg/foo2hp2600-wrapper.in
-@@ -203,7 +203,8 @@
+--- foo2zjs_20100728.orig/foo2hp2600-wrapper.in
++++ foo2zjs_20100728/foo2hp2600-wrapper.in
+@@ -204,7 +204,8 @@
  
  MEDIA=1
  COPIES=1
@@ -11,9 +11,9 @@ Support /etc/papersize
  RES=600x600
  SOURCE=7
  NUP=
---- foo2zjs-20090908dfsg.orig/foo2oak-wrapper.in
-+++ foo2zjs-20090908dfsg/foo2oak-wrapper.in
-@@ -157,7 +157,8 @@
+--- foo2zjs_20100728.orig/foo2oak-wrapper.in
++++ foo2zjs_20100728/foo2oak-wrapper.in
+@@ -160,7 +160,8 @@
  QUALITY=wts
  MEDIA=1
  COPIES=1
@@ -23,9 +23,9 @@ Support /etc/papersize
  RES=600x600
  SOURCE=7
  NUP=
---- foo2zjs-20090908dfsg.orig/foo2zjs-wrapper.in
-+++ foo2zjs-20090908dfsg/foo2zjs-wrapper.in
-@@ -168,7 +168,8 @@
+--- foo2zjs_20100728.orig/foo2zjs-wrapper.in
++++ foo2zjs_20100728/foo2zjs-wrapper.in
+@@ -194,7 +194,8 @@
  QUALITY=wts
  MEDIA=1
  COPIES=1

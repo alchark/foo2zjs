@@ -1,7 +1,7 @@
 Firmware directory is /lib/firmware/hp/ (Closes: #517957)
---- foo2zjs-20090908dfsg.orig/getweb.in
-+++ foo2zjs-20090908dfsg/getweb.in
-@@ -114,7 +114,7 @@
+--- foo2zjs_20100728working.orig/getweb.in
++++ foo2zjs_20100728working/getweb.in
+@@ -115,7 +115,7 @@
  putfw() {
      inputname=$1
      outputname=$2
@@ -10,8 +10,8 @@ Firmware directory is /lib/firmware/hp/ (Closes: #517957)
      rm $inputname
  }
  
---- foo2zjs-20090908dfsg.orig/hplj1000
-+++ foo2zjs-20090908dfsg/hplj1000
+--- foo2zjs_20100728working.orig/hplj1000
++++ foo2zjs_20100728working/hplj1000
 @@ -35,7 +35,7 @@
  #
  # Directory to find downloadable HP firmware files sihpMMMM.dl
@@ -21,8 +21,8 @@ Firmware directory is /lib/firmware/hp/ (Closes: #517957)
  
  #
  # Program used to determine USB printer id information
---- foo2zjs-20090908dfsg.orig/usb_printerid.1in
-+++ foo2zjs-20090908dfsg/usb_printerid.1in
+--- foo2zjs_20100728working.orig/usb_printerid.1in
++++ foo2zjs_20100728working/usb_printerid.1in
 @@ -26,7 +26,7 @@
  MFG:Hewlett-Packard;MDL:HP LaserJet 1020;CMD:ACL;CLS:PRINTER;\e
  DES:HP LaserJet 1020;
@@ -41,8 +41,8 @@ Firmware directory is /lib/firmware/hp/ (Closes: #517957)
  .SH SEE ALSO
  .BR arm2hpdl (1)
  .SH "AUTHOR"
---- foo2zjs-20090908dfsg.orig/arm2hpdl.1in
-+++ foo2zjs-20090908dfsg/arm2hpdl.1in
+--- foo2zjs_20100728working.orig/arm2hpdl.1in
++++ foo2zjs_20100728working/arm2hpdl.1in
 @@ -31,7 +31,7 @@
  
  .SH FILES
