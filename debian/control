@@ -11,7 +11,7 @@ Vcs-Browser: http://svn.debian.org/viewsvn/foo2zjs/
 
 Package: foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters
 Recommends: foomatic-db-engine, wget, tk8.4, tix, unzip
 Suggests: psutils, hannah-foo2zjs
 Breaks: udev (<< 136-1)

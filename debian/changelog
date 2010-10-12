@@ -15,6 +15,8 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
 
   [ Till Kamppeter ]
   * Merge from Ubuntu maverick.
+  * debian/control:
+    + Depends: on foomatic-filters.
   * debian/local/HP-LaserJet_1022n.ppd,
     debian/local/HP-LaserJet_1022nw.ppd:
     + Added PPDs for some additional models.
