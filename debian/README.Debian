@@ -45,5 +45,8 @@ GNOME menu on Debian and thus they have disabled it:
 To re-enable it, please use the menu editor available via the
 "System -> Preferences -> Main Menu" entry.
 
+Please also note that you need to install the suggested "tk8.4" and
+"tix" packages.
 
- -- Luca Capello <luca@pca.it>, Sat, 15 May 2010 15:30:28 +0200
+
+ -- Luca Capello <luca@pca.it>, Wed, 13 Oct 2010 01:37:57 +0200
