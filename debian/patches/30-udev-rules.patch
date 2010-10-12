@@ -1,7 +1,8 @@
 Correct the udev rules
---- foo2zjs_20100728.orig/hplj10xx.rules
-+++ foo2zjs_20100728/hplj10xx.rules
-@@ -4,36 +4,36 @@
+--- foo2zjs_20100728dfsg.orig/hplj10xx.rules
++++ foo2zjs_20100728dfsg/hplj10xx.rules
+@@ -3,37 +3,41 @@
+ #
  #Own udev rule for HP Laserjet 1000
  KERNEL=="lp*", SUBSYSTEMS=="usb", ATTRS{idVendor}=="03f0", \
 -	ATTRS{product}=="hp LaserJet 1000", NAME="usb/%k", \
@@ -56,3 +57,7 @@ Correct the udev rules
 -	SYMLINK+="hpljP1505-%n", MODE="0666", RUN+="/etc/hotplug/usb/hpljP1505" 
 +	ATTRS{product}=="HP LaserJet P1505", \
 +	SYMLINK+="hpljP1505-%n", RUN+="/usr/sbin/hpljP1505" 
++#Own udev rule for HP Laserjet P1505n
++KERNEL=="lp*", SUBSYSTEMS=="usb", ATTRS{idVendor}=="03f0", \
++	ATTRS{product}=="HP LaserJet P1505n", \
++	SYMLINK+="hpljP1505n-%n", RUN+="/usr/sbin/hpljP1505n" 

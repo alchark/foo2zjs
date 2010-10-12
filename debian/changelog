@@ -34,6 +34,10 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     + Correct upstream link fo the CUPS filter.
     + Install additional PPDs and compress them.
 
+  [ Steve Langasek ]
+  * debian/patches/30-udev-rules.dpatch:
+    + Add udev rule for HP Laserjet P1505n.
+
  --
 
 foo2zjs (20090908dfsg-4) unstable; urgency=low
