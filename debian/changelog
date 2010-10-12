@@ -1,7 +1,10 @@
-foo2zjs (20100728-1) UNRELEASED; urgency=low
+foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
 
   [ Luca Capello ]
   * New upstream version (Closes: #594322).
+  * DFSG repack
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
 
