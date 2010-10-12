@@ -10,6 +10,10 @@ Upstream Authors: Rick Richardson <rick.richardson@comcast.net>
 		  List of files:
 cups.h (from the CUPS Imaging library)
 
+		  Paul Laufer Copyright (C) 2001
+		  List of files:
+msexpand
+
 		  Gerhard Fuernkranz Copyright (C) 2004
 		  List of files:
 crd/prolog.ps

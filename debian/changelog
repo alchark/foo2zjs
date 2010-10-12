@@ -7,6 +7,8 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/copyright:
     + add information for cups.h (from the CUPS Imaging library).
+    + add information for msexpand (Perl, no relationship with the
+      one from the mscompress package).
     - remove obsolete information for hannah-foo2zjs.
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
