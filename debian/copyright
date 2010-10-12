@@ -5,7 +5,11 @@ It was downloaded from http://foo2zjs.rkkda.com/foo2zjs.tar.gz
 
 Upstream Authors: Rick Richardson <rick.richardson@comcast.net>
 		  Main Developer
-		  
+
+		  Easy Software Products Copyright (C) 1997-2006
+		  List of files:
+cups.h (from the CUPS Imaging library)
+
 		  Gerhard Fuernkranz Copyright (C) 2004
 		  List of files:
 crd/prolog.ps

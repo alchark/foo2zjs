@@ -5,6 +5,8 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
+  * debian/copyright:
+    + add information for cups.h (from the CUPS Imaging library).
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
 
