@@ -31,6 +31,10 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     debian/patches/80-getweb.in.patch,
     debian/patches/90-manpages.patch:
     + Updated to work with new foo2zjs source.
+  * debian/patches/92-udev-firmware-script-fixes.patch:
+    + When loading firmware into the printer via UDEV script, wait 3
+      seconds, so that UDEV scripts for automatic printer setup do not
+      interfere with the firmware transfer to the printer.
   * debian/rules:
     + Added "CUPS_SERVERBIN=..." to the "make install" command line.
     + Add useful comments.
