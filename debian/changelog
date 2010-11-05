@@ -14,6 +14,10 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     - remove obsolete information for hannah-foo2zjs.
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
+  * debian/foo2zjs-icc2ps.1:
+    - remove, upstream now ships a different version.
+  * debian/manpages:
+    - remove, now useless.
   * debian/README.Debian:
     + add a note about the "HPLJ 10xx Replaced Paper" GUI requiring
       tk8.4 and tix, now Suggests:.
