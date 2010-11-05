@@ -1,6 +1,6 @@
 Improve getweb also for installing the firmware
---- foo2zjs_20100728working.orig/getweb.in
-+++ foo2zjs_20100728working/getweb.in
+--- foo2zjs_20100728dfsg.orig/getweb.in
++++ foo2zjs_20100728dfsg/getweb.in
 @@ -2,7 +2,7 @@
  
  #
@@ -33,7 +33,7 @@ Improve getweb also for installing the firmware
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -105,6 +112,17 @@
+@@ -105,6 +112,18 @@
      }
  fi
  
@@ -45,13 +45,14 @@ Improve getweb also for installing the firmware
 +}
 +
 +puticm() {
-+    mv *.icm /usr/share/foo2zjs/icm/
++    drivername=$1
++    mv *.icm /usr/share/"$drivername"/icm/
 +}
 +
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -151,6 +169,7 @@
+@@ -151,6 +170,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
  	copyright "(c) Copyright Hewlett-Packard 2001"
@@ -59,7 +60,7 @@ Improve getweb also for installing the firmware
  	;;
      lj1005|1005)
  	gettgz \
-@@ -162,36 +181,42 @@
+@@ -162,36 +182,42 @@
  	    #lj1005hostbased-en.exe \
  	    #sihp1005.img
  	copyright "(c) Copyright Hewlett-Packard 2002"
@@ -102,99 +103,117 @@ Improve getweb also for installing the firmware
  	;;
      2200dl|2200)
  	if false; then
-@@ -204,6 +229,7 @@
+@@ -204,6 +230,7 @@
  		"*.icm"
  	fi
  	copyright "(c) Copyright Minolta-QMS 1999"
-+	puticm
++	puticm foo2zjs
  	;;
      2300dl|2300)
  	if false; then
-@@ -219,6 +245,7 @@
+@@ -219,6 +246,7 @@
  	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
  	    ""
  	copyright "(c) Copyright Minolta-QMS 2001"
-+	puticm
++	puticm foo2zjs
  	;;
      2300dl_fw)
  	# 2300DL firmware upgrade to v2.55
-@@ -247,12 +274,14 @@
+@@ -247,12 +275,14 @@
  	    done
  	fi
  	copyright "(c) Copyright Minolta-QMS 1998"
-+	puticm
++	puticm foo2zjs
  	;;
      2430)
  	gettgz \
  	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
  	    ""
  	copyright "(c) Copyright Konica Minolta 2003"
-+	puticm
++	puticm foo2zjs
  	;;
      2530|2490|6115|2480|1600w|1680|1690|4690|110)
  	gettgz \
-@@ -264,6 +293,7 @@
+@@ -264,8 +294,9 @@
  	    http://foo2lava.rkkda.com/icm km-1600.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2009.  All Rights Reserved"
-+	puticm
++	puticm foo2lava
  	;;
-     1215|1500|1600|2600*)
+-    1215|1500|1600|2600*)
++    1500)
  	gettgz \
-@@ -278,6 +308,7 @@
+ 	    http://foo2hp.rkkda.com/icm hpclj2600n.tar.gz \
+ 	    ""
+@@ -278,6 +309,22 @@
  	    http://foo2hp.rkkda.com/icm hp1215.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
-+	puticm
++	puticm foo2oak
++	;;
++    1215|1600|2600*)
++	gettgz \
++	    http://foo2hp.rkkda.com/icm hpclj2600n.tar.gz \
++	    ""
++	gettgz \
++	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
++	    "km2430_2.icm"
++	copyright "(c) Copyright Hewlett-Packard 2003"
++	copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
++	gettgz \
++	    http://foo2hp.rkkda.com/icm hp1215.tar.gz \
++	    ""
++	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
++	puticm foo2hp
  	;;
      300|310|315|2160|3160|3175|6110)
  	gettgz \
-@@ -288,6 +319,7 @@
+@@ -288,6 +335,7 @@
  	    http://foo2qpdl.rkkda.com/icm samclp315.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
-+	puticm
++	puticm foo2qpdl
  	;;
      600|610)
  	;;
-@@ -297,6 +329,7 @@
+@@ -297,6 +345,7 @@
  	    http://foo2slx.rkkda.com/icm lexc500.tar.gz \
  	    ""
  	copyright "(c) Copyright Lexmark 2006"
-+	puticm
++	puticm foo2slx
  	;;
  
      oki)
-@@ -312,24 +345,28 @@
+@@ -312,24 +361,28 @@
  	    mv "$base.ICM" "$base.icm"
  	done
  	copyright "(c) Copyright Okidata 2005, 2006"
-+	puticm
++	puticm foo2hiperc
  	;;
      3100|3200|5100|5150|5200|5250)
  	gettgz \
  	    http://foo2hiperc.rkkda.com/icm okic3200.tar.gz \
  	    ""
  	copyright "(c) Copyright Okidata 2005"
-+	puticm
++	puticm foo2hiperc
  	;;
      3300|3400|3530)
  	gettgz \
  	    http://foo2hiperc.rkkda.com/icm okic3400.tar.gz \
  	    ""
  	copyright "(c) Copyright Okidata 2006"
-+	puticm
++	puticm foo2hiperc
  	;;
      5500|5600|5800)
  	gettgz \
  	    http://foo2hiperc.rkkda.com/icm okic5600.tar.gz \
  	    ""
  	copyright "(c) Copyright Okidata 2006"
-+	puticm
++	puticm foo2hiperc
  	;;
  
      xPPD)
-@@ -415,6 +452,10 @@
+@@ -415,6 +468,10 @@
      usage
  fi
  
@@ -205,7 +224,16 @@ Improve getweb also for installing the firmware
  for i in $*
  do
      case "$1" in
-@@ -453,3 +494,5 @@
+@@ -433,6 +490,8 @@
+ 	# getone 2430 already done
+ 	# getone cpwl # file doesn't exist 1/28/08
+ 
++	getone 1500
++
+ 	getone 2600n
+ 	# getone 1215 # already done
+ 
+@@ -453,3 +512,5 @@
  	;;
      esac
  done
