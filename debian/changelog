@@ -31,7 +31,7 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/rules:
     + Added "CUPS_SERVERBIN=..." to the "make install" command line.
     + Add useful comments.
-    + Correct upstream link fo the CUPS filter.
+    + Correct upstream link to the CUPS filter.
     + Install additional PPDs and compress them.
 
   [ Steve Langasek ]
