@@ -17,19 +17,19 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * Merge from Ubuntu maverick.
   * debian/local/HP-LaserJet_1022n.ppd,
     debian/local/HP-LaserJet_1022nw.ppd:
-    + Added PPDs for some additional models.
+    + Add PPDs for some additional models.
   * debian/patches/20-honour-papersize.patch,
     debian/patches/30-udev-rules.patch,
     debian/patches/40-desktop-encoding-correction.patch,
     debian/patches/70-lib-firwmare-hp.patch,
     debian/patches/80-getweb.in.patch,
     debian/patches/90-manpages.patch:
-    + Updated to work with new foo2zjs source.
+    + Update to work with new foo2zjs source.
   * debian/patches/60-getweb.in.patch:
-    + Updated to work with new foo2zjs source.
-    + Installs ICM files into the directories of the correct drivers.
+    + Update to work with new foo2zjs source.
+    + Install ICM files into the directories of the correct drivers.
   * debian/rules:
-    + Added "CUPS_SERVERBIN=..." to the "make install" command line.
+    + Add "CUPS_SERVERBIN=..." to the "make install" command line.
     + Add useful comments.
     + Correct upstream link to the CUPS filter.
     + Install additional PPDs and compress them.
