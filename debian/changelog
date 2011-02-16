@@ -5,27 +5,15 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
-  * debian/control:
-    + Standards-Version to 3.9.1, no changes needed, thanks to lintian.
-  * debian/copyright:
-    + add information for cups.h (from the CUPS Imaging library).
-    + add information for msexpand (Perl, no relationship with the
-      one from the mscompress package).
-    - remove obsolete information for hannah-foo2zjs.
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
   * debian/foo2zjs-icc2ps.1:
     - remove, upstream now ships a different version.
   * debian/manpages:
     - remove, now useless.
-  * debian/README.Debian:
-    + add a note about the "HPLJ 10xx Replaced Paper" GUI requiring
-      tk8.4 and tix, now Suggests:.
 
   [ Till Kamppeter ]
   * Merge from Ubuntu maverick.
-  * debian/control:
-    + Depends: on foomatic-filters.
   * debian/local/HP-LaserJet_1022n.ppd,
     debian/local/HP-LaserJet_1022nw.ppd:
     + Added PPDs for some additional models.
@@ -39,10 +27,6 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/patches/60-getweb.in.patch:
     + Updated to work with new foo2zjs source.
     + Installs ICM files into the directories of the correct drivers.
-  * debian/patches/92-udev-firmware-script-fixes.patch:
-    + When loading firmware into the printer via UDEV script, wait 3
-      seconds, so that UDEV scripts for automatic printer setup do not
-      interfere with the firmware transfer to the printer.
   * debian/rules:
     + Added "CUPS_SERVERBIN=..." to the "make install" command line.
     + Add useful comments.
@@ -50,12 +34,42 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     + Install additional PPDs and compress them.
 
   [ Steve Langasek ]
-  * debian/control:
-    - Drop tk8.4 and tix Recommends: to Suggests:.
+  * Merge from Ubuntu maverick.
   * debian/patches/30-udev-rules.dpatch:
     + Add udev rule for HP Laserjet P1505n.
 
  --
+
+foo2zjs (20090908dfsg-5) unstable; urgency=low
+
+  [ Luca Capello ]
+  * debian/README.Debian:
+    + add a note about the "HPLJ 10xx Replaced Paper" GUI requiring
+      tk8.4 and tix, now Suggests:.
+  * debian/control:
+    + Standards-Version to 3.9.1, no changes needed, thanks to lintian.
+  * debian/copyright:
+    + add information for cups.h (from the CUPS Imaging library).
+    + add information for msexpand (Perl, no relationship with the
+      one from the mscompress package).
+    - remove obsolete information for hannah-foo2zjs.
+
+  [ Till Kamppeter ]
+  * Merge from Ubuntu maverick.
+  * debian/control:
+    + Depends: on foomatic-filters.
+  * debian/patches/series: update.
+  * debian/patches/92-udev-firmware-script-fixes.patch:
+    + When loading firmware into the printer via UDEV script, wait 3
+      seconds, so that UDEV scripts for automatic printer setup do not
+      interfere with the firmware transfer to the printer.
+
+  [ Steve Langasek ]
+  * Merge from Ubuntu maverick.
+  * debian/control:
+    - Drop tk8.4 and tix Recommends: to Suggests: (Closes: #601591).
+
+ -- Luca Capello <luca@pca.it>  Sun, 14 Nov 2010 19:45:26 +0100
 
 foo2zjs (20090908dfsg-4) unstable; urgency=low
 
