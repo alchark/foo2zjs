@@ -37,6 +37,12 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
 
   [ Steve Langasek ]
   * Merge from Ubuntu maverick.
+  * debian/control:
+    + Add dependency on cups and cups-client to ensure that automatic
+      update of the PPDs of existing print queues works.
+  * debian/foo2zjs.postinst:
+    + Automatically update the PPD files for existing queues to the
+      versions supplied with this package.
   * debian/patches/30-udev-rules.dpatch:
     + Add udev rule for HP Laserjet P1505n.
 
