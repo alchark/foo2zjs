@@ -30,6 +30,7 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     + Install ICM files into the directories of the correct drivers.
   * debian/rules:
     + Add "CUPS_SERVERBIN=..." to the "make install" command line.
+    + Add "*cupsFilter" line to accept PDF input data to the PPDs.
     + Add useful comments.
     + Correct upstream link to the CUPS filter.
     + Install additional PPDs and compress them.

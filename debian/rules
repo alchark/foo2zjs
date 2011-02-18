@@ -67,9 +67,14 @@ install: build
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
 	# Correct link
 	dh_link /usr/bin/command2foo2lava-pjl /usr/lib/cups/filter/command2foo2lava-pjl
-	# Install PPD files for additional printers and compress them
+	# Install PPD files for additional printers
 	install -D -m 644 debian/local/*.ppd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs/
-	gzip -9 $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs/*.ppd
+	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
+	( cd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs; \
+	  find -name '*.ppd.gz' | xargs gunzip; \
+	  find -name '*.ppd' | xargs perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",'; \
+	  find -name '*.ppd' | xargs gzip -9 \
+	)
 
 # Build architecture-independent files here.
 binary-indep: build install
