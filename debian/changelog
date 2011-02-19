@@ -1,11 +1,15 @@
 foo2zjs (20110210dfsg-1) UNRELEASED; urgency=low
 
+  * Move to team maintenance: Debian Printing Team at
+      http://wiki.debian.org/Teams/Printing
+
   [ Luca Capello ]
   * New upstream version (Closes: #594322).
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
   * debian/control:
+    + team maintenance.
     + Build-Depends: on dc.
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.

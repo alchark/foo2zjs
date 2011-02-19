@@ -1,7 +1,7 @@
 Source: foo2zjs
 Section: text
 Priority: optional
-Maintainer: Debian Foo2zjs Maintainers <foo2zjs-maintainer@lists.alioth.debian.org>
+Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: Michael Koch <konqueror@gmx.de>, Steffen Joeris <white@debian.org>, Luca Capello <luca@pca.it>
 Build-Depends: debhelper (>= 7), ghostscript, quilt (>= 0.40), foomatic-filters, libcups2-dev, dc
 Standards-Version: 3.9.1
