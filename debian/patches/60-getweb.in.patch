@@ -142,11 +142,12 @@ Improve getweb also for installing the firmware
  	;;
      1500)
  	gettgz \
-@@ -281,11 +312,13 @@
+@@ -280,12 +311,14 @@
+ 	    ""
  	copyright "(c) Copyright Hewlett-Packard 2003"
  	copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
- 	;;
 +	puticm foo2oak
+ 	;;
      1025)
  	gettgz \
  	    http://foo2zjs.rkkda.com/icm hp-cp1025.tar.gz \
