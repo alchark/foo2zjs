@@ -16,8 +16,11 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/patches/20-honour-papersize.patch:
     + add a note that this patch is now useless, given that
       starting with this version it is done in debian/rules.
+  * debian/patches/20-PDF-input-data-in-PPDs.patch:
+    + fake patch to show differences with upstream, it is
+      done in debian/rules.
   * debian/rules:
-    + add pointer to the patch above.
+    + add pointers to the patches above.
 
   [ Till Kamppeter ]
   * Merge from Ubuntu maverick.
