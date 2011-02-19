@@ -1,10 +1,12 @@
-foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
+foo2zjs (20110210dfsg-1) UNRELEASED; urgency=low
 
   [ Luca Capello ]
   * New upstream version (Closes: #594322).
   * DFSG repack
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
+  * debian/control:
+    + Build-Depends: on dc.
   * debian/foo2zjs.dirs:
     + add /usr/lib/cups/filter/.
   * debian/foo2zjs-icc2ps.1:
@@ -18,6 +20,9 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/patches/20-PDF-input-data-in-PPDs.patch:
     + fake patch to show differences with upstream, it is
       done in debian/rules.
+  * debian/patches/40-desktop-encoding-correction.patch,
+    debian/patches/60-getweb.in.patch:
+    + Update to work with new foo2zjs source.
   * debian/rules:
     + add pointers to the patches above.
 
@@ -29,18 +34,13 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/foo2zjs.postinst:
     + Automatically update the PPD files for existing queues to the
       versions supplied with this package.
-  * debian/local/HP-LaserJet_1022n.ppd,
-    debian/local/HP-LaserJet_1022nw.ppd:
-    + Add PPDs for some additional models.
   * debian/patches/20-honour-papersize.patch,
     debian/patches/30-udev-rules.patch,
-    debian/patches/40-desktop-encoding-correction.patch,
     debian/patches/70-lib-firwmare-hp.patch,
     debian/patches/80-getweb.in.patch,
     debian/patches/90-manpages.patch:
     + Update to work with new foo2zjs source.
   * debian/patches/60-getweb.in.patch:
-    + Update to work with new foo2zjs source.
     + Install ICM files into the directories of the correct drivers.
   * debian/rules:
     + Add "CUPS_SERVERBIN=..." to the "make install" command line.

@@ -1,9 +1,9 @@
 Remove the now useless Encoding key
---- foo2zjs_20100728.orig/hplj1020.desktop
-+++ foo2zjs_20100728/hplj1020.desktop
+--- foo2zjs_20110210dfsg.orig/hplj1020.desktop
++++ foo2zjs_20110210dfsg/hplj1020.desktop
 @@ -1,5 +1,4 @@
  [Desktop Entry]
 -Encoding=UTF-8
- Name=HPLJ 10xx Replaced Paper
- Comment=HP LaserJet 1018, 1020
+ Name=Reactivate HP LaserJet 1018/1020 after reloading paper
+ Comment=Click the button in this program when your printer ran out of paper and you have refilled the paper
  # zExec=usb_printerid /dev/usb/lp0

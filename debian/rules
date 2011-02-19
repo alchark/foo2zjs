@@ -67,8 +67,6 @@ install: build
 	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
 	# Correct link
 	dh_link /usr/bin/command2foo2lava-pjl /usr/lib/cups/filter/command2foo2lava-pjl
-	# Install PPD files for additional printers
-	install -D -m 644 debian/local/*.ppd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs/
 	### patches/20-PDF-input-data-in-PPDs.patch
 	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
 	( cd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs; \
