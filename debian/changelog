@@ -1,7 +1,6 @@
 foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
 
   [ Luca Capello ]
-  * Acknowledge NMU (Closes: #609761).
   * New upstream version (Closes: #594322).
   * DFSG repack
     - remove binary file c5200mono.prn
