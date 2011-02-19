@@ -75,6 +75,11 @@ install: build
 	  find -name '*.ppd' | xargs perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",'; \
 	  find -name '*.ppd' | xargs gzip -9 \
 	)
+	### patches/20-honour-papersize.patch
+	# Add support for /etc/papersize to all wrapper scripts. In contrary
+	# to a patch this will automatically apply to every new wrapper script
+	# which gets added to this package in the future.
+	perl -p -i -e 's/^PAPER=(\d+)\s*$$/test -r \/etc\/papersize && PAPER=\x24\(cat \/etc\/papersize\)\ntest "\x24PAPER" || PAPER=\1\n/' $(CURDIR)/debian/foo2zjs/usr/bin/*-wrapper
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -12,6 +12,12 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
     - remove, upstream now ships a different version.
   * debian/manpages:
     - remove, now useless.
+  * debian/patches/series: update.
+  * debian/patches/20-honour-papersize.patch:
+    + add a note that this patch is now useless, given that
+      starting with this version it is done in debian/rules.
+  * debian/rules:
+    + add pointer to the patch above.
 
   [ Till Kamppeter ]
   * Merge from Ubuntu maverick.
@@ -37,6 +43,7 @@ foo2zjs (20100728dfsg-1) UNRELEASED; urgency=low
   * debian/rules:
     + Add "CUPS_SERVERBIN=..." to the "make install" command line.
     + Add "*cupsFilter" line to accept PDF input data to the PPDs.
+    + Add /etc/papersize support.
     + Add useful comments.
     + Correct upstream link to the CUPS filter.
     + Install additional PPDs and compress them.

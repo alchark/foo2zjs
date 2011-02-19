@@ -1,4 +1,9 @@
 Support /etc/papersize
+
+NB, this is now done in debian/rules, so it will automatically apply to
+    every new wrapper script which gets added to this package in the
+    future.  The patch should however not be deleted, so it does show
+    up when looking at the differences with upstream.
 --- foo2zjs_20100728.orig/foo2hp2600-wrapper.in
 +++ foo2zjs_20100728/foo2hp2600-wrapper.in
 @@ -204,7 +204,8 @@
