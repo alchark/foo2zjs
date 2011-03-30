@@ -1,0 +1,7 @@
+--- foo2zjs_20110210dfsg.orig/hplj1020.desktop
++++ foo2zjs_20110210dfsg/hplj1020.desktop
+@@ -9,3 +9,4 @@
+ StartupNotify=true
+ Categories=System;
+ X-Desktop-File-Install-Version=0.10
++NoDisplay=true

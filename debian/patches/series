@@ -3,6 +3,7 @@
 # in debian/rules: 20-PDF-input-data-in-PPDs.patch
 30-udev-rules.patch
 40-desktop-encoding-correction.patch
+40-desktop-nodisplay-true.patch
 40-path-correction.patch
 60-getweb.in.patch
 60-hplj1000.patch
