@@ -1,4 +1,4 @@
-foo2zjs (20110210dfsg-2) UNRELEASED; urgency=low
+foo2zjs (20110210dfsg-2) unstable; urgency=low
 
   [ Luca Capello ]
   * debian/README.Debian:
@@ -14,7 +14,7 @@ foo2zjs (20110210dfsg-2) UNRELEASED; urgency=low
     + install Apport hook on Ubuntu and derivatives.
   * debian/ubuntu/apport-hook.py: new file.
 
- --
+ -- Luca Capello <luca@pca.it>  Wed, 30 Mar 2011 23:20:11 +0200
 
 foo2zjs (20110210dfsg-1) unstable; urgency=low
 
