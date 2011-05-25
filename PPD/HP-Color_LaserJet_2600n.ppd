@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,11 +52,17 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP Color LaserJet 2600n;CMD:ACL;DES:HP Color LaserJet 2600n;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP Color LaserJet 2600n;CMD:ACL;DES:HP Color LaserJet 2600n;DRV:Dfoo2hp,R1,M0,TF;"
+
+*driverName foo2hp/foo2hp: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2hp.rkkda.com/"
+*driverObsolete: False
 
 
 
-*HWMargins: 12.00 12.00 12 12
+
+*HWMargins: 12.00 12.00 +12.00 +12.00
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -75,6 +81,39 @@
 *FoomaticRIPCommandLine: "foo2hp2600-wrapper %A"
 
 *OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=z0: "-z0 "
+
+*OpenUI *ColorMode/Color Mode: PickOne
+*FoomaticRIPOption ColorMode: enum CmdLine A
+*OrderDependency: 120 AnySetup *ColorMode
+*DefaultColorMode: Monochrome
+*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
+*FoomaticRIPOptionSetting ColorMode=Color: "-c "
+*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
+*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
+*CloseUI: *ColorMode
+
+*OpenUI *BitsPerPlane/Bits Per Plane: PickOne
+*FoomaticRIPOption BitsPerPlane: enum CmdLine A
+*OrderDependency: 120 AnySetup *BitsPerPlane
+*DefaultBitsPerPlane: 1-BPP
+*BitsPerPlane 1-BPP/1 Bit Per Plane: "%% FoomaticRIPOptionSetting: BitsPerPlane=1-BPP"
+*FoomaticRIPOptionSetting BitsPerPlane=1-BPP: "-b1 "
+*BitsPerPlane 2-BPP/2 Bits Per Plane: "%% FoomaticRIPOptionSetting: BitsPerPlane=2-BPP"
+*FoomaticRIPOptionSetting BitsPerPlane=2-BPP: "-b2 "
+*CloseUI: *BitsPerPlane
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -216,36 +255,6 @@
 *FoomaticRIPOptionSetting Duplex=None: "-d1 "
 *CloseUI: *Duplex
 
-*OpenUI *Quality/Printing Quality: PickOne
-*FoomaticRIPOption Quality: enum CmdLine A
-*OrderDependency: 110 AnySetup *Quality
-*DefaultQuality: normal
-*Quality draft/Draft Mode: "%% FoomaticRIPOptionSetting: Quality=draft"
-*FoomaticRIPOptionSetting Quality=draft: " -t  "
-*Quality normal/Normal Mode: "%% FoomaticRIPOptionSetting: Quality=normal"
-*FoomaticRIPOptionSetting Quality=normal: "  "
-*CloseUI: *Quality
-
-*OpenUI *ColorMode/Color Mode: PickOne
-*FoomaticRIPOption ColorMode: enum CmdLine A
-*OrderDependency: 120 AnySetup *ColorMode
-*DefaultColorMode: Monochrome
-*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c "
-*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
-*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
-*CloseUI: *ColorMode
-
-*OpenUI *BitsPerPlane/Bits Per Plane: PickOne
-*FoomaticRIPOption BitsPerPlane: enum CmdLine A
-*OrderDependency: 120 AnySetup *BitsPerPlane
-*DefaultBitsPerPlane: 1-BPP
-*BitsPerPlane 1-BPP/1 Bit Per Plane: "%% FoomaticRIPOptionSetting: BitsPerPlane=1-BPP"
-*FoomaticRIPOptionSetting BitsPerPlane=1-BPP: "-b1 "
-*BitsPerPlane 2-BPP/2 Bits Per Plane: "%% FoomaticRIPOptionSetting: BitsPerPlane=2-BPP"
-*FoomaticRIPOptionSetting BitsPerPlane=2-BPP: "-b2 "
-*CloseUI: *BitsPerPlane
-
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
 *FoomaticRIPOptionPrototype Copies: "-n%s "
@@ -365,14 +374,18 @@
 *DefaultICM: default
 *ICM default/Default ICM color correction: "%% FoomaticRIPOptionSetting: ICM=default"
 *FoomaticRIPOptionSetting ICM=default: "-Gdefault "
-*ICM hpclj2600n-0/File hpclj2600n-0.icm: "%% FoomaticRIPOptionSetting: ICM=hpclj2600n-0"
+*ICM hp1215-argyll-0/HP 1215 - Argyll 0 (default): "%% FoomaticRIPOptionSetting: ICM=hp1215-argyll-0"
+*FoomaticRIPOptionSetting ICM=hp1215-argyll-0: "-Ghp1215-argyll-0.icm &&
+"
+*End
+*ICM hpclj2600n-0/HP 1600/2600 - hpclj2600n-0.icm: "%% FoomaticRIPOptionSetting: ICM=hpclj2600n-0"
 *FoomaticRIPOptionSetting ICM=hpclj2600n-0: "-Ghpclj2600n-0.icm "
-*ICM hpclj2600n-1/File ICCFactory 1: "%% FoomaticRIPOptionSetting: ICM=hpclj2600n-1"
+*ICM hpclj2600n-1/HP 1600/2600 - ICCFactory 1 (default): "%% FoomaticRIPOptionSetting: ICM=hpclj2600n-1"
 *FoomaticRIPOptionSetting ICM=hpclj2600n-1: "-Ghpclj2600n-1.icm "
 *ICM km2430_2/File km2430_2.icm: "%% FoomaticRIPOptionSetting: ICM=km2430_2"
 *FoomaticRIPOptionSetting ICM=km2430_2: "-Gkm2430_2.icm "
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
-*FoomaticRIPOptionSetting ICM=none: "-Gnone "
+*FoomaticRIPOptionSetting ICM=none: "-Gnone.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-Gtesting.icm "
 *ICM user1/File user1.icm: "%% FoomaticRIPOptionSetting: ICM=user1"

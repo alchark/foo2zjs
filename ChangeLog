@@ -1,3 +1,362 @@
+2009-03-01	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs-icc2ps to "Little CMS" (lcms), v1.18 beta 1.
+	$ make regress
+	little cms PostScript converter - v1.5+v1.18beta1+foo2zjs
+	ca8227261a3b18e10ee7fa720dd90ccb  C3400-L1-BIN-ICC_0603150.icm.ps
+	91625a11ef859a4c3662379db1ffafd2  C3400-L2-BIN-ICC_0604110.icm.ps
+	6dd402051dd3747e40b1a7b1e2e82196  hp1215-argyll-0.icm.ps
+	9f104c51f07705599ce874f83c6f8783  hpclj2600n-0.icm.ps
+	6f324397fad3c195250ec7a159d293f9  hpclj2600n-1.icm.ps
+	96454f21ba7c1ccad1953524670f5f72  km2430_0.icm.ps
+	862ca1d836f097ea403ba9f630a5258f  km2430_1.icm.ps
+	35f478bf58d43db5cc0853caec9a5868  km2430_2.icm.ps
+	f75cb27671de78d63a81d7be3bff310f  km2530_0.icm.ps
+	a1c0cccd4b898319fc37887a7106466b  km2530_1.icm.ps
+	ab78bcd38fad306ddeda108a43c31c96  km2530_2.icm.ps
+	44d45f189f3986eef5b7565159da167e  km2530-jconner-d50.icm.ps
+	312e49d3deaed093c8b3834487bc7620  lexRPCA2000.icm.ps
+	e72e37a4f8cb14e36dfe8337b6988aee  OK3200L1.icm.ps
+	9bab8e1f5a3a78c5e47316941bb4c915  OK3200L2.icm.ps
+	1d63e82bae789fc2c5101dbc4077e67c  OK5600L1.icm.ps
+	bd6a812ce413387288d23e4773b80c8b  OK5600L2.icm.ps
+	8d0d23d861137faf90ab567e2f20afbd  OK5600L3.icm.ps
+	f9d96dc460f49e718ce3a9963e7d7595  samclp300-0.icm.ps
+	7014e454afff845627779cda3b28e0c5  samclp315-argyll-0.icm.ps
+
+2009-02-19	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hp: Fix segv when -b2 and -d2 are given.
+	* foo2hp: Fix PageNum when -b2 is given.
+
+2009-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: HP LaserJet M1319 MFP.  Printer only!!
+
+2009-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: HP LaserJet P2035
+
+2009-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* zjsdecode: add -p option for HP LaserJet P2035
+
+2009-01-11	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak-wrapper bug fix
+
+2008-12-31	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: Samsung CLX-3175
+
+2008-12-29	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: Oki C3100
+
+2008-12-07	Rick Richardson <rick.richardson@comcast.net>
+	* Samsung CLP-315:
+	    - Now use Argyll (samclp-315-argyll-0.icm) for color correction
+	    - make; ./getweb 315; make install
+	    - Delete and recreate Samsung CLP-315
+
+2008-12-06	Rick Richardson <rick.richardson@comcast.net>
+	* HP CLJ CP1215:
+	    - Now use Argyll (hp1215-argyll-0.icm) for color correction
+	    - make; ./getweb 1215; make install
+	    - Delete and recreate HP Color LaserJet CP1215
+	    - foo2hp2600-wrapper: implement -z <model>; 0=1600/2600, 1=1215
+
+2008-12-04	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-pstops: Fix bug with -w
+
+2008-10-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: bug fix: -z2 (clp-315. clp-610): stripe starts
+		with 0, not 1.
+
+2008-09-23	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: bug fix: LONGEDGE does not need to be flipped on CLP-610.
+	* zjsdecode, gipddecode, slxdecode: fix bug with argc[1]
+
+2008-09-22	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: Do auto duplex on clp-610
+		Delete CLP-610 printer then re-install them (PPD changed) 
+
+2008-09-18	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: Change unknown value (margin?) based on page size.
+
+2008-09-05	Rick Richardson <rick.richardson@comcast.net>
+	* Upgrade to JBIGKIT 2.0
+
+2008-07-30	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: rm gipddecode.o on a "make clean".
+
+2008-07-22	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: Samsung CLP-315
+
+2008-06-05	Rick Richardson <rick.richardson@comcast.net>
+	* New printers: HP LJ P1007 and P1008
+
+2008-06-03	Rick Richardson <rick.richardson@comcast.net>
+	* Upgrade P1005, P1006, P1505 firmware to 04/15/2008
+
+2008-05-23	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db and PPDs: update ieee string for CP1215
+
+2008-05-21	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db and PPDs: New HP Color LaserJet CP1215 using foo2hp
+		ALPHA QUALITY, imperfect color correction.
+
+2008-05-15	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db and PPDs:  New Oki C3530 MFP
+
+2008-05-01	Rick Richardson <rick.richardson@comcast.net>
+	* New Printers: Kyocera Mita KM-1635, KM-2035.
+	* foomatic-db and PPDs: Kyocera Mita KM-1635, KM-2035.
+		- PageSize, InputSlot, MediaType
+
+2008-04-30	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak, foo2oak-wrapper, foo2zjs-pstops:
+		Implement rotate 90 for Kyocera Mita KM-1635, KM-2035.
+	* foo2hiperc: fix 600x1200 resolution.
+
+2008-04-26	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c: implement copies.
+
+2008-04-24	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hiperc-wrapper, et al:
+		Change Input Slot to
+		    auto, tray1, tray2, multi, manual
+
+2008-04-18	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl-wrapper:  set clipping to 150x100 for Custom page size.
+
+2008-04-01	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Samsung CLP-610 added to foo2qpdl et al.
+
+2008-03-30	Rick Richardson <rick.richardson@comcast.net>
+	* qpdldecode: add new compression mode 0x15 for CLP-610.
+
+2008-03-24	Rick Richardson <rick.richardson@comcast.net>
+	* New printer: HP LaserJet 2014 using foo2xqx.
+
+2008-03-23	Rick Richardson <rick.richardson@comcast.net>
+	* Add: gipddecode.for Granite Image Printer Driver.  Used
+		by Granite Systems, inc. a.k.a Monotype Imaging, e.g.
+		Dell 1125 MFP, Lexmark X500
+
+2008-02-16	Rick Richardson <rick.richardson@comcast.net>
+	* Add: manual pages for arm2hpdl, usb_printerid
+	* Modify: foo2xqx-wrapper to put in WTS.
+
+2008-02-15	Rick Richardson <rick.richardson@comcast.net>
+	* Add: Copies, Nup, NupOrient, Quality to foo2hiperc, foo2slx
+		foomatic-db and PPD files
+
+2008-02-07	Rick Richardson <rick.richardson@comcast.net>
+	* Add: HP-LaserJet_M1120_MFP using the foo2xqx driver
+	* Modify: Oki foomatic and PPD entries for C5500/C5600/C5800
+		    Color Correction
+
+2008-02-06	Rick Richardson <rick.richardson@comcast.net>
+	* Add: C5200
+	* Modify: Oki foomatic and PPD entries for C3200/C5100/C5200 
+		    Color Correction
+	* Modify: Oki foomatic and PPD entries for C3300/C3400 
+		    Color Correction
+
+2008-02-05	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2hiperc.  Put out the correct end_doc
+	* Modify: foo2hiperc.  Pad to 256 lines.
+
+2008-02-02	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2hiperc color mode
+	* Modify: foo2hiperc compessed mode.
+	
+2008-02-01	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2hiperc et al.
+	
+2008-01-31	Rick Richardson <rick.richardson@comcast.net>
+	* Add: man pages for foo2hiperc.
+	* Modify: foo2hiperc et al.
+
+2008-01-30	Rick Richardson <rick.richardson@comcast.net>
+	* Add: foo2hiperc et al.  Another set of printers added:
+		Oki C3200n/C3300n/C3400n/C5100n/C5500n
+	  Note: alpha quality, no color correction at all!!!
+
+2008-01-28	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: getweb 2300 
+
+2008-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: icc2ps to "Little CMS" (lcms), v1.17.
+		Bugs fixed in icc2ps/cmsio1.c.
+
+2008-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: icc2ps/cmsio1.c to malloc space for wchar_t right.
+
+2007-12-27	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2*-wrapper to only put in WTS stuff when in COLOR (-c)
+	    Otherwise, gs 8.60/8.61 core dumps with -r1200x600
+
+2007-12-19	Rick Richardson <rick.richardson@comcast.net>
+	* Modify manual pages for Solaris
+	* Modify  foo2zjs-pstops: remove sed -e "$a"
+	* Modify foo2oak.c, oakdecode.c for OpenBSD
+
+2007-12-15	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2qpdl-InputSlot.xml: Add lower paper tray 2.
+
+2007-12-13	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2slx.c: Do manual duplex.
+
+2007-12-10	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2slx.c: produce colors in the right order.
+
+2007-12-10	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2slx.c: Set ExtraPad to 0.
+	* Modify foo2slx.c: Use item_int32_write_pad for 0x03, 0x04
+
+2007-12-09	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2*.c:
+	    If called by CUPS, print page accounting stuff to stderr.
+	    Change DEVICE_URL to DEVICE_URI for IsCUPS
+	    This is a misfeature of CUPS only.
+	* Modify foo2slx.c: Add pad to SLI_0x03.
+	* Modify foo2slx-wrapper: GAMMAFILE=default for color
+
+2007-12-08	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2slx.c: 
+		SLI_COUNT, 1 (0x1)
+		SLI_0x0e, 0 (0x0)  (was SLI_DMCOLLATE)
+
+2007-12-07	Rick Richardson <rick.richardson@comcast.net>
+	* Modify foo2*-wrapper:  change CustomPageSize for Acrobat 8.1.1 rpm.
+	* Modify foo2*-wrapper:  change ghostscript for Acrobat 8.1.1:
+		"gs ... -" to "gs ... -_"
+
+2007-11-26	Rick Richardson <rick.richardson@comcast.net>
+	* Modify Makefile:
+	  OpenSolaris, Solaris Express Developer Edition 9/07, Solaris 11 (beta)
+	  Make networking (2530 dl, Samsung 300, etc.) printers work.
+	    
+2007-11-25	Rick Richardson <rick.richardson@comcast.net>
+	* Add printers HP LaserJet P1005/P1006/P1505 to foo2xqx driver.
+
+2007-11-21	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: Makefile install usb_printerid /bin
+
+2007-11-17	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: Makefile uninstall
+
+2007-11-15	Rick Richardson <rick.richardson@comcast.net>
+	* Put in comments RE: /bin/ into hp1000 and Makefile
+
+2007-11-14	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: hplj10xx_gui.tcl to use /sys/...
+
+2007-11-13	Rick Richardson <rick.richardson@comcast.net>
+	* Add: hplj10xx_gui.tcl
+	    Usage: $ wish /usr/share/foo2zjs/hplj10xx_gui.tcl
+
+2007-11-12	Rick Richardson <rick.richardson@comcast.net>
+	* Add: GNOME desktop file: hplj1020.desktop
+	    Applications -> System Tools -> HPLJ 10xx Replaced Paper
+	    invokes: usb_printerid /dev/usb/lp0
+
+2007-11-10	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: hplj10xx.rules to put -%n in the symlink field
+
+2007-11-06	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: *.1in: Only use specialps with -Tps
+	* Modify: *.1in: get rid of:
+	    grotty:./foo2lava.1:4269: character above first line discarded
+
+2007-11-05	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2*.c bug with -l, -u
+	* Modify: opldecode.c,.1 change ro to opl.
+
+2007-11-01	Rick Richardson <rick.richardson@comcast.net>
+	* Add: foo2slx et al.  Another printer added: Lexmark C500n
+	  Note: alpha quality!!!
+
+2007-10-30	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs-pstops take out CIEColor
+	* Modify: zjsdecode, qpdldecode
+	* Modify: foo2qpdl-wrapper: Add default for -G
+
+2007-10-26	Rick Richardson <rick.richardson@comcast.net>
+	* Put version info in getweb and foo2zjs-pstops
+	* foo2*-wrapper: Make PREFILTER=tee if -D9
+
+2007-10-25	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs-pstops put it before "%%Page: 1 1"
+
+2007-10-24	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs-pstops so that CIE + WTS are in the right order.
+	
+2007-10-23	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava ICM: km2530-jconner-d50.icm is the default
+	    Do:	
+		$ ./getweb 2530
+	        $ sudo make install
+	    again.
+
+2007-10-22	Rick Richardson <rick.richardson@comcast.net>
+	* Add: foo2zjs-pstops: Add PS code for foo2*-wrapper
+	* Modify foo2*-wrapper: Use WTS with Firefox, et al.
+
+2007-10-20	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db/opts/*ICM*, PPD/*: improved
+
+2007-10-19	Rick Richardson <rick.richardson@comcast.net>
+	* Replace sihp1020.img with sihp1020-20050309.img. Was 20041129.
+	    $ ./getweb 1020
+	    # make install
+	* Resurrect foo2oak
+
+2007-10-18	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-wrapper: Implement WTS when -C10.
+	* foo2hp2600-wrapper: Segfault on 64-bit and gs 8.14/8.15.
+
+2007-10-15	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: WTS works with this workaround:
+	    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
+	    So WTS works on 8.54-8.57 AND 8.60-8.61.
+	* INSTALL:
+	    * Well Tempered Screening (WTS) works with ghostscript 8.54-8.60+.
+		So if you want BEST COLORS, you'll have to install gs 8.54 or
+		better if you don't have it.
+
+	    $ gs --version
+	    8.15.2
+
+	    $ wget "http://mirror.cs.wisc.edu/pub/mirrors/ghost/GPL/gs860/ghostscript-8.60.tar.gz"
+	    $ tar zxf ghostscript-8.60.tar.gz
+	    $ cd ghostscript-8.60
+	    $ ./autogen.sh
+	    $ make
+	    $ su                            OR $ sudo cp bin/gs /usr/bin/gs.foo
+	    # cp bin/gs /usr/bin/gs.foo
+
+2007-10-12	Rick Richardson <rick.richardson@comcast.net>
+	* 11-hplj10xx.rules: Cleanup
+
+2007-10-11	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava-wrapper, foo2hp2600-wrapper, foo2qpdl-wrapper:
+	    Avoid WTS if gs is 8.60/8.61.
+
+2007-10-10	Rick Richardson <rick.richardson@comcast.net>
+	* Add: Well Tempered Screening (WTS) to foo2lava-wrapper
+            # CUPS also does grief by adding its own PS code to the input file.
+            # We take care of that with the sed command.  Thus, Well Tempered
+            # Screening (WTS) now works!
+
+2007-09-19	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava: If 2480MF then switch CYAN/YELLOW.
+	* foo2lava: If 2530DL, output DOTS
+
+2007-09-18	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: Changes to Makefile to get it to build on OpenBSD.
+	* foo2lava: If 2480MF then don't output DOTS.
+	 
+2007-09-01	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic: Eliminate 600x600 from 2200 DL.
+
+2007-08-22	Rick Richardson <rick.richardson@comcast.net>
+	* Add:	foo2qpdl et al for Samsung CLX-2160.
+
 2007-07-18	Rick Richardson <rick.richardson@comcast.net>
 	* foo2lava: Puts DOTS/WHITEDOTS immediately after JBIG, for 2490.
 
@@ -128,6 +487,7 @@
 	* Add:	foo2qpdl et al for Samsung CLP-300, CLP-600, CLX-3160.
 		Only JBIG (type 0x13) compression is implemented.
 		Alpha quality.
+
 2007-02-04	Rick Richardson <rick.richardson@comcast.net>
 	* foo2lava.c:  Set \033*r-1004U for color.
 

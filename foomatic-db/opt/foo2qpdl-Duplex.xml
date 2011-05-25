@@ -26,12 +26,54 @@
 	<enum_val id="ev/foo2qpdl-Duplex-4">
 	    <ev_longname> <en>Long Edge (Standard)</en> </ev_longname>
 	    <ev_shortname> <en>DuplexNoTumble</en> </ev_shortname>
+	    <ev_driverval>2</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+                    <driver>foo2qpdl</driver>
+                </constraint>
+		<constraint sense="true">
+                    <printer>Samsung-CLP-610</printer>
+                </constraint>
+	    </constraints>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-Duplex-5">
+	    <ev_longname> <en>Short Edge (Flip)</en> </ev_longname>
+	    <ev_shortname> <en>DuplexTumble</en> </ev_shortname>
+	    <ev_driverval>3</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+                    <driver>foo2qpdl</driver>
+                </constraint>
+		<constraint sense="true">
+                    <printer>Samsung-CLP-610</printer>
+                </constraint>
+	    </constraints>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-Duplex-4">
+	    <ev_longname> <en>Long Edge (Standard)</en> </ev_longname>
+	    <ev_shortname> <en>DuplexNoTumble</en> </ev_shortname>
 	    <ev_driverval>4</ev_driverval>
+	    <constraints>
+		<constraint sense="true">
+                    <driver>foo2qpdl</driver>
+                </constraint>
+		<constraint sense="false">
+                    <printer>Samsung-CLP-610</printer>
+                </constraint>
+	    </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2qpdl-Duplex-5">
 	    <ev_longname> <en>Short Edge (Flip)</en> </ev_longname>
 	    <ev_shortname> <en>DuplexTumble</en> </ev_shortname>
 	    <ev_driverval>5</ev_driverval>
+	    <constraints>
+		<constraint sense="true">
+                    <driver>foo2qpdl</driver>
+                </constraint>
+		<constraint sense="false">
+                    <printer>Samsung-CLP-610</printer>
+                </constraint>
+	    </constraints>
 	</enum_val>
     </enum_vals>
 </option>

@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2xqx.c,v 1.16 2007/07/15 14:31:56 rick Exp $";
+static char Version[] = "$Id: foo2xqx.c,v 1.18 2007/12/09 06:57:03 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1281,13 +1281,13 @@ parse_xy(char *str, int *xp, int *yp)
 
     if (!str || str[0] == 0) return -1;
 
-    *xp = strtoul(str, &p, 0);
+    *xp = strtoul(str, &p, 10);
     if (str == p) return -2;
     while (*p && (*p < '0' || *p > '9'))
 	++p;
     str = p;
     if (str[0] == 0) return -3;
-    *yp = strtoul(str, &p, 0);
+    *yp = strtoul(str, &p, 10);
     if (str == p) return -4;
     return (0);
 }
@@ -1398,7 +1398,7 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (getenv("DEVICE_URL"))
+    if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
     Bpp = ResX / 600;

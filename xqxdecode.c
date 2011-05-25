@@ -1,5 +1,5 @@
 /*
- * $Id: xqxdecode.c,v 1.12 2006/12/07 13:33:50 rick Exp $
+ * $Id: xqxdecode.c,v 1.16 2008/09/05 15:05:55 rick Exp $
  */
 
 /*b
@@ -152,7 +152,7 @@ decode(FILE *fp)
     int		i;
     char	*codestr;
     FILE	*dfp = NULL;
-    int		planeNum = 1;
+    int		planeNum = 4;
     int		pageNum = 0;
     int		len;
     int		curOff = 0;
@@ -199,6 +199,17 @@ decode(FILE *fp)
 		curOff += 43;
 		proff(curOff);
 		printf("\\033%s\n", buf+44);
+		curOff += 9;
+		break;
+	    }
+	    else if (strncmp(buf, "@PJL SET JOBATTR=", 17) == 0)
+	    {
+		rc = fread(buf, 9, 1, fp);
+		if (rc != 1) return;
+		buf[9] = 0;
+		curOff += 9;
+		proff(curOff);
+		printf("\\033%s\n", buf+1);
 		curOff += 9;
 		break;
 	    }
@@ -278,7 +289,7 @@ decode(FILE *fp)
 			int	h, w, len;
 			unsigned char *image;
 
-			// debug(0, "JBG_OK: %d\n", pn);
+			// debug(0, "JBG_EOK: %d\n", pn);
 			h = jbg_dec_getheight(&s[pn]);
 			w = jbg_dec_getwidth(&s[pn]);
 			image = jbg_dec_getimage(&s[pn], 0);
@@ -287,7 +298,7 @@ decode(FILE *fp)
 			{
 			    char	buf[512];
 			    sprintf(buf, "%s-%02d-%d.pbm",
-				    DecFile, pageNum, planeNum-1);
+				    DecFile, pageNum, planeNum);
 			    dfp = fopen(buf,
 					imageCnt[planeNum] ? "a" : "w");
 			    if (dfp)
@@ -411,12 +422,31 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	for(;;)
+	if (argc > 0)
+        {
+            FILE        *fp;
+
+	    fp = fopen(argv[0], "r");
+	    if (!fp)
+		error(1, "file '%s' doesn't exist\n", argv[0]);
+	    for (;;)
+	    {
+		decode(fp);
+		c = getc(fp); ungetc(c, fp);
+                if (feof(fp))
+                    break;
+	    }
+	    fclose(fp);
+        }
+        else
 	{
-	    decode(stdin);
-	    c = getc(stdin); ungetc(c, stdin);
-	    if (feof(stdin))
-		break;
+	    for(;;)
+	    {
+		decode(stdin);
+		c = getc(stdin); ungetc(c, stdin);
+		if (feof(stdin))
+		    break;
+	    }
 	}
 	printf("\n");
 

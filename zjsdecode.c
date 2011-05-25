@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.54 2007/05/08 00:23:49 rick Exp $
+ * $Id: zjsdecode.c,v 1.63 2009/01/22 16:43:17 rick Exp $
  */
 
 /*b
@@ -40,6 +40,7 @@ char	*RawFile;
 char	*DecFile;
 int	PrintOffset = 0;
 int	PrintHexOffset = 0;
+int	DoPad = 1;
 
 void
 debug(int level, char *fmt, ...)
@@ -93,8 +94,9 @@ usage(void)
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"
 "       -r basename Basename of .jbg file for saving raw planes\n"
-"       -o          Print file offsets\n"
 "       -h          Print hex file offsets\n"
+"       -o          Print file offsets\n"
+"       -p          Don't do 4 byte padding\n"
 "       -D lvl      Set Debug level [%d]\n"
     , Debug
     );
@@ -183,7 +185,13 @@ decode(FILE *fp)
 		printf("%d:	", curOff);
 	    else if (PrintHexOffset)
 		printf("%6x:	", curOff);
-	    fputs(buf, stdout);
+	    if (buf[0] == '\033')
+	    {
+		printf("\\033");
+		fputs(buf+1, stdout);
+	    }
+	    else
+		fputs(buf, stdout);
 	    curOff += strlen(buf);
 	    if (strcmp(buf, "@PJL ENTER LANGUAGE = ZJS\r\n") == 0)
 		break;
@@ -194,7 +202,10 @@ decode(FILE *fp)
 	    }
 	}
 	if (feof(fp))
+	{
+	    printf("\n");
 	    return;
+	}
     }
 
     /*
@@ -268,7 +279,9 @@ decode(FILE *fp)
 	    printf("%s, %ld items", codestr, (long) hdr.items);
 	else
 	    printf("ZJT_0x%lx, %ld items", (long) hdr.type, (long) hdr.items);
-	if (hdr.size & 3)
+	if (DoPad == 0)
+	    padding = 0;
+	else if (hdr.size & 3)
 	{
 	    printf(" (unaligned size)");
 	    padding = 4 - (hdr.size & 3);
@@ -378,6 +391,14 @@ decode(FILE *fp)
 		CODESTR(ZJI_INCRY)			break;
 		CODESTR(ZJI_JBIG_BIH)			break;
 		CODESTR(ZJI_ECONOMODE)			break;
+		CODESTR(ZJI_HP_CDOTS)			break;
+		CODESTR(ZJI_HP_MDOTS)			break;
+		CODESTR(ZJI_HP_YDOTS)			break;
+		CODESTR(ZJI_HP_KDOTS)			break;
+		CODESTR(ZJI_HP_CWHITE)			break;
+		CODESTR(ZJI_HP_MWHITE)			break;
+		CODESTR(ZJI_HP_YWHITE)			break;
+		CODESTR(ZJI_HP_KWHITE)			break;
 
 		// Zenographics ZJ format
 		CODESTR(ZJI_ZX_0x6c)			break;
@@ -450,7 +471,7 @@ decode(FILE *fp)
 		    printf("	ZJI_0x%x, BYTELUT (len=%d)", ihdr.item, val);
 		if (ihdr.item == ZJI_JBIG_BIH && val == 20)
 		{
-		    bihlen = fread(bih, 1, len = sizeof(bih), stdin);
+		    bihlen = fread(bih, 1, len = sizeof(bih), fp);
 		    if (bihlen <= 0)
 			isize = 0;
 		    else
@@ -497,7 +518,7 @@ decode(FILE *fp)
 
 	    if (hdr.type == ZJT_JBIG_BIH)
 	    {
-		bihlen = fread(bih, 1, len = sizeof(bih), stdin);
+		bihlen = fread(bih, 1, len = sizeof(bih), fp);
 		if (bihlen <= 0)
 		    size = 0;
 		else
@@ -563,7 +584,7 @@ decode(FILE *fp)
 			    int	h, w, len;
 			    unsigned char *image;
 
-			    // debug(0, "JBG_OK: %d\n", pn);
+			    // debug(0, "JBG_EOK: %d\n", pn);
 			    h = jbg_dec_getheight(&s[pn]);
 			    w = jbg_dec_getwidth(&s[pn]);
 			    image = jbg_dec_getimage(&s[pn], 0);
@@ -574,12 +595,12 @@ decode(FILE *fp)
 				sprintf(buf, "%s-%02d-%d.pbm",
 					DecFile, pageNum, planeNum-1);
 				dfp = fopen(buf,
-					    imageCnt[planeNum] ? "a" : "w");
+					    imageCnt[planeNum-1] ? "a" : "w");
 				if (dfp)
 				{
-				    if (imageCnt[planeNum] == 0)
+				    if (imageCnt[planeNum-1] == 0)
 					fprintf(dfp, "P4\n%8d %8d\n", w, h);
-				    imageCnt[planeNum] += incrY;
+				    imageCnt[planeNum-1] += incrY;
 				    fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				}
@@ -597,7 +618,7 @@ decode(FILE *fp)
 			    DecFile, pageNum, planeNum-1);
 		    dfp = fopen(buf, "r+");
 		    fseek(dfp, 12, 0);
-		    fprintf(dfp, "%8d\n", imageCnt[planeNum]);
+		    fprintf(dfp, "%8d\n", imageCnt[planeNum-1]);
 		    fclose(dfp);
 		}
 	    }
@@ -637,13 +658,14 @@ main(int argc, char *argv[])
 	extern char	*optarg;
 	int		c;
 
-	while ( (c = getopt(argc, argv, "d:hor:D:?h")) != EOF)
+	while ( (c = getopt(argc, argv, "d:hopr:D:?h")) != EOF)
 		switch (c)
 		{
 		case 'd': DecFile = optarg; break;
 		case 'r': RawFile = optarg; break;
-		case 'o': PrintOffset = 1; break;
 		case 'h': PrintHexOffset = 1; break;
+		case 'o': PrintOffset = 1; break;
+		case 'p': DoPad = 0; break;
 		case 'D': Debug = atoi(optarg); break;
 		default: usage(); exit(1);
 		}
@@ -651,12 +673,31 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	for(;;)
-	{
-	    decode(stdin);
-	    c = getc(stdin); ungetc(c, stdin);
-	    if (feof(stdin))
-		break;
+        if (argc > 0)
+        {
+            FILE        *fp;
+
+            fp = fopen(argv[0], "r");
+            if (!fp)
+                error(1, "file '%s' doesn't exist\n", argv[0]);
+            for (;;)
+            {
+                decode(fp);
+                c = getc(fp); ungetc(c, fp);
+                if (feof(fp))
+                    break;
+            }
+            fclose(fp);
+        }
+        else
+        {
+	    for(;;)
+	    {
+		decode(stdin);
+		c = getc(stdin); ungetc(c, stdin);
+		if (feof(stdin))
+		    break;
+	    }
 	}
 
 	exit(0);

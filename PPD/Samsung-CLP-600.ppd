@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,11 +52,17 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
+*1284DeviceID: "DRV:Dfoo2qpdl,R1,M0,TF;"
+
+*driverName foo2qpdl/foo2qpdl: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2qpdl.rkkda.com/"
+*driverObsolete: False
 
 
 
 
-*HWMargins: 9 12.00 9 12
+*HWMargins: 9 12.00 9 +12.00
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -75,6 +81,41 @@
 *FoomaticRIPCommandLine: "foo2qpdl-wrapper %A"
 
 *OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=z1: "-z1 "
+
+*OpenUI *ColorMode/Color Mode: PickOne
+*FoomaticRIPOption ColorMode: enum CmdLine A
+*OrderDependency: 120 AnySetup *ColorMode
+*DefaultColorMode: Monochrome
+*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
+*FoomaticRIPOptionSetting ColorMode=Color: "-c "
+*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
+*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
+*CloseUI: *ColorMode
+
+*OpenUI *Resolution/Resolution: PickOne
+*FoomaticRIPOption Resolution: enum CmdLine A
+*OrderDependency: 130 AnySetup *Resolution
+*DefaultResolution: 1200x600dpi
+*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
+*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*Resolution 1200x1200dpi/1200x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x1200dpi"
+*FoomaticRIPOptionSetting Resolution=1200x1200dpi: "-r1200x1200 "
+*CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -165,8 +206,10 @@
 *FoomaticRIPOption InputSlot: enum CmdLine A
 *OrderDependency: 150 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Tray1/Tray 1: "%% FoomaticRIPOptionSetting: InputSlot=Tray1"
+*InputSlot Tray1/Upper / Tray 1: "%% FoomaticRIPOptionSetting: InputSlot=Tray1"
 *FoomaticRIPOptionSetting InputSlot=Tray1: "-s4 "
+*InputSlot Tray2/Lower / Tray 2: "%% FoomaticRIPOptionSetting: InputSlot=Tray2"
+*FoomaticRIPOptionSetting InputSlot=Tray2: "-s5 "
 *InputSlot Auto/Auto Select: "%% FoomaticRIPOptionSetting: InputSlot=Auto"
 *FoomaticRIPOptionSetting InputSlot=Auto: "-s1 "
 *InputSlot Manual/Manual Select: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
@@ -218,38 +261,6 @@
 *Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
 *FoomaticRIPOptionSetting Duplex=None: "-d1 "
 *CloseUI: *Duplex
-
-*OpenUI *Resolution/Resolution: PickOne
-*FoomaticRIPOption Resolution: enum CmdLine A
-*OrderDependency: 130 AnySetup *Resolution
-*DefaultResolution: 1200x600dpi
-*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
-*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
-*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
-*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
-*Resolution 1200x1200dpi/1200x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x1200dpi"
-*FoomaticRIPOptionSetting Resolution=1200x1200dpi: "-r1200x1200 "
-*CloseUI: *Resolution
-
-*OpenUI *Quality/Printing Quality: PickOne
-*FoomaticRIPOption Quality: enum CmdLine A
-*OrderDependency: 110 AnySetup *Quality
-*DefaultQuality: normal
-*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
-*FoomaticRIPOptionSetting Quality=draft: " -t  "
-*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
-*FoomaticRIPOptionSetting Quality=normal: "  "
-*CloseUI: *Quality
-
-*OpenUI *ColorMode/Color Mode: PickOne
-*FoomaticRIPOption ColorMode: enum CmdLine A
-*OrderDependency: 120 AnySetup *ColorMode
-*DefaultColorMode: Monochrome
-*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c "
-*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
-*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
-*CloseUI: *ColorMode
 
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
@@ -370,14 +381,26 @@
 *DefaultICM: clp600
 *ICM clp300/CLP-300: "%% FoomaticRIPOptionSetting: ICM=clp300"
 *FoomaticRIPOptionSetting ICM=clp300: "-C10 -Gsamclp300-0.icm "
+*ICM clp315/CLP-315: "%% FoomaticRIPOptionSetting: ICM=clp315"
+*FoomaticRIPOptionSetting ICM=clp315: "-C10 -Gsamclp315-argyll-0.icm "
 *ICM clp600/CLP-600: "%% FoomaticRIPOptionSetting: ICM=clp600"
 *FoomaticRIPOptionSetting ICM=clp600: "-z1 "
+*ICM clp610/CLP-610: "%% FoomaticRIPOptionSetting: ICM=clp610"
+*FoomaticRIPOptionSetting ICM=clp610: "-z2 "
+*ICM clp3175/CLP-3175: "%% FoomaticRIPOptionSetting: ICM=clp3175"
+*FoomaticRIPOptionSetting ICM=clp3175: "-C10 -Gsamclp315-argyll-0.icm &&
+"
+*End
+*ICM clx2160/CLX-2160: "%% FoomaticRIPOptionSetting: ICM=clx2160"
+*FoomaticRIPOptionSetting ICM=clx2160: "-C10 -Gsamclp300-0.icm "
 *ICM clx3160/CLX-3160: "%% FoomaticRIPOptionSetting: ICM=clx3160"
 *FoomaticRIPOptionSetting ICM=clx3160: "-C10 -Gsamclp300-0.icm "
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
 *ICM ph6110/Phaser 6110: "%% FoomaticRIPOptionSetting: ICM=ph6110"
 *FoomaticRIPOptionSetting ICM=ph6110: "-C10 -Gsamclp300-0.icm "
+*ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
+*FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
 *CloseUI: *ICM
 
 *CloseGroup: Adjustment

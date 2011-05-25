@@ -36,6 +36,12 @@
 		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>600x600dpi</en> </ev_shortname>
 	    <ev_driverval>600x600</ev_driverval>
+	    <constraints>
+	        <constraint sense="false">
+	    	    <make>Minolta</make>
+	    	    <model>magicolor 2200 DL</model>
+	        </constraint>
+	    </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-Resolution-1200x600">
 	    <ev_longname> <en>1200x600 dpi</en> </ev_longname>
@@ -62,28 +68,28 @@
 	    <ev_driverval>2400x600</ev_driverval>
 	    <constraints>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1000</model>
+	    	    <make>HP</make> <model>LaserJet 1000</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1005</model>
+	    	    <make>HP</make> <model>LaserJet 1005</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1018</model>
+	    	    <make>HP</make> <model>LaserJet 1018</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1020</model>
+	    	    <make>HP</make> <model>LaserJet 1020</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1022</model>
+	    	    <make>HP</make> <model>LaserJet 1022</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>Minolta</make>
-	    	    <model>magicolor 2200 DL</model>
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>Minolta</make> <model>magicolor 2200 DL</model>
 	        </constraint>
             </constraints>
 	</enum_val>

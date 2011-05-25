@@ -1,6 +1,6 @@
 //
 //  Little cms
-//  Copyright (C) 1998-2004 Marti Maria
+//  Copyright (C) 1998-2007 Marti Maria
 //
 // Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the "Software"), 
@@ -288,71 +288,107 @@ cmsHPROFILE CreateNamedColorDevicelink(cmsHTRANSFORM xform)
 
 cmsHPROFILE LCMSEXPORT cmsTransform2DeviceLink(cmsHTRANSFORM hTransform, DWORD dwFlags)
 {
-        cmsHPROFILE hICC;
-        _LPcmsTRANSFORM v = (_LPcmsTRANSFORM) hTransform;
-        LPLUT Lut;
-        BOOL MustFreeLUT;
-      
-        // Check if is a named color transform
-
-        if (cmsGetDeviceClass(v ->InputProfile) == icSigNamedColorClass) {
-                           
-            return CreateNamedColorDevicelink(hTransform);
-                
-        }
-
-        if (v ->DeviceLink) {
-
-                Lut = v -> DeviceLink;
-                MustFreeLUT = FALSE;
-        }
-        else {
-
-            Lut = _cmsPrecalculateDeviceLink(hTransform, dwFlags);
-            if (!Lut) return NULL;
-            MustFreeLUT = TRUE;
-        }
-
-       hICC = _cmsCreateProfilePlaceholder();
-       if (!hICC) {                          // can't allocate
-      
-            if (MustFreeLUT) cmsFreeLUT(Lut);
-            return NULL;
-       }
-
-
-       FixColorSpaces(hICC, v -> EntryColorSpace, v -> ExitColorSpace, dwFlags);             
-
-       cmsSetRenderingIntent(hICC,  v -> Intent); 
-              
-       // Implement devicelink profile using following tags:
-       //
-       //  1 icSigProfileDescriptionTag
-       //  2 icSigMediaWhitePointTag
-       //  3 icSigAToB0Tag
-       
-                 
-       cmsAddTag(hICC, icSigDeviceMfgDescTag,       (LPVOID) "LittleCMS");       
-       cmsAddTag(hICC, icSigProfileDescriptionTag,  (LPVOID) "Device link");
-       cmsAddTag(hICC, icSigDeviceModelDescTag,     (LPVOID) "Device link");      
+    cmsHPROFILE hICC;
+    _LPcmsTRANSFORM v = (_LPcmsTRANSFORM) hTransform;
+    LPLUT Lut;
+    LCMSBOOL MustFreeLUT;
+    LPcmsNAMEDCOLORLIST InputColorant = NULL;
+    LPcmsNAMEDCOLORLIST OutputColorant = NULL;
     
-
-       cmsAddTag(hICC, icSigMediaWhitePointTag,  (LPVOID) cmsD50_XYZ());
-
-       if (cmsGetDeviceClass(hICC) == icSigOutputClass) {
-           
+    
+    // Check if is a named color transform
+    
+    if (cmsGetDeviceClass(v ->InputProfile) == icSigNamedColorClass) {
+        
+        return CreateNamedColorDevicelink(hTransform);
+        
+    }
+    
+    if (v ->DeviceLink) {
+        
+        Lut = v -> DeviceLink;
+        MustFreeLUT = FALSE;
+    }
+    else {
+        
+        Lut = _cmsPrecalculateDeviceLink(hTransform, dwFlags);
+        if (!Lut) return NULL;
+        MustFreeLUT = TRUE;
+    }
+    
+    hICC = _cmsCreateProfilePlaceholder();
+    if (!hICC) {                          // can't allocate
+        
+        if (MustFreeLUT) cmsFreeLUT(Lut);
+        return NULL;
+    }
+    
+    
+    FixColorSpaces(hICC, v -> EntryColorSpace, v -> ExitColorSpace, dwFlags);             
+    
+    cmsSetRenderingIntent(hICC,  v -> Intent); 
+    
+    // Implement devicelink profile using following tags:
+    //
+    //  1 icSigProfileDescriptionTag
+    //  2 icSigMediaWhitePointTag
+    //  3 icSigAToB0Tag
+    
+    
+    cmsAddTag(hICC, icSigDeviceMfgDescTag,       (LPVOID) "LittleCMS");       
+    cmsAddTag(hICC, icSigProfileDescriptionTag,  (LPVOID) "Device link");
+    cmsAddTag(hICC, icSigDeviceModelDescTag,     (LPVOID) "Device link");      
+    
+    
+    cmsAddTag(hICC, icSigMediaWhitePointTag,  (LPVOID) cmsD50_XYZ());
+    
+    if (cmsGetDeviceClass(hICC) == icSigOutputClass) {
                 
-                cmsAddTag(hICC, icSigBToA0Tag, (LPVOID) Lut);
-       }
-
-       else
-                cmsAddTag(hICC, icSigAToB0Tag, (LPVOID) Lut);
-
+        cmsAddTag(hICC, icSigBToA0Tag, (LPVOID) Lut);
+    }
+    else
+        cmsAddTag(hICC, icSigAToB0Tag, (LPVOID) Lut);
+    
+    
+    
+    // Try to read input and output colorant table
+    if (cmsIsTag(v ->InputProfile, icSigColorantTableTag)) {
+        
+        // Input table can only come in this way.
+        InputColorant = cmsReadColorantTable(v ->InputProfile, icSigColorantTableTag);
+    }
+    
+    // Output is a little bit more complex.    
+    if (cmsGetDeviceClass(v ->OutputProfile) == icSigLinkClass) {
+        
+        // This tag may exist only on devicelink profiles.        
+        if (cmsIsTag(v ->OutputProfile, icSigColorantTableOutTag)) {
+            
+            OutputColorant = cmsReadColorantTable(v ->OutputProfile, icSigColorantTableOutTag);
+        }
+        
+    } else {
+        
+        if (cmsIsTag(v ->OutputProfile, icSigColorantTableTag)) {
+            
+            OutputColorant = cmsReadColorantTable(v ->OutputProfile, icSigColorantTableTag);
+        }     
+    }
+    
+    if (InputColorant) 
+           cmsAddTag(hICC, icSigColorantTableTag, InputColorant);       
        
-       if (MustFreeLUT) cmsFreeLUT(Lut);
-
-       return hICC;
-
+    if (OutputColorant) 
+           cmsAddTag(hICC, icSigColorantTableOutTag, OutputColorant);       
+       
+       
+       
+    if (MustFreeLUT) cmsFreeLUT(Lut);
+    if (InputColorant) cmsFreeNamedColorList(InputColorant);
+    if (OutputColorant) cmsFreeNamedColorList(OutputColorant);
+       
+    return hICC;
+       
 }
 
 
@@ -379,6 +415,7 @@ cmsHPROFILE LCMSEXPORT cmsCreateLinearizationDeviceLink(icColorSpaceSignature Co
      
        // Creates a LUT with prelinearization step only
        Lut = cmsAllocLUT();
+       if (Lut == NULL) return NULL;
 
        // Set up channels
        Lut ->InputChan = Lut ->OutputChan = _cmsChannelsOf(ColorSpace);
@@ -481,6 +518,10 @@ cmsHPROFILE LCMSEXPORT cmsCreateInkLimitingDeviceLink(icColorSpaceSignature Colo
       
        // Creates a LUT with 3D grid only
        Lut = cmsAllocLUT();
+       if (Lut == NULL) {
+           cmsCloseProfile(hICC);
+           return NULL;
+           }
 
 
        cmsAlloc3DGrid(Lut, 17, _cmsChannelsOf(ColorSpace), 
@@ -517,8 +558,9 @@ static
 LPLUT Create3x3EmptyLUT(void)
 {
         LPLUT AToB0 = cmsAllocLUT();
-        AToB0 -> InputChan = AToB0 -> OutputChan = 3;
+        if (AToB0 == NULL) return NULL;
 
+        AToB0 -> InputChan = AToB0 -> OutputChan = 3;
         return AToB0;
 }
 
@@ -530,8 +572,8 @@ cmsHPROFILE LCMSEXPORT cmsCreateLabProfile(LPcmsCIExyY WhitePoint)
         cmsHPROFILE hProfile;        
         LPLUT Lut;
 
-
         hProfile = cmsCreateRGBProfile(WhitePoint == NULL ? cmsD50_xyY() : WhitePoint, NULL, NULL);
+        if (hProfile == NULL) return NULL;
 
         cmsSetDeviceClass(hProfile, icSigAbstractClass);
         cmsSetColorSpace(hProfile,  icSigLabData);
@@ -544,7 +586,10 @@ cmsHPROFILE LCMSEXPORT cmsCreateLabProfile(LPcmsCIExyY WhitePoint)
 
        // An empty LUTs is all we need
        Lut = Create3x3EmptyLUT();
-       if (Lut == NULL) return NULL;
+       if (Lut == NULL) {
+           cmsCloseProfile(hProfile);
+           return NULL;
+           }
 
        cmsAddTag(hProfile, icSigAToB0Tag,    (LPVOID) Lut);
        cmsAddTag(hProfile, icSigBToA0Tag,    (LPVOID) Lut);
@@ -561,8 +606,8 @@ cmsHPROFILE LCMSEXPORT cmsCreateLab4Profile(LPcmsCIExyY WhitePoint)
         cmsHPROFILE hProfile;        
         LPLUT Lut;
 
-
         hProfile = cmsCreateRGBProfile(WhitePoint == NULL ? cmsD50_xyY() : WhitePoint, NULL, NULL);
+        if (hProfile == NULL) return NULL;
 
         cmsSetProfileICCversion(hProfile, 0x4000000);
 
@@ -577,7 +622,10 @@ cmsHPROFILE LCMSEXPORT cmsCreateLab4Profile(LPcmsCIExyY WhitePoint)
 
        // An empty LUTs is all we need
        Lut = Create3x3EmptyLUT();
-       if (Lut == NULL) return NULL;
+       if (Lut == NULL) {
+           cmsCloseProfile(hProfile);
+           return NULL;
+           }
 
        Lut -> wFlags |= LUT_V4_INPUT_EMULATE_V2;
        cmsAddTag(hProfile, icSigAToB0Tag,    (LPVOID) Lut);
@@ -599,6 +647,7 @@ cmsHPROFILE LCMSEXPORT cmsCreateXYZProfile(void)
         LPLUT Lut;
 
         hProfile = cmsCreateRGBProfile(cmsD50_xyY(), NULL, NULL);
+        if (hProfile == NULL) return NULL;
 
         cmsSetDeviceClass(hProfile, icSigAbstractClass);
         cmsSetColorSpace(hProfile, icSigXYZData);
@@ -610,15 +659,16 @@ cmsHPROFILE LCMSEXPORT cmsCreateXYZProfile(void)
 
        // An empty LUTs is all we need
        Lut = Create3x3EmptyLUT();
-       if (Lut == NULL) return NULL;
+       if (Lut == NULL) {
+           cmsCloseProfile(hProfile);
+           return NULL;
+           }
 
        cmsAddTag(hProfile, icSigAToB0Tag,    (LPVOID) Lut);
        cmsAddTag(hProfile, icSigBToA0Tag,    (LPVOID) Lut);
        cmsAddTag(hProfile, icSigPreview0Tag, (LPVOID) Lut);
 
-       cmsFreeLUT(Lut);
-
-    
+       cmsFreeLUT(Lut);    
        return hProfile;
 }
 
@@ -656,6 +706,7 @@ LPGAMMATABLE Build_sRGBGamma(void)
     return cmsBuildParametricGamma(1024, 4, Parameters);
 }
 
+// Create the ICC virtual profile for sRGB space 
 cmsHPROFILE LCMSEXPORT cmsCreate_sRGBProfile(void)
 {
        cmsCIExyY       D65;
@@ -672,6 +723,7 @@ cmsHPROFILE LCMSEXPORT cmsCreate_sRGBProfile(void)
            
        hsRGB = cmsCreateRGBProfile(&D65, &Rec709Primaries, Gamma22);
        cmsFreeGamma(Gamma22[0]);
+       if (hsRGB == NULL) return NULL;
 
       
        cmsAddTag(hsRGB, icSigDeviceMfgDescTag,      (LPVOID) "(lcms internal)");
@@ -680,7 +732,6 @@ cmsHPROFILE LCMSEXPORT cmsCreate_sRGBProfile(void)
         
        return hsRGB;
 }
-
 
 
 
@@ -726,7 +777,6 @@ int bchswSampler(register WORD In[], register WORD Out[], register LPVOID Cargo)
 
     cmsFloat2LabEncoded(Out, &LabOut);
     
-
     return TRUE;
 }
 
@@ -772,7 +822,10 @@ cmsHPROFILE LCMSEXPORT cmsCreateBCHSWabstractProfile(int nLUTPoints,
       
        // Creates a LUT with 3D grid only
        Lut = cmsAllocLUT();
-
+       if (Lut == NULL) {
+           cmsCloseProfile(hICC);
+           return NULL;
+           }
 
        cmsAlloc3DGrid(Lut, nLUTPoints, 3, 3);
 
@@ -823,7 +876,10 @@ cmsHPROFILE LCMSEXPORT cmsCreateNULLProfile(void)
 
        // An empty LUTs is all we need
        Lut = cmsAllocLUT();
-       if (Lut == NULL) return NULL;
+       if (Lut == NULL) {
+           cmsCloseProfile(hProfile);
+           return NULL;
+           }
 
        Lut -> InputChan = 3;
        Lut -> OutputChan = 1;

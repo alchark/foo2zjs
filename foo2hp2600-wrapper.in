@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hp2600-wrapper.in,v 1.48 2007/06/11 00:48:32 rick Exp $'
+VERSION='$Id: foo2hp2600-wrapper.in,v 1.62 2008/12/07 00:45:18 rick Exp $'
 
 #
 # Printer Notes:
@@ -77,6 +77,7 @@ Printer Tweaking Options:
 -P                Do not output START_PLANE codes.  May be needed by some
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
+-z model          Model: 0=HP CLJ 1600/2600n; 1=HP CLJ CP1215 [$MODEL]
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -182,8 +183,8 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs8 -v >/dev/null 2>&1; then
-        GSBIN=${GSBIN:-gs8}
+if gs.foo -v >/dev/null 2>&1; then
+        GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
 fi
@@ -194,6 +195,7 @@ DUPLEX=1
 BPP=1
 COLOR=
 COLORMODE=default
+MODEL=0
 QUALITY=1
 QUALITY=wts
 
@@ -217,6 +219,7 @@ EXTRAPAD=
 SAVETONER=
 NUP_ORIENT=
 GSDEV=-sDEVICE=pbmraw
+SEGFAULT=0
 # What mode to use if the user wants us to pick the "best" mode
 case `$GSBIN --version` in
 7*)
@@ -229,6 +232,7 @@ case `$GSBIN --version` in
 	    GAMMAFILE=km2430_2.icm
 	else
 	    GAMMAFILE=hpclj2600n-0.icm
+	SEGFAULT=1
 	fi
 	QUALITY=1
 	;;
@@ -237,7 +241,7 @@ case `$GSBIN --version` in
 	;;
 esac
 
-while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tABS:D:G:I:PX:Vh?" opt
+while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
 do
 	case $opt in
 	b)	BPP="$OPTARG";;
@@ -251,6 +255,7 @@ do
 	r)	RES="$OPTARG";;
 	s)	SOURCE="$OPTARG";;
 	t)	SAVETONER="-t";;
+	z)	MODEL="$OPTARG";;
 	l)	CLIP_LR="-l $OPTARG";;
 	u)	CLIP_UL="-u $OPTARG";;
 	L)	CLIP_LOG="-L $OPTARG";;
@@ -275,7 +280,7 @@ do
 		s*)	NUP_ORIENT=-r;;
 		p*|*)	NUP_ORIENT=;;
 		esac;;
-	V)	echo "$VERSION"; foo2hp -V; exit 0;;
+	V)	echo "$VERSION"; foo2hp -V; foo2zjs-pstops -V; exit 0;;
 	h|\?)
 		if [ "$CMDLINE" != "-?" -a "$CMDLINE" != -h ]; then
 		    echo "Illegal command:"
@@ -310,12 +315,18 @@ case "$BPP" in
 	fi
 	case "$GAMMAFILE" in
 	default)
-	    if is32 $GSBIN; then
-		GAMMAFILE=km2430_2.icm
-		GAMMAFILE=hpclj2600n-1.icm
-	    else
-		GAMMAFILE=hpclj2600n-0.icm
-	    fi
+	    case "$MODEL" in
+	    0)
+		if [ $SEGFAULT = 0 ]; then
+		    GAMMAFILE=hpclj2600n-1.icm
+		else
+		    GAMMAFILE=hpclj2600n-0.icm
+		fi
+		;;
+	    1)
+		GAMMAFILE=hp1215-argyll-0.icm
+		;;
+	    esac
 	    ;;
 	none) GAMMAFILE=;;
 	esac
@@ -330,20 +341,38 @@ case "$BPP" in
 	    GSDEV="-sDEVICE=cups -dcupsColorSpace=6 -dcupsBitsPerColor=2"
 	    GSDEV="$GSDEV -dcupsColorOrder=2"
 	fi
+	if [ $GSBIN = "gs.foo" ]; then
+	    GSBIN=gs
+	fi
 
 	case "$GAMMAFILE" in
 	default) 
-	    if is32 $GSBIN; then
-		GAMMAFILE=km2430_2.icm
-		GAMMAFILE=hpclj2600n-1.icm
-	    else
-		GAMMAFILE=
-	    fi
+	    case "$MODEL" in
+	    0)
+		if is32 $GSBIN; then
+		    GAMMAFILE=km2430_2.icm
+		    GAMMAFILE=hpclj2600n-1.icm
+		else
+		    GAMMAFILE=
+		fi
+		;;
+	    1)
+		GAMMAFILE=hp1215-argyll-0.icm
+		;;
+	    esac
 	    ;;
 	none) GAMMAFILE=;;
 	esac
 	;;
 *)	error "Illegal number of bits per plane ($BPP)";;
+esac
+
+#
+#	Validate model code
+#
+case "$MODEL" in
+0|1)	;;
+*)	error "Unknown model code $MODEL";;
 esac
 
 #
@@ -355,10 +384,10 @@ case "$QUALITY" in
     GSOPTS="-dCOLORSCREEN $GSOPTS"
     ;;
 2)
-    GSOPTS="-dMaxBitMap=500000000 $GSOPTS"
+    GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
     ;;
 wts)
-    GSOPTS="-dCOLORSCREEN $GSOPTS"
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
 esac
 
@@ -459,26 +488,32 @@ Custom*)
 		#0
 		#pop pop pop pop pop
 
-		TMPFILE=/tmp/cus$$
+		#%%BeginFeature: *CustomPageSize True
+		#792.000000 612.000000 1 0.000000 0.000000
+		#pop pop pop pop pop
+
+		if [ $DEBUG = 0 ]; then
+		    TMPFILE=/tmp/cus$$
+		else
+		    TMPFILE=/tmp/custom.ps
+		fi
 		cat >$TMPFILE
 		exec <$TMPFILE
 
-		XDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;p;}'`
-		case "$XDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size XDIM != 1-99999"
+		tmp=`head -n 10000 $TMPFILE \
+		    | sed -n '/CustomPageSize/{n;p;n;p;}' \
+		    | tr '\n' ' '`
+		case "$tmp" in
+		[0-9]*\ [0-9]*)
+		    XDIM=`echo "$tmp" | sed 's/ .*//'`
+		    YDIM=`echo "$tmp" | sed -e 's/^[^ ]* //' -e 's/ .*//'`
+		    ;;
+		*)
+		    if [ $DEBUG = 0 ]; then rm -f $TMPFILE; fi
+		    error "Custom page size [XY]DIM != 1-99999"
 		    ;;
 		esac
 		XDIM=`dc -e "$XDIM 1200* 72/p"`
-
-		YDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;n;p;}'`
-		case "$YDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size YDIM != 1-99999"
-		    ;;
-		esac
 		YDIM=`dc -e "$YDIM 600* 72/p"`
 		PAPER=1;        paper=letter;
                 set_clipping 2 80     2 80
@@ -535,6 +570,9 @@ case $NUP in
 [234689]|1[024568])	PREFILTER="nup";;
 *)			PREFILTER=cat;;
 esac
+if [ "$DEBUG" -ge 9 ]; then
+    PREFILTER="tee /tmp/$BASENAME.ps"
+fi
 
 #
 #	Overload -G.  If the file name ends with ".icm" or ".ICM"
@@ -557,7 +595,8 @@ create_crd() {
 		|| error "Problem converting .ICM file to Postscript"
 	    ;;
 	esac
-	    
+
+	PSTOPS_OPTS="$PSTOPS_OPTS -c"
 	cat > $ICCTMP.usecie.ps <<-EOF
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
@@ -610,6 +649,8 @@ case "$RES" in
     2400x600)	SCREEN=screen2400.ps;;
 esac
 
+PSTOPS_OPTS="-n"
+
 case "$COLORMODE" in
 0|"")
     # Monochrome
@@ -655,6 +696,10 @@ case "$COLORMODE" in
     ;;
 esac
 
+if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -w"
+fi
+
 if [ "" != "$COLOR" ]; then
     if [ "" = "$AIB" -a "" = "$BC" ]; then
 	# Faster, but can't handle AllIsBlack or BlackClears
@@ -688,10 +733,10 @@ fi
 #
 GS="$GSBIN -q -dBATCH -dSAFER -dQUIET -dNOPAUSE"
 
-sed 's#^[^/]*cupsPSLevel2#false#' | \
+foo2zjs-pstops $PSTOPS_OPTS | \
 $PREFILTER \
 | ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
-    -sOutputFile="|cat 1>&3" $GAMMAFILE - >/dev/null 2>&1) 3>&1 \
+    -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null 2>&1) 3>&1 \
 | foo2hp -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
 	    $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
 	    -J "$LPJOB" -U "$USER" \

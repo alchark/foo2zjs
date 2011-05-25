@@ -1,6 +1,6 @@
 //
 //  Little cms
-//  Copyright (C) 1998-2005 Marti Maria
+//  Copyright (C) 1998-2007 Marti Maria
 //
 // Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the "Software"), 
@@ -42,16 +42,16 @@ double cdecl VEC3length(LPVEC3 a);
 double cdecl VEC3distance(LPVEC3 a, LPVEC3 b);
 
 
-void   cdecl MAT3identity(LPMAT3 a);
-void   cdecl MAT3per(LPMAT3 r, LPMAT3 a, LPMAT3 b);
-int    cdecl MAT3inverse(LPMAT3 a, LPMAT3 b);
-BOOL   cdecl MAT3solve(LPVEC3 x, LPMAT3 a, LPVEC3 b);
-double cdecl MAT3det(LPMAT3 m);
-void   cdecl MAT3eval(LPVEC3 r, LPMAT3 a, LPVEC3 v);
-void   cdecl MAT3toFix(LPWMAT3 r, LPMAT3 v);
-void   cdecl MAT3evalW(LPWVEC3 r, LPWMAT3 a, LPWVEC3 v);
-void   cdecl MAT3perK(LPMAT3 r, LPMAT3 v, double d);
-void   cdecl MAT3scaleAndCut(LPWMAT3 r, LPMAT3 v, double d);
+void      cdecl MAT3identity(LPMAT3 a);
+void      cdecl MAT3per(LPMAT3 r, LPMAT3 a, LPMAT3 b);
+int       cdecl MAT3inverse(LPMAT3 a, LPMAT3 b);
+LCMSBOOL  cdecl MAT3solve(LPVEC3 x, LPMAT3 a, LPVEC3 b);
+double    cdecl MAT3det(LPMAT3 m);
+void      cdecl MAT3eval(LPVEC3 r, LPMAT3 a, LPVEC3 v);
+void      cdecl MAT3toFix(LPWMAT3 r, LPMAT3 v);
+void      cdecl MAT3evalW(LPWVEC3 r, LPWMAT3 a, LPWVEC3 v);
+void      cdecl MAT3perK(LPMAT3 r, LPMAT3 v, double d);
+void      cdecl MAT3scaleAndCut(LPWMAT3 r, LPMAT3 v, double d);
 
 // --------------------- Implementation ----------------------------
 
@@ -64,6 +64,7 @@ void   cdecl MAT3scaleAndCut(LPWMAT3 r, LPMAT3 v, double d);
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4033)
+#pragma warning(disable : 4035)
 #endif
 
 
@@ -152,6 +153,7 @@ WORD FixedScale(WORD a, Fixed32 s)
 
 #ifdef _MSC_VER
 #pragma warning(default : 4033)
+#pragma warning(default : 4035)
 #endif
 
 #else
@@ -314,13 +316,13 @@ void VEC3minus(LPVEC3 r, LPVEC3 a, LPVEC3 b)
 // Check id two vectors are the same, allowing tolerance
 
 static
-BOOL RangeCheck(double l, double h, double v)
+LCMSBOOL RangeCheck(double l, double h, double v)
 {
        return (v >= l && v <= h);
 }
 
 
-BOOL VEC3equal(LPWVEC3 a, LPWVEC3 b, double Tolerance)
+LCMSBOOL VEC3equal(LPWVEC3 a, LPWVEC3 b, double Tolerance)
 {
        int i;
        double c;
@@ -336,7 +338,7 @@ BOOL VEC3equal(LPWVEC3 a, LPWVEC3 b, double Tolerance)
        return TRUE;
 }
 
-BOOL VEC3equalF(LPVEC3 a, LPVEC3 b, double Tolerance)
+LCMSBOOL VEC3equalF(LPVEC3 a, LPVEC3 b, double Tolerance)
 {
        int i;
        double c;
@@ -431,7 +433,7 @@ void MAT3identity(LPMAT3 a)
 
 // Check if matrix is Identity. Allow a tolerance as %
 
-BOOL MAT3isIdentity(LPWMAT3 a, double Tolerance)
+LCMSBOOL MAT3isIdentity(LPWMAT3 a, double Tolerance)
 {
        int i;
        MAT3 Idd;
@@ -514,16 +516,16 @@ int MAT3inverse(LPMAT3 a, LPMAT3 b)
 
 // Solve a system in the form Ax = b
 
-BOOL MAT3solve(LPVEC3 x, LPMAT3 a, LPVEC3 b)
+LCMSBOOL MAT3solve(LPVEC3 x, LPMAT3 a, LPVEC3 b)
 {
-	MAT3 m, a_1;
+    MAT3 m, a_1;
 
-	CopyMemory(&m, a, sizeof(MAT3));
+    CopyMemory(&m, a, sizeof(MAT3));
 
-	if (!MAT3inverse(&m, &a_1)) return FALSE;  // Singular matrix
+    if (!MAT3inverse(&m, &a_1)) return FALSE;  // Singular matrix
 
-	MAT3eval(x, &a_1, b);
-	return TRUE;
+    MAT3eval(x, &a_1, b);
+    return TRUE;
 }
 
 

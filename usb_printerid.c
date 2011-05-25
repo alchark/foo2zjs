@@ -48,7 +48,7 @@ main (int argc, char *argv[])
     ++argv;
 
     if (argc != 1)
-	error(1, "usage: usb_id_test /dev/usb/lp0\n");
+	error(1, "usage: usb_printerid /dev/usb/lp0\n");
 
     fd = open(argv[0], O_RDWR);
     if (fd < 0)
