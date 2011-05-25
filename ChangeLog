@@ -1,3 +1,44 @@
+2011-05-25	Rick Richardson <rick.richardson@comcast.net>
+	* make install on Fedora 15:
+	    Use "rpm -e --nodeps system-config-printer-udev" instead of "yum".
+
+2011-03-08	Rick Richardson <rick.richardson@comcast.net>
+	* hplj10xx.conf: For FreeBSD 8, s/zjx/xqx/ for HP LJ P???? printers
+	    Ref: Yury G. Kudryashov <urkud.urkud@gmail.com>
+
+2011-02-10	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: fix perms on PPD files.
+
+2011-01-31	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Oki C310dn.
+
+2011-01-23	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug/osx-hplj-hotplug.1in: Man page
+
+2011-01-21	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug/osx-hplj-hotplug.m:
+	  If FWVER is present, then no download is needed.
+
+2011-01-20	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: make install-hotplug for OSX.
+
+2011-01-19	Rick Richardson <rick.richardson@comcast.net>
+	* Change foo2hp2600-wrapper to remove "expr substr ..." and
+	  replace it with "echo ... | sed ..." for OSX (because expr != gexpr)
+
+2011-01-18	Rick Richardson <rick.richardson@comcast.net>
+	* New program: osx-hplj-hotplug
+	    Does hotplug on Mac OSX.  Add a line to /etc/rc.local and reboot:
+
+	    killall osx-hplj-hotplug; osx-hplj-hotplug \
+		    >/tmp/osx-hplj-hotplug 2>&1 &
+2011-04-15	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Samsung CLP-325, CLP-325W.
+
+2011-03-08	Rick Richardson <rick.richardson@comcast.net>
+	* hplj10xx.conf: For FreeBSD 8, s/zjx/xqx/ for HP LJ P???? printers
+	    Ref: Yury G. Kudryashov <urkud.urkud@gmail.com>
+
 2011-02-10	Rick Richardson <rick.richardson@comcast.net>
 	* Makefile: fix perms on PPD files.
 

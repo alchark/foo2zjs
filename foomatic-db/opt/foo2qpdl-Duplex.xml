@@ -26,6 +26,9 @@
 	    <make>Samsung</make> <model>CLP-315</model>
 	</constraint>
 	<constraint sense="false">
+	    <make>Samsung</make> <model>CLP-325</model>
+	</constraint>
+	<constraint sense="false">
 	    <make>Xerox</make> <model>Phaser 6110</model>
 	</constraint>
     </constraints>

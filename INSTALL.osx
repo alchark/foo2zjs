@@ -17,6 +17,12 @@ by Rick Richardson 01/20/11
     Download and install the "Mac OS X Package (.pkg) Installer".
 
 3) Do:
+    Finder -> Applications -> Utilities -> Terminal
+
+    If bash is not your shell (i.e. using broken tcsh):
+	$ chsh -s bash
+	$ exit
+
     $ export PATH=$PATH:/opt/local/bin
     $ sudo port selfupdate
     $ sudo port install coreutils
@@ -24,14 +30,14 @@ by Rick Richardson 01/20/11
     $ sudo port install ghostscript
 
 	NOTE: Use ghostscript 8.63 or before OR 8.64_2 or after if you want
-	color (i.e. HP CP1215, Samsung, etc..  gs 8.64_1 has a bug in it.
+	color (i.e. HP CP1215, Samsung, etc..).  gs 8.64_1 has a bug in it.
 	Reference: http://bugs.ghostscript.com/show_bug.cgi?id=690287
 
     Ref:
 	$ sudo port list coreutils wget ghostscript
-	coreutils                      @7.5            sysutils/coreutils
-	wget                           @1.11.4         net/wget
-	ghostscript                    @8.70           print/ghostscript
+	coreutils                      @8.10           sysutils/coreutils
+	wget                           @1.12           net/wget
+	ghostscript                    @9.02           print/ghostscript
 
 4) Browse to:
     http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.5.tar.gz
@@ -48,7 +54,7 @@ by Rick Richardson 01/20/11
 5) Now install foo2zjs.  Browse to:
     http://foo2zjs.rkkda.com/
 
-    and follow the instructions.
+    and follow the instructions in http://foo2zjs.rkkda.com/INSTALL.
 
 6)  Now configure the printer
     Choose either 6a) OR 6b)

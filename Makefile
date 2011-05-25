@@ -884,7 +884,7 @@ install-hotplug-test:
 	    echo "      *** Error: system-config-printer-udev is installed!"; \
 	    echo "      ***"; \
 	    echo "      *** Remove it with: (Fedora)"; \
-	    echo "      *** 	# yum remove system-config-printer-udev"; \
+	    echo "      *** 	# rpm -e --nodeps system-config-printer-udev"; \
 	    echo "      *** OR (Ubuntu, Debian)"; \
 	    echo "      *** 	$$ sudo apt-get remove system-config-printer-udev"; \
 	    echo "      ***"; \
@@ -1104,8 +1104,7 @@ testzjs:	testpage.zm \
 
 testpage.zm: testpage.ps foo2zjs-wrapper foo2zjs Makefile FRC
 	#
-	# Tests will pass only if you are using ghostscript-7.05-24.7
-	# or ghostscript-8.70 (gs.foo)
+	# Tests will pass only if you are using ghostscript-8.71-16.fc14
 	#
 	# Monochrome test page for Minolta 2200/2300 DL
 	PATH=.:$$PATH time -p foo2zjs-wrapper testpage.ps > $@

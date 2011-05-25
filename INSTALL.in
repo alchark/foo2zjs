@@ -38,6 +38,7 @@ and firmware.  Select the model number for your printer:
 
     $ ./getweb 300      # Get Samsung CLP-300 .ICM files
     $ ./getweb 315      # Get Samsung CLP-315 .ICM files
+    $ ./getweb 325      # Get Samsung CLP-325 .ICM files
     $ ./getweb 600      # Get Samsung CLP-600 .ICM files
     $ ./getweb 610      # Get Samsung CLP-610 .ICM files
     $ ./getweb 2160     # Get Samsung CLX-2160 .ICM files
@@ -84,7 +85,7 @@ If you use CUPS to manage your printers, you must restart cupsd:
     # make cups		OR	$ sudo make cups
 
 Test operation of programs. Skip this if you don't have the exact same
-version of Ghostscript that I have, ghostscript 8.60 (2007-08-01), because
+version of Ghostscript that I have, Fedora ghostscript 8.71-16.fc14, because
 it will not pass since different versions of Ghostscript generate different
 raster images:
     # make test
@@ -179,7 +180,7 @@ FEDORA NOTES
 	/var/log/messages:Jan 23 07:32:54 dual udev-configure-printer: \
     		invalid or missing IEEE 1284 Device ID
 
-	# yum remove system-config-printer-udev
+	# rpm -e --nodeps system-config-printer-udev
 
 	# shutdown -r now
 
@@ -632,19 +633,26 @@ MANUAL DUPLEX
 	    Fedora: # yum install a2ps
 	    Ubuntu: $ sudo apt-get install a2ps
 
-    -OR-
+    -OR- (Gnome)
 	Print -> Page Setup -> Only print -> Odd Sheets
 
 	then:
 
 	Print -> Page Setup -> Only print -> Even Sheets
 
-    -OR-
+    -OR- (Gnome)
 	Print -> Job -> Odd Pages
 
 	then:
 
 	Print -> Job -> Even Pages 
+
+    -OR- (KDE)
+	Okular -> Print -> Copies -> Page Set -> Odd Pages
+
+	then:
+
+	Okular -> Print -> Copies -> Page Set -> Even Pages
 
     Ref:
 	http://bugzilla.gnome.org/show_bug.cgi?id=520598
@@ -722,6 +730,7 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 
     I need:
 	Samsung CLP-315			default resolution
+	Samsung CLP-325			default resolution
 	Samsung CLP-600			default resolution
 	Samsung CLP-610			default resolution
 	Samsung CLP-620			default resolution
