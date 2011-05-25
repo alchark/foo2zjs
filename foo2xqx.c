@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2xqx.c,v 1.19 2009/03/08 00:14:57 rick Exp $";
+static char Version[] = "$Id: foo2xqx.c,v 1.24 2010/06/19 21:40:00 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -100,6 +100,7 @@ int	SaveToner = 0;
 int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
+int	PrintDensity = 3;
 
 int	IsCUPS = 0;
 
@@ -164,12 +165,14 @@ usage(void)
 "-p paper          Paper code to send to printer [%d]\n"
 "                    1=letter, 5=legal 7=executive 9=A4 11=A5 13=B5\n"
 "                    20=env#10, 27=envDL 28=envC5 34=envB5 37=envMonarch\n"
+"                    257=16k197x273, 263=16k184x260, 264=16k195x270\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
 "                    1=upper 2=lower 4=manual 7=auto\n"
 "                    Code numbers may vary with printer model\n"
 "-t                Draft mode.  Every other pixel is white.\n"
+"-T density        Print density (1-5) [%d].\n"
 "-J filename       Filename string to send to printer [%s]\n"
 "-U username       Username string to send to printer [%s]\n"
 "\n"
@@ -197,6 +200,7 @@ usage(void)
     , Copies
     , ResX , ResY
     , SourceCode
+    , PrintDensity
     , Filename ? Filename : ""
     , Username ? Username : ""
     , UpperLeftX , UpperLeftY
@@ -608,8 +612,8 @@ start_doc(FILE *fp)
 
     fprintf(fp, "\033%%-12345X@PJL JOB\n");
     fprintf(fp, "@PJL SET JAMRECOVERY=OFF\n");
-    fprintf(fp, "@PJL SET DENSITY=3\n");
-    fprintf(fp, "@PJL SET ECONOMODE=OFF\n");
+    fprintf(fp, "@PJL SET DENSITY=%d\n", PrintDensity);
+    fprintf(fp, "@PJL SET ECONOMODE=%s\n", EconoMode ? "ON" : "OFF");
     fprintf(fp, "@PJL SET RET=MEDIUM\n");
     fprintf(fp, "@PJL INFO STATUS\n");
     fprintf(fp, "@PJL USTATUS DEVICE = ON\n");
@@ -1342,7 +1346,7 @@ main(int argc, char *argv[])
     int i, j;
 
     while ( (c = getopt(argc, argv,
-		    "cd:g:n:m:p:r:s:tu:l:L:ABPJ:S:U:X:D:V?h")) != EOF)
+		    "cd:g:n:m:p:r:s:tT:u:l:L:ABPJ:S:U:X:D:V?h")) != EOF)
 	switch (c)
 	{
 	case 'c':	Mode = MODE_COLOR; break;
@@ -1367,6 +1371,11 @@ main(int argc, char *argv[])
 			break;
 	case 's':	SourceCode = atoi(optarg); break;
 	case 't':	SaveToner = 1; break;
+	case 'T':	PrintDensity = atoi(optarg);
+			if (PrintDensity < 1 || PrintDensity > 5)
+			    error(1, "Illegal value '%s' for PrintDensity -T\n",
+				 optarg);
+			break;
 	case 'u':
 			if (strcmp(optarg, "0") == 0)
 			    break;

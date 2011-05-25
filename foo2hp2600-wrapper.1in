@@ -144,6 +144,11 @@ l l.
 3	send both X and Y clipping amounts
 .TE
 .TP
+.BI \-O\0 parm=val
+Alignment of CMYK.  \fIparm\fP is c, m, y, or k.
+\fIval\fP is in rows.  Multiple options are allowed.
+The default is "-Oc=0 -Om=0 -Oy=0 -Ok=0".
+.TP
 .BI \-P
 Do not send START_PLANE codes on monochrome output.  May be
 needed by some monochrome-only printers, such as the

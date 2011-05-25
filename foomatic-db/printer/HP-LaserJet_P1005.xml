@@ -20,9 +20,10 @@
     </margins>
     <consumables>
       <comments>
-        <en>Cartridge containing toner and imaging drum</en>
+        <en>Print cartridge (1500 prints) - $68</en>
       </comments>
-    <!--one or more "partno" elements.--></consumables>
+      <partno>CB435A</partno>
+    </consumables>
   </mechanism>
   <url>http://h10010.www1.hp.com/wwpc/us/en/sm/WF05a/18972-18972-3328059-14638-3328066-3435674.html</url>
   <lang>

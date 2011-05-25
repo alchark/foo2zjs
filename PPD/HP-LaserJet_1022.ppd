@@ -20,14 +20,14 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'HP-LaserJet_1022-foo2zjs.ppd'
+*% You may save this file as 'HP-LaserJet_1022-foo2zjs-z1.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
 *FileVersion:	"1.1"
 *LanguageVersion: English 
 *LanguageEncoding: ISOLatin1
-*PCFileName:	"FOO2ZJS.PPD"
+*PCFileName:	"FOO2ZJS-.PPD"
 *Manufacturer:	"HP"
 *Product:	"(HP LaserJet 1022)"
 *cupsVersion:	1.0
@@ -36,8 +36,8 @@
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
 *ModelName:     "HP LaserJet 1022"
-*ShortNickName: "HP LaserJet 1022 foo2zjs"
-*NickName:      "HP LaserJet 1022 Foomatic/foo2zjs (recommended)"
+*ShortNickName: "HP LaserJet 1022 foo2zjs-z1"
+*NickName:      "HP LaserJet 1022 Foomatic/foo2zjs-z1 (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,9 +52,9 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1022;CMD:ACL;DES:HP LaserJet 1022;DRV:Dfoo2zjs,R1,M0,TF;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet 1022;CMD:ACL;DES:HP LaserJet 1022;DRV:Dfoo2zjs-z1,R1,M0,TF;"
 
-*driverName foo2zjs/foo2zjs: ""
+*driverName foo2zjs-z1/foo2zjs-z1: ""
 *driverType F/Filter: ""
 *driverUrl: "http://foo2zjs.rkkda.com/"
 *driverObsolete: False
@@ -77,8 +77,8 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: HP-LaserJet_1022 foo2zjs
-*FoomaticRIPCommandLine: "foo2zjs-wrapper %A"
+*FoomaticIDs: HP-LaserJet_1022 foo2zjs-z1
+*FoomaticRIPCommandLine: "foo2zjs-wrapper -z1 -P -L0 %A"
 
 *OpenGroup: General/General
 
@@ -91,12 +91,6 @@
 *Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
 *FoomaticRIPOptionSetting Quality=normal: "  "
 *CloseUI: *Quality
-
-*FoomaticRIPOption PrinterType: enum CmdLine A 110
-*FoomaticRIPOptionSetting PrinterType=BWz1: "-P -z1 -L0 "
-
-*FoomaticRIPOption ColorMode: enum CmdLine A 120
-*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
 
 *OpenUI *Resolution/Resolution: PickOne
 *FoomaticRIPOption Resolution: enum CmdLine A
@@ -118,22 +112,34 @@
 *FoomaticRIPOptionSetting PageSize=A4: "-p9 "
 *PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *FoomaticRIPOptionSetting PageSize=A5: "-p11 "
+*PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
+*FoomaticRIPOptionSetting PageSize=A6: "-p262 "
 *PageSize B5/B5: "%% FoomaticRIPOptionSetting: PageSize=B5"
 *FoomaticRIPOptionSetting PageSize=B5: "-p13 "
+*PageSize B5ISO/B5 ISO: "%% FoomaticRIPOptionSetting: PageSize=B5ISO"
+*FoomaticRIPOptionSetting PageSize=B5ISO: "-p259 "
+*PageSize DoublePostcard/Double Postcard: "%% FoomaticRIPOptionSetting: PageSize=DoublePostcard"
+*FoomaticRIPOptionSetting PageSize=DoublePostcard: "-p261 "
 *PageSize Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *FoomaticRIPOptionSetting PageSize=Env10: "-p20 "
-*PageSize EnvB5/Env B5: "%% FoomaticRIPOptionSetting: PageSize=EnvB5"
-*FoomaticRIPOptionSetting PageSize=EnvB5: "-p34 "
 *PageSize EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *FoomaticRIPOptionSetting PageSize=EnvC5: "-p28 "
 *PageSize EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
 *FoomaticRIPOptionSetting PageSize=EnvDL: "-p27 "
+*PageSize EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
+*FoomaticRIPOptionSetting PageSize=EnvISOB5: "-p34 "
 *PageSize EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
 *FoomaticRIPOptionSetting PageSize=EnvMonarch: "-p37 "
 *PageSize Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
 *FoomaticRIPOptionSetting PageSize=Executive: "-p7 "
+*PageSize FanfoldGermanLegal/Fanfold German Legal: "%% FoomaticRIPOptionSetting: PageSize=FanfoldGermanLegal"
+*FoomaticRIPOptionSetting PageSize=FanfoldGermanLegal: "-p258 "
 *PageSize Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
 *FoomaticRIPOptionSetting PageSize=Legal: "-p5 "
+*PageSize Postcard/Postcard: "%% FoomaticRIPOptionSetting: PageSize=Postcard"
+*FoomaticRIPOptionSetting PageSize=Postcard: "-p260 "
+*PageSize w558h774/16k 197x273 mm: "%% FoomaticRIPOptionSetting: PageSize=w558h774"
+*FoomaticRIPOptionSetting PageSize=w558h774: "-p257 "
 *CloseUI: *PageSize
 
 *OpenUI *PageRegion: PickOne
@@ -142,41 +148,59 @@
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
+*PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageRegion B5/B5: "%% FoomaticRIPOptionSetting: PageSize=B5"
+*PageRegion B5ISO/B5 ISO: "%% FoomaticRIPOptionSetting: PageSize=B5ISO"
+*PageRegion DoublePostcard/Double Postcard: "%% FoomaticRIPOptionSetting: PageSize=DoublePostcard"
 *PageRegion Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
-*PageRegion EnvB5/Env B5: "%% FoomaticRIPOptionSetting: PageSize=EnvB5"
 *PageRegion EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *PageRegion EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
+*PageRegion EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
 *PageRegion EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
 *PageRegion Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
+*PageRegion FanfoldGermanLegal/Fanfold German Legal: "%% FoomaticRIPOptionSetting: PageSize=FanfoldGermanLegal"
 *PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
+*PageRegion Postcard/Postcard: "%% FoomaticRIPOptionSetting: PageSize=Postcard"
+*PageRegion w558h774/16k 197x273 mm: "%% FoomaticRIPOptionSetting: PageSize=w558h774"
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "11.34 11.34 600.66 780.66"
 *ImageableArea A4/A4: "11.34 11.34 583.66 830.66"
 *ImageableArea A5/A5: "11.34 11.34 408.66 583.66"
+*ImageableArea A6/A6: "11.34 11.34 285.66 408.66"
 *ImageableArea B5/B5: "11.34 11.34 486.66 696.66"
+*ImageableArea B5ISO/B5 ISO: "11.34 11.34 486.66 696.66"
+*ImageableArea DoublePostcard/Double Postcard: "11.34 11.34 271.66 404.66"
 *ImageableArea Env10/Env #10: "11.34 11.34 285.66 672.66"
-*ImageableArea EnvB5/Env B5: "11.34 11.34 486.66 696.66"
 *ImageableArea EnvC5/Env C5: "11.34 11.34 447.66 637.66"
 *ImageableArea EnvDL/Env DL: "11.34 11.34 299.66 611.66"
+*ImageableArea EnvISOB5/Env ISO B5: "11.34 11.34 486.66 696.66"
 *ImageableArea EnvMonarch/Env Monarch: "11.34 11.34 267.66 528.66"
 *ImageableArea Executive/Executive: "11.34 11.34 510.66 744.66"
+*ImageableArea FanfoldGermanLegal/Fanfold German Legal: "11.34 11.34 600.66 996.66"
 *ImageableArea Legal/Legal: "11.34 11.34 600.66 996.66"
+*ImageableArea Postcard/Postcard: "11.34 11.34 271.66 404.66"
+*ImageableArea w558h774/16k 197x273 mm: "11.34 11.34 546.66 762.66"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
 *PaperDimension A5/A5: "420 595"
+*PaperDimension A6/A6: "297 420"
 *PaperDimension B5/B5: "498 708"
+*PaperDimension B5ISO/B5 ISO: "498 708"
+*PaperDimension DoublePostcard/Double Postcard: "283 416"
 *PaperDimension Env10/Env #10: "297 684"
-*PaperDimension EnvB5/Env B5: "498 708"
 *PaperDimension EnvC5/Env C5: "459 649"
 *PaperDimension EnvDL/Env DL: "311 623"
+*PaperDimension EnvISOB5/Env ISO B5: "498 708"
 *PaperDimension EnvMonarch/Env Monarch: "279 540"
 *PaperDimension Executive/Executive: "522 756"
+*PaperDimension FanfoldGermanLegal/Fanfold German Legal: "612 1008"
 *PaperDimension Legal/Legal: "612 1008"
+*PaperDimension Postcard/Postcard: "283 416"
+*PaperDimension w558h774/16k 197x273 mm: "558 774"
 
 *OpenUI *InputSlot/Media Source: PickOne
 *FoomaticRIPOption InputSlot: enum CmdLine A
@@ -200,37 +224,53 @@
 *FoomaticRIPOption MediaType: enum CmdLine A
 *OrderDependency: 150 AnySetup *MediaType
 *DefaultMediaType: Standard
+*MediaType Bond/Bond: "%% FoomaticRIPOptionSetting: MediaType=Bond"
+*FoomaticRIPOptionSetting MediaType=Bond: "-m260 "
+*MediaType Color/Color: "%% FoomaticRIPOptionSetting: MediaType=Color"
+*FoomaticRIPOptionSetting MediaType=Color: "-m512 "
 *MediaType Envelope/Envelope: "%% FoomaticRIPOptionSetting: MediaType=Envelope"
-*FoomaticRIPOptionSetting MediaType=Envelope: "-m257 "
+*FoomaticRIPOptionSetting MediaType=Envelope: "-m267 "
+*MediaType Heavy/Heavy: "%% FoomaticRIPOptionSetting: MediaType=Heavy"
+*FoomaticRIPOptionSetting MediaType=Heavy: "-m262 "
 *MediaType Labels/Labels: "%% FoomaticRIPOptionSetting: MediaType=Labels"
 *FoomaticRIPOptionSetting MediaType=Labels: "-m263 "
 *MediaType Letterhead/Letterhead: "%% FoomaticRIPOptionSetting: MediaType=Letterhead"
-*FoomaticRIPOptionSetting MediaType=Letterhead: "-m259 "
-*MediaType Postcard/Postcard: "%% FoomaticRIPOptionSetting: MediaType=Postcard"
-*FoomaticRIPOptionSetting MediaType=Postcard: "-m262 "
+*FoomaticRIPOptionSetting MediaType=Letterhead: "-m513 "
+*MediaType Light/Light: "%% FoomaticRIPOptionSetting: MediaType=Light"
+*FoomaticRIPOptionSetting MediaType=Light: "-m258 "
+*MediaType Preprinted/Preprinted: "%% FoomaticRIPOptionSetting: MediaType=Preprinted"
+*FoomaticRIPOptionSetting MediaType=Preprinted: "-m514 "
+*MediaType Prepunched/Prepunched: "%% FoomaticRIPOptionSetting: MediaType=Prepunched"
+*FoomaticRIPOptionSetting MediaType=Prepunched: "-m515 "
+*MediaType Recycled/Recycled: "%% FoomaticRIPOptionSetting: MediaType=Recycled"
+*FoomaticRIPOptionSetting MediaType=Recycled: "-m516 "
+*MediaType Rough/Rough: "%% FoomaticRIPOptionSetting: MediaType=Rough"
+*FoomaticRIPOptionSetting MediaType=Rough: "-m263 "
 *MediaType Standard/Standard Paper: "%% FoomaticRIPOptionSetting: MediaType=Standard"
 *FoomaticRIPOptionSetting MediaType=Standard: "-m1 "
 *MediaType ThickStock/Thick Stock: "%% FoomaticRIPOptionSetting: MediaType=ThickStock"
 *FoomaticRIPOptionSetting MediaType=ThickStock: "-m261 "
 *MediaType Transparency/Transparency: "%% FoomaticRIPOptionSetting: MediaType=Transparency"
 *FoomaticRIPOptionSetting MediaType=Transparency: "-m2 "
+*MediaType Vellum/Vellum: "%% FoomaticRIPOptionSetting: MediaType=Vellum"
+*FoomaticRIPOptionSetting MediaType=Vellum: "-m273 "
 *CloseUI: *MediaType
 
-*OpenUI *Duplex/Duplex Printing: PickOne
-*FoomaticRIPOption Duplex: enum CmdLine A
-*OrderDependency: 210 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex DuplexNoTumble/Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=DuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexNoTumble: "-d2 "
-*Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexTumble: "-d3 "
-*Duplex ManualDuplexNoTumble/Manual Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=ManualDuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=ManualDuplexNoTumble: "-d4 "
-*Duplex ManualDuplexTumble/Manual Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=ManualDuplexTumble"
-*FoomaticRIPOptionSetting Duplex=ManualDuplexTumble: "-d5 "
-*Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
-*FoomaticRIPOptionSetting Duplex=None: "-d1 "
-*CloseUI: *Duplex
+*OpenUI *Density/Print Density: PickOne
+*FoomaticRIPOption Density: enum CmdLine A
+*OrderDependency: 150 AnySetup *Density
+*DefaultDensity: Density3
+*Density Density1/Extra Light (1): "%% FoomaticRIPOptionSetting: Density=Density1"
+*FoomaticRIPOptionSetting Density=Density1: "-T1 "
+*Density Density2/Light (2): "%% FoomaticRIPOptionSetting: Density=Density2"
+*FoomaticRIPOptionSetting Density=Density2: "-T2 "
+*Density Density3/Medium (3): "%% FoomaticRIPOptionSetting: Density=Density3"
+*FoomaticRIPOptionSetting Density=Density3: "-T3 "
+*Density Density4/Dark (4): "%% FoomaticRIPOptionSetting: Density=Density4"
+*FoomaticRIPOptionSetting Density=Density4: "-T4 "
+*Density Density5/Extra Dark (5): "%% FoomaticRIPOptionSetting: Density=Density5"
+*FoomaticRIPOptionSetting Density=Density5: "-T5 "
+*CloseUI: *Density
 
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
@@ -345,36 +385,6 @@
 
 *OpenGroup: Miscellaneous/Miscellaneous
 
-*OpenUI *Nup/N-up Printing: PickOne
-*FoomaticRIPOption Nup: enum CmdLine A
-*OrderDependency: 200 AnySetup *Nup
-*DefaultNup: 1up
-*Nup 1up/1-up: "%% FoomaticRIPOptionSetting: Nup=1up"
-*FoomaticRIPOptionSetting Nup=1up: " "
-*Nup 2up/2-up: "%% FoomaticRIPOptionSetting: Nup=2up"
-*FoomaticRIPOptionSetting Nup=2up: "-2 "
-*Nup 3up/3-up: "%% FoomaticRIPOptionSetting: Nup=3up"
-*FoomaticRIPOptionSetting Nup=3up: "-3 "
-*Nup 4up/4-up: "%% FoomaticRIPOptionSetting: Nup=4up"
-*FoomaticRIPOptionSetting Nup=4up: "-4 "
-*Nup 6up/6-up: "%% FoomaticRIPOptionSetting: Nup=6up"
-*FoomaticRIPOptionSetting Nup=6up: "-6 "
-*Nup 8up/8-up: "%% FoomaticRIPOptionSetting: Nup=8up"
-*FoomaticRIPOptionSetting Nup=8up: "-8 "
-*Nup 10up/10-up: "%% FoomaticRIPOptionSetting: Nup=10up"
-*FoomaticRIPOptionSetting Nup=10up: "-10 "
-*Nup 12up/12-up: "%% FoomaticRIPOptionSetting: Nup=12up"
-*FoomaticRIPOptionSetting Nup=12up: "-12 "
-*Nup 14up/14-up: "%% FoomaticRIPOptionSetting: Nup=14up"
-*FoomaticRIPOptionSetting Nup=14up: "-14 "
-*Nup 15up/15-up: "%% FoomaticRIPOptionSetting: Nup=15up"
-*FoomaticRIPOptionSetting Nup=15up: "-15 "
-*Nup 16up/16-up: "%% FoomaticRIPOptionSetting: Nup=16up"
-*FoomaticRIPOptionSetting Nup=16up: "-16 "
-*Nup 18up/18-up: "%% FoomaticRIPOptionSetting: Nup=18up"
-*FoomaticRIPOptionSetting Nup=18up: "-18 "
-*CloseUI: *Nup
-
 *OpenUI *NupOrient/N-up Orientation: PickOne
 *FoomaticRIPOption NupOrient: enum CmdLine A
 *OrderDependency: 200 AnySetup *NupOrient
@@ -386,6 +396,36 @@
 *NupOrient sea/Seascape: "%% FoomaticRIPOptionSetting: NupOrient=sea"
 *FoomaticRIPOptionSetting NupOrient=sea: "-os "
 *CloseUI: *NupOrient
+
+*OpenUI *NupPages/N-up Printing: PickOne
+*FoomaticRIPOption NupPages: enum CmdLine A
+*OrderDependency: 200 AnySetup *NupPages
+*DefaultNupPages: 1up
+*NupPages 1up/1-up: "%% FoomaticRIPOptionSetting: NupPages=1up"
+*FoomaticRIPOptionSetting NupPages=1up: " "
+*NupPages 2up/2-up: "%% FoomaticRIPOptionSetting: NupPages=2up"
+*FoomaticRIPOptionSetting NupPages=2up: "-2 "
+*NupPages 3up/3-up: "%% FoomaticRIPOptionSetting: NupPages=3up"
+*FoomaticRIPOptionSetting NupPages=3up: "-3 "
+*NupPages 4up/4-up: "%% FoomaticRIPOptionSetting: NupPages=4up"
+*FoomaticRIPOptionSetting NupPages=4up: "-4 "
+*NupPages 6up/6-up: "%% FoomaticRIPOptionSetting: NupPages=6up"
+*FoomaticRIPOptionSetting NupPages=6up: "-6 "
+*NupPages 8up/8-up: "%% FoomaticRIPOptionSetting: NupPages=8up"
+*FoomaticRIPOptionSetting NupPages=8up: "-8 "
+*NupPages 10up/10-up: "%% FoomaticRIPOptionSetting: NupPages=10up"
+*FoomaticRIPOptionSetting NupPages=10up: "-10 "
+*NupPages 12up/12-up: "%% FoomaticRIPOptionSetting: NupPages=12up"
+*FoomaticRIPOptionSetting NupPages=12up: "-12 "
+*NupPages 14up/14-up: "%% FoomaticRIPOptionSetting: NupPages=14up"
+*FoomaticRIPOptionSetting NupPages=14up: "-14 "
+*NupPages 15up/15-up: "%% FoomaticRIPOptionSetting: NupPages=15up"
+*FoomaticRIPOptionSetting NupPages=15up: "-15 "
+*NupPages 16up/16-up: "%% FoomaticRIPOptionSetting: NupPages=16up"
+*FoomaticRIPOptionSetting NupPages=16up: "-16 "
+*NupPages 18up/18-up: "%% FoomaticRIPOptionSetting: NupPages=18up"
+*FoomaticRIPOptionSetting NupPages=18up: "-18 "
+*CloseUI: *NupPages
 
 *CloseGroup: Miscellaneous
 

@@ -1,5 +1,5 @@
 /*
- * $Id: opldecode.c,v 1.6 2009/03/08 00:27:02 rick Exp $
+ * $Id: opldecode.c,v 1.10 2010/01/30 14:04:44 rick Exp $
  */
 
 /*b
@@ -261,20 +261,38 @@ decode(FILE *fp)
     int			bihlen = 0;
     int         	pn = 0;
     int			totSize = 0;
-    char		buf[1024];
+    char		buf[100*1024];
     int			datalen;
+    int			nbh = 0;
+    int			firstbh = 1;
 
     while (fgetcomma(buf, sizeof(buf), &datalen, fp))
     {
 	proff(curOff); curOff += strlen(buf);
-	printf("%s\n", buf);
+	if (strlen(buf) >= 65)
+	{
+	    printf("%65.65s ...\n", buf);
+	    printf("\t... %64.64s\n", buf + strlen(buf) - 64);
+	}
+	else
+	    printf("%s\n", buf);
 	if (0) {
+	}
+	else if (strncmp(buf, "LockPrinterWait?Event=StartOfJob", 32) == 0) {
 	}
 	else if (strncmp(buf, "Event=StartOfJob", 16) == 0) {
 	}
+	else if (strncmp(buf, "Event=StartOfPage", 17) == 0) {
+	    firstbh = 1;
+	}
+	else if (strncmp(buf, "Event=EndOfBand", 15) == 0) {
+	}
 	else if (strncmp(buf, "Event=EndOfPage", 15) == 0) {
 	    pn = 0;
+	    nbh = 0;
 	    ++pageNum;
+	}
+	else if (strncmp(buf, "Event=EndOfJob", 14) == 0) {
 	}
 	else if (strncmp(buf, "RasterObject.BitsPerPixel", 26) == 0) {
 	}
@@ -293,7 +311,31 @@ decode(FILE *fp)
 	    sscanf(buf+20, "%d", &h);
 	    debug(1, "height=%d\n", h);
 	}
+	else if (strncmp(buf, "RasterObject.BandHeight", 23) == 0) {
+	    int bh;
+	    sscanf(buf+24, "%d", &bh);
+	    nbh += bh;
+	    debug(1, "bandheight=%d, nbh=%d\n", bh, nbh);
+	}
 	else if (strncmp(buf, "RasterObject.Data", 17) == 0) {
+	    if (firstbh && nbh != 0)
+	    {
+		firstbh = 0;
+		debug(1, "firstbh\n");
+		rc = fread(bih, bihlen = sizeof(bih), 1, fp);
+		print_bih(bih);
+		printf("\n");
+		datalen -= sizeof(bih);
+		if (DecFile)
+		{
+		    size_t      cnt;
+
+		    jbg_dec_init(&s[pn]);
+		    rc = jbg_dec_in(&s[pn], bih, bihlen, &cnt);
+		    if (rc == JBG_EIMPL)
+			error(1, "JBIG uses unimpl feature\n");
+		}
+	    }
 	    curOff += datalen + 1;
 	    totSize += datalen;
 	    if (datalen == 20) {

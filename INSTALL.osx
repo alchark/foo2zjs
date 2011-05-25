@@ -25,14 +25,20 @@ by Rick Richardson 02/21/08
 	color (i.e. HP CP1215, Samsung, etc..  gs 8.64_1 has a bug in it.
 	Reference: http://bugs.ghostscript.com/show_bug.cgi?id=690287
 
+    Ref:
+	$ sudo port list coreutils wget ghostscript
+	coreutils                      @7.5            sysutils/coreutils
+	wget                           @1.11.4         net/wget
+	ghostscript                    @8.70           print/ghostscript
+
 4) Browse to:
-    http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.3.tar.gz
+    http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.4.tar.gz
 
     and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper):
 
-    $ wget http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.3.tar.gz
-    $ tar zxvf foomatic-filters-4.0.3.tar.gz
-    $ cd foomatic-filters-4.0.3
+    $ wget http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.4.tar.gz
+    $ tar zxvf foomatic-filters-4.0.4.tar.gz
+    $ cd foomatic-filters-4.0.4
     $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr
     $ make
     $ sudo make install

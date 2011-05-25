@@ -23,6 +23,7 @@
 	<printer><id>printer/Oki-C5200</id></printer>
 	<printer><id>printer/Oki-C5500</id></printer>
 	<printer><id>printer/Oki-C5600</id></printer>
+	<printer><id>printer/Oki-C5650</id></printer>
 	<printer><id>printer/Oki-C5800</id></printer>
 	<printer><id>printer/Generic-GDI_Printer</id></printer>
     </printers>

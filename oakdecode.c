@@ -1,5 +1,5 @@
 /*
- * $Id: oakdecode.c,v 1.32 2009/03/08 00:27:02 rick Exp $
+ * $Id: oakdecode.c,v 1.39 2009/10/13 07:42:25 rick Exp $
  *
  * Work in progress decoder for Oak Tech. JBIG streams (HP1500)
  *
@@ -39,6 +39,7 @@ b*/
 #include <errno.h>
 
 #include "jbig.h"
+#include "oak.h"
 
 /*
  * Global option flags
@@ -114,7 +115,6 @@ BIH-style  from foo2zjs/pbmtojbg...
 
 00000000: 00 00 01 00   00 00 26 40   00 00 18 f8   00 00 00 80
 00000010: 10 00 03 5c
-#endif
 
 #include <inttypes.h>
 typedef uint32_t	DWORD;
@@ -129,6 +129,7 @@ typedef struct
     DWORD	l0;	// Oak has this little endian
     DWORD	opt2;
 } OAKBIH;
+#endif
 
 void
 iswap32(void *p)
@@ -224,7 +225,6 @@ print_bih(unsigned char bih[20])
 00013c40: 7e 02 00 00 90 02 00 00 00 00 00 00 40 02 00 00 | ~...........@... |
 00013c50: 03 00 00 00 01 00 00 00 50 41 44 5f 50 41 44 5f | ........PAD_PAD_ |
 
-#endif
 
 typedef struct
 {
@@ -232,6 +232,7 @@ typedef struct
     DWORD	len;
     DWORD	type;
 } OAK_HDR;
+#endif
 
 typedef struct
 {
@@ -361,7 +362,11 @@ decode(FILE *fp)
 		    hdr0c.tm_hour, hdr0c.tm_min, hdr0c.tm_sec);
 	    break;
 	case 0x0a:	// filename
-	    printf(" ");
+	case 0x1f:	// Driver
+	    if (hdr.type == OAK_TYPE_FILENAME)
+		printf(" filename=");
+	    else
+		printf(" driver=");
 	    curOff += size;
 	    while (size--)
 	    {
@@ -371,9 +376,17 @@ decode(FILE *fp)
 		else if (c) putchar(c);
 		else break;
 	    }
-	    while (size--)
-		fgetc(fp);
+	    if (size > 0)
+		while (size--)
+		    fgetc(fp);
 	    break;
+	case 0x0f:
+	    rc = fread(dwords, len = 5*4, 1, fp);
+	    if (rc != 1) goto out;
+	    curOff += len;
+	    printf("	Duplex=0x%x	Short=0x%x", dwords[0], dwords[1]);
+	    break;
+
 	case 0x14:
 	    printf(" (no args)");
 	    ++pageNum;
@@ -397,9 +410,9 @@ decode(FILE *fp)
 	    rc = fread(bytes, len = 17*4, 1, fp);
 	    if (rc != 1) goto out;
 	    curOff += len;
-	    printf(" PaperType=%d UNK8=%d,%d,%d,%d, blanks(63)",
+	    printf(" PaperType=%d UNK8=%d,%d,%d, str='%s'",
 		    bytes[0],
-		    bytes[1], bytes[2], bytes[3], bytes[4]);
+		    bytes[1], bytes[2], bytes[3], &bytes[4]);
 	    // PaperType: 0=AutoSelect, 1=Plain, 2=Preprinted, 3=Letterhead
 	    // 4=GrayscaleTransparency, 5=Prepunched, 6=Labels, 7=Bond
 	    // 8=Recycled, 9=Color, 10=Cardstock, 11=Heavy, 12=Envelope
@@ -409,7 +422,7 @@ decode(FILE *fp)
 	    rc = fread(dwords, len = 5*4, 1, fp);
 	    if (rc != 1) goto out;
 	    curOff += len;
-	    printf("	Copies=0x%x	UNK=0x%x", dwords[0], dwords[1]);
+	    printf("	Copies=0x%x	Duplex=0x%x", dwords[0], dwords[1]);
 	    break;
 	case 0x2b:
 	    rc = fread(dwords, len = 5*4, 1, fp);
@@ -589,6 +602,7 @@ decode(FILE *fp)
 	    continue;
 	case 0x17:
 	    printf(" (no args)");
+	    curOff += size;
 	    for (i = 0; i < 4; ++i)
 	    {
 		for (j = 0; j < 2; ++j)

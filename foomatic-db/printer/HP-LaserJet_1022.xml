@@ -39,7 +39,7 @@
 	</parallel>
   </autodetect>
   <functionality>B</functionality>
-  <driver>foo2zjs</driver>
+  <driver>foo2zjs-z1</driver>
   <!--no "contrib_url"-->
   <comments>
     <en>

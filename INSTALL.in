@@ -26,6 +26,7 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 2490	# Get Konica Minolta magicolor 2490 MF .ICM files
     $ ./getweb 2530	# Get Konica Minolta magicolor 2530 DL .ICM files
     $ ./getweb 4690     # Get Konica Minolta magicolor 4690MF .ICM files
+    $ ./getweb 110      # Get Oki C110 .ICM files
 
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
 
@@ -69,7 +70,7 @@ Install driver, foomatic XML files, PPD files, and extra files:
     $ su		OR	$ sudo make install
     # make install
 
-(Optional) Install hotplug (for HP LJ 1000/1005/1018/1020/P1005/P1006/P1505):
+(Optional) Install hotplug (for HP LJ 1000/1005/1018/1020/P100[5678]/P1505):
     $ su		OR	$ sudo make install-hotplug
     # make install-hotplug
 
@@ -84,7 +85,7 @@ it will not pass since different versions of Ghostscript generate different
 raster images:
     # make test
 
-Create printers (Fedora 6/7/8/9/10/11 and Ubuntu 7.10/8.x/9.x):
+Create printers (Fedora 6/7/8/9/10/11/12/13 and Ubuntu 7.10/8.x/9.x/10.x):
     # system-config-printer
 
 Create printers (Redhat 7.2/7.3/8.0/9.0, Fedora Core 1-5):
@@ -129,16 +130,16 @@ GHOSTSCRIPT BUGS
 ----------------
     * ghostscript 8.64 is broken w.r.t. color.  Don't use!
 
-    * Well Tempered Screening (WTS) works with ghostscript 8.54 thru 8.62+.
+    * Well Tempered Screening (WTS) works with ghostscript 8.54 thru 8.70+.
       So if you want BEST COLORS, you'll have to install gs 8.54 or better
       if you don't have it.
 
 	$ gs --version
 	8.15.2
 	
-	$ wget "http://mirror.cs.wisc.edu/pub/mirrors/ghost/GPL/gs862/ghostscript-8.62.tar.gz"
-	$ tar zxf ghostscript-8.62.tar.gz
-	$ cd ghostscript-8.62
+	$ wget "http://mirror.cs.wisc.edu/pub/mirrors/ghost/GPL/gs871/ghostscript-8.71.tar.gz"
+	$ tar zxf ghostscript-8.71.tar.gz
+	$ cd ghostscript-8.71
 	$ ./autogen.sh
 	$ make
 	$ su				OR $ sudo cp bin/gs /usr/bin/gs.foo
@@ -148,17 +149,36 @@ GHOSTSCRIPT BUGS
 	# make install			OR $ sudo make install
 
 	$ gs.foo --version
-	8.62
-
+	8.71
 
     * Ghostscript before 8.55 has a problem with ICM files and 64-bit gcc.
       It causes a segfault with km2430_2.icm. So don't select that one.
 
+FEDORA NOTES 
+------------
+    Install tix, foomatic\* FIRST:
+	# yum install tix foomatic\*
+
+    If you are using a USB printer AND Fedora 12+, do this:
+
+	# grep udev-configure-printer /var/log/messages
+	/var/log/messages:Jan 23 07:32:54 dual udev-configure-printer: \
+    		invalid or missing IEEE 1284 Device ID
+
+	# yum remove system-config-printer-udev
+
+	# shutdown -r now
+
+	Power off then on the printer.
+
+    Ref:
+	http://bugzilla.redhat.com/show_bug.cgi?id=558162
 
 UBUNTU NOTES
 ------------
-    Install build-essential FIRST:
-	$ sudo apt-get install build-essential
+    Install build-essential, tix, foomatic-filters, groff FIRST:
+	$ sudo apt-get install build-essential tix foomatic-filters groff
+
 	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
 	$ tar zxf foo2zjs.tar.gz
 	$ cd foo2zjs
@@ -189,11 +209,9 @@ UBUNTU NOTES
 
 DEBIAN NOTES
 ------------
-    Install build-essential, foomatic-filters, cupsys FIRST:
+    Install build-essential, tix, foomatic-filters, groff, cupsys, dc FIRST:
 	$ su
-	# apt-get install build-essential
-	# apt-get install foomatic-filters
-	# apt-get install cupsys
+	# apt-get install build-essential tix foomatic-filters groff cupsys dc
 
 	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
         $ tar zxf foo2zjs.tar.gz
@@ -222,7 +240,7 @@ OPENSUSE 10.3 NOTES
 ACER ASPIRE ONE NOTES
 ---------------------
 
-    Ref: http://the.taoofmac.com/media/Acer/Aspire One/AA1notes.htm
+    Ref: http://the.taoofmac.com/media/Acer/Aspire\ One/AA1notes.htm
 
     It is a version of Fedora.
 
@@ -280,10 +298,29 @@ FREEBSD NOTES
 	# pkg_add -r ghostscript-gnu
 	# pkg_add -r cups
 	# pkg_add -r foomatic-filters
+	# pkg_add -r unzip
 
     Use "gmake" instead of "make".  E.G. gmake; ./getweb XXX; gmake install
 
-    USB NOTES FOR FREEBSD
+    USB NOTES FOR FREEBSD 8.0 AND GREATER
+    -------------------------------------
+	$ gmake
+	$ ./getweb 1020
+            OR other printer, e.g. 2600n
+	# gmake install install-hotplug
+	# ./freebsd-install
+
+	Use:
+	    usb:/dev/ulpt0
+	    usb:/dev/ulpt1
+	for the URI.
+
+	More information:
+	    http://menhennitt.com.au/wordpress/2009/09/27/printing-to-an-hp-laserjet-1020-from-freebsd-8-using-cups-and-foo2zjs
+	    http://farid.hajji.name/blog/2010/02/02/printing-woes-on-freebsd-8-with-cups/
+
+    USB NOTES FOR FREEBSD 7.x AND LESSER
+    ------------------------------------
 	- Build the kernel without the ulpt driver. 
 	    e.g.
 	    # vi /usr/src/sys/i386/conf/GENERIC
@@ -293,15 +330,15 @@ FREEBSD NOTES
 	    # make installkernel KERNCONF=GENERIC
 	    reboot
 
-	- Do one of these lines each time the printer is powered up:
+	- Do one of these lines each time the HP printer is powered up:
 	    # cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/ugen0.1
 	    # cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/ugen0.1
 	    # cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/ugen0.1
 	    # cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/ugen0.1
 	    # cat /usr/share/foo2xqx/firmware/sihpP1505.dl > /dev/ugen0.1
 
-    More information:
-	http://www.webmiscreants.com/index.php?page=howto_P1006
+	More information:
+	    http://www.webmiscreants.com/index.php?page=howto_P1006
 
 OPENBSD NOTES
 -------------
@@ -412,9 +449,11 @@ CUPS USB NOTES
 	usb://HP/LaserJet%201020
 	usb://HP/LaserJet%20P1005
 	usb://HP/LaserJet%20P1006
+	usb://HP/LaserJet%20P1007
+	usb://HP/LaserJet%20P1008
 	usb://HP/LaserJet%20P1505
 
-    Don't use hp://<whatever> because that is for hplib (a closed source,
+    Don't use hp://<whatever> because that is for hplip (a closed source,
     proprietary driver).
 
 
@@ -430,7 +469,8 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 
 	    # make install-hotplug
 
-	    Unplug and re-plug the USB printer.
+	    Power off then on the printer. Light should flash orange for
+	    ~5 seconds as the firmware is getting downloaded.
 
 	On another OS or with a parallel port connected printer:
 
@@ -438,13 +478,16 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 	    up.  If you downloaded the extra files for the HP above, a typical
 	    command line to load the firmware would be ONE of these:
 
-		cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/usb/lp0
-		cat /usr/share/foo2zjs/firmware/sihp1005.dl > /dev/usb/lp0
-		cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/usb/lp0
-		cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/usb/lp0
-		cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/usb/lp0
-		cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/usb/lp0
-		cat /usr/share/foo2xqx/firmware/sihpP1505.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2zjs/firmware/sihp1005.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/usb/lp0
+	    # cat /usr/share/foo2xqx/firmware/sihpP1505.dl > /dev/usb/lp0
+
+	    Light should flash orange for ~5 seconds as the firmware is
+	    getting downloaded.
 
 	On Mac OS X:
 
@@ -452,11 +495,14 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 	    up.  If you downloaded the extra files for the HP above, a typical
 	    command line to load the firmware would be:
 
-		lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
-		lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
-		lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
-		lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
-		lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+
+	    Light should flash orange for ~5 seconds as the firmware is
+	    getting downloaded.
 
     Firmware Not Downloaded:
 	# usb_printerid /dev/usb/lp0
@@ -526,12 +572,32 @@ MANUAL DUPLEX
 -------------
 
     See:
-	http://www.rastersoft.com/gtkpsproc.html
+	https://sourceforge.net/projects/g-manual-duplex/
+
+	Install:
+	    $ make
+	    $ su
+	    # make install      -OR-    $ sudo make install
+
+	Then using the GUI:
+	    1)  System -> Gnome Manual Duplex
+		-OR-
+	    2)  Add to Panel -> Gnome Manual Duplex applet -> Add
+		Print -> GnomeManualDuplex (Virtual Printer) -> Print
+	    
+	Works with *.ps and *.pdf files.
 
 	- Print odd pages
 	- Wait for confimation message
-	- Insert 180 degrees into printer
+	- Insert in the same orientation into the printer
 	- Print reverse even pages
+
+    -OR-
+	$ psmandup [options] file.ps
+	
+	Ref:
+	    Fedora: # yum install a2ps
+	    Ubuntu: $ sudo apt-get install a2ps
 
     -OR-
 	Print -> Page Setup -> Only print -> Odd Sheets
@@ -640,6 +706,10 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 	    http://search.ebay.com/_W0QQsassZfotojimbo
 	    Cost: 10 dollars
 
+	    "Custom Color ICC Profile Printer Epson HP Canon 3800"
+	    Seller: Booksmart Studio
+	    http://stores.shop.ebay.com/Booksmart-Studio
+	    Cost: 25 dollars
 
     1)	Convert the vendor sheet(s) from *.tif to page*.ps (OPTIONAL)
 

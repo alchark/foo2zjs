@@ -12,8 +12,18 @@ such as these:
      - Minolta/QMS 2430 DL	B/W and color
      - HP LaserJet 1000		B/W
      - HP LaserJet 1005		B/W
-     - HP LaserJet 1018		B/W
-     - HP LaserJet 1020		B/W
+
+     - HP LaserJet 1018		B/W		-P -z1 -L0
+     - HP LaserJet 1020		B/W		-P -z1 -L0
+     - HP LaserJet 1022		B/W		-P -z1 -L0
+     - HP LaserJet M1319 MFP	B/W		-P -z1 -L0
+     - HP LaserJet P2035	B/W		-P -z1 -L0
+     - HP LaserJet P2035n	B/W		-P -z1 -L0
+
+     - HP LaserJet Pro P1102	B/W		-P -z2 -L0
+     - HP LaserJet Pro P1102w	B/W		-P -z2 -L0
+     - HP LaserJet Pro P1566	B/W		-P -z2 -L0
+     - HP LaserJet Pro P1606dn	B/W		-P -z2 -L0
 
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
@@ -55,7 +65,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.84 2009/03/07 21:46:43 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.98 2010/07/23 21:16:20 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,6 +73,7 @@ static char Version[] = "$Id: foo2zjs.c,v 1.84 2009/03/07 21:46:43 rick Exp $";
 #include <string.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include <time.h>
 #include "jbig.h"
 #include "zjs.h"
 
@@ -92,7 +103,8 @@ int	Mode = 0;
 int	Model = 0;
 		#define MODEL_2300DL	0
 		#define MODEL_HP1020	1
-		#define MODEL_LAST	1
+		#define MODEL_HP_PRO	2
+		#define MODEL_LAST	2
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -108,8 +120,11 @@ int	LogicalOffsetY = 0;
 int	LogicalClip = LOGICAL_CLIP_X | LOGICAL_CLIP_Y;
 int	SaveToner = 0;
 int	PageNum = 0;
+	#define even_page(x) ( ((x) & 1) == 0 )
+	#define odd_page(x) ( ((x) & 1) == 1 )
 int	RealWidth;
 int	EconoMode = 0;
+int     PrintDensity = 3;
 
 int	IsCUPS = 0;
 
@@ -171,17 +186,31 @@ usage(void)
 "                    4=manual longedge, 5=manual shortedge\n"
 "-g <xpix>x<ypix>  Set page dimensions in pixels [%dx%d]\n"
 "-m media          Media code to send to printer [%d]\n"
-"                    1=standard 2=transparency 3=glossy 257=envelope\n"
-"                    259=letterhead 261=thickstock 262=postcard 263=labels\n"
+"                  -z0:\n"
+"                    1=standard, 2=transparency, 3=glossy, 257=envelope,\n"
+"                    259=letterhead, 261=thickstock, 262=postcard, 263=labels\n"
+"                  -z1,-z2: above plus\n"
+"                    258=light, 261=cardstock, 263=rough, 265=labels,\n"
+"                    267=envelope, 273=vellum, 512=color, 513=letterhead,\n"
+"                    514=preprinted, 515=prepunched, 516=recycled\n"
 "-p paper          Paper code to send to printer [%d]\n"
-"                    1=letter, 5=legal 7=executive 9=A4 11=A5 13=B5\n"
+"                  -z0:\n"
+"                    1=letter, 5=legal, 7=executive, 9=A4, 11=A5, 13=B5jis\n"
 "                    20=env#10, 27=envDL 28=envC5 34=envB5 37=envMonarch\n"
+"                  -z1: -z0 plus\n"
+"                    257=16K 197x273, 258=fanfold german legal, 259=b5iso,\n"
+"                    260=postcard, 261=doublepostcard, 262=A6\n"
+"                  -z2: -z0 plus\n"
+"                    43=postcard, 70=A6, 82=double postcard rotated,\n"
+"                    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,\n"
+"                    258=fanfold german legal\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
 "                    1=upper 2=lower 4=manual 7=auto\n"
 "                    Code numbers may vary with printer model\n"
 "-t                Draft mode.  Every other pixel is white.\n"
+"-T density        Print density (1-5) [%d].\n"
 "-J filename       Filename string to send to printer [%s]\n"
 "-U username       Username string to send to printer [%s]\n"
 "\n"
@@ -196,7 +225,10 @@ usage(void)
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
-"-z model          Model: 0=2300DL 1=hp1020 [%d]\n"
+"-z model          Model: [%d]\n"
+"                    0=KM 2300DL / HP 1000 / HP 1005\n"
+"                    1=HP 1018 / HP 1020 / HP 1022\n"
+"                    2=HP Pro P1102 / P1566 / P1606dn\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -210,6 +242,7 @@ usage(void)
     , Copies
     , ResX , ResY
     , SourceCode
+    , PrintDensity
     , Filename ? Filename : ""
     , Username ? Username : ""
     , UpperLeftX , UpperLeftY
@@ -466,7 +499,26 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     free_chain(*root);
 
-    chunk_write(ZJT_END_JBIG, 0, 0, fp);
+    switch (Model)
+    {
+    case MODEL_2300DL:
+    case MODEL_HP1020:
+	chunk_write(ZJT_END_JBIG, 0, 0, fp);
+	break;
+    case MODEL_HP_PRO:
+	if (Duplex == DMDUPLEX_LONGEDGE	|| Duplex == DMDUPLEX_SHORTEDGE)
+	{
+	    int nitems = 1;
+
+	    chunk_write_rsvd(ZJT_END_JBIG, nitems * 12,
+			nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
+	    item_uint32_write(ZJI_DMDUPLEX, Duplex,	fp);
+	}
+	else
+	    chunk_write(ZJT_END_JBIG, 0, 0, fp);
+	break;
+    }
+
     if (planeNum)
 	chunk_write(ZJT_END_PLANE, 0, 0, fp);
     return 0;
@@ -499,21 +551,40 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	    | (long) current->data[11]);
     debug(9, "start_page: w x h = %d x %d\n", w, h);
 
-    nitems = 13;
+    nitems = 12;
     if (LogicalOffsetX != 0)
 	++nitems;
     if (LogicalOffsetY != 0)
 	++nitems;
-    if (Model == MODEL_2300DL)
+    switch (Model)
+    {
+    case MODEL_2300DL:
 	nitems += 4;
-
-    if (Model == MODEL_2300DL)
+	nitems += 1;
 	chunk_write(ZJT_START_PAGE,
 			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
-    else
+	break;
+    case MODEL_HP1020:
+	nitems += 1;
 	chunk_write_rsvd(ZJT_START_PAGE, 0x9c,
 			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
-    item_uint32_write(ZJI_ECONOMODE,           EconoMode,      ofp);
+	break;
+    case MODEL_HP_PRO:
+	nitems += 1;
+	if (EconoMode)
+	    nitems += 1;
+	if (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE)
+	    nitems += 1;
+	chunk_write_rsvd(ZJT_START_PAGE, nitems * 12,
+			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
+	break;
+    }
+
+    if (Model == MODEL_HP_PRO && 
+	    (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE) )
+	item_uint32_write(ZJI_DMDUPLEX, (Duplex <= 3) ? Duplex : 1,	ofp);
+    if (Model == MODEL_2300DL || Model == MODEL_HP1020 || EconoMode)
+	item_uint32_write(ZJI_ECONOMODE,           EconoMode,      ofp);
     if (Model == MODEL_2300DL)
 	item_uint32_write(22,                  1,              ofp);
     item_uint32_write(ZJI_VIDEO_X,             RealWidth / Bpp,ofp);
@@ -535,11 +606,13 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     item_uint32_write(ZJI_NBIE,                nbie,           ofp);
     item_uint32_write(ZJI_RESOLUTION_X,        ResX,           ofp);
     item_uint32_write(ZJI_RESOLUTION_Y,        ResY,           ofp);
+    if (Model == MODEL_HP_PRO)
+	item_uint32_write(ZJI_RET,             1,     	       ofp);
     item_uint32_write(ZJI_DMDEFAULTSOURCE,     SourceCode,     ofp);
     item_uint32_write(ZJI_DMCOPIES,            Copies,         ofp);
     item_uint32_write(ZJI_DMPAPER,             PaperCode,      ofp);
     item_uint32_write(ZJI_DMMEDIATYPE,         MediaCode,      ofp);
-    if ((PageNum & 1) == 0 && EvenPages)
+    if (even_page(PageNum) && EvenPages)
 	SeekMedia = ftell(EvenPages) - 4;
     ++pageno;
     if (Model == MODEL_2300DL)
@@ -551,7 +624,25 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 void
 end_page(FILE *ofp)
 {
-    chunk_write(ZJT_END_PAGE, 0, 0, ofp);
+    switch (Model)
+    {
+    case MODEL_2300DL:
+    case MODEL_HP1020:
+	chunk_write(ZJT_END_PAGE, 0, 0, ofp);
+	break;
+    case MODEL_HP_PRO:
+	if (Duplex == DMDUPLEX_LONGEDGE	|| Duplex == DMDUPLEX_SHORTEDGE)
+	{
+	    int nitems = 1;
+
+	    chunk_write_rsvd(ZJT_END_PAGE, nitems * 12,
+			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
+	    item_uint32_write(ZJI_DMDUPLEX, Duplex,	ofp);
+	}
+	else
+	    chunk_write(ZJT_END_PAGE, 0, 0, ofp);
+	break;
+    }
 }
 
 int
@@ -643,16 +734,54 @@ output_jbig(unsigned char *start, size_t len, void *cbarg)
 void
 start_doc(FILE *fp)
 {
-    char		header[4] = "JZJZ";	// Big-endian data
-    int			nitems;
-    int			size;
-    int 		rc;
+    char	header[4] = "JZJZ";	// Big-endian data
+    int		nitems;
+    int		size;
+    time_t      now;
+    struct tm   *tmp;
+    char        datetime[14+1];
+    int 	rc;
+
+    switch (Model)
+    {
+    case MODEL_HP1020:
+    case MODEL_HP_PRO:
+	now = time(NULL);
+	tmp = localtime(&now);
+	strftime(datetime, sizeof(datetime), "%Y%m%d%H%M%S", tmp);
+
+	fprintf(fp, "\033%%-12345X@PJL JOB\n");
+	fprintf(fp, "@PJL SET JAMRECOVERY=OFF\n");
+	fprintf(fp, "@PJL SET DENSITY=%d\n", PrintDensity);
+	fprintf(fp, "@PJL SET ECONOMODE=%s\n", EconoMode ? "ON" : "OFF");
+	fprintf(fp, "@PJL SET RET=MEDIUM\n");
+	fprintf(fp, "@PJL INFO STATUS\n");
+	fprintf(fp, "@PJL USTATUS DEVICE = ON\n");
+	fprintf(fp, "@PJL USTATUS JOB = ON\n");
+	fprintf(fp, "@PJL USTATUS PAGE = ON\n");
+	fprintf(fp, "@PJL USTATUS TIMED = 30\n");
+	fprintf(fp, "@PJL SET JOBATTR=\"JobAttr4=%s\"", datetime);
+	fputc(0, fp);
+	fprintf(fp, "\033%%-12345X");
+	break;
+    }
 
     rc = fwrite(header, 1, sizeof(header), fp);
 
-    nitems = 3;
+    nitems = 1;
     if (Model == MODEL_2300DL)
 	++nitems;
+    switch (Model)
+    {
+    case MODEL_2300DL:
+    case MODEL_HP1020:
+	nitems += 2;
+	break;
+    case MODEL_HP_PRO:
+	if (Duplex != DMDUPLEX_LONGEDGE && Duplex != DMDUPLEX_SHORTEDGE)
+	    ++nitems;
+	break;
+    }
     size = nitems * sizeof(ZJ_ITEM_UINT32);
     if (Username)
     {
@@ -665,14 +794,33 @@ start_doc(FILE *fp)
 	size += item_str_write(0, Filename, NULL);
     }
 
-    if (Model == MODEL_2300DL)
+    switch (Model)
+    {
+    case MODEL_2300DL:
 	chunk_write(ZJT_START_DOC, nitems, size, fp);
-    else
+	break;
+    case MODEL_HP1020:
 	chunk_write_rsvd(ZJT_START_DOC, 0x24, nitems, size, fp);
+	break;
+    case MODEL_HP_PRO:
+	chunk_write_rsvd(ZJT_START_DOC, nitems * 0x0c, nitems, size, fp);
+	break;
+    }
 
     item_uint32_write(ZJI_DMCOLLATE,		0,	  fp);
-    item_uint32_write(ZJI_DMDUPLEX, (Duplex <= 3) ? Duplex : 1,	  fp);
-    item_uint32_write(ZJI_PAGECOUNT,		0,	  fp);
+    switch (Model)
+    {
+    case MODEL_2300DL:
+    case MODEL_HP1020:
+	item_uint32_write(ZJI_DMDUPLEX, (Duplex <= 3) ? Duplex : 1,	  fp);
+	item_uint32_write(ZJI_PAGECOUNT,		0,	  fp);
+	break;
+    case MODEL_HP_PRO:
+	if (Duplex != DMDUPLEX_LONGEDGE && Duplex != DMDUPLEX_SHORTEDGE)
+	    item_uint32_write(ZJI_DMDUPLEX, 1,    	  fp);
+	break;
+    }
+
     if (Model == MODEL_2300DL)
 	item_uint32_write(ZJI_QUANTITY,		1,	  fp);
     // item_uint32_write(ZJI_QMS_FINEMODE,	0,	  fp);
@@ -692,7 +840,14 @@ end_doc(FILE *fp)
     nitems = 0;
     chunk_write(ZJT_END_DOC , nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
 
-    // item_uint32_write(0x8112, 1, fp);
+    switch (Model)
+    {
+    case MODEL_HP1020:
+    case MODEL_HP_PRO:
+	fprintf(fp, "\033%%-12345X@PJL EOJ\n");
+	fprintf(fp, "\033%%-12345X");
+	break;
+    }
 }
 
 void
@@ -885,7 +1040,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
     struct jbg_enc_state se; 
 
     RealWidth = w;
-    if (Model == MODEL_HP1020)
+    if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
 	w = (w + 127) & ~127;
 
     if (SaveToner)
@@ -905,6 +1060,34 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	for (y = 1; y < h; y += 2)
 	    for (x = 0; x < bpl16; ++x)
 		buf[y*bpl16 + x] &= 0xaa;
+    }
+
+    if (Model == MODEL_HP_PRO)
+    {
+	int	x, y;
+	int	bpl, bpl16;
+
+	/*
+	 * Blank initial lines for .25"
+	 */
+	bpl = (w + 7) / 8;
+	bpl16 = (bpl + 15) & ~15;
+
+	if (1)
+	    for (y = 0; y < 150; ++y)
+		memset(buf + y*bpl16, 0, bpl16);
+
+	if (0)
+	    for (y = 0; y < h; y += 1)
+	    {
+		for (x = 0; x < 32; ++x)
+		    buf[y*bpl16 + x] = 0;
+		for (x = bpl16 - 32; x < bpl16; ++x)
+		    buf[y*bpl16 + x] = 0;
+	    }
+	if (0)
+	    for (y = h - 200; y < h; y += 1)
+		memset(buf + y*bpl16, 0, bpl16);
     }
 
     *bitmaps = buf;
@@ -1042,18 +1225,18 @@ cmyk_pages(FILE *ifp, FILE *ofp)
 	    goto done;
 
 	++PageNum;
-	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
+	if (Duplex == DMDUPLEX_LONGEDGE && even_page(PageNum))
 	    rotate_bytes_180(buf, buf + bpl * h - 1, Mirror4);
-	if (Duplex == DMDUPLEX_MANUALLONG && (PageNum & 1) == 0)
+	if (Duplex == DMDUPLEX_MANUALLONG && even_page(PageNum))
 	    rotate_bytes_180(buf, buf + bpl * h - 1, Mirror4);
 
-	if ((PageNum & 1) == 0 && EvenPages)
+	if (even_page(PageNum) && EvenPages)
 	{
 	    SeekRec[SeekIndex].b = ftell(EvenPages);
 	    cmyk_page(buf, w, h, EvenPages);
 	    SeekRec[SeekIndex].e = ftell(EvenPages);
 	    debug(1, "CMYK Page: %d	%ld	%ld\n",
-	    PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
+		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
 	}
 	else
@@ -1219,9 +1402,9 @@ pksm_pages(FILE *ifp, FILE *ofp)
 		    }
 	    }
 
-	    if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
+	    if (Duplex == DMDUPLEX_LONGEDGE && even_page(PageNum))
 		rotate_bytes_180(plane[i], plane[i] + bpl * h - 1, Mirror1);
-	    if (Duplex == DMDUPLEX_MANUALLONG && (PageNum & 1) == 0)
+	    if (Duplex == DMDUPLEX_MANUALLONG && even_page(PageNum))
 		rotate_bytes_180(plane[i], plane[i] + bpl * h - 1, Mirror1);
 	}
 
@@ -1231,13 +1414,13 @@ pksm_pages(FILE *ifp, FILE *ofp)
 		    (AnyColor & 0x04) ? "Yellow" : ""
 		    );
 
-	if ((PageNum & 1) == 0 && EvenPages)
+	if (even_page(PageNum) && EvenPages)
 	{
 	    SeekRec[SeekIndex].b = ftell(EvenPages);
 	    pksm_page(plane, w, h, EvenPages);
 	    SeekRec[SeekIndex].e = ftell(EvenPages);
 	    debug(1, "PKSM Page: %d	%ld	%ld\n",
-	    PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
+		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
 	}
 	else
@@ -1250,6 +1433,33 @@ eof:
     return (0);
 }
 
+void
+blank_page(FILE *ofp)
+{
+    int			w, h, bpl, bpl16 = 0;
+    unsigned char	*plane;
+    
+    w = PageWidth - UpperLeftX - LowerRightX;
+    h = PageHeight - UpperLeftY - LowerRightY;
+    bpl = (w + 7) / 8;
+    switch (Model)
+    {
+    case MODEL_2300DL:	bpl16 = bpl; break;
+    case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
+    case MODEL_HP_PRO:	bpl16 = (bpl + 15) & ~15; break;
+    default:		error(1, "Bad model %d\n", Model); break;
+    }
+
+    plane = malloc(bpl16 * h);
+    if (!plane)
+    error(1, "Unable to allocate blank plane (%d bytes)\n", bpl16*h);
+    memset(plane, 0, bpl16*h);
+
+    pbm_page(plane, w, h, ofp);
+    ++PageNum;
+    free(plane);
+}
+
 int
 pbm_pages(FILE *ifp, FILE *ofp)
 {
@@ -1260,6 +1470,8 @@ pbm_pages(FILE *ifp, FILE *ofp)
     int			bpl16 = 0;
     int			rc;
     int			p4eaten = 1;
+    FILE		*tfp = NULL;
+    long		tpos = 0;
 
     //
     // Save the original Upper Right clip values as the logical offset,
@@ -1292,6 +1504,7 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	{
 	case MODEL_2300DL:	bpl16 = bpl; break;
 	case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
+	case MODEL_HP_PRO:	bpl16 = (bpl + 15) & ~15; break;
 	default:		error(1, "Bad model %d\n", Model); break;
 	}
 
@@ -1304,10 +1517,10 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	    error(1, "Premature EOF(pbm) on input stream\n");
 
 	++PageNum;
-	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
+	if (Duplex == DMDUPLEX_LONGEDGE && even_page(PageNum))
 	    rotate_bytes_180(buf, buf + bpl16 * h - 1, Mirror1);
 
-	if ((PageNum & 1) == 0 && EvenPages)
+	if (even_page(PageNum) && EvenPages)
 	{
 	    if (Duplex == DMDUPLEX_MANUALLONG)
 		rotate_bytes_180(buf, buf + bpl16 * h - 1, Mirror1);
@@ -1315,41 +1528,53 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	    pbm_page(buf, w, h, EvenPages);
 	    SeekRec[SeekIndex].e = ftell(EvenPages);
 	    debug(1, "PBM Page: %d	%ld	%ld\n",
-	    PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
+		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
+	}
+	else if (Model == MODEL_HP_PRO
+	    && (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE) )
+	{
+	    /*
+	     * Duplex on P1606dn works like this:
+	     *   P2(norm), P1(rot180), P4(norm), P3(rot180)
+	     */
+	    if (odd_page(PageNum))
+	    {
+		tfp = tmpfile();
+		pbm_page(buf, w, h, tfp);
+		fflush(tfp);
+		tpos = ftell(tfp);
+		rewind(tfp);
+	    }
+	    else
+	    {
+		pbm_page(buf, w, h, ofp);
+		while (tpos--)
+		    putc(getc(tfp), ofp);
+		fclose(tfp);
+	    }
 	}
 	else
 	    pbm_page(buf, w, h, ofp);
 
 	free(buf);
     }
-    return (0);
-}
 
-void
-blank_page(FILE *ofp)
-{
-    int			w, h, bpl, bpl16 = 0;
-    unsigned char	*plane;
-    
-    w = PageWidth - UpperLeftX - LowerRightX;
-    h = PageHeight - UpperLeftY - LowerRightY;
-    bpl = (w + 7) / 8;
-    switch (Model)
+    if (Model == MODEL_HP_PRO
+	&& (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE)
+	&& odd_page(PageNum) )
     {
-    case MODEL_2300DL:	bpl16 = bpl; break;
-    case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
-    default:		error(1, "Bad model %d\n", Model); break;
+	/*
+	 * Duplex on P1606dn if there are an odd number of pages:
+	 *   P2(blank), P1(rot180)
+	 */
+	blank_page(ofp);
+	while (tpos--)
+	    putc(getc(tfp), ofp);
+	fclose(tfp);
     }
 
-    plane = malloc(bpl16 * h);
-    if (!plane)
-    error(1, "Unable to allocate blank plane (%d bytes)\n", bpl16*h);
-    memset(plane, 0, bpl16*h);
-
-    pbm_page(plane, w, h, ofp);
-    ++PageNum;
-    free(plane);
+    return (0);
 }
 
 int
@@ -1412,7 +1637,7 @@ main(int argc, char *argv[])
     int i, j;
 
     while ( (c = getopt(argc, argv,
-		    "cd:g:n:m:p:r:s:tu:l:z:L:ABPJ:S:U:X:D:V?h")) != EOF)
+		    "cd:g:n:m:p:r:s:tT:u:l:z:L:ABPJ:S:U:X:D:V?h")) != EOF)
 	switch (c)
 	{
 	case 'c':	Mode = MODE_COLOR; break;
@@ -1437,6 +1662,11 @@ main(int argc, char *argv[])
 			break;
 	case 's':	SourceCode = atoi(optarg); break;
 	case 't':	SaveToner = 1; break;
+	case 'T':       PrintDensity = atoi(optarg);
+			if (PrintDensity < 1 || PrintDensity > 5)
+			    error(1, "Illegal value '%s' for PrintDensity -T\n",
+				 optarg);
+			break;
 	case 'u':
 			if (strcmp(optarg, "0") == 0)
 			    break;
@@ -1483,7 +1713,7 @@ main(int argc, char *argv[])
     if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
-    if (Model == MODEL_HP1020)
+    if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
     {
 	Bpp = ResX / 600;
 	ResX = 600;
@@ -1531,20 +1761,20 @@ main(int argc, char *argv[])
 	int	rc;
 
 	// Handle odd page count
-	if ( (PageNum & 1) == 1)
+	if (odd_page(PageNum))
 	{
 	    SeekRec[SeekIndex].b = ftell(EvenPages);
 	    blank_page(EvenPages);
 	    SeekRec[SeekIndex].e = ftell(EvenPages);
 	    debug(1, "Blank Page: %d	%ld	%ld\n",
-	    PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
+		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
 	}
 
 	/*
 	 *  Manual Pause
 	 */
-	if (Model == MODEL_HP1020)
+	if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
 	    load_tray2(stdout);
 
 	fseek(EvenPages, SeekMedia, 0L);

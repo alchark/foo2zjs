@@ -100,13 +100,11 @@
 	    <ev_shortname> <en>EnvC4</en> </ev_shortname>
 	    <ev_driverval>30</ev_driverval>
 	</enum_val>
-<!--
 	<enum_val id="ev/foo2oak-z1-PageSize-34">
-	    <ev_longname> <en>Env B5</en> </ev_longname>
-	    <ev_shortname> <en>EnvB5</en> </ev_shortname>
+	    <ev_longname> <en>Env ISO B5</en> </ev_longname>
+	    <ev_shortname> <en>EnvISOB5</en> </ev_shortname>
 	    <ev_driverval>34</ev_driverval>
 	</enum_val>
--->
 	<enum_val id="ev/foo2oak-z1-PageSize-37">
 	    <ev_longname> <en>Env Monarch</en> </ev_longname>
 	    <ev_shortname> <en>EnvMonarch</en> </ev_shortname>

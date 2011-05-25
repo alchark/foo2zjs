@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.25 2009/03/08 00:35:31 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.27 2009/12/03 23:12:55 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -584,7 +584,10 @@ start_page_uncompressed(int nbie, int w, int h, int plane, FILE *ofp)
 	rec[3] = be32( (nbie<<24) + (plane<<16) + 17);	//block0: data
     rec[4] = be32(w);				//block0: width
     rec[5] = be32(0);				//block0: data
-    rec[6] = be32(0);			//block0: data
+    if (Duplex == DMDUPLEX_OFF)
+	rec[6] = be32(0);			//block0: data
+    else
+	rec[6] = be32( (PageNum & 1) ? 0x100 : 0x200);	//block0: data
 
     rec[7] = be32(20);			//block1: len=20
     rec[8] = be32(0x30303130);		//block1: "0010"
@@ -1641,8 +1644,6 @@ if (getenv("ccc"))
 
     switch (Duplex)
     {
-    case DMDUPLEX_LONGEDGE:
-    case DMDUPLEX_SHORTEDGE:
     case DMDUPLEX_MANUALLONG:
     case DMDUPLEX_MANUALSHORT:
 	EvenPages = tmpfile();

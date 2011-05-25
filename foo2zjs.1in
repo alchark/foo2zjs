@@ -46,31 +46,60 @@ Set page dimensions in pixels [10200x6600].
 .BI \-m\0 media
 Media code to send to printer [1].
 .TS
-l l l
-l n n.
+l r r r r.
 _
-Media	2300DL	2200DL
+Media	2300DL	2200DL	HP 1018	HP P1102
+\^	HP 1005		HP 1020	HP P1606
+\^	-z0	-z0	-z1	-z2
 _
-standard	1	1
-transparency	2	2
-envelope	257	na
-letterhead	259	na
-thick	261	4
-postcard	262	na
-labels	263	3
+standard	1	1	1	1
+transparency	2	2	2	2
+envelope	257	na	267	267
+letterhead	259	na	513	513
+bond	na	na	260	260
+thick	261	4	261	na
+postcard	262	na	na	na
+rough	na	na	263	263
+heavy	na	na	262	262
+labels	263	3	263	265
+vellum	na	na	273	273
+medium	na	na	na	282
+extraheavy	na	na	na	283
+color	na	na	512	512
+light	na	na	258	258
+preprinted	na	na	514	514
+prepunched	na	na	515	515
+recycled	na	na	516	516
 .TE
 .TP
 .BI \-p\0 paper
 Paper code to send to printer [1].
 .TS
-box;
-| n l | n l.
-1	letter	9	A4
-5	legal	11	A5
-7	executive	13	B5
-20	env #10	27	env DL
-28	env C5	34	env B5
-37	env Monarch		
+l r r r.
+_
+Paper	MC 2300DL	HP 1018	HP P1102
+\^	HP 1005	HP 1020	HP P1606
+\^	-z0	-z1	-z2
+_
+letter	1	1	1
+legal	5	5	5
+executive	7	7	7
+A4	9	9	9
+A5	11	11	11
+B5jis	13	13	13
+env #10	20	20	20
+env DL	27	27	27
+env CL	28	28	28
+env B5	34	34	34
+env Monarch	37	37	37
+postcard (japan)	na	260	43
+B5iso	na	259	na
+A6	na	262	70
+double postcard rotated	na	261	82
+16k 197x273	na	257	257
+fanfold german legal	na	258	258
+16k 184x260	na	na	263
+16k 195x270	na	na	264
 .TE
 .TP
 .BI \-n\0 copies
@@ -89,6 +118,9 @@ Source (InputSlot) code to send to printer [7].
 .TP
 .BI \-t
 Draft mode.  Every other pixel is white.
+.TP
+.BI \-T\0 density
+Print density (1-5).  The default is 3 (medium).
 .TP
 .BI \-J\0 filename
 Filename string to send to printer.
@@ -136,7 +168,13 @@ and HP LaserJet 1000, and seems harmless to newer ones, such as
 the Minolta 2300DL.  So the default should be good for all cases.
 .TP
 .BI \-z\0 model
-Model: 0=2300DL, 1=HP1020.  Default is 0.
+Model. Default is 0.
+.TS
+l l.
+0	KM 2300DL / HP 1000 / HP 1005
+1	HP 1018 / HP 1020 / HP 1022
+2	HP Pro P1102 / P1566 / P1606dn
+.TE
 .SS Debugging Options
 These options are used for debugging \fBfoo2zjs\fP.
 .TP

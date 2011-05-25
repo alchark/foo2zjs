@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2lava-wrapper.in,v 1.39 2009/05/11 17:35:55 rick Exp $'
+VERSION='$Id: foo2lava-wrapper.in,v 1.42 2010/07/24 15:59:47 rick Exp $'
 
 #
 # Printer Notes:
@@ -30,6 +30,7 @@ VERSION='$Id: foo2lava-wrapper.in,v 1.39 2009/05/11 17:35:55 rick Exp $'
 #	Konica Minolta magicolor 1600W -	-z2
 #	Konica Minolta magicolor 1680MF -	-z2
 #	Konica Minolta magicolor 1690MF -	-z2
+#	Oki C110 -				-z2
 #
 # OPL:
 #	Konica Minolta 2480 MF -		-z1
@@ -154,7 +155,7 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs.foo -v >/dev/null 2>&1; then
+if eval gs.foo -v >/dev/null 2>&1; then
         GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
@@ -386,6 +387,25 @@ set_clipping() {
 }
 
 case "$PAPER" in
+Custom*x*)
+		# Command line only
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		xmm=`dc -e "$XDIM 25.4 * 36 + 72/p"`
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		ymm=`dc -e "$YDIM 25.4 * 36 + 72/p"`
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=101;        paper=letter;
+		MEDIA=20
+                set_clipping 2 100     2 100
+		if [ $MODEL = 1 ]; then PAPER=custom_size_${xmm}x${ymm}mm; fi
+		;;
 Custom*)
 		#%%BeginFeature: *CustomPageSize True
 		#216

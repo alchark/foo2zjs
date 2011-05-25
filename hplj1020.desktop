@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=HPLJ 10xx Replaced Paper
 Comment=HP LaserJet 1018, 1020
-zExec=usb_printerid /dev/usb/lp0
+# zExec=usb_printerid /dev/usb/lp0
 Exec=wish /usr/share/foo2zjs/hplj10xx_gui.tcl
 Terminal=false
 Type=Application

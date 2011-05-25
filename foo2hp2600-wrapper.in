@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hp2600-wrapper.in,v 1.65 2009/05/11 17:35:55 rick Exp $'
+VERSION='$Id: foo2hp2600-wrapper.in,v 1.70 2010/07/24 15:59:47 rick Exp $'
 
 #
 # Printer Notes:
@@ -80,6 +80,7 @@ Printer Tweaking Options:
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
 -z model          Model: 0=HP CLJ 1600/2600n; 1=HP CLJ CP1215 [$MODEL]
+-O parm=val       Alignment of CMYK.  "parm" is c,m,y, or k. "val" is in rows. 
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -185,7 +186,7 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs.foo -v >/dev/null 2>&1; then
+if eval gs.foo -v >/dev/null 2>&1; then
         GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
@@ -220,6 +221,10 @@ GSOPTS=
 EXTRAPAD=
 SAVETONER=
 NUP_ORIENT=
+OFF_C=0
+OFF_M=0
+OFF_Y=0
+OFF_K=0
 GSDEV=-sDEVICE=pbmraw
 SEGFAULT=0
 # What mode to use if the user wants us to pick the "best" mode
@@ -243,7 +248,7 @@ case `$GSBIN --version` in
 	;;
 esac
 
-while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
+while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PO:X:Vh?-" opt
 do
 	case $opt in
 	b)	BPP="$OPTARG";;
@@ -268,6 +273,14 @@ do
 	D)	DEBUG="$OPTARG";;
 	G)	GAMMAFILE="$OPTARG";;
 	I)	INTENT="$OPTARG";;
+	O)	case "$OPTARG" in
+		c=*|C=*) OFF_C=`expr substr $OPTARG 3 99`;;
+		m=*|M=*) OFF_M=`expr substr $OPTARG 3 99`;;
+		y=*|Y=*) OFF_Y=`expr substr $OPTARG 3 99`;;
+		k=*|K=*) OFF_K=`expr substr $OPTARG 3 99`;;
+		*)	error "Not [cmyk]=NUM!";;
+		esac
+		;;
 	P)	NOPLANES=-P;;
 	X)	EXTRAPAD="-X $OPTARG";;
 	[234689])	NUP="$opt";;
@@ -282,6 +295,10 @@ do
 		s*)	NUP_ORIENT=-r;;
 		p*|*)	NUP_ORIENT=;;
 		esac;;
+	-)
+		echo aaa
+		echo "$OPTARG";
+		;;
 	V)	echo "$VERSION"; foo2hp -V; foo2zjs-pstops -V; exit 0;;
 	h|\?)
 		if [ "$CMDLINE" != "-?" -a "$CMDLINE" != -h ]; then
@@ -481,6 +498,21 @@ set_clipping() {
 }
 
 case "$PAPER" in
+Custom*x*)
+		# Command line only
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=1;        paper=letter;
+                set_clipping 2 80     2 80
+		;;
 Custom*)
 		#%%BeginFeature: *CustomPageSize True
 		#216
@@ -745,7 +777,7 @@ $PREFILTER \
     -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null 2>&1) 3>&1 \
 | foo2hp -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
 	    $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
-	    -J "$LPJOB" -U "$USER" \
+	    -O$OFF_C,$OFF_M,$OFF_Y,$OFF_K -J "$LPJOB" -U "$USER" \
 	    $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD -D$DEBUG
 
 #
@@ -757,7 +789,7 @@ if [ -x /usr/bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2hp -r$RES -g$DIM -p$PAPER -m$MEDIA \
 -n$COPIES -d$DUPLEX -s$SOURCE $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
-$SAVETONER $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
+$SAVETONER -O$OFF_C,$OFF_M,$OFF_Y,$OFF_K $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
 fi
 
 #

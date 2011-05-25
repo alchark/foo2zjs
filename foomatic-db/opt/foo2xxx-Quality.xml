@@ -13,39 +13,51 @@
     </arg_execution>
     <constraints>
 	<constraint sense="true">
-	<driver>foo2zjs</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z1</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z2</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 <!--
 	Doesn't have -t option
 	<constraint sense="true">
-	<driver>foo2oak</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2oak</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2oak-z1</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 -->
 	<constraint sense="true">
-	<driver>foo2hp</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2hp</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	<driver>foo2xqx</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2xqx</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	<driver>foo2lava</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	<driver>foo2qpdl</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	<driver>foo2slx</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2slx</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	<driver>foo2hiperc</driver>
-	<arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	    <driver>foo2hiperc</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>

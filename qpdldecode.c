@@ -1,5 +1,5 @@
 /*
- * $Id: qpdldecode.c,v 1.31 2009/03/08 00:27:02 rick Exp $
+ * $Id: qpdldecode.c,v 1.38 2010/05/06 21:25:34 rick Exp $
  */
 
 /*b
@@ -129,11 +129,13 @@ print_bih(unsigned char bih[20])
     yd = (bih[8] << 24) | (bih[9] << 16) | (bih[10] << 8) | (bih[11] << 0);
     l0 = (bih[12] << 24) | (bih[13] << 16) | (bih[14] << 8) | (bih[15] << 0);
 
-    printf("		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d\n",
-	 bih[0], bih[1], bih[2], bih[3], xd, yd);
+    printf("		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d, "
+	    "%s\n",
+	    bih[0], bih[1], bih[2], bih[3], xd, yd,
+	    (xd % 256) ? "*** xd%256 != 0!" : "");
 
     printf("		L0 = %d, MX = %d, MY = %d\n",
-	 l0, bih[16], bih[17]);
+	l0, bih[16], bih[17]);
 
     printf("		Order   = %d %s%s%s%s%s\n", bih[18],
 	bih[18] & JBG_HITOLO ? " HITOLO" : "",
@@ -209,7 +211,7 @@ decode(FILE *fp)
     for (;;)
     {
 	int	reclen;
-	int	rectype;
+	int	rectype, subtype;
 	int	wb, h, comp, stripe;
 	int	cksum;
 
@@ -298,7 +300,7 @@ decode(FILE *fp)
 	case 0x13:
 	    printf("    len=15\n");
             if (fread(buf+1, 14, 1, fp) != 1)
-                error(1, "Couldn't get 16 bytes\n");
+                error(1, "Couldn't get 14 bytes\n");
             curOff += 14;
 	    printf("\t\t");
 	    for (i = 1; i <= 14; ++i)
@@ -306,30 +308,46 @@ decode(FILE *fp)
 	    printf("\n");
 	    break;
 	case 0x14:
-	    /* BIH */
-	    printf("    len=25\n");
-            if (fread(buf+1, 24, 1, fp) != 1)
-                error(1, "Couldn't get 16 bytes\n");
-            curOff += 24;
-	    if (0)
+            if (fread(buf+1, 7, 1, fp) != 1)
+                error(1, "Couldn't get 7 bytes\n");
+	    curOff += 7;
+	    subtype = buf[1];
+	    if (subtype == 0x10)
 	    {
-		printf("\t\t");
-		for (i = 1; i <= 16; ++i)
+		printf("    len=8\n");
+		printf("\t\tunknown: ");
+		for (i = 1; i <= 7; ++i)
 		    printf("%02x, ", (unsigned char) buf[i]);
-		printf("\n\t\t");
-		for (i = 17; i <= 24; ++i)
-		    printf("%02x, ", (unsigned char) buf[i]);
+		printf("\n");
 	    }
 	    else
 	    {
-		printf("\t\t");
-		for (i = 21; i <= 24; ++i)
-		    printf("%02x, ", (unsigned char) buf[i]);
+		/* BIH */
+		printf("    len=25\n");
+		if (fread(buf+7+1, 24-7, 1, fp) != 1)
+		    error(1, "Couldn't get 24 bytes\n");
+		curOff += 24-7;
+		if (0)
+		{
+		    printf("\t\t");
+		    for (i = 1; i <= 16; ++i)
+			printf("%02x, ", (unsigned char) buf[i]);
+		    printf("\n\t\t");
+		    for (i = 17; i <= 24; ++i)
+			printf("%02x, ", (unsigned char) buf[i]);
+		}
+		else
+		{
+		    printf("\t\t");
+		    for (i = 21; i <= 24; ++i)
+			printf("%02x, ", (unsigned char) buf[i]);
+		    printf("(Margin=%d)", (unsigned char) buf[24]);
+		}
+		printf("\n");
+		print_bih( (unsigned char *) buf+1);
+		for (i = 0; i <=4; ++i)
+		    memcpy(bih[i], buf+1, 20);
 	    }
-	    printf("\n");
-	    print_bih( (unsigned char *) buf+1);
-	    for (i = 0; i <=4; ++i)
-		memcpy(bih[i], buf+1, 20);
 	    break;
 	case 0x0c:
 	    if (fread(buf+1, 11, 1, fp) != 1)

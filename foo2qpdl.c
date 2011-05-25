@@ -11,6 +11,7 @@ With this utility, you can print to some HP printers, such as these:
     - Samsung CLP-310	-z2
     - Samsung CLP-315	-z2
     - Samsung CLP-610	-z2
+    - Samsung CLP-620	-z3
     - Samsung CLX-2160 (printer only)		(like CLP-300)
     - Samsung CLX-3160 (printer only)		(like CLP-300)
     - Samsung CLX-3175 (printer only)		(like CLP-315)
@@ -57,7 +58,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.41 2009/05/30 09:42:55 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.44 2010/05/06 13:18:27 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -97,7 +98,8 @@ int	Model = 0;
 		#define MODEL_CLP300	0
 		#define MODEL_CLP600	1
 		#define MODEL_CLP610	2
-		#define MODEL_LAST	2
+		#define MODEL_CLP620	3
+		#define MODEL_LAST	3
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -179,8 +181,8 @@ usage(void)
 "-p paper          Paper code [%d]\n"
 "                    0=letter, 1=legal, A4=2, 3=executive, 6=env#10,\n"
 "                    7=envMonarch, 8=envC5, 9=envDL, 11=B5jis, 12=B5iso,\n"
-"                    16=A5, 17=A6, 23=envC6, 24=folio, 25=env6.75, 26=env#9,\n"
-"                    28=oficio\n"
+"                    16=A5, 17=A6, 21=custom, 23=envC6, 24=folio, 25=env6.75,\n"
+"                    26=env#9, 28=oficio\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
@@ -205,6 +207,7 @@ usage(void)
 "                    0=CLP-300, CLX-2160, CLX-3160\n"
 "                    1=CLP-600\n"
 "                    2=CLP-310, CLP-315, CLP-610, CLX-3175\n"
+"                    3=CLP-620\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -556,14 +559,27 @@ start_page_init(FILE *ofp)
 	break;
     }
     fprintf(ofp, "%c", 0);
-    if (Model == MODEL_CLP610)
-	fprintf(ofp, "%c", 5);
-    else
-	fprintf(ofp, "%c", 2);
-    fprintf(ofp, "%c%c", 1, ResX / 100);
 
-    if (Model == MODEL_CLP610)
+    switch (Model)
     {
+    case MODEL_CLP610:
+	fprintf(ofp, "%c", 5);
+	fprintf(ofp, "%c%c", 1, ResX / 100);
+	break;
+    case MODEL_CLP620:
+	fprintf(ofp, "%c", 5);
+	fprintf(ofp, "%c%c", 2, 6);
+	break;
+    default:
+	fprintf(ofp, "%c", 2);
+	fprintf(ofp, "%c%c", 1, ResX / 100);
+	break;
+    }
+
+    switch (Model)
+    {
+    case MODEL_CLP610:
+    case MODEL_CLP620:
 	/* RECTYPE: 0x13 */
 	fprintf(ofp, "%c", 0x13);
 	fprintf(ofp, "%c%c%c", 0, 0, 0);
@@ -571,6 +587,7 @@ start_page_init(FILE *ofp)
 	fprintf(ofp, "%c%c%c%c", 0, 0, 0, 0);
 	fprintf(ofp, "%c%c%c%c", 0, 0, 0, 0);
 	fprintf(ofp, "%c", 0);
+	break;
     }
 }
 
@@ -593,11 +610,15 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 
     start_page_init(ofp);
 
-    if (Model == MODEL_CLP610)
-	error(1, "start_page: Model CLP-610 is uses start_page_banded!\n");
-
-    if (Model != MODEL_CLP610)
+    switch (Model)
     {
+    case MODEL_CLP610:
+	error(1, "start_page: Model CLP-610 uses start_page_banded!\n");
+	break;
+    case MODEL_CLP620:
+	error(1, "start_page: Model CLP-620 uses start_page_banded!\n");
+	break;
+    default:
 	/* startpage, jbig_bih, jbig_bid, jbig_end, endpage */
 	w = (((long) current->data[ 4] << 24)
 		| ((long) current->data[ 5] << 16)
@@ -632,6 +653,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	    be32_write(ofp, cksum);
 	    if (++pn == 5) pn = 1;
 	}
+	break;
     }
     
     ++pageno;
@@ -642,6 +664,15 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 void
 end_page(FILE *ofp)
 {
+    switch (Model)
+    {
+    case MODEL_CLP620:
+	/* RECTYPE: 0x14 subtype 0x10 */
+	fprintf(ofp, "%c", 0x14);
+	fprintf(ofp, "%c%c%c%c%c%c%c", 0x10, 0x16, 0x04, 0x0f, 0, 0, 0);
+	break;
+    }
+
     /* RECTYPE: 0x1 */
     fprintf(ofp, "%c", 1);
     fprintf(ofp, "%c%c", Copies>>8, Copies); //cksum??
@@ -798,6 +829,14 @@ start_doc(FILE *ofp)
 		    Filename ? Filename : "<stdin>");
     fprintf(ofp, "@PJL SET COLORMODE=%s\r\n",
 		    Mode == MODE_MONO ? "MONO" : "COLOR");
+    switch (Model)
+    {
+    case MODEL_CLP620:
+	fprintf(ofp, "@PJL SET RESOLUTION=600\r\n");
+	fprintf(ofp, "@PJL SET BITSPERPIXEL=2\r\n");
+	break;
+    }
+
     switch (Duplex)
     {
     case DMDUPLEX_LONGEDGE:
@@ -923,6 +962,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     int	bpl, bpl16;
     unsigned char *plane[4], *bitmaps[4][1];
     struct jbg_enc_state se[4]; 
+    unsigned char	*bm[4];
 
     RealWidth = w;
     w = (w + 127) & ~127;
@@ -939,10 +979,10 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 
     cmyk_planes(plane, raw, RealWidth, h);
 
-    if (Model == MODEL_CLP610)
+    switch (Model)
     {
-	unsigned char	*bm[4];
-
+    case MODEL_CLP610:
+    case MODEL_CLP620:
         if (Color2Mono)
 	{
 	    bm[0] = plane[Color2Mono-1];
@@ -961,9 +1001,8 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    bm[0] = plane[3];
 	    write_page_banded(1, bm, w, h, 3, ofp);
 	}
-    }
-    else
-    {
+	break;
+    default:
 	for (i = 0; i < 4; ++i)
 	{
 	    if (Debug >= 9)
@@ -995,6 +1034,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
 	else
 	    write_page(&chain[3], NULL, NULL, NULL, ofp);
+	break;
     }
 
     for (i = 0; i < 4; ++i)
@@ -1009,15 +1049,16 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
     int i;
     unsigned char *bitmaps[4][1];
     struct jbg_enc_state se[4]; 
+    unsigned char	*bm[4];
 
     RealWidth = w;
     w = (w + 127) & ~127;
     debug(1, "w = %d\n", w);
 
-    if (Model == MODEL_CLP610)
+    switch (Model)
     {
-	unsigned char	*bm[4];
-
+    case MODEL_CLP610:
+    case MODEL_CLP620:
         if (Color2Mono)
 	{
 	    bm[0] = plane[Color2Mono-1];
@@ -1036,9 +1077,8 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 	    bm[0] = plane[3];
 	    write_page_banded(1, bm, w, h, 3, ofp);
 	}
-    }
-    else
-    {
+	break;
+    default:
 	for (i = 0; i < 4; ++i)
 	    chain[i] = NULL;
 
@@ -1059,6 +1099,7 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 	    write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
 	else
 	    write_page(&chain[3], NULL, NULL, NULL, ofp);
+	break;
     }
 
     return 0;
@@ -1092,10 +1133,13 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 
     *bitmaps = buf;
 
-    if (Model == MODEL_CLP610)
-	write_page_banded(1, bitmaps, w, h, 3, ofp);
-    else
+    switch (Model)
     {
+    case MODEL_CLP610:
+    case MODEL_CLP620:
+	write_page_banded(1, bitmaps, w, h, 3, ofp);
+	break;
+    default:
 	if (0 && PaperCode == DMPAPER_CUSTOM)
 	    h++;
 	jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, &chain);
@@ -1105,6 +1149,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	jbg_enc_free(&se);
 
 	write_page(&chain, NULL, NULL, NULL, ofp);
+	break;
     }
 
     return 0;
@@ -1215,6 +1260,8 @@ cmyk_pages(FILE *ifp, FILE *ofp)
     UpperLeftX &= ~1;
 
     w = rawW - UpperLeftX - LowerRightX;
+    if (PaperCode == DMPAPER_CUSTOM)
+	w = (w + 0) & ~255;
     h = rawH - UpperLeftY - LowerRightY;
     bpl = (w + 1) / 2;
     rightBpl = (rawW - UpperLeftX + 1) / 2;
@@ -1371,6 +1418,8 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    UpperLeftX &= ~7;
 
 	    w = rawW - UpperLeftX - LowerRightX;
+	    if (PaperCode == DMPAPER_CUSTOM)
+		w = (w + 0) & ~255;
 	    h = rawH - UpperLeftY - LowerRightY;
 	    bpl = (w + 7) / 8;
 	    rightBpl = (rawW - UpperLeftX + 7) / 8;
@@ -1482,7 +1531,8 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	UpperLeftX &= ~7;
 
 	w = rawW - UpperLeftX - LowerRightX;
-	// w = (w + 255) & ~255;
+	if (PaperCode == DMPAPER_CUSTOM)
+	    w = (w + 0) & ~255;
 	h = rawH - UpperLeftY - LowerRightY;
 	bpl = (w + 7) / 8;
 	rightBpl = (rawW - UpperLeftX + 7) / 8;

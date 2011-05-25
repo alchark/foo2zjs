@@ -395,6 +395,10 @@ m "
 *FoomaticRIPOptionSetting ICM=km2530_2: "-Gkm2530_2.icm "
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-Gnone.icm "
+*ICM oki-c110-default/Oki C110 (default): "%% FoomaticRIPOptionSetting: ICM=oki-c110-default"
+*FoomaticRIPOptionSetting ICM=oki-c110-default: "-Gkm-1600-rgb-392-bpp&&
+1.icm "
+*End
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-Gtesting.icm "
 *ICM user1/File user1.icm: "%% FoomaticRIPOptionSetting: ICM=user1"
@@ -411,36 +415,6 @@ m "
 
 *OpenGroup: Miscellaneous/Miscellaneous
 
-*OpenUI *Nup/N-up Printing: PickOne
-*FoomaticRIPOption Nup: enum CmdLine A
-*OrderDependency: 200 AnySetup *Nup
-*DefaultNup: 1up
-*Nup 1up/1-up: "%% FoomaticRIPOptionSetting: Nup=1up"
-*FoomaticRIPOptionSetting Nup=1up: " "
-*Nup 2up/2-up: "%% FoomaticRIPOptionSetting: Nup=2up"
-*FoomaticRIPOptionSetting Nup=2up: "-2 "
-*Nup 3up/3-up: "%% FoomaticRIPOptionSetting: Nup=3up"
-*FoomaticRIPOptionSetting Nup=3up: "-3 "
-*Nup 4up/4-up: "%% FoomaticRIPOptionSetting: Nup=4up"
-*FoomaticRIPOptionSetting Nup=4up: "-4 "
-*Nup 6up/6-up: "%% FoomaticRIPOptionSetting: Nup=6up"
-*FoomaticRIPOptionSetting Nup=6up: "-6 "
-*Nup 8up/8-up: "%% FoomaticRIPOptionSetting: Nup=8up"
-*FoomaticRIPOptionSetting Nup=8up: "-8 "
-*Nup 10up/10-up: "%% FoomaticRIPOptionSetting: Nup=10up"
-*FoomaticRIPOptionSetting Nup=10up: "-10 "
-*Nup 12up/12-up: "%% FoomaticRIPOptionSetting: Nup=12up"
-*FoomaticRIPOptionSetting Nup=12up: "-12 "
-*Nup 14up/14-up: "%% FoomaticRIPOptionSetting: Nup=14up"
-*FoomaticRIPOptionSetting Nup=14up: "-14 "
-*Nup 15up/15-up: "%% FoomaticRIPOptionSetting: Nup=15up"
-*FoomaticRIPOptionSetting Nup=15up: "-15 "
-*Nup 16up/16-up: "%% FoomaticRIPOptionSetting: Nup=16up"
-*FoomaticRIPOptionSetting Nup=16up: "-16 "
-*Nup 18up/18-up: "%% FoomaticRIPOptionSetting: Nup=18up"
-*FoomaticRIPOptionSetting Nup=18up: "-18 "
-*CloseUI: *Nup
-
 *OpenUI *NupOrient/N-up Orientation: PickOne
 *FoomaticRIPOption NupOrient: enum CmdLine A
 *OrderDependency: 200 AnySetup *NupOrient
@@ -452,6 +426,36 @@ m "
 *NupOrient sea/Seascape: "%% FoomaticRIPOptionSetting: NupOrient=sea"
 *FoomaticRIPOptionSetting NupOrient=sea: "-os "
 *CloseUI: *NupOrient
+
+*OpenUI *NupPages/N-up Printing: PickOne
+*FoomaticRIPOption NupPages: enum CmdLine A
+*OrderDependency: 200 AnySetup *NupPages
+*DefaultNupPages: 1up
+*NupPages 1up/1-up: "%% FoomaticRIPOptionSetting: NupPages=1up"
+*FoomaticRIPOptionSetting NupPages=1up: " "
+*NupPages 2up/2-up: "%% FoomaticRIPOptionSetting: NupPages=2up"
+*FoomaticRIPOptionSetting NupPages=2up: "-2 "
+*NupPages 3up/3-up: "%% FoomaticRIPOptionSetting: NupPages=3up"
+*FoomaticRIPOptionSetting NupPages=3up: "-3 "
+*NupPages 4up/4-up: "%% FoomaticRIPOptionSetting: NupPages=4up"
+*FoomaticRIPOptionSetting NupPages=4up: "-4 "
+*NupPages 6up/6-up: "%% FoomaticRIPOptionSetting: NupPages=6up"
+*FoomaticRIPOptionSetting NupPages=6up: "-6 "
+*NupPages 8up/8-up: "%% FoomaticRIPOptionSetting: NupPages=8up"
+*FoomaticRIPOptionSetting NupPages=8up: "-8 "
+*NupPages 10up/10-up: "%% FoomaticRIPOptionSetting: NupPages=10up"
+*FoomaticRIPOptionSetting NupPages=10up: "-10 "
+*NupPages 12up/12-up: "%% FoomaticRIPOptionSetting: NupPages=12up"
+*FoomaticRIPOptionSetting NupPages=12up: "-12 "
+*NupPages 14up/14-up: "%% FoomaticRIPOptionSetting: NupPages=14up"
+*FoomaticRIPOptionSetting NupPages=14up: "-14 "
+*NupPages 15up/15-up: "%% FoomaticRIPOptionSetting: NupPages=15up"
+*FoomaticRIPOptionSetting NupPages=15up: "-15 "
+*NupPages 16up/16-up: "%% FoomaticRIPOptionSetting: NupPages=16up"
+*FoomaticRIPOptionSetting NupPages=16up: "-16 "
+*NupPages 18up/18-up: "%% FoomaticRIPOptionSetting: NupPages=18up"
+*FoomaticRIPOptionSetting NupPages=18up: "-18 "
+*CloseUI: *NupPages
 
 *CloseGroup: Miscellaneous
 

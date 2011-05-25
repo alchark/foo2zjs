@@ -42,6 +42,12 @@
 	<!--no pjl--><!--No "text"?-->
     </lang>
     <autodetect>
+        <parallel>
+            <ieee1284>MFG:Samsung;CMD:SPLC;MDL:CLP-310 Series;CLS:PRINTER;</ieee1284>
+            <manufacturer>Samsung</manufacturer>
+            <model>CLP-310 Series</model>
+            <commandset>SPLC</commandset>
+        </parallel>
     </autodetect>
     <functionality>B</functionality>
     <driver>foo2qpdl</driver>

@@ -1,5 +1,5 @@
 /*
- * $Id: gipddecode.c,v 1.27 2009/03/08 00:27:02 rick Exp $
+ * $Id: gipddecode.c,v 1.28 2010/06/19 13:21:26 rick Exp $
  */
 
 /*b
@@ -87,16 +87,13 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"	gdidecode [options] < zjs-file\n"
+"	gipddecode [options] < zjs-file\n"
 "\n"
-"	Decode a GDI stream into human readable form.\n"
+"	Decode Granite Image Printer Driver (GIPD) stream into human readable\n"
+"	form. Granite Systems was acquired by Monotype Imaging.\n"
 "\n"
-"	A GDI stream is the printer langauge used by some Lexmark\n"
-"	printers, such as the X500.\n"
-"\n"
-"	More information on GDI Stream can be found at:\n"
-"\n"
-"	http://softwareimaging.com/products-services/sorcerer/index.asp\n"
+"	A GIPD stream is the printer langauge used by some Lexmark\n"
+"	printers, such as the X500 and Dell printers, such as the 1125 MFP.\n"
 "\n"
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"

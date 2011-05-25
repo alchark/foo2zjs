@@ -6,7 +6,9 @@ This program converts pbm (B/W) images, 2-bit pgm (grayscale), and
 to Oak Technolgies JBIG format.
 
 With this utility, you can print to some HP printers, such as these:
-     - HP LaserJet 1500
+    - HP LaserJet 1500
+    - Kyocera Mita KM-1635:   -z1 (rotate 90)
+    - Kyocera Mita KM-2035:   -z1 (rotate 90)
 
 BUGS AND DEFICIENCIES
     - Needs to do color correction
@@ -63,7 +65,7 @@ Status: 0x18
  * TODO: Handle 2 bit mono and color output
  */
 
-static char Version[] = "$Id: foo2oak.c,v 1.57 2009/03/08 00:35:31 rick Exp $";
+static char Version[] = "$Id: foo2oak.c,v 1.64 2009/10/14 10:10:12 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,6 +93,10 @@ int	LowerRightX = 0;
 int	LowerRightY = 0;
 int	Copies = 1;
 int	Duplex = 1;
+	    #define DUPLEX_NONE		1
+	    #define DUPLEX_LONG_EDGE	2
+	    #define DUPLEX_SHORT_EDGE	3
+
 int	SourceCode = OAK_SOURCE_AUTO;
 int	MediaCode = OAK_MEDIA_AUTO;
 char	*Username = NULL;
@@ -98,6 +104,10 @@ char	*Filename = NULL;
 int	Mode = 0;
 		#define	MODE_MONO	1
 		#define	MODE_COLOR	2
+int	Model = 0;
+		#define MODEL_HP1500    0
+		#define MODEL_KM1635    1
+		#define MODEL_LAST	1
 
 int	Color2Mono = 0;
 int	BlackClears = 1;
@@ -162,8 +172,8 @@ usage(void)
 "Normal Options:\n"
 "-b bits           Bits per plane if autodetect doesn't work (1 or 2) [%d]\n"
 "-c                Force color mode if autodetect doesn't work\n"
-//"-d duplex         Duplex code to send to printer [%d]\n"
-//"                    1=off, 2=longedge, 3=shortedge\n"
+"-d duplex         Duplex code to send to printer [%d]\n"
+"                    1=off, 2=longedge, 3=shortedge\n"
 "-g <xpix>x<ypix>  Set page dimensions in pixels [%dx%d]\n"
 "-m media          Media code to send to printer [%d]\n"
 "                    0=auto 1=plain 2=preprinted 3=letterhead 4=transparency\n"
@@ -191,13 +201,15 @@ usage(void)
 "-A                Turn off: conversion of C=1,M=1,Y=1 to pure black\n"
 "-B                Turn off: K=1 forces C,M,Y to 0\n"
 "-M mirror         Mirror bytes (0=KM-1635/KM-2035, 1=HP CLJ 1500) [%d]\n"
+"-z model          Model [%d]\n"
+"                    0=HP-1500, 1=KM-1635/2035\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
 "                  %d=Cyan, %d=Magenta, %d=Yellow, %d=Black\n"
 "-D lvl            Set Debug level [%d]\n"
 "-V                Version %s\n"
-    // , Duplex
+    , Duplex
     , Bpp
     , PageWidth , PageHeight
     , MediaCode
@@ -211,6 +223,7 @@ usage(void)
     , LowerRightX , LowerRightY
     , LogicalClip
     , Mirror
+    , Model
     , PL_C, PL_M, PL_Y, PL_K
     , Debug
     , Version
@@ -457,9 +470,17 @@ start_doc(FILE *fp)
     OAK_OTHER		recother;
     OAK_TIME		rectime;
     OAK_FILENAME	recfile;
+    OAK_DUPLEX		recduplex;
+    OAK_DRIVER		recdriver;
     time_t		now;
     struct tm		*tm;
 
+    if (Model == MODEL_KM1635)
+    {
+	memset(&recdriver, 0, sizeof(recdriver));
+	strncpy(recdriver.string, Version+5, 36);
+	oak_record(fp, OAK_TYPE_DRIVER, &recdriver, sizeof(recdriver));
+    }
     memset(&recother, 0, sizeof(recother));
     recother.unk = 1;			// TODO
     strcpy(recother.string, "OTHER");	// TODO: Username????
@@ -484,20 +505,10 @@ start_doc(FILE *fp)
     strcpy(recfile.string, Filename ? Filename : "stdin");
     oak_record(fp, OAK_TYPE_FILENAME, &recfile, sizeof(recfile));
 
-#if 0
-    chunk_write(ZJT_START_DOC, nitems, size, fp);
-    item_uint32_write(ZJI_DMCOLLATE, 0,		fp);
-    item_uint32_write(ZJI_DMDUPLEX,  Duplex,	fp);
-    item_uint32_write(ZJI_PAGECOUNT, 0,		fp);
-    item_uint32_write(ZJI_QUANTITY,  1,		fp);
-    // item_uint32_write(ZJI_QMS_FINEMODE,0,	fp);
-    // item_uint32_write(ZJI_QMS_OUTBIN,  1,	fp);
-
-    if (Username)
-	item_str_write(ZJI_MINOLTA_USERNAME, Username, fp);
-    if (Filename)
-	item_str_write(ZJI_MINOLTA_FILENAME, Filename, fp);
-#endif
+    memset(&recduplex, 0, sizeof(recduplex));
+    recduplex.duplex = (Duplex > DUPLEX_NONE) ? 1 : 0;
+    recduplex.short_edge = (Duplex == DUPLEX_SHORT_EDGE) ? 1 : 0;
+    oak_record(fp, OAK_TYPE_DUPLEX, &recduplex, sizeof(recduplex));
 }
 
 void
@@ -792,13 +803,26 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     oak_record(ofp, OAK_TYPE_MEDIA, &recmedia, sizeof(recmedia));
 
     reccopies.copies = Copies;
-    reccopies.unk = 0;						// TODO
+    reccopies.duplex = Duplex - 1;
     oak_record(ofp, OAK_TYPE_COPIES, &reccopies, sizeof(reccopies));
 
     recpaper.paper = PaperCode;
-    recpaper.w1200 = PageWidth * 1200 / ResX;
-    recpaper.h1200 = PageHeight * 1200 / ResY;
-    recpaper.unk = 0;						// TODO
+    if (Model == MODEL_KM1635)
+    {
+	recpaper.w1200 = PageWidth * 600 / ResX;
+	recpaper.h1200 = PageHeight * 600 / ResY;
+	switch (PaperCode)
+	{
+	case 1: case 9: case 13:	recpaper.unk = 1; break;
+	default:			recpaper.unk = 0; break;
+	}
+    }
+    else
+    {
+	recpaper.w1200 = PageWidth * 1200 / ResX;
+	recpaper.h1200 = PageHeight * 1200 / ResY;
+	recpaper.unk = 0;						// TODO
+    }
     oak_record(ofp, OAK_TYPE_PAPER, &recpaper, sizeof(recpaper));
 
     // image header (32/33)
@@ -948,13 +972,26 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
     oak_record(ofp, OAK_TYPE_MEDIA, &recmedia, sizeof(recmedia));
 
     reccopies.copies = Copies;
-    reccopies.unk = 0;						// TODO
+    reccopies.duplex = Duplex - 1;
     oak_record(ofp, OAK_TYPE_COPIES, &reccopies, sizeof(reccopies));
 
     recpaper.paper = PaperCode;
-    recpaper.w1200 = PageWidth * 1200 / ResX;
-    recpaper.h1200 = PageHeight * 1200 / ResY;
-    recpaper.unk = 0;						// TODO
+    if (Model == MODEL_KM1635)
+    {
+	recpaper.w1200 = PageWidth * 600 / ResX;
+	recpaper.h1200 = PageHeight * 600 / ResY;
+	switch (PaperCode)
+	{
+	case 1: case 9: case 13:	recpaper.unk = 1; break;
+	default:			recpaper.unk = 0; break;
+	}
+    }
+    else
+    {
+	recpaper.w1200 = PageWidth * 1200 / ResX;
+	recpaper.h1200 = PageHeight * 1200 / ResY;
+	recpaper.unk = 0;						// TODO
+    }
     oak_record(ofp, OAK_TYPE_PAPER, &recpaper, sizeof(recpaper));
 
     // image header (32/33)
@@ -1003,7 +1040,10 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	recdata.padlen = 0;
 	recdata.unk1C = 0;					// TODO
 	recdata.y = y;
-	recdata.plane = 3; //K
+	if (Model == MODEL_KM1635)
+	    recdata.plane = 0; //K
+	else
+	    recdata.plane = 3; //K
 	recdata.subplane = 0;
 
 	if (lines < N)
@@ -1086,13 +1126,26 @@ pgm_page(unsigned char *raw, int w, int h, FILE *ofp)
     oak_record(ofp, OAK_TYPE_MEDIA, &recmedia, sizeof(recmedia));
 
     reccopies.copies = Copies;
-    reccopies.unk = 0;						// TODO
+    reccopies.duplex = Duplex - 1;
     oak_record(ofp, OAK_TYPE_COPIES, &reccopies, sizeof(reccopies));
 
     recpaper.paper = PaperCode;
-    recpaper.w1200 = PageWidth * 1200 / ResX;
-    recpaper.h1200 = PageHeight * 1200 / ResY;
-    recpaper.unk = 0;						// TODO
+    if (Model == MODEL_KM1635)
+    {
+	recpaper.w1200 = PageWidth * 600 / ResX;
+	recpaper.h1200 = PageHeight * 600 / ResY;
+	switch (PaperCode)
+	{
+	case 1: case 9: case 13:	recpaper.unk = 1; break;
+	default:			recpaper.unk = 0; break;
+	}
+    }
+    else
+    {
+	recpaper.w1200 = PageWidth * 1200 / ResX;
+	recpaper.h1200 = PageHeight * 1200 / ResY;
+	recpaper.unk = 0;						// TODO
+    }
     oak_record(ofp, OAK_TYPE_PAPER, &recpaper, sizeof(recpaper));
 
     // image header (32/33)
@@ -1244,13 +1297,26 @@ cups_page(unsigned char *raw, int w, int h, FILE *ofp)
     oak_record(ofp, OAK_TYPE_MEDIA, &recmedia, sizeof(recmedia));
 
     reccopies.copies = Copies;
-    reccopies.unk = 0;						// TODO
+    reccopies.duplex = Duplex - 1;
     oak_record(ofp, OAK_TYPE_COPIES, &reccopies, sizeof(reccopies));
 
     recpaper.paper = PaperCode;
-    recpaper.w1200 = PageWidth * 1200 / ResX;
-    recpaper.h1200 = PageHeight * 1200 / ResY;
-    recpaper.unk = 0;						// TODO
+    if (Model == MODEL_KM1635)
+    {
+	recpaper.w1200 = PageWidth * 600 / ResX;
+	recpaper.h1200 = PageHeight * 600 / ResY;
+	switch (PaperCode)
+	{
+	case 1: case 9: case 13:	recpaper.unk = 1; break;
+	default:			recpaper.unk = 0; break;
+	}
+    }
+    else
+    {
+	recpaper.w1200 = PageWidth * 1200 / ResX;
+	recpaper.h1200 = PageHeight * 1200 / ResY;
+	recpaper.unk = 0;						// TODO
+    }
     oak_record(ofp, OAK_TYPE_PAPER, &recpaper, sizeof(recpaper));
 
     // image header (32/33)
@@ -1793,7 +1859,7 @@ main(int argc, char *argv[])
     int	c;
 
     while ( (c = getopt(argc, argv,
-		    "b:cd:g:n:m:p:r:s:u:l:L:ABJ:M:S:U:D:V?h")) != EOF)
+		    "b:cd:g:n:m:p:r:s:u:l:z:L:ABJ:M:S:U:D:V?h")) != EOF)
 	switch (c)
 	{
 	case 'b':	Bpp = atoi(optarg);
@@ -1806,7 +1872,10 @@ main(int argc, char *argv[])
 			if (Color2Mono < 0 || Color2Mono > 4)
 			    error(1, "Illegal value '%s' for -C\n", optarg);
 			break;
-	case 'd':	Duplex = atoi(optarg); break;
+	case 'd':	Duplex = atoi(optarg);
+			if (Duplex < 1 || Duplex > 3)
+			    error(1, "Illegal value '%s' for -d\n", optarg);
+			break;
 	case 'g':	if (parse_xy(optarg, &PageWidth, &PageHeight))
 			    error(1, "Illegal format '%s' for -g\n", optarg);
 			if (PageWidth < 0 || PageWidth > 1000000)
@@ -1837,6 +1906,10 @@ main(int argc, char *argv[])
 			if (LogicalClip < 0 || LogicalClip > 3)
 			    error(1, "Illegal value '%s' for -L\n", optarg);
 			break;
+        case 'z':       Model = atoi(optarg);
+                        if (Model < 0 || Model > MODEL_LAST)
+                            error(1, "Illegal value '%s' for -z\n", optarg);
+                        break;
 	case 'M':	Mirror = atoi(optarg); break;
 	case 'A':	AllIsBlack = !AllIsBlack; break;
 	case 'B':	BlackClears = !BlackClears; break;
@@ -1868,6 +1941,13 @@ main(int argc, char *argv[])
 
     if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
+
+    if (Model == MODEL_KM1635)
+    {
+	JbgOptions[0] = 8;
+	JbgOptions[1] = JBG_DELAY_AT | JBG_LRLTWO | JBG_TPBON;
+	JbgOptions[3] = 32;
+    }
 
     start_doc(stdout);
 

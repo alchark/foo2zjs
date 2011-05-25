@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.13 2008/12/05 02:46:35 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.14 2010/05/13 13:21:06 rick Exp $'
 
 PROGNAME="$0"
 
@@ -16,6 +16,7 @@ DESCRIPTION
     Add PS code for foo2zjs-wrapper.
 
 OPTIONS
+    -h ydimpts	For rotate -r, y dimension points
     -r		Rotate 90 clockwise
     -c		CIEColor
     -n		Neuter CUPS cupsPSLevel2

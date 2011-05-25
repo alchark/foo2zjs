@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.40 2009/05/30 09:42:55 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.44 2010/07/24 15:59:47 rick Exp $'
 
 #
 # Printer Notes:
@@ -28,6 +28,7 @@ VERSION='$Id: foo2qpdl-wrapper.in,v 1.40 2009/05/30 09:42:55 rick Exp $'
 # Samsung CLP-315: -z2, ICM
 # Samsung CLP-600: -z1, CRD, need ICM for black text
 # Samsung CLP-610: -z2, CRD, need ICM for black text
+# Samsung CLP-620: -z3, CRD, need ICM for black text
 # Samsung CLX-2160: -z0, ICM
 # Samsung CLX-3160: -z0, ICM
 # Samsung CLX-3175: -z2, ICM
@@ -95,6 +96,7 @@ Printer Tweaking Options:
                          0=CLP-300, CLX-2160, CLX-3160
                          1=CLP-600
                          2=CLP-310, CLP-315, CLP-610, CLX-3175
+                         3=CLP-620
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -158,7 +160,7 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs.foo -v >/dev/null 2>&1; then
+if eval gs.foo -v >/dev/null 2>&1; then
         GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
@@ -286,7 +288,7 @@ esac
 #	Validate model code
 #
 case "$MODEL" in
-0|1|2)	;;
+0|1|2|3)	;;
 *)	error "Unknown model code $MODEL";;
 esac
 
@@ -371,6 +373,23 @@ set_clipping() {
 }
 
 case "$PAPER" in
+Custom*x*)
+		# Command line only
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=21;        paper=letter;
+		# Doesn't work on a real printer - smudges.
+                # set_clipping 2 100     2 100
+		set_clipping 150 100	150 100
+		;;
 Custom*)
 		#%%BeginFeature: *CustomPageSize True
 		#216
@@ -425,22 +444,22 @@ Custom*)
 		set_clipping 150 100	150 100
 		;;
 16|a5|A5)	PAPER=16;	paper=a5;        XDIM="6992";  YDIM="4960"
-		set_clipping 150 100	150 100
+		set_clipping 168 100	168 100		# modulo 256
 		;;
 11|b5jis|B5jis)	PAPER=11;	paper=b5;        XDIM="8598";  YDIM="6070"
-		set_clipping 150 100	150 100
+		set_clipping 138 100	138 100		# modulo 256
 		;;
 24|folio)	PAPER=24;	paper=folio;     XDIM="9922"; YDIM="7796"
 		set_clipping 150 100	150 100
 		;;
 26|"env#9")	PAPER=26;	paper=env9;      XDIM="4496";  YDIM="5324"
-		set_clipping 150 100	150 100
+		set_clipping 200 100	200 100		# modulo 256
 		;;
 6|"env#10")	PAPER=6;	paper=env10;     XDIM="4950";  YDIM="5700"
-		set_clipping 150 100	150 100
+		set_clipping 171 100	171 100		# modulo 256
 		;;
 9|envDL)	PAPER=9;	paper=envDL;     XDIM="5200";  YDIM="5200"
-		set_clipping 150 100	150 100
+		set_clipping 168 100	168 100		# modulo 256
 		;;
 8|envC5)	PAPER=8;	paper=envC5;     XDIM="7650";  YDIM="5408"
 		set_clipping 150 100	150 100
@@ -449,7 +468,7 @@ Custom*)
 		set_clipping 150 100	150 100
 		;;
 12|b5iso|B5iso)	PAPER=12;	paper=b5;        XDIM="8314";  YDIM="5906"
-		set_clipping 150 100	150 100
+		set_clipping 189 100	189 100		# modulo 256
 		;;
 7|envMonarch)	PAPER=7;	paper=envMonarch;XDIM="4650";  YDIM="4500"
 		set_clipping 150 100	150 100
@@ -458,7 +477,7 @@ Custom*)
 		set_clipping 150 100	150 100
 		;;
 17|a6|A6)	PAPER=17;	paper=a6;        XDIM="4960";  YDIM="3496"
-		set_clipping 150 100	150 100
+		set_clipping 176 100	176 100		# modulo 256
 		;;
 28|oficio)	PAPER=28;	paper=a6;        XDIM="10200"; YDIM="8100"
 		set_clipping 150 100	150 100
@@ -565,6 +584,7 @@ case "$MODEL" in
     0)	model=CLP-300;;
     1)	model=CLP-600;;
     2)	model=CLP-600;;
+    3)	model=CLP-600;;
 esac
 case "$RES" in
     600x600)	SCREEN=$model-600x600cms2;;

@@ -36,8 +36,7 @@ BUGS
     gs 8.64 and before has problems with 32-bit machines and color profile
     data.  Don't use!
 
-    You need two copies of Argyll: must be 1.0.3 and 1.1.0beta. Otherwise,
-    targen and colprof core dumps.
+    You need Argyll_V1.1.0 or later in $BETABIN.
 
 SEE ALSO
     http://www.xritephoto.com/html/colormunkisplash.htm
@@ -82,6 +81,9 @@ trap "exit 1" ERR
 #
 #       Process the options
 #
+BETABIN=$HOME/src/Argyll_V1.1.1/bin
+export PATH=$BETABIN:$PATH
+
 REMPRINT=amd
 REMSCAN=mac
 REMSCAN=none
@@ -102,6 +104,10 @@ do
 	esac
 done
 shift `expr $OPTIND - 1`
+
+if [ ! -x $BETABIN/printtarg ]; then
+    error "No beta bin in $BETABIN!"
+fi
 
 #
 #	Main Program
@@ -201,15 +207,9 @@ if [ "$RES" != "" ]; then
 fi
 echo "$mrp"
 
-
-BETABIN=~/src/Argyll_V1.1.0_Beta/bin
-if [ ! -x $BETABIN/printtarg ]; then
-    error "No beta bin in $BETABIN!"
-fi
-
 targen_opts=
 case "$RGB" in
-rgb|RGB)	targen_opts="$targen_opts -d3";;
+rgb|RGB)	targen_opts="$targen_opts -d2";;
 cmyk|CMYK)	targen_opts="$targen_opts -d4";;
 *)		error "Parm2: Must be rgb or cmyk";;
 esac
@@ -230,6 +230,11 @@ fi
 
 echo
 echo "******************************* printtarg ******************************"
+# -h	Use double density for CM
+# -v	Verbose mode
+# -iCM	Select target instrument, CM = ColorMunki
+# -pLetter
+# -R0	Use given random start number
 echo "$BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp"
 $BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp
 
