@@ -1,0 +1,140 @@
+    ---------------------------------------------------------------------
+    Please read the "INSTALL" file to see how to install this software.
+    Please read the "INSTALL" file to see how to install this software.
+    Please read the "INSTALL" file to see how to install this software.
+
+    Mac OS X users: also read the "INSTALL-osx.txt" file.
+    ---------------------------------------------------------------------
+
+GENERAL
+    FOO2ZJS
+    -------
+    foo2zjs converts pbm (B/W) images and 1-bit-per-pixel cmyk images
+    (both produced by ghostscript) to Zenographics ZJ-stream format. There
+    is some information about the ZJS format at http://ddk.zeno.com.
+
+    With foo2zjs, you can print to some HP and Minolta/QMS ZjStream
+    printers, such as these:
+
+	- Konica Minolta magicolor 2430 DL	B/W and color
+	- Minolta/QMS 2300 DL			B/W and color
+	- Minolta/QMS 2200 DL			B/W and color
+	- HP LaserJet 1020			B/W
+	- HP LaserJet 1018			B/W
+	- HP LaserJet 1005			B/W
+	- HP LaserJet 1000			B/W
+
+    FOO2HP
+    ------
+    foo2hp converts pbm (B/W) images and N-bit-per-pixel cmyk images
+    (both produced by ghostscript) to Zenographics ZJ-stream format. There
+    is some information about the ZJS format at http://ddk.zeno.com.
+
+    With foo2hp, you can print to some HP ZjStream printers, such as these:
+
+	- HP Color LaserJet 2600n		B/W and color
+
+    FOO2OAK
+    -------
+    foo2oak converts pbm (B/W) images and 1-bit-per-pixel cmyk images
+    (both produced by ghostscript) to Oak Technology (now Zoran) OAKT
+    format.
+
+    With foo2oak, you can print to the HP LaserJet 1500 and possibly other
+    OAKT protocol printers, such as these:
+
+	- HP LaserJet 1500	B/W and color, but only 1-bit per pixel
+
+Please read the manual pages for more details on the program operation.
+
+    $ acroread manual.pdf
+
+BUGS AND DEFICIENCIES
+    - Need to tune the manufacturer-supplied ICM color profiles to match the
+      characteristics of Ghostscript.
+
+    - Need to figure out how to get near-invisible dithering out of Ghostscript
+      without affecting the colors.  With GS 7.05, if you set -dDITHERING=150,
+      for example, the dithering becomes less visible but you get areas of
+      color blotches.  No way to win.
+
+    - Ghostscript 8.0 has worse color dithering compared to 7.05.  The symptom
+      is slanted bands separated by 0.5 to 2mm, at a 30 degree angle.
+
+    - Need to support a better input color file format which includes
+      explicit page boundary indications.  The current use of the Ghostscript
+      "bitcmyk" format precludes having pages of different sizes within a
+      Postscript stream.
+
+    - It is not entirely clear whether the JBIG-KIT compression library
+      produces compressed data compatible with all implementations of JBIG
+      in ZjStream printers.  It is possible that bugs or subtle
+      implementation differences might result in incorrect printer behavior.
+
+AUTHORS
+    FOO2ZJS
+    -------
+    The foo2zjs engine program began life as Robert Szalai's 'pbmtozjs'
+    program.  It also uses Markus Kuhn's JBIG-KIT compression library
+    (included, but available at http://www.cl.cam.ac.uk/~mgk25/jbigkit/),
+    and Marti Maria's icc2ps program (included, but also available at
+    http://www.littlecms.com).
+
+    The foo2zjs engine was overhauled by Rick Richardson to add color
+    support for the Minolta/QMS 2300DL, add command line options, limit
+    data chunk size to 65536 bytes, and other miscellaneous features.
+    Rick also contributed the zjsdecode program and the foomatic database
+    entries for the Minolta/QMS magicolor 2300 DL.
+
+    The latest version of foo2zjs can be found at:
+
+	http://foo2zjs.rkkda.com
+	wget http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+
+    FOO2HP
+    -------
+    The foo2hp engine was written entirely from scratch by Rick Richardson.
+
+    The latest version of foo2hp can be found at:
+
+	${URLHP}
+	wget ${URLHP}/foo2zjs.tar.gz
+    FOO2OAK
+    -------
+    The foo2oak engine was written entirely from scratch by Rick Richardson.
+
+    The latest version of foo2oak can be found at:
+
+	http://foo2oak.rkkda.com
+	wget http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+
+You can contact the current author at mailto://rick.richardson@comcast.net
+I do not read or reply to HTML email or messages sent under an alias.
+
+LICENSE
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+If you want to use this program under different license conditions,
+then contact the author for an arrangement.
+
+PATENTS
+It is possible that certain products which can be built using the jbig
+software module might form inventions protected by patent rights in
+some countries (e.g., by patents about arithmetic coding algorithms
+owned by IBM and AT&T in the USA). Provision of this software by the
+author does NOT include any licences for any patents. In those
+countries where a patent licence is required for certain applications
+of this software module, you will have to obtain such a licence
+yourself.

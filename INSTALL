@@ -1,0 +1,248 @@
+INSTALLATION
+------------
+Unpack:
+    $ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+    $ tar zxf foo2zjs.tar.gz
+    $ cd foo2zjs
+
+(Optional) Uninstall:
+    $ su		OR	$ sudo make uninstall
+    # make uninstall
+
+Compile:
+    $ make
+
+Get extra files from the web, such as .ICM profiles (for color correction)
+and firmware.  Select the model number for your printer:
+    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
+    $ ./getweb 2430	# Get Minolta 2430 DL .ICM files
+    $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
+    $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
+    $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
+
+    $ ./getweb 1020	# Get HP LaserJet 1020 firmware file
+    $ ./getweb 1018	# Get HP LaserJet 1018 firmware file
+    $ ./getweb 1005	# Get HP LaserJet 1005 firmware file
+    $ ./getweb 1000	# Get HP LaserJet 1000 firmware file
+
+Install driver, foomatic XML files, PPD files, and extra files:
+    $ su		OR	$ sudo make install
+    # make install
+
+(Optional) Install hotplug (for HP LJ 1000/1005/1018/1020):
+    $ su		OR	$ sudo make install-hotplug
+    # make install-hotplug
+
+If you use CUPS to manage your printers, you must restart cupsd:
+    # make cups		OR	$ sudo make cups
+
+Test operation of programs. Skip this if you don't have the exact same
+version of Ghostscript that I have (ghostscript-7.05-24.7), because it
+will not pass since different versions of Ghostscript generate different
+raster images:
+    # make test
+
+Create printers (Redhat 7.2/7.3/8.0/9.0, Fedora Core 1-5):
+    # printconf-gui
+	    Create at least one queue for monochrome, and another queue
+	    for color printing.  Create the queues, then edit them and
+	    set the "device options" as desired.
+
+	    For a networked Minolta/QMS 2300 DL, I used a "Queue Type"
+	    of "Unix Printer (LPD)", and set the "Server" to the IP address
+	    of the printer, and the "Queue" to "lp".
+
+	    For a networked HP Color Laserjet 2600n, I used a "Queue Type"
+	    of "Networked JetDirect", and set the "Printer" to the IP address
+	    of the printer, and the "Port" to "9100".
+
+For Fedora Core 6 users:
+    # system-config-printer
+
+Create printers (Mandrake/Manrivia)
+    # printerdrake
+
+Create printers (Suse 10.0)
+    # yast2 printer
+
+Create printers (Ubuntu)
+    $ sudo gnome-cups-manager
+
+	NOTE: to edit a queue hit "Properties" (click right mouse button).
+
+Create printers (Debian)
+    On Debian, I'm told that you should install CUPS from dselect,
+    then install the foo2zjs driver.  Then, connect to:
+	http://localhost:631
+    And configure printer (HP example shown) to:
+	HP LaserJet 1000, Foomatic + foo2zjs (en)
+    Then edit "Manage Printers->Configure Printer" to suit you,
+    such as "Page Size" or "Color Mode".
+
+UBUNTU NOTES
+------------
+    Install build-essential FIRST:
+	$ sudo apt-get install build-essential
+	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+	$ tar zxf foo2zjs.tar.gz
+	$ cd foo2zjs
+	$ sudo make uninstall
+	$ make
+	$ ./getweb 1020
+	    OR other printer
+	$ sudo make install install-hotplug cups
+
+MINOLTA-QMS 2200/2300 DL NOTES
+------------------------------
+    Use the network interface if you can.  These printers understand Unix
+    LPD printer server protocol.  So when setting up the printer queue,
+    you can select "UNIX Printer (lpd queue)", set the lpd queue name to
+    "lp" (arbitrary), and set the "Server" to the IP address of the
+    printer.
+
+    These printers also understand several other printer server protocols,
+    such as JetDirect and IPP, but I have not tried them.  In any case,
+    I'm not aware of any advantages of using them over LPD.
+
+    The USB interface on this printer will work if your printer is at
+    firmware revision 2.55 or later.  Mine was not, but I was able to
+    get this firmware from the Konica Minolta Europe web site.  The USA
+    site doesn't have it.  Upgrading the firmware on your printer can
+    be dangerous and might turn your printer into a paperweight, so I do
+    not recommend it unless you need USB and are a computer expert.  To
+    get the v2.55 firmware upgrade, try:
+	./getweb 2300dl_fw
+
+HP LASERJET 1000/1005/1018/1020 NOTES
+-------------------------------------
+    These printers need their firmware downloaded to them every time they
+    are powered up.
+
+	On Linux with USB connected printer:
+	    If you are running Linux and the printer is connected via USB, you
+	    can arrange for the firmware to be automatically downloaded to the
+	    printer by performing one more installation step:
+
+	    # make install-hotplug
+
+	On another OS or with a parallel port connected printer:
+
+	    You must send a firmware file to the printer each time you power it
+	    up.  If you downloaded the extra files for the HP above, a typical
+	    command line to load the firmware would be:
+
+		cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/usb/lp0
+	    or:
+		cat /usr/share/foo2zjs/firmware/sihp1005.dl > /dev/usb/lp0
+	    or:
+		cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/usb/lp0
+	    or:
+		cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/usb/lp0
+
+    NOTE: The original HP files are named '*.img'.  Sometimes HP supplies
+    these files ready-to-download to the printer, sometimes they are raw
+    ARM executables and need to have a special header added to them before
+    they can be downloaded.  The "make install" step will use the supplied
+    "arm2hpdl" program to automatically detect which kind of file they are
+    and convert them (if needed) to the downloadable '*.dl' format.
+
+HP LASERJET 1500 NOTES
+---------------------------
+    I have not tested the foo2oak driver on a real LaserJet 1500 printer.
+    I do not have this printer and HP outright rejected my request for a
+    donation of this printer.  So this driver represents my best guess as
+    to what the printer will accept.
+
+    If you think this is an unacceptable situation, then I urge you to
+    let HP know your feelings and/or choose another manufacturer.  The
+    linux-on-desktop tide is unstoppable at this point, and HP will
+    eventually have to recognize this.
+
+    User reports are that the driver works with letter and A4 paper and
+    in 1-bit monochrome and 1-bit color modes.  No color correction is
+    applied, since there is no .ICM file available for this printer that
+    I know of.
+
+MAC OS X NOTES
+---------------
+    Please read the detailed installation instructions by Clint Morgan
+    in the file INSTALL.osx.
+
+FREEBSD NOTES
+-------------
+    You need the following packages before you start the "make install":
+	# pkg_add -r ghostscript-gnu
+	# pkg_add -r cups
+	# pkg_add -r foomatic-db
+	# pkg_add -r foomatic-filters
+
+    Use "gmake" instead of "make".
+
+64-bit GHOSTSCRIPT
+------------------
+Ghostscript has a problem with ICM files and 64-bit gcc.  It causes a
+segfault with km2430_2.icm. So don't select that one.
+
+PSUTILS AND 2/4-UP CAPABILITY
+-----------------------------
+    If you would like to use the 2-up/4-up capability, then you need to
+    get and install Angus Duggan's excellent psutils package.  You can
+    find the source code for psutils here:
+
+	http://knackered.knackered.org/angus/psutils/index.html
+
+    Or an RPM here:
+
+	http://rpmfind.net/linux/rpm2html/search.php?query=psutils
+
+UPDATE
+------
+    Here are handy lines you can click on to get the latest version:
+
+	http://foo2zjs.rkkda.com/
+	http://foo2oak.rkkda.com/
+	wget http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+
+    My advice: update early and often!!!!
+
+UNINSTALLING
+------------
+    This will uninstall everything from your system.
+
+    $ su
+    # make uninstall
+
+SET DEFAULT MEDIA WITH CUPS
+---------------------------
+    $ sudo
+    # lpoptions -o media=A4
+	-OR-
+    # lpoptions -o media=Letter
+
+BUG REPORTS
+-----------
+    Use the forums at:
+	http://s3.phpbbforfree.com/forums/foo2zjs.html
+
+    I do not read or reply to HTML email or messages sent under an alias.
+    I failed out of french class, so don't even think about sending
+    me email in anything but English.
+
+    Rick Richardson
+
+DEVELOPER AND DEBUGGING TIPS
+----------------------------
+    If you want to work on this program, I recommend creating a "raw"
+    printer queue directed at the printer, with no protocol conversions.
+
+    Then, you can use the "foo2zjs-wrapper" program to convert Postscript
+    test programs to ZjS format, and inspect them with "zjsdecode" before
+    deciding whether to print them or not.  For example:
+
+	foo2zjs-wrapper testpage.ps > testpage.zm
+	foo2zjs-wrapper -c testpage.ps > testpage.zc
+
+	zjsdecode < testpage.zm
+	zjsdecode < testpage.zc
+
+	lpr -Praw testpage.zm

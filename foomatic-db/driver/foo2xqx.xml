@@ -1,0 +1,19 @@
+<driver id="driver/foo2xqx">
+    <name>foo2xqx</name>
+    <url>http://foo2xqx.rkkda.com/</url>
+    <execution>
+	<filter />
+	<prototype>foo2xqx-wrapper %A</prototype>
+    </execution>
+    <comments> <en>
+
+	This is a driver developed for the HP LaserJet M1005 MFP.
+
+	&lt;p&gt;
+
+    </en> </comments>
+    <printers>
+	<printer><id>printer/HP-LaserJet_M1005_MFP</id></printer>
+	<printer><id>printer/Generic-GDI_Printer</id></printer>
+    </printers>
+</driver>

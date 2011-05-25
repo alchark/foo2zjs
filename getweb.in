@@ -1,0 +1,247 @@
+#!/bin/sh
+
+WGETOPTS=--passive-ftp
+
+usage() {
+cat <<EOF
+Usage:
+    ./getweb something
+
+    Convenience script to get extra somethings from the web,
+    such as ICC color profiles, firmware, PPD files, etc.
+
+    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
+    $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
+    $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
+    $ ./getweb 2490	# Get Konica Minolta 2490 MF .ICM files
+    $ ./getweb 2430	# Get Konica Minolta 2430 DL .ICM files
+    $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
+    $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
+    $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
+
+    $ ./getweb 1020	# Get HP LJ1020 firmware file
+    $ ./getweb 1018	# Get HP LJ1005 firmware file
+    $ ./getweb 1005	# Get HP LJ1005 firmware file
+    $ ./getweb 1000	# Get HP LJ1000 firmware file
+
+    $ ./getweb all	# Get everything above
+
+    $ ./getweb 2300dl_fw # Get Minolta 2300DL v2.55 firmware (experts only)
+
+    $ ./getweb update	# Get latest version of this software.
+EOF
+    exit 1
+}
+
+#
+#       Report an error and exit
+#
+PROGNAME=$0
+error() {
+	echo "`basename $PROGNAME`: $1" >&2
+	exit 1
+}
+
+#
+#	Download a .EXE file from the web, unzip it, and extract the
+#	files we want
+getexe() {
+    url="$1"
+    exefile="$2"
+    what="$3"
+    
+    wget $WGETOPTS -O $exefile "$url/$exefile" ||
+	error "Couldn't download $url/$exefile"
+    unzip -o $exefile "$what"
+    rm $exefile
+}
+
+#
+#	Download a .tar.gz file from the web, untar it, and extract the
+#	files we want
+gettgz() {
+    url="$1"
+    file="$2"
+    what="$3"
+    
+    wget $WGETOPTS -O $file "$url/$file" ||
+	error "Couldn't download $url/$file"
+    gunzip <$file | tar xvf - $what
+    rm $file
+}
+
+getone() {
+    case "$1" in
+    lj1000|1000)
+	gettgz \
+	    http://foo2zjs.rkkda.com sihp1000.tar.gz \
+	    ""
+	#echo "provided"
+	#getexe \
+	    #ftp://ftp.hp.com/pub/softlib/software1/lj1488/lj-1145-2 \
+	    #lj1488en.exe \
+	    #sihp1000.img
+	;;
+    lj1005|1005)
+	gettgz \
+	    http://foo2zjs.rkkda.com sihp1005.tar.gz \
+	    ""
+	#echo "provided"
+	#getexe \
+	    #ftp://ftp.hp.com/pub/softlib/software2/COL2222/lj-10067-2 \
+	    #lj1005hostbased-en.exe \
+	    #sihp1005.img
+	;;
+    lj1018|1018)
+	gettgz \
+	    http://foo2zjs.rkkda.com sihp1018.tar.gz \
+	    ""
+	;;
+    lj1020|1020)
+	gettgz \
+	    http://foo2zjs.rkkda.com sihp1020.tar.gz \
+	    ""
+	;;
+    2200dl|2200)
+	getexe \
+	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
+	    "*.icm"
+	;;
+    2300dl|2300)
+	getexe \
+	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win m23dlicc.exe \
+	    "*.icm"
+	gettgz \
+	    http://foo2zjs.rkkda.com km2430.tar.gz \
+	    ""
+	;;
+    2300dl_fw)
+	# 2300DL firmware upgrade to v2.55
+	BASE="http://crm01.minoltaeurope.com"
+	BASE="$BASE/openmind/technic/swfw/mswprtdl.nsf/logdwl"
+	FILE="MC2300DL_v255.zip"
+	URL="$BASE?openagent&4CE486C20839C75AC1256D9E001EBD1F/\$File/$FILE"
+	wget $WGETOPTS "$URL" || error "Couldn't download $URL"
+	echo "*** Now use a windows box to unzip and install $FILE ***"
+	;;
+    cpwl|pageworks)
+	getexe \
+	    ftp://ftp.minolta-qms.com/pub/crc/out_going/windows cpplxp.exe \
+	    "*.IC_"
+	for i in C*.IC_
+	do
+	    base=`basename $i .IC_`
+	    mv $base.IC_ $base.ic_
+	    ./msexpand $base.ic_
+	    rm -f $base.ic_
+	done
+	;;
+    2430)
+	gettgz \
+	    http://foo2zjs.rkkda.com km2430.tar.gz \
+	    ""
+	;;
+    2530|2490)
+	gettgz \
+	    http://foo2lava.rkkda.com km2530.tar.gz \
+	    ""
+	;;
+    1600|2600n)
+	gettgz \
+	    http://foo2hp.rkkda.com hpclj2600n.tar.gz \
+	    ""
+	gettgz \
+	    http://foo2zjs.rkkda.com km2430.tar.gz \
+	    "km2430_2.icm"
+	;;
+    xPPD)
+	# Snarf PPD files from linuxprinting
+	[ -d PPD ] || mkdir PPD
+	for i in foomatic-db/printer/*.xml
+	do
+	    case "$i" in
+	    */Gen*)	continue;;
+	    esac
+	    printer=`basename $i .xml`
+	    echo $printer
+	    case "$printer" in
+	    *1500*|*oak*)	driver=foo2oak;;
+	    *)			driver=foo2zjs;;
+	    esac
+	    URL="http://www.linuxprinting.org/ppd-o-matic.cgi"
+	    URL="$URL?driver=$driver&printer=$printer"
+	    URL="$URL&.submit=Generate+PPD+file"
+	    URL="$URL&show=1&.cgifields=shortgui&.cgifields=show"
+	    wget $WGETOPTS -O PPD/$printer.ppd "$URL" ||
+		error "Couldn't dowload $URL"
+	done
+	;;
+    ppd)
+	# Generate PPD files using local tools
+	[ -d PPD ] || mkdir PPD
+	for i in foomatic-db/printer/*.xml
+	do
+	    printer=`basename $i .xml`
+	    echo $printer
+	    case "$printer" in
+	    *M1005*)		driver=foo2xqx;;
+	    *1500*|*OAKT*)	driver=foo2oak;;
+	    *1600*|*2600*)	driver=foo2hp;;
+	    *2530*|*2490*)	driver=foo2lava;;
+	    *)			driver=foo2zjs;;
+	    esac
+	    ENGINE=../foomatic/foomatic-db-engine
+	    PERL5LIB=$ENGINE/lib $ENGINE/foomatic-ppdfile \
+		-d $driver -p $printer > PPD/$printer.ppd
+	done
+	;;
+    update)
+	url=${URLZJS}
+	file=foo2zjs.tar.gz
+	wget $WGETOPTS -O $file $url/$file ||
+		error "Couldn't download $url/$exefile"
+	mv getweb getweb.old
+	HERE=`pwd`
+	cd .. 
+	tar zxf $HERE/$file
+	cd $HERE
+	echo "The tarball is extracted and the current directory is up to date."
+	echo -e "Remove the tarball (y/n)? \c"
+	read ans
+	if [ "$ans" = y ]; then
+	    rm -f $file
+	fi
+	;;
+    "")
+	usage
+	;;
+    *)
+	error "Don't know how to get extra stuff for printer $1"
+	;;
+    esac
+}
+
+if [ $# = 0 ]; then
+    usage
+fi
+
+for i in $*
+do
+    case "$1" in
+    all)
+	getone 1000
+	getone 1005
+	getone 1018
+	getone 1020
+	getone 2200
+	getone 2300
+	# getone 2430 already done
+	getone cpwl
+	getone 2600n
+	getone 2530
+	;;
+    *)	
+	getone $i
+	;;
+    esac
+done
