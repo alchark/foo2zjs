@@ -38,9 +38,16 @@ DEV=""
 FWDIR=/usr/share/foo2zjs/firmware
 
 #
-# Program used to determine USB id information
+# Program used to determine USB printer id information
 #
-USBID=/bin/usb_printerid
+# NOTE: /usr/bin is NOT mounted at this point
+#
+# e.g. /etc/rc.sysinit:
+#    /sbin/start_udev
+#    [snip]
+#    # Mount all other filesystems (except for NFS and /proc, which is already
+#
+PRINTERID=/bin/usb_printerid
 
 #
 #	Figure out how to log our messages
@@ -66,28 +73,64 @@ fi
 #	Figure out the model number from the name of this script
 #
 case "$0" in
+*P1005)
+    MODEL=P1005; FWMODEL=$MODEL
+    USB1=0x03f0	#Vendor
+    USB2=0x3d17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
+*P1006)
+    MODEL=P1006; FWMODEL=$MODEL
+    USB1=0x03f0	#Vendor
+    USB2=0x3e17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
+*P1007)
+    MODEL=P1007; FWMODEL=P1005		# Alias
+    USB1=0x03f0	#Vendor
+    USB2=0x4817	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
+*P1008)
+    MODEL=P1008; FWMODEL=P1006		# Alias
+    USB1=0x03f0	#Vendor
+    USB2=0x4917	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
+*P1505)
+    MODEL=P1505; FWMODEL=$MODEL
+    USB1=0x03f0	#Vendor
+    USB2=0x3f17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
+*P1505n)
+    MODEL=P1505n; FWMODEL=$MODEL
+    USB1=0x03f0	#Vendor
+    USB2=0x4017	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
+    ;;
 *1000)
-    MODEL=1000
+    MODEL=1000; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x0517	#Model
     ;;
 *1005)
-    MODEL=1005
+    MODEL=1005; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x1317	#Model
     ;;
 *1018)
-    MODEL=1018
+    MODEL=1018; FWMODEL=$MODEL
     USB1=0x03f0 #Vendor
     USB2=0x4117 #Model
     ;;
 *1020)
-    MODEL=1020
+    MODEL=1020; FWMODEL=$MODEL
     USB1=0x03f0 #Vendor
     USB2=0x2b17 #Model
     ;;
 *)
-    log "Only HP LaserJet 1000, 1005, 1018, and 1020 are supported"
+    log "Only HP LaserJet 100[05],1018,1020,P100[5678],P1505 are supported"
     exit
     ;;
 esac
@@ -133,7 +176,7 @@ esac
 #
 load1() {
     _dev="$1"
-    fw="$FWDIR/sihp$MODEL.dl"
+    fw="$FWDIR/sihp$FWMODEL.dl"
     if [ ! -f "$fw" ]; then
 	log "Missing HP LaserJet $MODEL firmware file $fw"
 	log "...read foo2zjs installation instructions and run ./getweb $MODEL"
@@ -160,17 +203,17 @@ if [ "$DEV" != "" ]; then
     # force downloading to a specific device
     #
     load1 "$DEV"
-elif [ -x $USBID ]; then
+elif [ -x $PRINTERID ]; then
     #
     # Sniff around for printers that need a firmware download
     #
     usblps=`find /dev/usb -name lp*`" "`find /dev -name usblp*`
     for dev in $usblps; do
-	status=`$USBID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
+	status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
 	if [ "$status" != "" ]; then
 	    # This is a LaserJet 100x
 	    chmod 0666 $dev
-	    status=`$USBID $dev | grep 'FWVER'`
+	    status=`$PRINTERID $dev | grep 'FWVER'`
 	    if [ "$status" = "" ]; then
 		# Firmware is not yet loaded
 		load1 "$dev"
@@ -181,5 +224,5 @@ elif [ -x $USBID ]; then
     done
 else
     log "HP LaserJet $MODEL firmware was not downloaded..."
-    log "...couldn't find $USBID and DEV is not set"
+    log "...couldn't find $PRINTERID and DEV is not set"
 fi

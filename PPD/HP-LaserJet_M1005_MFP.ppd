@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,11 +52,17 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet M1005;CMD:ACL;DES:HP LaserJet M1005;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet M1005;CMD:ACL;DES:HP LaserJet M1005;DRV:Dfoo2xqx,R1,M0,TF;"
+
+*driverName foo2xqx/foo2xqx: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2xqx.rkkda.com/"
+*driverObsolete: False
 
 
 
-*HWMargins: 11.34 11.34 11.34 11.34
+
+*HWMargins: 11.34 11.34 +11.34 +11.34
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -75,6 +81,26 @@
 *FoomaticRIPCommandLine: "foo2xqx-wrapper %A"
 
 *OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*OpenUI *Resolution/Resolution: PickOne
+*FoomaticRIPOption Resolution: enum CmdLine A
+*OrderDependency: 130 AnySetup *Resolution
+*DefaultResolution: 1200x600dpi
+*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
+*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -215,26 +241,6 @@
 *Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
 *FoomaticRIPOptionSetting Duplex=None: "-d1 "
 *CloseUI: *Duplex
-
-*OpenUI *Resolution/Resolution: PickOne
-*FoomaticRIPOption Resolution: enum CmdLine A
-*OrderDependency: 130 AnySetup *Resolution
-*DefaultResolution: 1200x600dpi
-*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
-*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
-*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
-*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
-*CloseUI: *Resolution
-
-*OpenUI *Quality/Printing Quality: PickOne
-*FoomaticRIPOption Quality: enum CmdLine A
-*OrderDependency: 110 AnySetup *Quality
-*DefaultQuality: normal
-*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
-*FoomaticRIPOptionSetting Quality=draft: " -t  "
-*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
-*FoomaticRIPOptionSetting Quality=normal: "  "
-*CloseUI: *Quality
 
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A

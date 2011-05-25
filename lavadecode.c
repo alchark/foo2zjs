@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.29 2007/07/17 13:09:29 rick Exp $
+ * $Id: lavadecode.c,v 1.31 2008/09/05 15:05:54 rick Exp $
  */
 
 /*b
@@ -468,7 +468,7 @@ decode(FILE *fp)
 			int	h, w, len;
 			unsigned char *image;
 
-			//debug(0, "JBG_OK: %d\n", pn);
+			//debug(0, "JBG_EOK: %d\n", pn);
 			h = jbg_dec_getheight(&s[pn]);
 			w = jbg_dec_getwidth(&s[pn]);
 			image = jbg_dec_getimage(&s[pn], 0);
@@ -525,12 +525,31 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	for(;;)
-	{
-	    decode(stdin);
-	    c = getc(stdin); ungetc(c, stdin);
-	    if (feof(stdin))
-		break;
+        if (argc > 0)
+        {
+            FILE        *fp;
+
+            fp = fopen(argv[0], "r");
+            if (!fp)
+                error(1, "file '%s' doesn't exist\n", argv[0]);
+            for (;;)
+            {
+                decode(fp);
+                c = getc(fp); ungetc(c, fp);
+                if (feof(fp))
+                    break;
+            }
+            fclose(fp);
+        }
+        else
+        {
+	    for(;;)
+	    {
+		decode(stdin);
+		c = getc(stdin); ungetc(c, stdin);
+		if (feof(stdin))
+		    break;
+	    }
 	}
 	printf("\n");
 

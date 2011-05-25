@@ -18,7 +18,7 @@
     <constraints>
 	<constraint sense="true">
 	    <driver>foo2lava</driver>
-	    <arg_defval>ev/foo2lava-ICM-1</arg_defval>
+	    <arg_defval>ev/foo2lava-ICM-conner</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>
@@ -31,28 +31,53 @@
 	</enum_val>
 
 	<enum_val id="ev/foo2lava-ICM-0">
-	    <ev_longname> <en>km2530_0 - Resolution 600</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
+	    <ev_longname> <en>km2530_0.icm - Resolution 600</en> </ev_longname>
 	    <ev_shortname> <en>km2530_0</en> </ev_shortname>
 	    <ev_driverval>-Gkm2530_0.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2lava-ICM-1">
-	    <ev_longname> <en>km2530_1 - Resolution 1200</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
+	    <ev_longname> <en>km2530_1.icm - Resolution 1200</en> </ev_longname>
 	    <ev_shortname> <en>km2530_1</en> </ev_shortname>
 	    <ev_driverval>-Gkm2530_1.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2lava-ICM-2">
-	    <ev_longname> <en>km2530_2 - Resolution 2400</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
+	    <ev_longname> <en>km2530_2.icm - Resolution 2400</en> </ev_longname>
 	    <ev_shortname> <en>km2530_2</en> </ev_shortname>
 	    <ev_driverval>-Gkm2530_2.icm</ev_driverval>
 	</enum_val>
 
+	<enum_val id="ev/foo2lava-ICM-conner">
+	    <ev_longname> <en>km2530-jconner-d50.icm (default)</en> </ev_longname>
+	    <ev_shortname> <en>km2530-jc</en> </ev_shortname>
+	    <ev_driverval>-Gkm2530-jconner-d50.icm</ev_driverval>
+	</enum_val>
+
+        <enum_val id="ev/foo2lava-ICM-testing">
+            <ev_longname> <en>File testing.icm</en> </ev_longname>
+            <ev_shortname> <en>testing</en> </ev_shortname>
+            <ev_driverval>-Gtesting.icm</ev_driverval>
+        </enum_val>
+        <enum_val id="ev/foo2lava-ICM-user1">
+            <ev_longname> <en>File user1.icm</en> </ev_longname>
+            <ev_shortname> <en>user1</en> </ev_shortname>
+            <ev_driverval>-Guser1.icm</ev_driverval>
+        </enum_val>
+        <enum_val id="ev/foo2lava-ICM-user2">
+            <ev_longname> <en>File user2.icm</en> </ev_longname>
+            <ev_shortname> <en>user2</en> </ev_shortname>
+            <ev_driverval>-Guser2.icm</ev_driverval>
+        </enum_val>
+        <enum_val id="ev/foo2lava-ICM-user3">
+            <ev_longname> <en>File user3.icm</en> </ev_longname>
+            <ev_shortname> <en>user3</en> </ev_shortname>
+            <ev_driverval>-Guser3.icm</ev_driverval>
+        </enum_val>
+        <enum_val id="ev/foo2lava-ICM-user4">
+            <ev_longname> <en>File user4.icm</en> </ev_longname>
+            <ev_shortname> <en>user4</en> </ev_shortname>
+            <ev_driverval>-Guser4.icm</ev_driverval>
+        </enum_val>
     </enum_vals>
 </option>

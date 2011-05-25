@@ -19,6 +19,7 @@ GENERAL
 	- Konica Minolta magicolor 2430 DL	B/W and color
 	- Minolta/QMS 2300 DL			B/W and color
 	- Minolta/QMS 2200 DL			B/W and color
+	- HP LaserJet 1022			B/W
 	- HP LaserJet 1020			B/W
 	- HP LaserJet 1018			B/W
 	- HP LaserJet 1005			B/W
@@ -32,7 +33,22 @@ GENERAL
 
     With foo2hp, you can print to some HP ZjStream printers, such as these:
 
+	- HP Color LaserJet CP1215		B/W and color
+	- HP Color LaserJet 1600		B/W and color
 	- HP Color LaserJet 2600n		B/W and color
+
+    FOO2LAVA
+    --------
+    foo2lava converts Ghostscript pbmraw, bitcmyk, or pksmraw  output  for-
+    mats  to  monochrome  or color LAVAFLOW or OPL streams, for driving the
+    Konica Minolta magicolor 2530 DL network color laser printer, the  Kon-
+    ica Minolta magicolor 2480/2480 MF AIO printer, and other Zenographics-
+    based LAVAFLOW printers.
+
+	- Konica Minolta magicolor 2530 DL	B/W and color
+	- Konica Minolta magicolor 2490 MF	B/W and color
+	- Xerox Phaser 6115MFP			B/W and color
+	- Konica Minolta magicolor 2480 MF	B/W and color
 
     FOO2OAK
     -------
@@ -44,6 +60,41 @@ GENERAL
     OAKT protocol printers, such as these:
 
 	- HP LaserJet 1500	B/W and color, but only 1-bit per pixel
+
+    FOO2SLX
+    -------
+    foo2slx converts Ghostscript pbmraw, bitcmyk, or pksmraw output formats
+    to  monochrome  or color SLX streams, for driving the Lexmark C500 net-
+    work color laser printer and other SLZ-based printers.  The SLX  stream
+    is a variant of ZjStream produced by Software Imaging K.K
+
+	- Lexmark C500n		B/W and color
+
+    FOO2XQX
+    -------
+    foo2xqx  converts  Ghostscript  pbmraw  to  monochrome XQX streams, for
+    driving the HP LaserJet M1005 MFP and other XQX-based printers
+
+	- HP LaserJet M1005 MFP
+	- HP LaserJet M1120 MFP
+	- HP LaserJet P1005
+	- HP LaserJet P1006
+	- HP LaserJet P1007
+	- HP LaserJet P1008
+	- HP LaserJet P1505/P1505n
+	- HP LaserJet P2014/P2014n
+
+    FOO2HIPERC
+    ----------
+    foo2hiperc converts Ghostscript pbmraw, bitcmyk, or pksmraw output for-
+    mats  to monochrome or color HIPERC streams, for driving the Oki C3200,
+    C3300n, C3400n, C5100n, and the C5500n HIPERC printers.
+
+	- Oki C3200n
+	- Oki C3300n/C3400n
+	- Oki C3530n MFP
+	- Oki C5100n/C5200n
+	- Oki C5500n/C5600n/C5800n
 
 Please read the manual pages for more details on the program operation.
 
@@ -72,8 +123,6 @@ BUGS AND DEFICIENCIES
       implementation differences might result in incorrect printer behavior.
 
 AUTHORS
-    FOO2ZJS
-    -------
     The foo2zjs engine program began life as Robert Szalai's 'pbmtozjs'
     program.  It also uses Markus Kuhn's JBIG-KIT compression library
     (included, but available at http://www.cl.cam.ac.uk/~mgk25/jbigkit/),
@@ -86,26 +135,11 @@ AUTHORS
     Rick also contributed the zjsdecode program and the foomatic database
     entries for the Minolta/QMS magicolor 2300 DL.
 
+    The foo2* engine was written entirely from scratch by Rick Richardson.
+
     The latest version of foo2zjs can be found at:
 
 	${URLZJS}
-	wget ${URLZJS}/foo2zjs.tar.gz
-
-    FOO2HP
-    -------
-    The foo2hp engine was written entirely from scratch by Rick Richardson.
-
-    The latest version of foo2hp can be found at:
-
-	${URLHP}
-	wget ${URLHP}/foo2zjs.tar.gz
-    FOO2OAK
-    -------
-    The foo2oak engine was written entirely from scratch by Rick Richardson.
-
-    The latest version of foo2oak can be found at:
-
-	${URLOAK}
 	wget ${URLZJS}/foo2zjs.tar.gz
 
 You can contact the current author at mailto://rick.richardson@comcast.net

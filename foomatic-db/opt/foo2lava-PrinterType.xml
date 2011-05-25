@@ -17,7 +17,7 @@
 	    <arg_defval>ev/foo2lava-PrinterType-lavaflow</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>KonicaMinolta</make>
+	    <make>KONICA MINOLTA</make>
 	    <model>magicolor 2480 MF</model>
 	    <driver>foo2lava</driver>
 	    <arg_defval>ev/foo2lava-PrinterType-opl</arg_defval>
@@ -36,7 +36,7 @@
 	        </constraint>
 	        <constraint sense="false">
 		    <driver>foo2lava</driver>
-	    	    <make>KonicaMinolta</make>
+	    	    <make>KONICA MINOLTA</make>
 	    	    <model>magicolor 2480 MF</model>
 	        </constraint>
 	    </constraints>
@@ -53,7 +53,7 @@
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2lava</driver>
-	    	    <make>KonicaMinolta</make>
+	    	    <make>KONICA MINOLTA</make>
 	    	    <model>magicolor 2480 MF</model>
 	        </constraint>
 	    </constraints>

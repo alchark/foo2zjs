@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.106 2007/07/12 15:43:14 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.117 2009/01/22 20:56:35 rick Exp $'
 
 #
 # Printer Notes:
@@ -33,6 +33,7 @@ VERSION='$Id: foo2zjs-wrapper.in,v 1.106 2007/07/12 15:43:14 rick Exp $'
 # HP LaserJet 1005	- Same as 2200 DL, plus needs -P
 # HP LaserJet 1018	- Same as 2200 DL, plus needs -P -z1 -L0
 # HP LaserJet 1020	- Same as 2200 DL, plus needs -P -z1 -L0
+# HP LaserJet P2035	- Same as 2200 DL, plus needs -P -z1 -L0
 #
 
 PROGNAME="$0"
@@ -45,7 +46,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #	Log the command line, for debugging and problem reports
 #
 if [ -x /usr/bin/logger ]; then
-    logger -t "$BASENAME" -p lpr.info -- "foo2zjs-wrapper $@" </dev/null
+    logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
 fi
 
 usage() {
@@ -59,6 +60,9 @@ Usage:
 
 Normal Options:
 -c                Print in color (else monochrome)
+-C colormode      Colormode [$COLORMODE]
+                    1=Photos, 2=Photo and text, 3=Graphics and text
+                    10=ICM color profile (using -G *.icm file)
 -d duplex         Duplex code to send to printer [$DUPLEX]
                     1=off, 2=longedge, 3=shortedge
 -m media          Media code to send to printer [$MEDIA]
@@ -144,13 +148,13 @@ nup() {
 #       Process the options
 #
 
-# Try to use a local copy of GhostScript 8.14, if available.  Otherwise,
-# fallback to whatever the Linux distro has installed (usually 7.05)
+# Try to use a local copy of GhostScript 8.54, if available.  Otherwise,
+# fallback to whatever the Linux distro has installed (usually 7.07)
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs8 -v >/dev/null 2>&1; then
-        GSBIN=${GSBIN:-gs8}
+if gs.foo -v >/dev/null 2>&1; then
+        GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
 fi
@@ -159,17 +163,9 @@ CMDLINE="$*"
 DEBUG=0
 DUPLEX=1
 COLOR=
-COLORMODE=0
+COLORMODE=default
 MODEL=0
-# What mode to use if the user wants us to pick the "best" mode
-case `$GSBIN --version` in
-7*)	DEFAULTCOLORMODE=10
-	DEFAULTCOLORMODE=2
-	;;
-*)	DEFAULTCOLORMODE=2
-	;;
-esac
-QUALITY=1
+QUALITY=wts
 MEDIA=1
 COPIES=1
 PAPER=1
@@ -190,6 +186,18 @@ EXTRAPAD=
 SAVETONER=
 NUP_ORIENT=
 GSDEV=-sDEVICE=pbmraw
+# What mode to use if the user wants us to pick the "best" mode
+case `$GSBIN --version` in
+7*)	DEFAULTCOLORMODE=10
+	DEFAULTCOLORMODE=2
+	;;
+8.1*)
+	DEFAULTCOLORMODE=2
+	QUALITY=1
+	;;
+*)	DEFAULTCOLORMODE=2
+	;;
+esac
 while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
 do
 	case $opt in
@@ -229,7 +237,7 @@ do
 		s*)	NUP_ORIENT=-r;;
 		p*|*)	NUP_ORIENT=;;
 		esac;;
-	V)	echo "$VERSION"; foo2zjs -V; exit 0;;
+	V)	echo "$VERSION"; foo2zjs -V; foo2zjs-pstops -V; exit 0;;
 	h|\?)
 		if [ "$CMDLINE" != "-?" -a "$CMDLINE" != -h ]; then
 		    echo "Illegal command:"
@@ -261,7 +269,10 @@ case "$QUALITY" in
     GSOPTS="-dCOLORSCREEN $GSOPTS"
     ;;
 2)
-    GSOPTS="-dMaxBitMap=500000000 $GSOPTS"
+    GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
+    ;;
+wts)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
 esac
 
@@ -370,26 +381,32 @@ Custom*)
 		#0
 		#pop pop pop pop pop
 
-		TMPFILE=/tmp/cus$$
+		#%%BeginFeature: *CustomPageSize True
+		#792.000000 612.000000 1 0.000000 0.000000
+		#pop pop pop pop pop
+
+		if [ $DEBUG = 0 ]; then
+		    TMPFILE=/tmp/cus$$
+		else
+		    TMPFILE=/tmp/custom.ps
+		fi
 		cat >$TMPFILE
 		exec <$TMPFILE
 
-		XDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;p;}'`
-		case "$XDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size XDIM != 1-99999"
+		tmp=`head -n 10000 $TMPFILE \
+		    | sed -n '/CustomPageSize/{n;p;n;p;}' \
+		    | tr '\n' ' '`
+		case "$tmp" in
+		[0-9]*\ [0-9]*)
+		    XDIM=`echo "$tmp" | sed 's/ .*//'`
+		    YDIM=`echo "$tmp" | sed -e 's/^[^ ]* //' -e 's/ .*//'`
+		    ;;
+		*)
+		    if [ $DEBUG = 0 ]; then rm -f $TMPFILE; fi
+		    error "Custom page size [XY]DIM != 1-99999"
 		    ;;
 		esac
 		XDIM=`dc -e "$XDIM 1200* 72/p"`
-
-		YDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;n;p;}'`
-		case "$YDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size YDIM != 1-99999"
-		    ;;
-		esac
 		YDIM=`dc -e "$YDIM 600* 72/p"`
 		PAPER=256;        paper=letter;
 		MEDIA=261
@@ -472,6 +489,7 @@ Custom*)
 		;;
 *)		error "Unimplemented paper code $PAPER";;
 esac
+# e.g. /usr/share/ghostscript/7.07/lib/gs_statd.ps
 PAPERSIZE="-sPAPERSIZE=$paper";
 
 case "$RES" in
@@ -488,6 +506,9 @@ case $NUP in
 [234689]|1[024568])	PREFILTER="nup";;
 *)			PREFILTER=cat;;
 esac
+if [ "$DEBUG" -ge 9 ]; then
+    PREFILTER="tee /tmp/$BASENAME.ps"
+fi
 
 #
 #	Overload -G.  If the file name ends with ".icm" or ".ICM"
@@ -502,16 +523,40 @@ create_crd() {
     #
     ICC2PS=$PREFIX/bin/foo2zjs-icc2ps
     if [ -x $ICC2PS ]; then
+	case "$GAMMAFILE" in
+	none | none.icm | */none.icm)
+	    ;;
+	*)
 	$ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
 	|| error "Problem converting .ICM file to Postscript"
+	    ;;
+	esac
+
+	PSTOPS_OPTS="$PSTOPS_OPTS -c"
 	cat > $ICCTMP.usecie.ps <<-EOF
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
 	EOF
+	if [ "$QUALITY" = wts ]; then
+	    cat >> $ICCTMP.usecie.ps <<-EOF
+		<< /UseWTS true >> setuserparams
+		<<
+		    /AccurateScreens true
+		    /HalftoneType 1
+		    /HalftoneName (Round Dot Screen) cvn
+		    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}
+		    /Frequency 137
+		    /Angle 37
+		>> sethalftone
+		EOF
+	fi
 	cat > $ICCTMP.selcrd.ps <<-EOF
 		/Current /ColorRendering findresource setcolorrendering
 	EOF
-	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps"
+	case "$GAMMAFILE" in
+	none | none.icm | */none.icm) GAMMAFILE="$ICCTMP.usecie.ps";;
+	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
+	esac
     else
 	GAMMFILE=
     fi
@@ -528,7 +573,10 @@ if [ "" = "$COLOR" ]; then
     GAMMAFILE=
 else
     case "$COLORMODE" in
-    0)	COLORMODE=$DEFAULTCOLORMODE;;
+    default)	COLORMODE=$DEFAULTCOLORMODE;;
+    esac
+    case "$GAMMAFILE" in
+    default)	GAMMAFILE=DL2312.icm;;
     esac
 fi
 
@@ -539,8 +587,10 @@ case "$RES" in
     2400x600)	SCREEN=screen2400.ps;;
 esac
 
+PSTOPS_OPTS="-n"
+
 case "$COLORMODE" in
-"")
+0|"")
     # Monochrome
     ;;
 10|icm)
@@ -548,6 +598,9 @@ case "$COLORMODE" in
     AIB=-A
     BC=-B
     case "$GAMMAFILE" in
+    none | none.icm | */none.icm)
+	create_crd
+	;;
     *.icm|*.ICM|*.icc|*.ICC)
 	#
 	# Its really an .ICM file, not a gamma file.
@@ -562,9 +615,6 @@ case "$COLORMODE" in
 	else
 	    GAMMAFILE=
 	fi
-	;;
-    none)
-	GAMMAFILE=
 	;;
     esac
     ;;
@@ -610,6 +660,10 @@ case "$COLORMODE" in
     ;;
 esac
 
+if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -w"
+fi
+
 if [ "" != "$COLOR" ]; then
     if [ "" = "$AIB" -a "" = "$BC" ]; then
 	# Faster, but can't handle AllIsBlack or BlackClears
@@ -639,9 +693,10 @@ fi
 #
 GS="$GSBIN -q -dBATCH -dSAFER -dQUIET -dNOPAUSE"
 
+foo2zjs-pstops $PSTOPS_OPTS | \
 $PREFILTER \
 | ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
-    -sOutputFile="|cat 1>&3" $GAMMAFILE - >/dev/null) 3>&1 \
+    -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null) 3>&1 \
 | foo2zjs -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
 	    -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
 	    -J "$LPJOB" -U "$USER" \

@@ -18,7 +18,15 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2oak-wrapper.in,v 1.28 2007/06/11 00:48:32 rick Exp $'
+VERSION='$Id: foo2oak-wrapper.in,v 1.45 2009/01/11 12:21:46 rick Exp $'
+
+#
+# Printer Notes:
+#
+#	HP Color LaserJet 1500:	-z0 (mirror bytes)
+#
+#	Kyocera Mita KM-1635:	-z1 (rotate 90)
+#
 
 PROGNAME="$0"
 BASENAME=`basename $PROGNAME`
@@ -30,7 +38,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #	Log the command line, for debugging and problem reports
 #
 if [ -x /usr/bin/logger ]; then
-    logger -t "$BASENAME" -p lpr.info -- "foo2oak-wrapper $@" </dev/null
+    logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
 fi
 
 usage() {
@@ -49,8 +57,12 @@ Normal Options:
                     0=auto 1=plain 2=preprinted 3=letterhead 4=graytrans
                     5=prepunched 6=labels 7=bond 8=recycled 9=color
                     10=cardstock 11=heavy 12=envelope 13=light 14=tough
+		    15=vellum 16=rough 19=thick 20=highqual
 -p paper          Paper code [$PAPER]
-                    1=letter, 5=legal, 7=executive, 9=A4, 11=A5, 13=B5jis
+                    1=letter, 3=ledger, 5=legal, 6=statement, 7=executive,
+		    8=A3, 9=A4, 11=A5, 12=B4, 13=B5jis, 14=folio, 19=env9,
+		    20=env10, 27=envDL, 28=envC5, 30=envC4, 37=envMonarch,
+		    257=A6, 258=B6, 259=B5iso, 260=env6
 -n copies         Number of copies [$COPIES]
 -r <xres>x<yres>  Set device resolution in pixels/inch [$RES]
 -s source         Source code to send to printer [$SOURCE]
@@ -65,6 +77,7 @@ Printer Tweaking Options:
 -l <xoff>x<yoff>  Set offset of lower right printable in pixels [varies]
 -L mask           Send logical clipping values from -u/-l in ZjStream [3]
                   0=no, 1=Y, 2=X, 3=XY
+-z model          Model: 0=HP CLJ 1500, 1=KM-1635/KM-2035 [$MODEL]
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -122,13 +135,26 @@ nup() {
 #
 #       Process the options
 #
+
+# Try to use a local copy of GhostScript 8.54, if available.  Otherwise,
+# fallback to whatever the Linux distro has installed (usually 7.07)
+#
+# N.B. := operator used here, when :- would be better, because "ash"
+# doesn't have :-
+if gs.foo -v >/dev/null 2>&1; then
+        GSBIN=${GSBIN:-gs.foo}
+else
+        GSBIN=${GSBIN:-gs}
+fi
+
 BPP=1
-GSBIN=gs
 CMDLINE="$*"
 DEBUG=0
 DUPLEX=1
 COLOR=
-QUALITY=1
+COLORMODE=default
+MODEL=0
+QUALITY=wts
 MEDIA=1
 COPIES=1
 PAPER=1
@@ -141,12 +167,23 @@ CLIP_LOG=
 BC=
 AIB=
 COLOR2MONO=
-GAMMAFILE=
+GAMMAFILE=default
 INTENT=0
 GSOPTS=
-GSDEV=-sDEVICE=pbmraw
 NUP_ORIENT=
-while getopts "1:23456789o:b:cd:g:l:u:L:m:n:p:q:r:s:ABS:D:G:I:Vh?" opt
+GSDEV=-sDEVICE=pbmraw
+# What mode to use if the user wants us to pick the "best" mode
+case `$GSBIN --version` in
+7*)	DEFAULTCOLORMODE=10
+	;;
+8.1*)
+	DEFAULTCOLORMODE=10
+	QUALITY=1
+	;;
+*)	DEFAULTCOLORMODE=10
+	;;
+esac
+while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:z:ABS:D:G:I:Vh?" opt
 do
 	case $opt in
 	b)	BPP=$OPTARG;;
@@ -159,11 +196,13 @@ do
 	q)	QUALITY="$OPTARG";;
 	r)	RES="$OPTARG";;
 	s)	SOURCE="$OPTARG";;
+	z)	MODEL="$OPTARG";;
 	l)	CLIP_LR="-l $OPTARG";;
 	u)	CLIP_UL="-u $OPTARG";;
 	L)	CLIP_LOG="-L $OPTARG";;
 	A)	AIB=-A;;
 	B)	BC=-B;;
+	C)	COLORMODE="$OPTARG";;
 	S)	COLOR2MONO="-S$OPTARG";;
 	D)	DEBUG="$OPTARG";;
 	G)	GAMMAFILE="$OPTARG";;
@@ -180,7 +219,7 @@ do
 		s*)	NUP_ORIENT=-r;;
 		p*|*)	NUP_ORIENT=;;
 		esac;;
-	V)	echo "$VERSION"; foo2oak -V; exit 0;;
+	V)	echo "$VERSION"; foo2oak -V; foo2zjs-pstops -V; exit 0;;
 	h|\?)
 		if [ "$CMDLINE" != "-?" -a "$CMDLINE" != -h ]; then
 		    echo "Illegal command:"
@@ -198,7 +237,7 @@ shift `expr $OPTIND - 1`
 #
 if [ $# -ge 1 ]; then
     if [ "$LPJOB" = "" ]; then
-	LPJOB="$1"
+	: # LPJOB="$1"
     fi
     exec < $1
 fi
@@ -232,8 +271,20 @@ case "$QUALITY" in
     GSOPTS="-dCOLORSCREEN $GSOPTS"
     ;;
 2)
-    GSOPTS="-dMaxBitMap=500000000 $GSOPTS"
+    GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
     ;;
+wts)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
+    ;;
+esac
+
+#
+#	Validate model code
+#
+case "$MODEL" in
+0)	MIRROR=1; ROTATE90=0;;
+1)	MIRROR=0; ROTATE90=1;;
+*)	error "Unknown model code $MODEL";;
 esac
 
 #
@@ -244,7 +295,7 @@ case "$MEDIA" in
 1|plain)	MEDIA=1;;
 2|preprinted)	MEDIA=2;;
 3|letterhead)	MEDIA=3;;
-4|gratrans*)	MEDIA=4;;
+4|transparency)	MEDIA=4;;
 5|prepunched)	MEDIA=5;;
 6|labels)	MEDIA=6;;
 7|bond)		MEDIA=7;;
@@ -255,6 +306,11 @@ case "$MEDIA" in
 12|envelope)	MEDIA=12;;
 13|light)	MEDIA=13;;
 14|tough)	MEDIA=14;;
+
+15|vellum)	MEDIA=15;;
+16|rough)	MEDIA=16;;
+19|thick)	MEDIA=19;;
+20|highqual)	MEDIA=20;;
 [0-9]*)		;;
 *)		error "Unknown media code $MEDIA";;
 esac
@@ -264,7 +320,7 @@ esac
 #
 case "$SOURCE" in
 1|tray1)	SOURCE=1;;
-4|manual)	SOURCE=4;;
+4|manual|mp)	SOURCE=4;;
 7|auto)		SOURCE=7;;
 [0-9]*)		;;
 *)		error "Unknown source code $SOURCE";;
@@ -326,38 +382,53 @@ Custom*)
 		#0
 		#pop pop pop pop pop
 
-		TMPFILE=/tmp/cus$$
+		#%%BeginFeature: *CustomPageSize True
+		#792.000000 612.000000 1 0.000000 0.000000
+		#pop pop pop pop pop
+
+		if [ $DEBUG = 0 ]; then
+		    TMPFILE=/tmp/cus$$
+		else
+		    TMPFILE=/tmp/custom.ps
+		fi
 		cat >$TMPFILE
 		exec <$TMPFILE
 
-		XDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;p;}'`
-		case "$XDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size XDIM != 1-99999"
+		tmp=`head -n 10000 $TMPFILE \
+		    | sed -n '/CustomPageSize/{n;p;n;p;}' \
+		    | tr '\n' ' '`
+		case "$tmp" in
+		[0-9]*\ [0-9]*)
+		    XDIM=`echo "$tmp" | sed 's/ .*//'`
+		    YDIM=`echo "$tmp" | sed -e 's/^[^ ]* //' -e 's/ .*//'`
+		    ;;
+		*)
+		    if [ $DEBUG = 0 ]; then rm -f $TMPFILE; fi
+		    error "Custom page size [XY]DIM != 1-99999"
 		    ;;
 		esac
 		XDIM=`dc -e "$XDIM 1200* 72/p"`
-
-		YDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;n;p;}'`
-		case "$YDIM" in
-		""|0*)
-		    rm -f $TMPFILE
-		    error "Custom page size YDIM != 1-99999"
-		    ;;
-		esac
 		YDIM=`dc -e "$YDIM 600* 72/p"`
-		PAPER=1;        paper=letter;
+		PAPER=296;      paper=letter;
                 set_clipping 2 100     2 100
 		;;
 1|letter)	PAPER=1;	paper=letter;    XDIM="10200"; YDIM="6600"
 		set_clipping 140 100	140 100
 		;;
+3|ledger)	PAPER=3;	paper=ledger;    XDIM="20400"; YDIM="6600"
+		set_clipping 140 100	140 100
+		;;
 5|legal)	PAPER=5;	paper=legal;     XDIM="10200"; YDIM="8400"
+		set_clipping 140 100	140 100
+		;;
+6|statement)	PAPER=6;	paper=statement; XDIM="6600";  YDIM="5100"
 		set_clipping 140 100	140 100
 		;;
 7|executive)	PAPER=7;	paper=executive; XDIM="8700";  YDIM="6300"
 		set_clipping 140 100	140 100
+		;;
+8|a3|A3)	PAPER=8;	paper=a3;        XDIM="19842"; YDIM="7014"
+		set_clipping 160 100	160 100
 		;;
 9|a4|A4)	PAPER=9;	paper=a4;        XDIM="9920";  YDIM="7014"
 		set_clipping 160 100	160 100
@@ -365,18 +436,73 @@ Custom*)
 11|a5|A5)	PAPER=11;	paper=a5;        XDIM="6992";  YDIM="4960"
 		set_clipping 140 100	140 100
 		;;
-13|b5jis|B5JIS)	PAPER=13;	paper=b5;        XDIM="8598";  YDIM="6070"
+12|b4|B4)	PAPER=12;	paper=b4;        XDIM="12142"; YDIM="8598"
+		set_clipping 140 100	140 100
+		;;
+13|b5jis|B5jis)	PAPER=13;	paper=b5;        XDIM="8598";  YDIM="6070"
+		set_clipping 140 100	140 100
+		;;
+14|folio|Folio)	PAPER=14;	paper=folio;     XDIM="9922";  YDIM="7796"
+		set_clipping 140 100	140 100
+		;;
+19|env9|"env#9")
+		PAPER=19;	paper=env9;      XDIM="4650";  YDIM="5362"
+		set_clipping 140 100	140 100
+		;;
+20|env10|"env#10")
+		PAPER=20;	paper=env10;     XDIM="4950";  YDIM="5700"
+		set_clipping 140 100	140 100
+		;;
+27|envDL)	PAPER=27;	paper=envDL;     XDIM="5200";  YDIM="5200"
+		set_clipping 140 100	140 100
+		;;
+28|envC5)	PAPER=28;	paper=envC5;     XDIM="7650";  YDIM="5408"
+		set_clipping 140 100	140 100
+		;;
+30|envC4)	PAPER=30;	paper=envC4;     XDIM="10818"; YDIM="7654"
+		set_clipping 140 100	140 100
+		;;
+#34|envB5)	PAPER=34;	paper=envB5;     XDIM="8316";  YDIM="5892"
+#		set_clipping 140 100	140 100
+#		;;
+37|envMonarch)	PAPER=37;	paper=envMonarch;XDIM="4650";  YDIM="4500"
+		set_clipping 140 100	140 100
+		;;
+257|a6|A6)	PAPER=257;	paper=a6;        XDIM="4961";  YDIM="3496"
+		set_clipping 140 100	140 100
+		;;
+258|b6|B6)	PAPER=258;	paper=b6;        XDIM="6048";  YDIM="4300"
+		set_clipping 140 100	140 100
+		;;
+259|b5iso|B5iso)
+		PAPER=259;	paper=b5iso;     XDIM="8516";  YDIM="5906"
+		set_clipping 140 100	140 100
+		;;
+260|env6|"env#6")
+		PAPER=260;	paper=env6;     XDIM="4356";  YDIM="3900"
 		set_clipping 140 100	140 100
 		;;
 *)		error "Unimplemented paper code $PAPER";;
 esac
+# e.g. /usr/share/ghostscript/7.07/lib/gs_statd.ps
 PAPERSIZE="-sPAPERSIZE=$paper";
+
 
 case "$RES" in
 600x600)	XDIM=`expr $XDIM / 2`;;
 1200x600)	;;
 2400x600)	XDIM=`expr $XDIM \* 2`;;
 esac
+if [ $ROTATE90 = 1 ]; then
+    tmp=$XDIM
+    XDIM=$YDIM
+    YDIM=$tmp
+    case "$RES" in
+    600x600)        YDIMpoints=`dc -e "6k $YDIM 600 / 72 *p"`;;
+    1200x600)       YDIMpoints=`dc -e "6k $YDIM 1200 / 72 *p"`;;
+    2400x600)       YDIMpoints=`dc -e "6k $YDIM 2400 / 72 *p"`;;
+    esac
+fi
 DIM="${XDIM}x${YDIM}"
 
 #
@@ -386,6 +512,9 @@ case $NUP in
 [234689]|1[024568])	PREFILTER="nup";;
 *)			PREFILTER=cat;;
 esac
+if [ "$DEBUG" -ge 9 ]; then
+    PREFILTER="tee /tmp/$BASENAME.ps"
+fi
 
 #
 #	Overload -G.  If the file name ends with ".icm" or ".ICM"
@@ -400,16 +529,40 @@ create_crd() {
     #
     ICC2PS=$PREFIX/bin/foo2zjs-icc2ps
     if [ -x $ICC2PS ]; then
-	$ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
-	|| error "Problem converting .ICM file to Postscript"
+	case "$GAMMAFILE" in
+	none | none.icm | */none.icm)
+	    ;;
+	*)
+	    $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
+	    || error "Problem converting .ICM file to Postscript"
+	    ;;
+	esac
+
+	PSTOPS_OPTS="$PSTOPS_OPTS -c"
 	cat > $ICCTMP.usecie.ps <<-EOF
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
 	EOF
+	if [ "$QUALITY" = wts ]; then
+	    cat >> $ICCTMP.usecie.ps <<-EOF
+		<< /UseWTS true >> setuserparams
+		<<
+		    /AccurateScreens true
+		    /HalftoneType 1
+		    /HalftoneName (Round Dot Screen) cvn
+		    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}
+		    /Frequency 137
+		    /Angle 37
+		>> sethalftone
+		EOF
+	fi
 	cat > $ICCTMP.selcrd.ps <<-EOF
 		/Current /ColorRendering findresource setcolorrendering
 	EOF
-	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps"
+	case "$GAMMAFILE" in
+	none | none.icm | */none.icm) GAMMAFILE="$ICCTMP.usecie.ps";;
+	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
+	esac
     else
 	GAMMFILE=
     fi
@@ -420,151 +573,66 @@ if [ $DEBUG -gt 0 ]; then
 else
     ICCTMP=/tmp/icc$$
 fi
-case "$GAMMAFILE" in
-*.icm|*.ICM|*.icc|*.ICC)
-    #
-    # Its really an .ICM file, not a gamma file.
-    #
-    # The file can be a full path name, or the name of a file in $SHARE/icm/
-    #
-    if [ "$COLOR" = "" ]; then
-	GAMMAFILE=
-    elif [ -r "$GAMMAFILE" ]; then
-	create_crd
-    elif [ -r "$SHARE/icm/$GAMMAFILE" ]; then
-	GAMMAFILE="$SHARE/icm/$GAMMAFILE"
-	create_crd
-    else
-	GAMMAFILE=
-    fi
+
+if [ "" = "$COLOR" ]; then
+    COLORMODE=
+    GAMMAFILE=
+else
+    case "$COLORMODE" in
+    default)	COLORMODE=$DEFAULTCOLORMODE;;
+    esac
+    case "$GAMMAFILE" in
+    default)	GAMMAFILE=hpclj2600n-1.icm;;
+    esac
+fi
+
+PSTOPS_OPTS="-n"
+if [ $ROTATE90 = 1 ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -h $YDIMpoints -r"
+fi
+
+case "$COLORMODE" in
+0|"")
+    # Monochrome
     ;;
+10|icm)
+    # Use old ICM method
+    AIB=-A
+    BC=-B
+    case "$GAMMAFILE" in
+    none | none.icm | */none.icm)
+	create_crd
+	;;
+	*.icm|*.ICM|*.icc|*.ICC)
+	#
+	# Its really an .ICM file, not a gamma file.
+	#
+	# The file can be a full path name, or the name of a file in $SHARE/icm/
+	#
+	    if [ -r "$GAMMAFILE" ]; then
+	    create_crd
+	elif [ -r "$SHARE/icm/$GAMMAFILE" ]; then
+	    GAMMAFILE="$SHARE/icm/$GAMMAFILE"
+	    create_crd
+	else
+	    GAMMAFILE=
+	fi
+	;;
+    esac
 esac
 
-#
-#	Use a Well Tempered Screen in quality mode 2.
-#       from Karl Putland <karl@putland.linux-site.net>
-#
-#	NOTE from Rick: Karl abandoned this approach.
-#
-create_wts() {
-    #
-    # Screen frequencies
-    #
-    C_FREQ="120"
-    M_FREQ="123.33"
-    Y_FREQ="126.85"
-    K_FREQ="143.22"
+if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -w"
+fi
 
-    case "$RES" in
-    600x600)	MUL=0.50;;
-    1200x600)	MUL=0.75;;
-    2400x600)	MUL=1.00;;
-    *)		MUL=0.50;;
-    esac
-
-    cat > $ICCTMP.wts.ps <<-EOF
-	%!PS-Adobe-3.0
-	<< /UseWTS true >> setuserparams
-	<<
-	/HalftoneType 5
-	/Cyan <<
-	    /AccurateScreens true
-	    /HalftoneType 1
-	    /SpotFunction {
-		% 180 mul cos exch 180 mul cos add 2 div
-		abs exch abs 2 dup add 0.75 le
-		    { 2 exp exch 2 exp add 1 exch sub }
-		    { 2 dup add 1.23 le 
-			{ exch 0.76 mul add 1 exch sub }
-			{ 1 sub 2 exp exch 1 sub 2 exp add 1 sub }
-			ifelse
-		    }
-		    ifelse 
-	    }
-	    /TransferFunction {1 exp}
-	    /Frequency $C_FREQ $MUL mul
-	    /Angle 98
-	>>
-	/Magenta <<
-	    /AccurateScreens true
-	    /HalftoneType 1
-	    /SpotFunction { 
-		% 180 mul cos exch 180 mul cos add 2 div
-		abs exch abs 2 dup add 0.75 le
-		    { 2 exp exch 2 exp add 1 exch sub }
-		    { 2 dup add 1.23 le 
-			{ exch 0.76 mul add 1 exch sub }
-			{ 1 sub 2 exp exch 1 sub 2 exp add 1 sub }
-			ifelse
-		    }
-		    ifelse 
-	    } 
-	    /TransferFunction {0.45 exp}
-	    /Frequency $M_FREQ $MUL mul
-	    /Angle 51.5
-	>>
-	/Yellow <<
-	    /AccurateScreens true
-	    /HalftoneType 1
-	    /SpotFunction { 
-		% 180 mul cos exch 180 mul cos add 2 div
-		abs exch abs 2 dup add 0.75 le
-		    { 2 exp exch 2 exp add 1 exch sub }
-		    { 2 dup add 1.23 le 
-			{ exch 0.76 mul add 1 exch sub }
-			{ 1 sub 2 exp exch 1 sub 2 exp add 1 sub }
-			ifelse
-		    }
-		    ifelse 
-	    } 
-	    /TransferFunction {0.45 exp}
-	    /Frequency $Y_FREQ $MUL mul
-	    /Angle 27
-	>>
-	/Black <<
-	    /AccurateScreens true
-	    /HalftoneType 1
-	    /SpotFunction { 
-		% 180 mul cos exch 180 mul cos add 2 div
-		abs exch abs 2 dup add 0.75 le
-		    { 2 exp exch 2 exp add 1 exch sub }
-		    { 2 dup add 1.23 le 
-			{ exch 0.76 mul add 1 exch sub }
-			{ 1 sub 2 exp exch 1 sub 2 exp add 1 sub }
-			ifelse
-		    }
-		    ifelse 
-	    } 
-	    /TransferFunction {0.60 exp}
-	    /Frequency $K_FREQ $MUL mul
-	    /Angle 75
-	>>
-	/Default <<
-	    /AccurateScreens true
-	    /HalftoneType 1
-	    /SpotFunction { 
-		% 180 mul cos exch 180 mul cos add 2 div
-		abs exch abs 2 dup add 0.75 le
-		{ 2 exp exch 2 exp add 1 exch sub }
-		{ 2 dup add 1.23 le 
-		    { exch 0.76 mul add 1 exch sub }
-		    { 1 sub 2 exp exch 1 sub 2 exp add 1 sub }
-		    ifelse
-		}
-		ifelse 
-	    } 
-	    /TransferFunction {0.45 exp}
-	    /Frequency $Y_FREQ $MUL mul
-	    /Angle 27
-	>>
-	>> sethalftone
-	EOF
-
-    GAMMAFILE="$GAMMAFILE $ICCTMP.wts.ps"
-}
-
-if [ "$COLOR" != "" -a "$QUALITY" = 2 ]; then
-    create_wts
+if [ "" != "$COLOR" ]; then
+    if [ "" = "$AIB" -a "" = "$BC" ]; then
+	# Faster, but can't handle AllIsBlack or BlackClears
+	GSDEV=-sDEVICE=pksmraw
+    else
+	# Can't handle different size pages
+	GSDEV=-sDEVICE=bitcmyk
+    fi
 fi
 
 #
@@ -586,23 +654,25 @@ fi
 #
 GS="$GSBIN -q -dBATCH -dSAFER -dQUIET -dNOPAUSE"
 
+foo2zjs-pstops $PSTOPS_OPTS | \
 $PREFILTER \
 | ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
-    -sOutputFile="|cat 1>&3" $GAMMAFILE - >/dev/null 2>/dev/null) 3>&1 \
-| dbgcmd foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
-	    $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
+    -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null 2>/dev/null) 3>&1 \
+| foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
+	    -M$MIRROR $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
 	    -J "$LPJOB" -U "$USER" \
 	    $BC $AIB $COLOR2MONO -D$DEBUG
 
 #
 #	Log the command line, for debugging and problem reports
 #
-if [ $DEBUG = 0 -a -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- \
-	"gs $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS"
+	"$GSBIN $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS $GAMMAFILE"
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA \
--n$COPIES -d$DUPLEX -s$SOURCE $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
+-n$COPIES -d$DUPLEX -s$SOURCE -M$MIRROR $COLOR -b$BPP \
+$CLIP_UL $CLIP_LR $CLIP_LOG \
 $BC $AIB $COLOR2MONO"
 fi
 
@@ -610,7 +680,7 @@ fi
 #	Remove cruft
 #
 if [ $DEBUG -eq 0 ]; then
-    for i in crd.ps log usecie.ps selcrd.ps wts.ps
+    for i in crd.ps log usecie.ps selcrd.ps
     do
 	file="$ICCTMP.$i"
 	[ -f $file ] && rm -f $file

@@ -6,11 +6,15 @@ This program converts pbm (B/W) images and 1-bit-per-pixel cmyk images
 is some information about the ZJS format at http://ddk.zeno.com.
 
 With this utility, you can print to some HP printers, such as these:
-    - Samsung CLP-300
-    - Samsung CLP-600
-    - Samsung CLX-3160 (printer only)
-    - Xerox Phaser 6110
-    - Xerox Phaser 6110MFP (printer only)
+    - Samsung CLP-300	-z0
+    - Samsung CLP-600	-z1
+    - Samsung CLP-315	-z2
+    - Samsung CLP-610	-z2
+    - Samsung CLX-2160 (printer only)		(like CLP-300)
+    - Samsung CLX-3160 (printer only)		(like CLP-300)
+    - Samsung CLX-3175 (printer only)		(like CLP-315)
+    - Xerox Phaser 6110				(like CLP-300)
+    - Xerox Phaser 6110MFP (printer only)	(like CLP-300)
 
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
@@ -52,7 +56,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.20 2007/07/15 14:31:56 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.39 2008/12/31 12:52:25 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,6 +76,7 @@ int	ResX = 1200;
 int	ResY = 600;
 int	Bpp = 1;
 int	PaperCode = 0; //DMPAPER_LETTER;
+	    #define DMPAPER_CUSTOM	21
 int	PageWidth = 1200 * 8.5;
 int	PageHeight = 600 * 11;
 int	UpperLeftX = 0;
@@ -87,6 +92,11 @@ char	*Filename = NULL;
 int	Mode = 1;
 		#define MODE_MONO	1
 		#define MODE_COLOR	2
+int	Model = 0;
+		#define MODEL_CLP300	0
+		#define MODEL_CLP600	1
+		#define MODEL_CLP610	2
+		#define MODEL_LAST	2
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -162,11 +172,14 @@ usage(void)
 "                    1=off, 2=longedge, 3=shortedge\n"
 "-g <xpix>x<ypix>  Set page dimensions in pixels [%dx%d]\n"
 "-m media          Media code to send to printer [%d]\n"
-"                    1=standard 2=transparency 3=glossy 257=envelope\n"
-"                    259=letterhead 261=thickstock 262=postcard 263=labels\n"
-"-p paper          Paper code to send to printer [%d]\n"
-"                    1=letter, 5=legal 7=executive 9=A4 11=A5 13=B5\n"
-"                    20=env#10, 27=envDL 28=envC5 34=envB5 37=envMonarch\n"
+"                    0=plain, 1=thick, 2=thin. 3=bond, 4=color, 5=card,\n"
+"                    6=labels, 7=envelope, 8=preprinted, 9=cotton,\n"
+"                   10=recycled, 11=transparency, 12=archive\n"
+"-p paper          Paper code [%d]\n"
+"                    0=letter, 1=legal, A4=2, 3=executive, 6=env#10,\n"
+"                    7=envMonarch, 8=envC5, 9=envDL, 11=B5jis, 12=B5iso,\n"
+"                    16=A5, 17=A6, 23=envC6, 24=folio, 25=env6.75, 26=env#9,\n"
+"                    28=oficio\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
@@ -187,6 +200,10 @@ usage(void)
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
+"-z model          Model [%d]\n"
+"                    0=CLP-300/CLX-2160/CLX-3160\n"
+"                    1=CLP-600\n"
+"                    2=CLP-315/CLP-610/CLX-3175\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -206,6 +223,7 @@ usage(void)
     , LowerRightX , LowerRightY
     , LogicalClip
     , ExtraPad
+    , Model
     , Debug
     , Version
     );
@@ -371,6 +389,66 @@ free_chain(BIE_CHAIN *chain)
     }
 }
 
+/*
+ * This creates a linked list of compressed data.  The first item
+ * in the list is the BIH and is always 20 bytes in size.  Each following
+ * item is 65536 bytes in length.  The last item length is whatever remains.
+ */
+void
+output_jbig(unsigned char *start, size_t len, void *cbarg)
+{
+    BIE_CHAIN	*current, **root = (BIE_CHAIN **) cbarg;
+    int		size = 0x80000;	// Printer does strange things otherwise.
+
+    if ( (*root) == NULL)
+    {
+	(*root) = malloc(sizeof(BIE_CHAIN));
+	if (!(*root))
+	    error(1, "Can't allocate space for chain\n");
+
+	(*root)->data = NULL;
+	(*root)->next = NULL;
+	(*root)->len = 0;
+	size = 20;
+	if (len != 20)
+	    error(1, "First chunk must be BIH and 20 bytes long\n");
+    }
+
+    current = *root;  
+    while (current->next)
+	current = current->next;
+
+    while (len > 0)
+    {
+	int	amt, left;
+
+	if (!current->data)
+	{
+	    current->data = malloc(size);
+	    if (!current->data)
+		error(1, "Can't allocate space for compressed data\n");
+	}
+
+	left = size - current->len;
+	amt = (len > left) ? left : len;
+	memcpy(current->data + current->len, start, amt); 
+	current->len += amt;
+	len -= amt;
+	start += amt;
+
+	if (current->len == size)
+	{
+	    current->next = malloc(sizeof(BIE_CHAIN));
+	    if (!current->next)
+		error(1, "Can't allocate space for chain\n");
+	    current = current->next;
+	    current->data = NULL;
+	    current->next = NULL;
+	    current->len = 0;
+	}
+    }
+}
+
 int
 write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 {
@@ -433,22 +511,9 @@ write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 }
 
 void
-start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
+start_page_init(FILE *ofp)
 {
-    BIE_CHAIN		*current = *root;
-    unsigned long	w, h;
-    int			i, pn;
-    int			cksum;
     int			valw, valh;
-    static int		pageno = 0;
-
-    /* error handling */
-    if (!current)
-	error(1, "There is no JBIG!\n"); 
-    if (!current->next)
-	error(1, "There is no or wrong JBIG header!\n"); 
-    if (current->len != 20 )
-	error(1,"wrong BIH length\n"); 
 
     /* RECTYPE: 0x0 */
     fprintf(ofp, "%c", 0);
@@ -464,53 +529,108 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     else
 	fprintf(ofp, "%c", SourceCode);
     fprintf(ofp, "%c", 0);
-    if ((PageNum & 1) == 0 && EvenPages)
+    switch (Duplex)
     {
+    case DMDUPLEX_OFF:
 	fprintf(ofp, "%c", 0);
+	fprintf(ofp, "%c", 0);
+	break;
+    case DMDUPLEX_LONGEDGE:
+    case DMDUPLEX_SHORTEDGE:
 	fprintf(ofp, "%c", 1);
-    }
-    else
-    {
 	fprintf(ofp, "%c", 0);
-	fprintf(ofp, "%c", 0);
+	break;
+    case DMDUPLEX_MANUALLONG:
+    case DMDUPLEX_MANUALSHORT:
+	if ((PageNum & 1) == 0 && EvenPages)
+	{
+	    fprintf(ofp, "%c", 0);
+	    fprintf(ofp, "%c", 1);
+	}
+	else
+	{
+	    fprintf(ofp, "%c", 0);
+	    fprintf(ofp, "%c", 0);
+	}
+	break;
     }
     fprintf(ofp, "%c", 0);
-    fprintf(ofp, "%c", 2);
+    if (Model == MODEL_CLP610)
+	fprintf(ofp, "%c", 5);
+    else
+	fprintf(ofp, "%c", 2);
     fprintf(ofp, "%c%c", 1, ResX / 100);
 
-    /* startpage, jbig_bih, jbig_bid, jbig_end, endpage */
-    w = (((long) current->data[ 4] << 24)
-	    | ((long) current->data[ 5] << 16)
-	    | ((long) current->data[ 6] <<  8)
-	    | (long) current->data[ 7]);
-    h = (((long) current->data[ 8] << 24)
-	    | ((long) current->data[ 9] << 16)
-	    | ((long) current->data[10] <<  8)
-	    | (long) current->data[11]);
-
-    // pn goes from 4, 1, 2, 3
-    for (pn = 4, i = 0; i < nbie; ++i)
+    if (Model == MODEL_CLP610)
     {
-	/* RECTYPE: 0xC */
-	fprintf(ofp, "%c", 12);
-	fprintf(ofp, "%c", 0);
-	fprintf(ofp, "%c%c", (char) ((w/8)>>8), (char) (w/8));
-	fprintf(ofp, "%c%c", 0, 128);
-	fprintf(ofp, "%c", pn);
+	/* RECTYPE: 0x13 */
 	fprintf(ofp, "%c", 0x13);
-	be32_write(ofp, 20+36);
+	fprintf(ofp, "%c%c%c", 0, 0, 0);
+	fprintf(ofp, "%c%c", 0x23, 0x15);
+	fprintf(ofp, "%c%c%c%c", 0, 0, 0, 0);
+	fprintf(ofp, "%c%c%c%c", 0, 0, 0, 0);
+	fprintf(ofp, "%c", 0);
+    }
+}
 
-	cksum = be32_write(ofp, 0x39abcdef);
-	cksum += be32_write(ofp, 20);
-	cksum += be32_write(ofp, 0);
-	cksum += be32_write(ofp, 0);
-	cksum += be32_write(ofp, 0);
-	cksum += be32_write(ofp, 0);
-	cksum += be32_write(ofp, 0);
-	cksum += be32_write(ofp, 0);
-	cksum += write_cksum(current->data, 20, ofp);
-	be32_write(ofp, cksum);
-	if (++pn == 5) pn = 1;
+void
+start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
+{
+    BIE_CHAIN		*current = *root;
+    unsigned long	w, h;
+    int			i, pn;
+    int			cksum;
+    static int		pageno = 0;
+
+    /* error handling */
+    if (!current)
+	error(1, "There is no JBIG!\n"); 
+    if (!current->next)
+	error(1, "There is no or wrong JBIG header!\n"); 
+    if (current->len != 20 )
+	error(1,"wrong BIH length\n"); 
+
+    start_page_init(ofp);
+
+    if (Model == MODEL_CLP610)
+	error(1, "start_page: Model CLP-610 is uses start_page_banded!\n");
+
+    if (Model != MODEL_CLP610)
+    {
+	/* startpage, jbig_bih, jbig_bid, jbig_end, endpage */
+	w = (((long) current->data[ 4] << 24)
+		| ((long) current->data[ 5] << 16)
+		| ((long) current->data[ 6] <<  8)
+		| (long) current->data[ 7]);
+	h = (((long) current->data[ 8] << 24)
+		| ((long) current->data[ 9] << 16)
+		| ((long) current->data[10] <<  8)
+		| (long) current->data[11]);
+
+	// pn goes from 4, 1, 2, 3
+	for (pn = 4, i = 0; i < nbie; ++i)
+	{
+	    /* RECTYPE: 0xC */
+	    fprintf(ofp, "%c", 12);
+	    fprintf(ofp, "%c", 0);
+	    fprintf(ofp, "%c%c", (char) ((w/8)>>8), (char) (w/8));
+	    fprintf(ofp, "%c%c", 0, 128);
+	    fprintf(ofp, "%c", pn);
+	    fprintf(ofp, "%c", 0x13);
+	    be32_write(ofp, 20+36);
+
+	    cksum = be32_write(ofp, 0x39abcdef);
+	    cksum += be32_write(ofp, 20);
+	    cksum += be32_write(ofp, 0);
+	    cksum += be32_write(ofp, 0);
+	    cksum += be32_write(ofp, 0);
+	    cksum += be32_write(ofp, 0);
+	    cksum += be32_write(ofp, 0);
+	    cksum += be32_write(ofp, 0);
+	    cksum += write_cksum(current->data, 20, ofp);
+	    be32_write(ofp, cksum);
+	    if (++pn == 5) pn = 1;
+	}
     }
     
     ++pageno;
@@ -524,6 +644,102 @@ end_page(FILE *ofp)
     /* RECTYPE: 0x1 */
     fprintf(ofp, "%c", 1);
     fprintf(ofp, "%c%c", Copies>>8, Copies); //cksum??
+}
+
+int
+width2unk(int w)
+{
+    int u;
+
+    u = (26.0/6655.0) * w + 65;
+    return u;
+}
+
+int
+write_page_banded(int nbie, unsigned char *bm[4], int w, int h, int pn,
+		    FILE *ofp)
+{
+    int			y;
+    int			firstbih = 1;
+    int			stripe;
+    static int		pageno = 0;
+    #define NBAND	128
+
+    start_page_init(ofp);
+
+    for (pn = 0; pn < nbie; ++pn)
+    {
+	stripe = 0;
+	for (y = 0; y < h; y += NBAND)
+	{
+	    struct jbg_enc_state    se;
+	    unsigned char           *bitmaps[1];
+	    BIE_CHAIN               *chain;
+	    BIE_CHAIN               *current;
+	    int                     len;
+	    int			cksum;
+
+	    int     lines = (h-y) > NBAND ? NBAND : (h-y);
+
+	    bitmaps[0] = bm[pn] + y * ((w+7)/8);
+	    chain = NULL;
+
+	    if (lines < NBAND)
+		JbgOptions[2] = lines;
+	    else
+		JbgOptions[2] = NBAND;
+	    JbgOptions[1] = JBG_DELAY_AT | JBG_LRLTWO;
+	    jbg_enc_init(&se, w, lines, 1, bitmaps, output_jbig, &chain);
+	    jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
+				JbgOptions[2], JbgOptions[3], JbgOptions[4]);
+	    jbg_enc_out(&se);
+	    jbg_enc_free(&se);
+
+	    if (chain->len != 20)
+		error(1, "Program error: missing BIH at start of chain\n");
+
+	    if (firstbih)
+	    {
+		/* RECTYPE: 0x14 - BIH */
+		fprintf(ofp, "%c", 0x14);
+		fwrite(chain->data, 20, 1, ofp);
+		fprintf(ofp, "%c%c%c", 0, 0, 1);
+		/* UNK:  maybe horiz. margin?
+		 * Values: 78 for 3in to 104 for 8.5in
+		 */
+		fprintf(ofp, "%c", width2unk(w));  
+		firstbih = 0;
+	    }
+
+	    current = chain->next;
+	    if (!current)
+		error(1, "No data in chain!\n");
+
+	    len = current->len;
+
+	    fprintf(ofp, "%c", 12);
+	    fprintf(ofp, "%c", stripe);
+	    ++stripe;
+	    fprintf(ofp, "%c%c", (char) ((w/8)>>8), (char) (w/8));
+	    fprintf(ofp, "%c%c", 0, 128);
+	    if (nbie == 1)
+		fprintf(ofp, "%c", 4);
+	    else
+		fprintf(ofp, "%c", pn+1);
+	    fprintf(ofp, "%c", 0x15);
+	    be32_write(ofp, len+4);
+
+	    cksum = write_cksum(current->data, len, ofp);
+
+	    be32_write(ofp, cksum);
+	    free_chain(chain);
+	}
+    }
+
+    ++pageno;
+    end_page(ofp);
+
+    return 0;
 }
 
 int
@@ -550,66 +766,6 @@ write_page(BIE_CHAIN **root, BIE_CHAIN **root2,
 
     end_page(ofp);
     return 0;
-}
-
-/*
- * This creates a linked list of compressed data.  The first item
- * in the list is the BIH and is always 20 bytes in size.  Each following
- * item is 65536 bytes in length.  The last item length is whatever remains.
- */
-void
-output_jbig(unsigned char *start, size_t len, void *cbarg)
-{
-    BIE_CHAIN	*current, **root = (BIE_CHAIN **) cbarg;
-    int		size = 0x80000;	// Printer does strange things otherwise.
-
-    if ( (*root) == NULL)
-    {
-	(*root) = malloc(sizeof(BIE_CHAIN));
-	if (!(*root))
-	    error(1, "Can't allocate space for chain\n");
-
-	(*root)->data = NULL;
-	(*root)->next = NULL;
-	(*root)->len = 0;
-	size = 20;
-	if (len != 20)
-	    error(1, "First chunk must be BIH and 20 bytes long\n");
-    }
-
-    current = *root;  
-    while (current->next)
-	current = current->next;
-
-    while (len > 0)
-    {
-	int	amt, left;
-
-	if (!current->data)
-	{
-	    current->data = malloc(size);
-	    if (!current->data)
-		error(1, "Can't allocate space for compressed data\n");
-	}
-
-	left = size - current->len;
-	amt = (len > left) ? left : len;
-	memcpy(current->data + current->len, start, amt); 
-	current->len += amt;
-	len -= amt;
-	start += amt;
-
-	if (current->len == size)
-	{
-	    current->next = malloc(sizeof(BIE_CHAIN));
-	    if (!current->next)
-		error(1, "Can't allocate space for chain\n");
-	    current = current->next;
-	    current->data = NULL;
-	    current->next = NULL;
-	    current->len = 0;
-	}
-    }
 }
 
 void
@@ -642,11 +798,17 @@ start_doc(FILE *ofp)
     switch (Duplex)
     {
     case DMDUPLEX_LONGEDGE:
+	fprintf(ofp, "@PJL SET DUPLEX=ON\r\n");
+	fprintf(ofp, "@PJL SET BINDING=LONGEDGE\r\n");
+	break;
     case DMDUPLEX_MANUALLONG:
 	fprintf(ofp, "@PJL SET DUPLEX=MANUAL\r\n");
 	fprintf(ofp, "@PJL SET BINDING=LONGEDGE\r\n");
 	break;
     case DMDUPLEX_SHORTEDGE:
+	fprintf(ofp, "@PJL SET DUPLEX=ON\r\n");
+	fprintf(ofp, "@PJL SET BINDING=SHORTEDGE\r\n");
+	break;
     case DMDUPLEX_MANUALSHORT:
 	fprintf(ofp, "@PJL SET DUPLEX=MANUAL\r\n");
 	fprintf(ofp, "@PJL SET BINDING=SHORTEDGE\r\n");
@@ -773,36 +935,63 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     }
 
     cmyk_planes(plane, raw, RealWidth, h);
-    for (i = 0; i < 4; ++i)
+
+    if (Model == MODEL_CLP610)
     {
-	if (Debug >= 9)
+	unsigned char	*bm[4];
+
+        if (Color2Mono)
 	{
-	    FILE *dfp;
-	    char fname[256];
-	    sprintf(fname, "xxxplane%d", i);
-	    dfp = fopen(fname, "w");
-	    if (dfp)
+	    bm[0] = plane[Color2Mono-1];
+	    write_page_banded(1, bm, w, h, 3, ofp);
+	}
+        else if (AnyColor)
+	{
+	    bm[0] = plane[0];
+	    bm[1] = plane[0];
+	    bm[2] = plane[0];
+	    bm[3] = plane[0];
+	    write_page_banded(4, plane, w, h, 3, ofp);
+	}
+        else
+	{
+	    bm[0] = plane[3];
+	    write_page_banded(1, bm, w, h, 3, ofp);
+	}
+    }
+    else
+    {
+	for (i = 0; i < 4; ++i)
+	{
+	    if (Debug >= 9)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
-		fclose(dfp);
+		FILE *dfp;
+		char fname[256];
+		sprintf(fname, "xxxplane%d", i);
+		dfp = fopen(fname, "w");
+		if (dfp)
+		{
+		    fwrite(plane[i], bpl*h, 1, dfp);
+		    fclose(dfp);
+		}
 	    }
+
+	    *bitmaps[i] = plane[i];
+
+	    jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
+	    jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
+			    h, JbgOptions[3], JbgOptions[4]);
+	    jbg_enc_out(&se[i]);
+	    jbg_enc_free(&se[i]);
 	}
 
-	*bitmaps[i] = plane[i];
-
-	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
-	jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
-			h, JbgOptions[3], JbgOptions[4]);
-	jbg_enc_out(&se[i]);
-	jbg_enc_free(&se[i]);
+	if (Color2Mono)
+	    write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
+	else if (AnyColor)
+	    write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
+	else
+	    write_page(&chain[3], NULL, NULL, NULL, ofp);
     }
-
-    if (Color2Mono)
-	write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
-    else if (AnyColor)
-	write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
-    else
-	write_page(&chain[3], NULL, NULL, NULL, ofp);
 
     for (i = 0; i < 4; ++i)
 	free(plane[i]);
@@ -821,26 +1010,52 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
     w = (w + 127) & ~127;
     debug(1, "w = %d\n", w);
 
-    for (i = 0; i < 4; ++i)
-	chain[i] = NULL;
-
-    for (i = 0; i < 4; ++i)
+    if (Model == MODEL_CLP610)
     {
-	*bitmaps[i] = plane[i];
+	unsigned char	*bm[4];
 
-	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
-	jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
-			h, JbgOptions[3], JbgOptions[4]);
-	jbg_enc_out(&se[i]);
-	jbg_enc_free(&se[i]);
+        if (Color2Mono)
+	{
+	    bm[0] = plane[Color2Mono-1];
+	    write_page_banded(1, bm, w, h, 3, ofp);
+	}
+        else if (AnyColor)
+	{
+	    bm[0] = plane[0];
+	    bm[1] = plane[0];
+	    bm[2] = plane[0];
+	    bm[3] = plane[0];
+	    write_page_banded(4, plane, w, h, 3, ofp);
+	}
+        else
+	{
+	    bm[0] = plane[3];
+	    write_page_banded(1, bm, w, h, 3, ofp);
+	}
     }
-
-    if (Color2Mono)
-	write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
-    else if (AnyColor)
-	write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
     else
-	write_page(&chain[3], NULL, NULL, NULL, ofp);
+    {
+	for (i = 0; i < 4; ++i)
+	    chain[i] = NULL;
+
+	for (i = 0; i < 4; ++i)
+	{
+	    *bitmaps[i] = plane[i];
+
+	    jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
+	    jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
+			    h, JbgOptions[3], JbgOptions[4]);
+	    jbg_enc_out(&se[i]);
+	    jbg_enc_free(&se[i]);
+	}
+
+	if (Color2Mono)
+	    write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
+	else if (AnyColor)
+	    write_page(&chain[0], &chain[1], &chain[2], &chain[3], ofp);
+	else
+	    write_page(&chain[3], NULL, NULL, NULL, ofp);
+    }
 
     return 0;
 }
@@ -873,13 +1088,20 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 
     *bitmaps = buf;
 
-    jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, &chain);
-    jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
-			h, JbgOptions[3], JbgOptions[4]);
-    jbg_enc_out(&se);
-    jbg_enc_free(&se);
+    if (Model == MODEL_CLP610)
+	write_page_banded(1, bitmaps, w, h, 3, ofp);
+    else
+    {
+	if (0 && PaperCode == DMPAPER_CUSTOM)
+	    h++;
+	jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, &chain);
+	jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
+			    h, JbgOptions[3], JbgOptions[4]);
+	jbg_enc_out(&se);
+	jbg_enc_free(&se);
 
-    write_page(&chain, NULL, NULL, NULL, ofp);
+	write_page(&chain, NULL, NULL, NULL, ofp);
+    }
 
     return 0;
 }
@@ -1005,8 +1227,10 @@ cmyk_pages(FILE *ifp, FILE *ofp)
 	    goto done;
 
 	++PageNum;
+	#if 0
 	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 	    rotate_bytes_180(buf, buf + bpl * h - 1, Mirror4);
+	#endif
 	if (Duplex == DMDUPLEX_MANUALLONG && (PageNum & 1) == 0)
 	    rotate_bytes_180(buf, buf + bpl * h - 1, Mirror4);
 
@@ -1185,8 +1409,10 @@ pksm_pages(FILE *ifp, FILE *ofp)
 		    }
 	    }
 
+	    #if 0
 	    if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 		rotate_bytes_180(plane[i], plane[i] + bpl16 * h - 1, Mirror1);
+	    #endif
 	    if (Duplex == DMDUPLEX_MANUALLONG && (PageNum & 1) == 0)
 		rotate_bytes_180(plane[i], plane[i] + bpl16 * h - 1, Mirror1);
 	}
@@ -1250,12 +1476,14 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	UpperLeftX &= ~7;
 
 	w = rawW - UpperLeftX - LowerRightX;
+	// w = (w + 255) & ~255;
 	h = rawH - UpperLeftY - LowerRightY;
 	bpl = (w + 7) / 8;
 	rightBpl = (rawW - UpperLeftX + 7) / 8;
 
 	bpl16 = (bpl + 15) & ~15;
-	debug(1, "bpl=%d bpl16=%d\n", bpl, bpl16);
+	debug(1, "rawW=%d rawBpl=%d w=%d bpl=%d bpl16=%d rightBpl=%d\n",
+	    rawW, rawBpl, w, bpl, bpl16, rightBpl);
 
 	buf = malloc(bpl16 * h);
 	if (!buf)
@@ -1266,8 +1494,10 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	    error(1, "Premature EOF(pbm) on input stream\n");
 
 	++PageNum;
+	#if 0
 	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 	    rotate_bytes_180(buf, buf + bpl16 * h - 1, Mirror1);
+	#endif
 
 	if ((PageNum & 1) == 0 && EvenPages)
 	{
@@ -1316,13 +1546,13 @@ parse_xy(char *str, int *xp, int *yp)
 
     if (!str || str[0] == 0) return -1;
 
-    *xp = strtoul(str, &p, 0);
+    *xp = strtoul(str, &p, 10);
     if (str == p) return -2;
     while (*p && (*p < '0' || *p > '9'))
 	++p;
     str = p;
     if (str[0] == 0) return -3;
-    *yp = strtoul(str, &p, 0);
+    *yp = strtoul(str, &p, 10);
     if (str == p) return -4;
     return (0);
 }
@@ -1369,7 +1599,7 @@ main(int argc, char *argv[])
     int i, j;
 
     while ( (c = getopt(argc, argv,
-		    "cd:g:n:m:p:r:s:tu:l:L:ABPJ:S:U:X:D:V?h")) != EOF)
+		    "cd:g:n:m:p:r:s:tu:l:z:L:ABPJ:S:U:X:D:V?h")) != EOF)
 	switch (c)
 	{
 	case 'c':	Mode = MODE_COLOR; break;
@@ -1406,6 +1636,10 @@ main(int argc, char *argv[])
 			if (parse_xy(optarg, &LowerRightX, &LowerRightY))
 			    error(1, "Illegal format '%s' for -l\n", optarg);
 			break;
+	case 'z':	Model = atoi(optarg);
+			if (Model < 0 || Model > MODEL_LAST)
+			    error(1, "Illegal value '%s' for -z\n", optarg);
+			break;
 	case 'L':	LogicalClip = atoi(optarg);
 			if (LogicalClip < 0 || LogicalClip > 3)
 			    error(1, "Illegal value '%s' for -L\n", optarg);
@@ -1433,7 +1667,7 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (getenv("DEVICE_URL"))
+    if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
     Bpp = ResX / 600;
@@ -1446,8 +1680,6 @@ main(int argc, char *argv[])
 
     switch (Duplex)
     {
-    case DMDUPLEX_LONGEDGE:
-    case DMDUPLEX_SHORTEDGE:
     case DMDUPLEX_MANUALLONG:
     case DMDUPLEX_MANUALSHORT:
 	EvenPages = tmpfile();

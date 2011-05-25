@@ -34,9 +34,14 @@
 	    <ev_driverval>3</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2qpdl-InputSlot-4">
-	    <ev_longname> <en>Tray 1</en> </ev_longname>
+	    <ev_longname> <en>Upper / Tray 1</en> </ev_longname>
 	    <ev_shortname> <en>Tray1</en> </ev_shortname>
 	    <ev_driverval>4</ev_driverval>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-InputSlot-5">
+	    <ev_longname> <en>Lower / Tray 2</en> </ev_longname>
+	    <ev_shortname> <en>Tray2</en> </ev_shortname>
+	    <ev_driverval>5</ev_driverval>
 	</enum_val>
     </enum_vals>
 </option>

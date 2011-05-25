@@ -1,6 +1,6 @@
 //
 //  Little cms
-//  Copyright (C) 1998-2003 Marti Maria
+//  Copyright (C) 1998-2007 Marti Maria
 //
 // Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the "Software"), 
@@ -44,6 +44,8 @@ static int Intent = INTENT_PERCEPTUAL;
 static FILE* OutFile;
 static int BlackPointCompensation = FALSE;
 static int Undecorated = FALSE;
+static int PrecalcMode = 1;
+static int NumOfGridPoints = 0;
 
 static
 void FatalError(const char *frm, ...)
@@ -66,7 +68,7 @@ void HandleSwitches(int argc, char *argv[])
 {
        int s;
       
-       while ((s = xgetopt(argc,argv,"uUbBI:i:O:o:T:t:")) != EOF) {
+       while ((s = xgetopt(argc,argv,"uUbBI:i:O:o:T:t:c:C:n:N:")) != EOF) {
 
        switch (s){
 
@@ -98,6 +100,22 @@ void HandleSwitches(int argc, char *argv[])
             Undecorated = TRUE;
             break;
 
+       case 'c':
+       case 'C':
+            PrecalcMode = atoi(xoptarg);
+            if (PrecalcMode < 0 || PrecalcMode > 2)
+                    FatalError("ERROR: Unknown precalc mode '%d'", PrecalcMode);
+            break;
+
+
+       case 'n':
+       case 'N':
+                if (PrecalcMode != 1)
+                    FatalError("Precalc mode already specified");
+                NumOfGridPoints = atoi(xoptarg);
+                break;
+
+
   default:
 
        FatalError("Unknown option - run without args to see valid ones.\n");
@@ -121,13 +139,15 @@ void Help(void)
           
      fprintf(stderr, "%cb - Black point compensation (CRD only)\n", SW);    
      fprintf(stderr, "%cu - Do NOT generate resource name on CRD\n", SW);    
-
+     fprintf(stderr, "%cc<0,1,2> - Precission (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)\n", SW);     
+     fprintf(stderr, "%cn<gridpoints> - Alternate way to set precission, number of CLUT points (CRD only)\n", SW);     
+     
 	 fprintf(stderr, "\n");
      fprintf(stderr, "This program is intended to be a demo of the little cms\n"
                      "engine. Both lcms and this program are freeware. You can\n"
                      "obtain both in source code at http://www.littlecms.com\n"
                      "For suggestions, comments, bug reports etc. send mail to\n"
-                     "marti@littlecms.com\n\n");
+                     "info@littlecms.com\n\n");
      exit(0);
 }
 
@@ -142,13 +162,13 @@ void GenerateCSA(void)
 	n = cmsGetPostScriptCSA(hProfile, Intent, NULL, 0);
 	if (n == 0) return;
 
-	Buffer = (char*) malloc(n + 1);
+	Buffer = (char*) _cmsMalloc(n + 1);
 	cmsGetPostScriptCSA(hProfile, Intent, Buffer, n);
 	Buffer[n] = 0;
 
 	fprintf(OutFile, "%s", Buffer);	
 	
-	free(Buffer);
+	_cmsFree(Buffer);
 	cmsCloseProfile(hProfile);
 }
 
@@ -164,15 +184,29 @@ void GenerateCRD(void)
     if (BlackPointCompensation) dwFlags |= cmsFLAGS_BLACKPOINTCOMPENSATION;
     if (Undecorated)            dwFlags |= cmsFLAGS_NODEFAULTRESOURCEDEF;
 
+    switch (PrecalcMode) {
+           	
+	    case 0: dwFlags |= cmsFLAGS_LOWRESPRECALC; break;
+		case 2: dwFlags |= cmsFLAGS_HIGHRESPRECALC; break;
+		case 1: 
+            if (NumOfGridPoints > 0)
+                dwFlags |= cmsFLAGS_GRIDPOINTS(NumOfGridPoints);
+            break;
+
+		default: FatalError("ERROR: Unknown precalculation mode '%d'", PrecalcMode);
+	 }
+
+
+
 	n = cmsGetPostScriptCRDEx(hProfile, Intent, dwFlags, NULL, 0);
 	if (n == 0) return;
 
-	Buffer = (char*) malloc(n + 1);
+	Buffer = (char*) _cmsMalloc(n + 1);
     cmsGetPostScriptCRDEx(hProfile, Intent, dwFlags, Buffer, n);
 	Buffer[n] = 0;
 
 	fprintf(OutFile, "%s", Buffer);			
-	free(Buffer);
+	_cmsFree(Buffer);
 	cmsCloseProfile(hProfile);
 }
 
@@ -188,17 +222,21 @@ int MyErrorHandler(int ErrorCode, const char *ErrorText)
 
 int main(int argc, char *argv[])
 {
-	int nargs;
+     int nargs;
 
-     fprintf(stderr, "little cms PostScript converter - v1.4\n\n");
+     //fprintf(stderr, "little cms PostScript converter - v1.5+foo2zjs\n\n");
 
-	 HandleSwitches(argc, argv);
+     HandleSwitches(argc, argv);
 
      cmsSetErrorHandler(MyErrorHandler);
 
      nargs = (argc - xoptind);
-	 if (nargs != 0 && nargs != 1)
-				Help();            
+     if (nargs != 0 && nargs != 1)
+     {
+	 fprintf(stderr,
+		"little cms PostScript converter - v1.5+v1.18beta1+foo2zjs\n\n");
+	 Help();            
+     }
 	
 	 if (nargs == 0) 
 			OutFile = stdout;

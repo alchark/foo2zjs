@@ -1,5 +1,5 @@
 /*
- * $Id: opldecode.c,v 1.2 2007/06/03 00:13:41 rick Exp $
+ * $Id: opldecode.c,v 1.5 2008/09/05 15:05:54 rick Exp $
  */
 
 /*b
@@ -77,9 +77,9 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"	rodecode [options] < zjs-file\n"
+"	opldecode [options] < zjs-file\n"
 "\n"
-"	Decode a Raster Object (ro) stream into human readable form.\n"
+"	Decode a Raster Object (opl) stream into human readable form.\n"
 "\n"
 "	A Raster Object stream is the printer langauge used by some Konica\n"
 "	Minolta printers, such as the magicolor 2480 MF.\n"
@@ -223,7 +223,7 @@ jbig_decode1(unsigned char ch, int pn, int page, struct jbg_dec_state *pstate,
 	int     h, w, len;
 	unsigned char *image;
 
-	//debug(0, "JBG_OK: %d\n", pn);
+	//debug(0, "JBG_EOK: %d\n", pn);
 	h = jbg_dec_getheight(pstate);
 	w = jbg_dec_getwidth(pstate);
 	image = jbg_dec_getimage(pstate, 0);
@@ -351,12 +351,31 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	for(;;)
-	{
-	    decode(stdin);
-	    c = getc(stdin); ungetc(c, stdin);
-	    if (feof(stdin))
-		break;
+        if (argc > 0)
+        {
+            FILE        *fp;
+
+            fp = fopen(argv[0], "r");
+            if (!fp)
+                error(1, "file '%s' doesn't exist\n", argv[0]);
+            for (;;)
+            {
+                decode(fp);
+                c = getc(fp); ungetc(c, fp);
+                if (feof(fp))
+                    break;
+            }
+            fclose(fp);
+        }
+        else
+        {
+	    for(;;)
+	    {
+		decode(stdin);
+		c = getc(stdin); ungetc(c, stdin);
+		if (feof(stdin))
+		    break;
+	    }
 	}
 	printf("\n");
 

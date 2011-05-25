@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,11 +52,17 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MANUFACTURER:MINOLTA-QMS;MODEL:magicolor 2430 DL;COMMAND SET:ZJS,PJL;"
+*1284DeviceID: "MANUFACTURER:MINOLTA-QMS;MODEL:magicolor 2430 DL;COMMAND SET:ZJS,PJL;DRV:Dfoo2zjs,R1,M0,TF;"
+
+*driverName foo2zjs/foo2zjs: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2zjs.rkkda.com/"
+*driverObsolete: False
 
 
 
-*HWMargins: 11.34 11.34 11.34 11.34
+
+*HWMargins: 11.34 11.34 +11.34 +11.34
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -75,6 +81,49 @@
 *FoomaticRIPCommandLine: "foo2zjs-wrapper %A"
 
 *OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=Color: " "
+
+*OpenUI *ColorMode/Color Mode: PickOne
+*FoomaticRIPOption ColorMode: enum CmdLine A
+*OrderDependency: 120 AnySetup *ColorMode
+*DefaultColorMode: Monochrome
+*ColorMode PhotoOnly/Color - Photo Only: "%% FoomaticRIPOptionSetting: ColorMode=PhotoOnly"
+*FoomaticRIPOptionSetting ColorMode=PhotoOnly: "-c -C1 "
+*ColorMode PhotosAndText/Color - Photos and Text: "%% FoomaticRIPOptionSetting: ColorMode=PhotosAndText"
+*FoomaticRIPOptionSetting ColorMode=PhotosAndText: "-c -C2 "
+*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
+*FoomaticRIPOptionSetting ColorMode=Color: "-c "
+*ColorMode GraphicsAndText/Color - Graphics and Text: "%% FoomaticRIPOptionSetting: ColorMode=GraphicsAndText"
+*FoomaticRIPOptionSetting ColorMode=GraphicsAndText: "-c -C3 "
+*ColorMode ICM/Color - use ICM color profile: "%% FoomaticRIPOptionSetting: ColorMode=ICM"
+*FoomaticRIPOptionSetting ColorMode=ICM: "-c -C10 "
+*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
+*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
+*CloseUI: *ColorMode
+
+*OpenUI *Resolution/Resolution: PickOne
+*FoomaticRIPOption Resolution: enum CmdLine A
+*OrderDependency: 130 AnySetup *Resolution
+*DefaultResolution: 1200x600dpi
+*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
+*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*Resolution 2400x600dpi/2400x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=2400x600dpi"
+*FoomaticRIPOptionSetting Resolution=2400x600dpi: "-r2400x600 "
+*CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -196,46 +245,6 @@
 *FoomaticRIPOptionSetting Duplex=None: "-d1 "
 *CloseUI: *Duplex
 
-*OpenUI *Resolution/Resolution: PickOne
-*FoomaticRIPOption Resolution: enum CmdLine A
-*OrderDependency: 130 AnySetup *Resolution
-*DefaultResolution: 1200x600dpi
-*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
-*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
-*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
-*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
-*Resolution 2400x600dpi/2400x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=2400x600dpi"
-*FoomaticRIPOptionSetting Resolution=2400x600dpi: "-r2400x600 "
-*CloseUI: *Resolution
-
-*OpenUI *Quality/Printing Quality: PickOne
-*FoomaticRIPOption Quality: enum CmdLine A
-*OrderDependency: 110 AnySetup *Quality
-*DefaultQuality: normal
-*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
-*FoomaticRIPOptionSetting Quality=draft: " -t  "
-*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
-*FoomaticRIPOptionSetting Quality=normal: "  "
-*CloseUI: *Quality
-
-*OpenUI *ColorMode/Color Mode: PickOne
-*FoomaticRIPOption ColorMode: enum CmdLine A
-*OrderDependency: 120 AnySetup *ColorMode
-*DefaultColorMode: Monochrome
-*ColorMode PhotoOnly/Color - Photo Only: "%% FoomaticRIPOptionSetting: ColorMode=PhotoOnly"
-*FoomaticRIPOptionSetting ColorMode=PhotoOnly: "-c -C1 "
-*ColorMode PhotosAndText/Color - Photos and Text: "%% FoomaticRIPOptionSetting: ColorMode=PhotosAndText"
-*FoomaticRIPOptionSetting ColorMode=PhotosAndText: "-c -C2 "
-*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c "
-*ColorMode GraphicsAndText/Color - Graphics and Text: "%% FoomaticRIPOptionSetting: ColorMode=GraphicsAndText"
-*FoomaticRIPOptionSetting ColorMode=GraphicsAndText: "-c -C3 "
-*ColorMode ICM/Color - use ICM color profile: "%% FoomaticRIPOptionSetting: ColorMode=ICM"
-*FoomaticRIPOptionSetting ColorMode=ICM: "-c -C10 "
-*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
-*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
-*CloseUI: *ColorMode
-
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
 *FoomaticRIPOptionPrototype Copies: "-n%s "
@@ -345,9 +354,6 @@
 *Copies 100/100: "%% FoomaticRIPOptionSetting: Copies=100"
 *CloseUI: *Copies
 
-*FoomaticRIPOption PrinterType: enum CmdLine A 110
-*FoomaticRIPOptionSetting PrinterType=Color: " "
-
 *CloseGroup: General
 
 *OpenGroup: Adjustment/Adjustment
@@ -363,7 +369,7 @@
 *ICM km2430_2/File km2430_2.icm: "%% FoomaticRIPOptionSetting: ICM=km2430_2"
 *FoomaticRIPOptionSetting ICM=km2430_2: "-Gkm2430_2.icm "
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
-*FoomaticRIPOptionSetting ICM=none: " "
+*FoomaticRIPOptionSetting ICM=none: "-Gnone.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-Gtesting.icm "
 *ICM user1/File user1.icm: "%% FoomaticRIPOptionSetting: ICM=user1"

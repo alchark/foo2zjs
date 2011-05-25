@@ -5,3 +5,9 @@ If you would like the full lcms package, get it from here:
     http://www.littlecms.com
 
 -Rick
+
+Jan 22, 2008
+------------
+Bug:
+    cmsio1.c
+

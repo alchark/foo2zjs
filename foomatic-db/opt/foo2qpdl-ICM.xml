@@ -28,9 +28,27 @@
 	</constraint>
 	<constraint sense="true">
 	    <make>Samsung</make>
+	    <model>CLP-315</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-315</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
+	    <model>CLX-2160</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-2160</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
 	    <model>CLX-3160</model>
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-3160</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
+	    <model>CLX-3175</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-3175</arg_defval>
 	</constraint>
 	<constraint sense="true">
 	    <make>Xerox</make>
@@ -44,6 +62,12 @@
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-600</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
+	    <model>CLP-610</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-610</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2qpdl-ICM-none">
@@ -56,34 +80,57 @@
 
 	<enum_val id="ev/foo2qpdl-ICM-300">
 	    <ev_longname> <en>CLP-300</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>clp300</en> </ev_shortname>
+	    <ev_driverval>-C10 -Gsamclp300-0.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2qpdl-ICM-315">
+	    <ev_longname> <en>CLP-315</en> </ev_longname>
+	    <ev_shortname> <en>clp315</en> </ev_shortname>
+	    <ev_driverval>-C10 -Gsamclp315-argyll-0.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2qpdl-ICM-2160">
+	    <ev_longname> <en>CLX-2160</en> </ev_longname>
+	    <ev_shortname> <en>clx2160</en> </ev_shortname>
 	    <ev_driverval>-C10 -Gsamclp300-0.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2qpdl-ICM-3160">
 	    <ev_longname> <en>CLX-3160</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>clx3160</en> </ev_shortname>
 	    <ev_driverval>-C10 -Gsamclp300-0.icm</ev_driverval>
 	</enum_val>
 
+	<enum_val id="ev/foo2qpdl-ICM-3175">
+	    <ev_longname> <en>CLP-3175</en> </ev_longname>
+	    <ev_shortname> <en>clp3175</en> </ev_shortname>
+	    <ev_driverval>-C10 -Gsamclp315-argyll-0.icm</ev_driverval>
+	</enum_val>
+
 	<enum_val id="ev/foo2qpdl-ICM-6110">
 	    <ev_longname> <en>Phaser 6110</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>ph6110</en> </ev_shortname>
 	    <ev_driverval>-C10 -Gsamclp300-0.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2qpdl-ICM-600">
 	    <ev_longname> <en>CLP-600</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>clp600</en> </ev_shortname>
 	    <ev_driverval>-z1</ev_driverval>
 	</enum_val>
+
+	<enum_val id="ev/foo2qpdl-ICM-610">
+	    <ev_longname> <en>CLP-610</en> </ev_longname>
+	    <ev_shortname> <en>clp610</en> </ev_shortname>
+	    <ev_driverval>-z2</ev_driverval>
+	</enum_val>
+
+        <enum_val id="ev/foo2qpdl-ICM-testing-300">
+            <ev_longname> <en>File testing.icm</en> </ev_longname>
+            <ev_shortname> <en>testing</en> </ev_shortname>
+            <ev_driverval>-C10 -Gtesting.icm</ev_driverval>
+        </enum_val>
+
     </enum_vals>
 </option>

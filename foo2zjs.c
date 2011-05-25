@@ -55,7 +55,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.79 2007/07/15 14:31:56 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.82 2007/12/09 06:57:03 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -493,6 +493,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	    | ((long) current->data[ 9] << 16)
 	    | ((long) current->data[10] <<  8)
 	    | (long) current->data[11]);
+    debug(9, "start_page: w x h = %d x %d\n", w, h);
 
     nitems = 13;
     if (LogicalOffsetX != 0)
@@ -902,6 +903,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 
     *bitmaps = buf;
 
+    debug(9, "w x h = %d x %d\n", w, h);
     jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, &chain);
     jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
 			JbgOptions[2], JbgOptions[3], JbgOptions[4]);
@@ -1350,13 +1352,13 @@ parse_xy(char *str, int *xp, int *yp)
 
     if (!str || str[0] == 0) return -1;
 
-    *xp = strtoul(str, &p, 0);
+    *xp = strtoul(str, &p, 10);
     if (str == p) return -2;
     while (*p && (*p < '0' || *p > '9'))
 	++p;
     str = p;
     if (str[0] == 0) return -3;
-    *yp = strtoul(str, &p, 0);
+    *yp = strtoul(str, &p, 10);
     if (str == p) return -4;
     return (0);
 }
@@ -1471,7 +1473,7 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (getenv("DEVICE_URL"))
+    if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
     if (Model == MODEL_HP1020)

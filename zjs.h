@@ -112,6 +112,14 @@ typedef enum {
 /*
  * 0x8200-0x82FF : Item tags for the next OEM specific features.
  */
+    ZJI_HP_CDOTS		= 0x8200,	// Cyan Dots?
+    ZJI_HP_MDOTS		= 0x8201,	// Magenta Dots?
+    ZJI_HP_YDOTS		= 0x8202,	// Yellow Dots?
+    ZJI_HP_KDOTS		= 0x8203,	// Black Dots?
+    ZJI_HP_CWHITE		= 0x8204,	// Cyan White Dots?
+    ZJI_HP_MWHITE		= 0x8205,	// Magenta White Dots?
+    ZJI_HP_YWHITE		= 0x8206,	// Yellow White Dots?
+    ZJI_HP_KWHITE		= 0x8207,	// Black White Dots?
 
     ZJI_LAST
 } ZJ_ITEM;

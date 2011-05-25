@@ -13,6 +13,7 @@ such as these:
 
     Model 1:
      - Konica Minolta magicolor 2480 MF		B/W and color
+						NOTE: Copies is unimplented!
 
 AUTHORS
 It also uses Markus Kuhn's jbig-kit compression library (included, but
@@ -49,7 +50,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.26 2007/07/19 02:44:31 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.33 2008/09/22 22:38:52 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,6 +63,15 @@ static char Version[] = "$Id: foo2lava.c,v 1.26 2007/07/19 02:44:31 rick Exp $";
     #include <sys/utsname.h>
 #endif
 #include "jbig.h"
+
+typedef enum
+{
+    DMDUPLEX_OFF        = 1,
+    DMDUPLEX_LONGEDGE   = 2,
+    DMDUPLEX_SHORTEDGE  = 3,
+    DMDUPLEX_MANUALLONG = 4,
+    DMDUPLEX_MANUALSHORT= 5
+} DMDUPLEX;
 
 /*
  * Command line options
@@ -409,9 +419,9 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
 	switch (planeNum)
 	{
-	case 3: x = 0x00FFFF; break;
+	case 1: x = 0x00FFFF; break;
 	case 2: x = 0xFF00FF; break;
-	case 1: x = 0xFFFF00; break;
+	case 3: x = 0xFFFF00; break;
 	}
 	fprintf(fp, "RasterObject.Planes=%06X,0,0,0,0,0,0;", x);
 
@@ -478,24 +488,27 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     free_chain(*root);
 
-    switch (planeNum)
+    if (Model == MODEL_2530DL)
     {
-    case 0: case 4:
-	fprintf(fp, "\033*x%dK", Dots[3]);
-	fprintf(fp, "\033*x%dW", TotalDots - Dots[3]);
-	break;
-    case 3:
-	fprintf(fp, "\033*x%dY", Dots[0]);
-	fprintf(fp, "\033*x%dU", TotalDots - Dots[0]);
-	break;
-    case 2:
-	fprintf(fp, "\033*x%dM", Dots[1]);
-	fprintf(fp, "\033*x%dV", TotalDots - Dots[1]);
-	break;
-    case 1:
-	fprintf(fp, "\033*x%dC", Dots[2]);
-	fprintf(fp, "\033*x%dZ", TotalDots - Dots[2]);
-	break;
+	switch (planeNum)
+	{
+	case 0: case 4:
+	    fprintf(fp, "\033*x%dK", Dots[3]);
+	    fprintf(fp, "\033*x%dW", TotalDots - Dots[3]);
+	    break;
+	case 1:
+	    fprintf(fp, "\033*x%dC", Dots[0]);
+	    fprintf(fp, "\033*x%dZ", TotalDots - Dots[0]);
+	    break;
+	case 2:
+	    fprintf(fp, "\033*x%dM", Dots[1]);
+	    fprintf(fp, "\033*x%dV", TotalDots - Dots[1]);
+	    break;
+	case 3:
+	    fprintf(fp, "\033*x%dY", Dots[2]);
+	    fprintf(fp, "\033*x%dU", TotalDots - Dots[2]);
+	    break;
+	}
     }
 
     return 0;
@@ -608,19 +621,33 @@ write_page(BIE_CHAIN **root, BIE_CHAIN **root2,
 
     start_page(root, nbie, ofp);
 
-    if (root3)
-	write_plane(3, root3, ofp);
-    if (root2)
-	write_plane(2, root2, ofp);
-    if (root)
+    switch (Model)
     {
-	if (OutputStartPlane)
-	    write_plane(nbie == 1 ? 4 : 1, root, ofp);
-	else
-	    write_plane(nbie == 1 ? 0 : 1, root, ofp);
+    case MODEL_2530DL:
+	if (root3) write_plane(3, root3, ofp);
+	if (root2) write_plane(2, root2, ofp);
+	if (root)
+	{
+	    if (OutputStartPlane)
+		write_plane(nbie == 1 ? 4 : 1, root, ofp);
+	    else
+		write_plane(nbie == 1 ? 0 : 1, root, ofp);
+	}
+	if (root4) write_plane(4, root4, ofp);
+	break;
+    case MODEL_2480MF:
+	if (root)
+	{
+	    if (OutputStartPlane)
+		write_plane(nbie == 1 ? 4 : 1, root, ofp);
+	    else
+		write_plane(nbie == 1 ? 0 : 1, root, ofp);
+	}
+	if (root2) write_plane(2, root2, ofp);
+	if (root3) write_plane(3, root3, ofp);
+	if (root4) write_plane(4, root4, ofp);
+	break;
     }
-    if (root4)
-	write_plane(4, root4, ofp);
 
     end_page(ofp);
     return 0;
@@ -726,7 +753,7 @@ start_doc(FILE *fp)
 	fprintf(fp, "\033&l%dS", Duplex-1);
 	fprintf(fp, "\033&l%dG", 0);
 	fprintf(fp, "\033&u%dD", ResX);
-	fprintf(fp, "\033&l%dX", 1);
+	fprintf(fp, "\033&l%dX", Copies);
 	fprintf(fp, "\033&x%dX", 1);
 	break;
     case MODEL_2480MF:
@@ -1119,7 +1146,7 @@ cmyk_pages(FILE *ifp, FILE *ofp)
 	    goto done;
 
 	++PageNum;
-	if (Duplex == 2 && (PageNum & 1) == 0)
+	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 	    rotate_bytes_180(buf, buf + bpl * h - 1, Mirror4);
 
 	if ((PageNum & 1) == 0 && EvenPages)
@@ -1293,9 +1320,9 @@ pksm_pages(FILE *ifp, FILE *ofp)
 		    }
 	    }
 
-	    if (Duplex == 2 && (PageNum & 1) == 0)
+	    if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 		rotate_bytes_180(plane[i], plane[i] + bpl * h - 1, Mirror1);
-	    if (Duplex == 4 && (PageNum & 1) == 0)
+	    if (Duplex == DMDUPLEX_MANUALLONG && (PageNum & 1) == 0)
 		rotate_bytes_180(plane[i], plane[i] + bpl * h - 1, Mirror1);
 	}
 
@@ -1379,12 +1406,12 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	    error(1, "Premature EOF(pbm) on input stream\n");
 
 	++PageNum;
-	if (Duplex == 2 && (PageNum & 1) == 0)
+	if (Duplex == DMDUPLEX_LONGEDGE && (PageNum & 1) == 0)
 	    rotate_bytes_180(buf, buf + bpl16 * h - 1, Mirror1);
 
 	if ((PageNum & 1) == 0 && EvenPages)
 	{
-	    if (Duplex == 4)
+	    if (Duplex == DMDUPLEX_MANUALLONG)
 		rotate_bytes_180(buf, buf + bpl16 * h - 1, Mirror1);
 	    SeekRec[SeekIndex].b = ftell(EvenPages);
 	    pbm_page(buf, w, h, EvenPages);
@@ -1435,13 +1462,13 @@ parse_xy(char *str, int *xp, int *yp)
 
     if (!str || str[0] == 0) return -1;
 
-    *xp = strtoul(str, &p, 0);
+    *xp = strtoul(str, &p, 10);
     if (str == p) return -2;
     while (*p && (*p < '0' || *p > '9'))
 	++p;
     str = p;
     if (str[0] == 0) return -3;
-    *yp = strtoul(str, &p, 0);
+    *yp = strtoul(str, &p, 10);
     if (str == p) return -4;
     return (0);
 }
@@ -1564,7 +1591,7 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (getenv("DEVICE_URL"))
+    if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
     if (0)//Model == MODEL_HP1020)
@@ -1580,8 +1607,8 @@ main(int argc, char *argv[])
 
     switch (Duplex)
     {
-    case 4:
-    case 5:
+    case DMDUPLEX_MANUALLONG:
+    case DMDUPLEX_MANUALSHORT:
 	EvenPages = tmpfile();
 	break;
     }

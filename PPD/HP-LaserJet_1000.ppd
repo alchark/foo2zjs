@@ -1,7 +1,7 @@
 *PPD-Adobe: "4.3"
 *%
 *% For information on using this, and to obtain the required backend
-*% script, consult http://www.linuxprinting.org/
+*% script, consult http://www.openprinting.org/
 *%
 *% This file is published under the GNU General Public License
 *%
@@ -52,11 +52,17 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp LaserJet 1000;CMD:ZJS;DES:hp LaserJet 1000;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:hp LaserJet 1000;CMD:ZJS;DES:hp LaserJet 1000;DRV:Dfoo2zjs,R1,M0,TF;"
+
+*driverName foo2zjs/foo2zjs: ""
+*driverType F/Filter: ""
+*driverUrl: "http://foo2zjs.rkkda.com/"
+*driverObsolete: False
 
 
 
-*HWMargins: 11.34 11.34 11.34 11.34
+
+*HWMargins: 11.34 11.34 +11.34 +11.34
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -75,6 +81,25 @@
 *FoomaticRIPCommandLine: "foo2zjs-wrapper %A"
 
 *OpenGroup: General/General
+
+*OpenUI *Quality/Printing Quality: PickOne
+*FoomaticRIPOption Quality: enum CmdLine A
+*OrderDependency: 110 AnySetup *Quality
+*DefaultQuality: normal
+*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
+*FoomaticRIPOptionSetting Quality=draft: " -t  "
+*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
+*FoomaticRIPOptionSetting Quality=normal: "  "
+*CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=BW: "-P "
+
+*FoomaticRIPOption ColorMode: enum CmdLine A 120
+*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
+
+*FoomaticRIPOption Resolution: enum CmdLine A 130
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -184,22 +209,6 @@
 *FoomaticRIPOptionSetting MediaType=Transparency: "-m2 "
 *CloseUI: *MediaType
 
-*FoomaticRIPOption Resolution: enum CmdLine A 130
-*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
-
-*OpenUI *Quality/Printing Quality: PickOne
-*FoomaticRIPOption Quality: enum CmdLine A
-*OrderDependency: 110 AnySetup *Quality
-*DefaultQuality: normal
-*Quality draft/Draft: "%% FoomaticRIPOptionSetting: Quality=draft"
-*FoomaticRIPOptionSetting Quality=draft: " -t  "
-*Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
-*FoomaticRIPOptionSetting Quality=normal: "  "
-*CloseUI: *Quality
-
-*FoomaticRIPOption ColorMode: enum CmdLine A 120
-*FoomaticRIPOptionSetting ColorMode=Monochrome: " "
-
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
 *FoomaticRIPOptionPrototype Copies: "-n%s "
@@ -308,9 +317,6 @@
 *Copies 99/99: "%% FoomaticRIPOptionSetting: Copies=99"
 *Copies 100/100: "%% FoomaticRIPOptionSetting: Copies=100"
 *CloseUI: *Copies
-
-*FoomaticRIPOption PrinterType: enum CmdLine A 110
-*FoomaticRIPOptionSetting PrinterType=BW: "-P "
 
 *CloseGroup: General
 

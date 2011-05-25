@@ -1,5 +1,5 @@
 /*
- * $Id: qpdldecode.c,v 1.14 2007/06/29 01:51:48 rick Exp $
+ * $Id: qpdldecode.c,v 1.30 2008/09/18 09:35:34 rick Exp $
  */
 
 /*b
@@ -171,7 +171,7 @@ decode(FILE *fp)
     int		c;
     int		rc;
     FILE	*dfp = NULL;
-    int		pageNum = 1;
+    int		pageNum = 0;
     int		i;
     int		curOff = 0;
     struct jbg_dec_state	s[5];
@@ -210,7 +210,7 @@ decode(FILE *fp)
     {
 	int	reclen;
 	int	rectype;
-	int	w, h, comp, stripe;
+	int	wb, h, comp, stripe;
 	int	cksum;
 
 	#define STRARY(X, A) \
@@ -223,6 +223,7 @@ decode(FILE *fp)
 	    /*15*/ "UNK", "a5", "a6", "UNK", "UNK",
 	    /*20*/ "UNK", "custom",  "UNK", "envC6", "folio",
 	    /*25*/ "env6.75", "env#9",  "UNK", "oficio", "UNK",
+	    /*30*/ "statement", "UNK",  "UNK", "UNK", "UNK",
 	    };
 	char *strsource[] = {
 	    /*00*/ "unk", "auto", "manual", "multi", "tray1",
@@ -265,7 +266,7 @@ decode(FILE *fp)
 	    goto done;
 	    break;
 	case 0x00:
-	    printf("	len=17\n");
+	    printf("	len=17	pageNum=%d\n", ++pageNum);
 	    if (fread(buf+1, 16, 1, fp) != 1)
 		error(1, "Couldn't get 16 bytes\n");
 	    curOff += 16;
@@ -292,6 +293,43 @@ decode(FILE *fp)
 		);
 
 	    pn = 0;
+	    memset(imageCnt, 0, sizeof(imageCnt));
+	    break;
+	case 0x13:
+	    printf("    len=15\n");
+            if (fread(buf+1, 14, 1, fp) != 1)
+                error(1, "Couldn't get 16 bytes\n");
+            curOff += 14;
+	    printf("\t\t");
+	    for (i = 1; i <= 14; ++i)
+		printf("%02x, ", buf[i]);
+	    printf("\n");
+	    break;
+	case 0x14:
+	    /* BIH */
+	    printf("    len=25\n");
+            if (fread(buf+1, 24, 1, fp) != 1)
+                error(1, "Couldn't get 16 bytes\n");
+            curOff += 24;
+	    if (0)
+	    {
+		printf("\t\t");
+		for (i = 1; i <= 16; ++i)
+		    printf("%02x, ", (unsigned char) buf[i]);
+		printf("\n\t\t");
+		for (i = 17; i <= 24; ++i)
+		    printf("%02x, ", (unsigned char) buf[i]);
+	    }
+	    else
+	    {
+		printf("\t\t");
+		for (i = 21; i <= 24; ++i)
+		    printf("%02x, ", (unsigned char) buf[i]);
+	    }
+	    printf("\n");
+	    print_bih( (unsigned char *) buf+1);
+	    for (i = 0; i <=4; ++i)
+		memcpy(bih[i], buf+1, 20);
 	    break;
 	case 0x0c:
 	    if (fread(buf+1, 11, 1, fp) != 1)
@@ -301,7 +339,7 @@ decode(FILE *fp)
 	    }
 	    curOff += 11;
 	    stripe = buf[1];
-	    w = getBEword(buf+2);
+	    wb = getBEword(buf+2);
 	    h = getBEword(buf+4);
 	    pn = buf[6];
 	    comp = buf[7];
@@ -310,20 +348,24 @@ decode(FILE *fp)
 		reclen++;
 	    if (comp == 0x11)
 		reclen++;
-	    printf("	len=%d(0x%x)\n", 12+reclen, 12+reclen);
+	    printf("\tlen=%d(0x%x)\n", 12+reclen, 12+reclen);
 	    printf("\t\tstripe=%d, WB=%d(0x%x), H=%d(0x%x), plane=%d, "
 			"comp=0x%x,\n\t\tlen=%d(0x%x)\n",
-			stripe, w, w, h, h, pn, comp, reclen, reclen);
+			stripe, wb, wb, h, h, pn, comp, reclen, reclen);
 
 	    if (fread(buf, reclen, 1, fp) != 1)
 		error(1, "Couldn't get 0x%x(%d) bytes\n", reclen, reclen);
 	    curOff += reclen;
-
+	
 	    cksum = 0;
 	    for (i = 0; i < reclen-4; ++i)
 		cksum += (unsigned char) buf[i];
 
-	    if ( ((unsigned char) buf[0]) == 0xef)
+	    if (comp == 0x15)
+	    {
+		if (0) printf("pn=%d\n", pn);
+	    }
+	    else if ( ((unsigned char) buf[0]) == 0xef)
 	    {
 		ver = getLEdword(buf+0) >> 28;
 		end = (getBEdword(buf+8) >> 24) - 1;
@@ -366,10 +408,11 @@ decode(FILE *fp)
 		    );
 	    }
 
-	    if (comp == 0x13)
+	    if (comp == 0x13 || comp == 0x15)
 	    {
-printf("stripe=%d\n", stripe);
-		if (stripe == 0)
+if (0) printf("stripe=%d\n", stripe);
+		// if ( (comp == 0x13 && stripe == 0) || comp == 0x15)
+		if (comp == 0x13 && stripe == 0)
 		{
 		    size_t      cnt;
 
@@ -382,12 +425,34 @@ printf("stripe=%d\n", stripe);
 			error(1, "JBIG uses unimpl feature\n");
 		    break;
 		}
-		else if (0 &&stripe == 1 && pn == 4)
-		    pn = 0;
+		else if (comp == 0x15)
+		{
+		    size_t      cnt;
+
+		    jbg_dec_init(&s[pn]);
+		    rc = jbg_dec_in(&s[pn], bih[pn], 20, &cnt);
+		    if (rc == JBG_EIMPL)
+			error(1, "JBIG uses unimpl feature\n");
+		}
+		else if (comp == 0x13 && stripe >= 1)
+		{
+		    printf("\t\tData: ");
+		    for (i = 0; i < 16; ++i)
+			printf("%02x ", (unsigned char) buf[32+i]);
+		    printf("...\n");
+		}
 
 		if (DecFile)
 		{
-		    for (i = 32; i < reclen; ++i)
+		    if (comp == 0x15)
+		    {
+			reclen -= 4;
+			i = 0;
+		    }
+		    else
+			i = 32;
+if (0 && comp == 0x15) printf("c=%02x ", (unsigned char) buf[i]);
+		    for (; i < reclen; ++i)
 		    {
 			size_t              cnt;
 			unsigned char       ch = c;
@@ -395,23 +460,28 @@ printf("stripe=%d\n", stripe);
 			ch = c = buf[i];
 
 			rc = JBG_EAGAIN;
+if (0 && comp == 0x15) printf("i=%d ", i);
 			rc = jbg_dec_in(&s[pn], &ch, 1, &cnt);
+if (0 && comp == 0x15) printf("rc=%d ", rc);
+if (0 && comp == 0x15 && i == (reclen-1))  printf("c=%02x ", ch);
+if (0 && comp == 0x15 && i == (reclen-2))  printf("c=%02x ", ch);
 			if (rc == JBG_EOK)
 			{
 			    int     h, w, len;
 			    unsigned char *image;
 
-printf("OK\n");
-			    // debug(0, "JBG_OK: %d\n", pn);
+if (0 && comp == 0x15) printf("OK\n");
+if (0) printf("OK\n");
+			    // debug(0, "JBG_EOK: %d\n", pn);
 			    h = jbg_dec_getheight(&s[pn]);
 			    w = jbg_dec_getwidth(&s[pn]);
 			    image = jbg_dec_getimage(&s[pn], 0);
 			    len = jbg_dec_getsize(&s[pn]);
-			    if (image)
+			    if (comp == 0x13 && image)
 			    {
 				char        buf[512];
 				sprintf(buf, "%s-%02d-%d.pbm",
-					DecFile, pageNum, pn-1);
+					DecFile, pageNum, pn);
 				dfp = fopen(buf,
 					    imageCnt[pn] ? "a" : "w");
 				if (dfp)
@@ -421,6 +491,29 @@ printf("OK\n");
 				    //imageCnt[pn] += incrY;
 				    fwrite(image, 1, len, dfp);
 				    fclose(dfp);
+				    dfp = NULL;
+				}
+			    }
+			    else if (comp == 0x15 && image)
+			    {
+				char        buf[512];
+				if (dfp == 0)
+				{
+				    sprintf(buf, "%s-%02d-%d.pbm",
+					DecFile, pageNum, pn);
+				    dfp = fopen(buf,
+					    imageCnt[pn] ? "r+" : "w");
+				}
+				if (dfp)
+				{
+				    fseek(dfp, 0, SEEK_SET);
+				    // if (imageCnt[pn] == 0)
+				    fprintf(dfp, "P4\n%8d %8d\n", w, h*stripe);
+				    imageCnt[pn] += 1;
+				    fseek(dfp, stripe * h * wb, SEEK_SET);
+				    fwrite(image, 1, len, dfp);
+				    fclose(dfp);
+				    dfp = NULL;
 				}
 			    }
 			    else
@@ -484,7 +577,18 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	decode(stdin);
+	if (argc > 0)
+	{
+	    FILE	*fp;
+
+	    fp = fopen(argv[0], "r");
+	    if (!fp)
+		error(1, "file '%s' doesn't exist\n", argv[0]);
+	    decode(fp);
+	    fclose(fp);
+	}
+	else
+	    decode(stdin);
 
 	exit(0);
 }

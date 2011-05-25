@@ -24,76 +24,62 @@
     <enum_vals>
 	<enum_val id="ev/foo2hp-ICM-default">
 	    <ev_longname> <en>Default ICM color correction</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>default</en> </ev_shortname>
 	    <ev_driverval>-Gdefault</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hp-ICM-none">
 	    <ev_longname> <en>No ICM color correction</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>none</en> </ev_shortname>
-	    <ev_driverval>-Gnone</ev_driverval>
+	    <ev_driverval>-Gnone.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hp-ICM-hp1215-argyll-0">
+	    <ev_longname> <en>HP 1215 - Argyll 0 (default)</en> </ev_longname>
+	    <ev_shortname> <en>hp1215-argyll-0</en> </ev_shortname>
+	    <ev_driverval>-Ghp1215-argyll-0.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hp-ICM-hpclj2600n-0">
-	    <ev_longname> <en>File hpclj2600n-0.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
+	    <ev_longname> <en>HP 1600/2600 - hpclj2600n-0.icm</en> </ev_longname>
 	    <ev_shortname> <en>hpclj2600n-0</en> </ev_shortname>
 	    <ev_driverval>-Ghpclj2600n-0.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hp-ICM-hpclj2600n-1">
-	    <ev_longname> <en>File ICCFactory 1</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
+	    <ev_longname> <en>HP 1600/2600 - ICCFactory 1 (default)</en> </ev_longname>
 	    <ev_shortname> <en>hpclj2600n-1</en> </ev_shortname>
 	    <ev_driverval>-Ghpclj2600n-1.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hp-ICM-km2430_2">
 	    <ev_longname> <en>File km2430_2.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>km2430_2</en> </ev_shortname>
 	    <ev_driverval>-Gkm2430_2.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hp-ICM-testing">
 	    <ev_longname> <en>File testing.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>testing</en> </ev_shortname>
 	    <ev_driverval>-Gtesting.icm</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2hp-ICM-user1">
 	    <ev_longname> <en>File user1.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>user1</en> </ev_shortname>
 	    <ev_driverval>-Guser1.icm</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2hp-ICM-user2">
 	    <ev_longname> <en>File user2.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>user2</en> </ev_shortname>
 	    <ev_driverval>-Guser2.icm</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2hp-ICM-user3">
 	    <ev_longname> <en>File user3.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>user3</en> </ev_shortname>
 	    <ev_driverval>-Guser3.icm</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2hp-ICM-user4">
 	    <ev_longname> <en>File user4.icm</en> </ev_longname>
-		<!-- A multilingual <comments> block can appear here, too;
-		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>user4</en> </ev_shortname>
 	    <ev_driverval>-Guser4.icm</ev_driverval>
 	</enum_val>

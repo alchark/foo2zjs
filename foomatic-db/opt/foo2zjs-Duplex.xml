@@ -28,6 +28,12 @@
 	<constraint sense="false">
 	    <make>HP</make> <model>LaserJet 1020</model>
 	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet P2035</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2zjs-Duplex-1">

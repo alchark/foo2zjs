@@ -49,6 +49,12 @@
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
 	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
             </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-PhotoOnly">
@@ -76,6 +82,12 @@
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
 	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
             </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-PhotoAndText">
@@ -101,6 +113,12 @@
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
 	        </constraint>
             </constraints>
 	</enum_val>
@@ -130,6 +148,12 @@
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
 	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
             </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-ICM">
@@ -154,6 +178,12 @@
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet P2035</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
 	        </constraint>
             </constraints>
 	</enum_val>
