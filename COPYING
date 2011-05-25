@@ -61,10 +61,10 @@ PATENTS
     of this software module, you will have to obtain such a licence
     yourself.
 
-    "So, as far as I understand currently (IANAPL), JBIG1 will be free of
-    known patents in the United States from 2012-04-04 onwards, at the
-    very latest, and outside the United States, JBIG1 will be patent free
-    already from 2011-02-25." - Markus Kuhn
+    "So, as far as I understand currently (IANAPL):
+	* JBIG1 will be free of known patents in the United States				from 2012-04-04 onwards,
+	* has already been free of known patents in all other countries
+	    since 2011-02-26." - Markus Kuhn
 
 
 Everything else is...

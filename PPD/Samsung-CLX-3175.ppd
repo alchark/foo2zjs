@@ -397,6 +397,8 @@
 *FoomaticRIPOptionSetting ICM=clp300: "-C10 -Gsamclp300-0.icm "
 *ICM clp315/CLP-310/315: "%% FoomaticRIPOptionSetting: ICM=clp315"
 *FoomaticRIPOptionSetting ICM=clp315: "-C10 -Gsamclp315-argyll-0.icm "
+*ICM clp325/CLP-320/325: "%% FoomaticRIPOptionSetting: ICM=clp325"
+*FoomaticRIPOptionSetting ICM=clp325: "-C10 -Gsamclp315-argyll-0.icm "
 *ICM clp600/CLP-600: "%% FoomaticRIPOptionSetting: ICM=clp600"
 *FoomaticRIPOptionSetting ICM=clp600: "-z1 "
 *ICM clp610/CLP-610: "%% FoomaticRIPOptionSetting: ICM=clp610"

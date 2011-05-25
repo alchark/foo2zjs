@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Samsung-CLP-310-foo2qpdl.ppd'
+*% You may save this file as 'Samsung-CLP-325-foo2qpdl.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -29,15 +29,15 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2QPDL.PPD"
 *Manufacturer:	"Samsung"
-*Product:	"(CLP-310 Series)"
+*Product:	"(CLP-320 Series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Samsung CLP-310"
-*ShortNickName: "Samsung CLP-310 foo2qpdl"
-*NickName:      "Samsung CLP-310 Foomatic/foo2qpdl (recommended)"
+*ModelName:     "Samsung CLP-325"
+*ShortNickName: "Samsung CLP-325 foo2qpdl"
+*NickName:      "Samsung CLP-325 Foomatic/foo2qpdl (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Samsung;MDL:CLP-310 Series;CMD:SPLC;DRV:Dfoo2qpdl,R1,M0,TF;"
+*1284DeviceID: "MFG:Samsung;MDL:CLP-320 Series;CMD:SPLC;DRV:Dfoo2qpdl,R1,M0,TF;"
 
 *driverName foo2qpdl/foo2qpdl: ""
 *driverType F/Filter: ""
@@ -77,7 +77,7 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Samsung-CLP-310 foo2qpdl
+*FoomaticIDs: Samsung-CLP-325 foo2qpdl
 *FoomaticRIPCommandLine: "foo2qpdl-wrapper %A"
 
 *OpenGroup: General/General
@@ -93,7 +93,7 @@
 *CloseUI: *Quality
 
 *FoomaticRIPOption PrinterType: enum CmdLine A 110
-*FoomaticRIPOptionSetting PrinterType=z2: "-z2 "
+*FoomaticRIPOptionSetting PrinterType=z0: "-z0 "
 
 *OpenUI *ColorMode/Color Mode: PickOne
 *FoomaticRIPOption ColorMode: enum CmdLine A
@@ -380,7 +380,7 @@
 *OpenUI *ICM/ICM Color Profile: PickOne
 *FoomaticRIPOption ICM: enum CmdLine A
 *OrderDependency: 300 AnySetup *ICM
-*DefaultICM: clp315
+*DefaultICM: clp325
 *ICM clp300/CLP-300: "%% FoomaticRIPOptionSetting: ICM=clp300"
 *FoomaticRIPOptionSetting ICM=clp300: "-C10 -Gsamclp300-0.icm "
 *ICM clp315/CLP-310/315: "%% FoomaticRIPOptionSetting: ICM=clp315"
