@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2xqx-wrapper.in,v 1.35 2010/07/24 15:59:47 rick Exp $'
+VERSION='$Id: foo2xqx-wrapper.in,v 1.40 2011/01/14 23:21:39 rick Exp $'
 
 #
 # Printer Notes:
@@ -169,6 +169,7 @@ case `$GSBIN --version` in
 *)	DEFAULTCOLORMODE=2
 	;;
 esac
+QUALITY=1
 QUALITY=wts
 MEDIA=1
 COPIES=1
@@ -269,6 +270,9 @@ case "$QUALITY" in
     ;;
 2)
     GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
+    ;;
+as)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
 wts)
     GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
@@ -518,7 +522,7 @@ create_crd() {
 	EOF
 	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps"
     else
-	GAMMFILE=
+	GAMMAFILE=
     fi
 }
 
@@ -619,6 +623,8 @@ esac
 
 if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
     PSTOPS_OPTS="$PSTOPS_OPTS -w"
+elif [ "$COLOR" != "" -a "$QUALITY" = as ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -a"
 fi
 
 if [ "" != "$COLOR" ]; then

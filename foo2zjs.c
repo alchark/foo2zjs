@@ -25,6 +25,8 @@ such as these:
      - HP LaserJet Pro P1566	B/W		-P -z2 -L0
      - HP LaserJet Pro P1606dn	B/W		-P -z2 -L0
 
+     - HP LaserJet Pro CP1025nw	B/W and color	-P -z3 -L0
+
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
 also uses Markus Kuhn's jbig-kit compression library (included, but
@@ -65,7 +67,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.98 2010/07/23 21:16:20 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.107 2010/12/15 23:06:41 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,7 +106,8 @@ int	Model = 0;
 		#define MODEL_2300DL	0
 		#define MODEL_HP1020	1
 		#define MODEL_HP_PRO	2
-		#define MODEL_LAST	2
+		#define MODEL_HP_PRO_CP	3
+		#define MODEL_LAST	3
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -125,6 +128,8 @@ int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
 int     PrintDensity = 3;
+int	Dots[4];
+int	TotalDots;
 
 int	IsCUPS = 0;
 
@@ -204,6 +209,11 @@ usage(void)
 "                    43=postcard, 70=A6, 82=double postcard rotated,\n"
 "                    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,\n"
 "                    258=fanfold german legal\n"
+"                  -z3: -z0 plus\n"
+"                    43=postcard, 70=A6, 82=double postcard rotated,\n"
+"                    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,\n"
+"                    258=fanfold german legal, 268=photo4x6, 269=photo5x8,\n"
+"                    270=photo10x15\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
@@ -229,6 +239,7 @@ usage(void)
 "                    0=KM 2300DL / HP 1000 / HP 1005\n"
 "                    1=HP 1018 / HP 1020 / HP 1022\n"
 "                    2=HP Pro P1102 / P1566 / P1606dn\n"
+"                    3=HP Pro CP102?nw\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -324,6 +335,26 @@ unsigned char	Mirror4[256] =
 	 13, 29, 45, 61, 77, 93,109,125,141,157,173,189,205,221,237,253,
 	 14, 30, 46, 62, 78, 94,110,126,142,158,174,190,206,222,238,254,
 	 15, 31, 47, 63, 79, 95,111,127,143,159,175,191,207,223,239,255,
+};
+
+int BlackOnes[256] =
+{
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
 };
 
 void
@@ -471,7 +502,11 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     if (planeNum)
     {
-	chunk_write(ZJT_START_PLANE, 1, 1*sizeof(ZJ_ITEM_UINT32), fp);
+	if (Model == MODEL_HP_PRO_CP)
+	    chunk_write_rsvd(ZJT_START_PLANE, 1 * 12,
+			1, 1*sizeof(ZJ_ITEM_UINT32), fp);
+	else
+	    chunk_write(ZJT_START_PLANE, 1, 1*sizeof(ZJ_ITEM_UINT32), fp);
 	item_uint32_write(ZJI_PLANE, planeNum, fp);
     }
 
@@ -506,6 +541,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	chunk_write(ZJT_END_JBIG, 0, 0, fp);
 	break;
     case MODEL_HP_PRO:
+    case MODEL_HP_PRO_CP:
 	if (Duplex == DMDUPLEX_LONGEDGE	|| Duplex == DMDUPLEX_SHORTEDGE)
 	{
 	    int nitems = 1;
@@ -519,8 +555,24 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	break;
     }
 
-    if (planeNum)
-	chunk_write(ZJT_END_PLANE, 0, 0, fp);
+    switch (Model)
+    {
+    case MODEL_HP_PRO_CP:
+	if (planeNum)
+	{
+	    int nitems = 1;
+
+	    chunk_write_rsvd(ZJT_END_PLANE, nitems * 12,
+			nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
+	    item_uint32_write(ZJI_PLANE, planeNum,	fp);
+	}
+	break;
+    default:
+	if (planeNum)
+	    chunk_write(ZJT_END_PLANE, 0, 0, fp);
+	break;
+    }
+
     return 0;
 }
 
@@ -549,6 +601,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	    | ((long) current->data[ 9] << 16)
 	    | ((long) current->data[10] <<  8)
 	    | (long) current->data[11]);
+    TotalDots = w*h;
     debug(9, "start_page: w x h = %d x %d\n", w, h);
 
     nitems = 12;
@@ -570,6 +623,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
 	break;
     case MODEL_HP_PRO:
+    case MODEL_HP_PRO_CP:
 	nitems += 1;
 	if (EconoMode)
 	    nitems += 1;
@@ -580,7 +634,10 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	break;
     }
 
-    if (Model == MODEL_HP_PRO && 
+    if (Model == MODEL_HP_PRO_CP)
+	item_uint32_write(ZJI_PLANE,           nbie,   	       ofp);
+
+    if ( (Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP) && 
 	    (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE) )
 	item_uint32_write(ZJI_DMDUPLEX, (Duplex <= 3) ? Duplex : 1,	ofp);
     if (Model == MODEL_2300DL || Model == MODEL_HP1020 || EconoMode)
@@ -590,7 +647,12 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     item_uint32_write(ZJI_VIDEO_X,             RealWidth / Bpp,ofp);
     item_uint32_write(ZJI_VIDEO_Y,             h,              ofp);
     item_uint32_write(ZJI_VIDEO_BPP,           Bpp,            ofp);
-    item_uint32_write(ZJI_RASTER_X,            RealWidth,      ofp);
+
+    if (Model == MODEL_HP_PRO_CP)
+	item_uint32_write(ZJI_RASTER_X,        w,      ofp);
+    else
+	item_uint32_write(ZJI_RASTER_X,        RealWidth,      ofp);
+
     item_uint32_write(ZJI_RASTER_Y,            h,              ofp);
     if (LogicalOffsetX != 0)
 	item_uint32_write(ZJI_OFFSET_X,        LogicalOffsetX, ofp);
@@ -641,6 +703,22 @@ end_page(FILE *ofp)
 	}
 	else
 	    chunk_write(ZJT_END_PAGE, 0, 0, ofp);
+	break;
+    case MODEL_HP_PRO_CP:
+	{
+	    int nitems = 8;
+
+	    chunk_write_rsvd(ZJT_END_PAGE, nitems * 12,
+			nitems, nitems * sizeof(ZJ_ITEM_UINT32), ofp);
+	    item_uint32_write(ZJI_HP_CDOTS, Dots[0],	ofp);
+	    item_uint32_write(ZJI_HP_MDOTS, Dots[2],	ofp);
+	    item_uint32_write(ZJI_HP_YDOTS, Dots[1],	ofp);
+	    item_uint32_write(ZJI_HP_KDOTS, Dots[3],	ofp);
+	    item_uint32_write(ZJI_HP_CWHITE, Dots[0],	ofp);
+	    item_uint32_write(ZJI_HP_MWHITE, Dots[2],	ofp);
+	    item_uint32_write(ZJI_HP_YWHITE, Dots[1],	ofp);
+	    item_uint32_write(ZJI_HP_KWHITE, Dots[3],	ofp);
+	}
 	break;
     }
 }
@@ -746,6 +824,7 @@ start_doc(FILE *fp)
     {
     case MODEL_HP1020:
     case MODEL_HP_PRO:
+    case MODEL_HP_PRO_CP:
 	now = time(NULL);
 	tmp = localtime(&now);
 	strftime(datetime, sizeof(datetime), "%Y%m%d%H%M%S", tmp);
@@ -769,12 +848,13 @@ start_doc(FILE *fp)
     rc = fwrite(header, 1, sizeof(header), fp);
 
     nitems = 1;
-    if (Model == MODEL_2300DL)
-	++nitems;
     switch (Model)
     {
     case MODEL_2300DL:
+	nitems += 3;
+	break;
     case MODEL_HP1020:
+    case MODEL_HP_PRO_CP:
 	nitems += 2;
 	break;
     case MODEL_HP_PRO:
@@ -803,6 +883,7 @@ start_doc(FILE *fp)
 	chunk_write_rsvd(ZJT_START_DOC, 0x24, nitems, size, fp);
 	break;
     case MODEL_HP_PRO:
+    case MODEL_HP_PRO_CP:
 	chunk_write_rsvd(ZJT_START_DOC, nitems * 0x0c, nitems, size, fp);
 	break;
     }
@@ -812,6 +893,7 @@ start_doc(FILE *fp)
     {
     case MODEL_2300DL:
     case MODEL_HP1020:
+    case MODEL_HP_PRO_CP:
 	item_uint32_write(ZJI_DMDUPLEX, (Duplex <= 3) ? Duplex : 1,	  fp);
 	item_uint32_write(ZJI_PAGECOUNT,		0,	  fp);
 	break;
@@ -844,6 +926,7 @@ end_doc(FILE *fp)
     {
     case MODEL_HP1020:
     case MODEL_HP_PRO:
+    case MODEL_HP_PRO_CP:
 	fprintf(fp, "\033%%-12345X@PJL EOJ\n");
 	fprintf(fp, "\033%%-12345X");
 	break;
@@ -859,6 +942,25 @@ load_tray2(FILE *fp)
     chunk_write(ZJT_2600N_PAUSE, nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
 }
 
+int
+compute_image_dots(int w, int h, unsigned char *bitmap)
+{
+    int dots = 0;
+    int x, y, bpl;
+
+    switch (Model)
+    {
+    case MODEL_HP_PRO_CP:
+	bpl = (w + 7) / 8;
+	for (y = 0; y < h; ++y)
+	    for (x = 0; x < bpl; ++x)
+		dots += BlackOnes[ bitmap[y*bpl + x] ];
+	return dots;
+    default:
+	return 0;
+    }
+}
+
 static int AnyColor;
 
 void
@@ -872,6 +974,10 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     unsigned char	mask[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
     int			aib = AllIsBlack;
     int			bc = BlackClears;
+
+    if (Model != MODEL_2300DL)
+	bpl = (bpl + 15) & ~15;
+    debug(1, "w=%d, bpl=%d, rawbpl=%d\n", w, bpl, rawbpl);
 
     AnyColor = 0;
     for (i = 0; i < 4; ++i)
@@ -949,20 +1055,34 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 {
     BIE_CHAIN *chain[4];
     int	i;
-    int	bpl = (w + 7) / 8;
+    int	bpl, bpl16;
     unsigned char *plane[4], *bitmaps[4][1];
     struct jbg_enc_state se[4]; 
     int		rc;
 
     RealWidth = w;
+    if (Model == MODEL_HP1020
+	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
+    {
+	w = (w + 127) & ~127;
+	bpl = (w + 7) / 8;
+	bpl16 = (bpl + 15) & ~15;
+    }
+    else
+    {
+	bpl = (w + 7) / 8;
+	bpl16 = bpl;
+    }
+    debug(1, "w = %d, bpl = %d, bpl16 = %d\n", w, bpl, bpl16);
+
     for (i = 0; i < 4; ++i)
     {
-	plane[i] = malloc(bpl * h);
+	plane[i] = malloc(bpl16 * h);
 	if (!plane[i]) error(3, "Cannot allocate space for bit plane\n");
 	chain[i] = NULL;
     }
 
-    cmyk_planes(plane, raw, w, h);
+    cmyk_planes(plane, raw, RealWidth, h);
     for (i = 0; i < 4; ++i)
     {
 	if (Debug >= 9)
@@ -977,6 +1097,8 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 		fclose(dfp);
 	    }
 	}
+
+	Dots[i] = compute_image_dots(w, h, plane[i]);
 
 	*bitmaps[i] = plane[i];
 
@@ -1008,11 +1130,17 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
     struct jbg_enc_state se[4]; 
 
     RealWidth = w;
+    if (Model == MODEL_HP1020
+	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
+	w = (w + 127) & ~127;
+
     for (i = 0; i < 4; ++i)
 	chain[i] = NULL;
 
     for (i = 0; i < 4; ++i)
     {
+	Dots[i] = compute_image_dots(w, h, plane[i]);
+
 	*bitmaps[i] = plane[i];
 
 	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
@@ -1040,7 +1168,8 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
     struct jbg_enc_state se; 
 
     RealWidth = w;
-    if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
+    if (Model == MODEL_HP1020
+	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
 	w = (w + 127) & ~127;
 
     if (SaveToner)
@@ -1062,7 +1191,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 		buf[y*bpl16 + x] &= 0xaa;
     }
 
-    if (Model == MODEL_HP_PRO)
+    if (Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
     {
 	int	x, y;
 	int	bpl, bpl16;
@@ -1089,6 +1218,8 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	    for (y = h - 200; y < h; y += 1)
 		memset(buf + y*bpl16, 0, bpl16);
     }
+
+    Dots[3] = compute_image_dots(w, h, buf);
 
     *bitmaps = buf;
 
@@ -1313,6 +1444,7 @@ pksm_pages(FILE *ifp, FILE *ofp)
     int			saveW = 0, saveH = 0;
     int			rightBpl;
     int			w, h, bpl;
+    int			bpl16;
     int			i;
     int			rc;
     int			p4eaten = 1;
@@ -1366,12 +1498,19 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    bpl = (w + 7) / 8;
 	    rightBpl = (rawW - UpperLeftX + 7) / 8;
 
-	    plane[i] = malloc(bpl * h);
+	    if (Model == MODEL_HP1020
+		|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
+		bpl16 = (bpl + 15) & ~15;
+	    else
+		bpl16 = bpl;
+	    debug(1, "bpl=%d bpl16=%d\n", bpl, bpl16);
+
+	    plane[i] = malloc(bpl16 * h);
 	    if (!plane[i])
 		error(1, "Can't allocate plane buffer\n");
 
 	    rc = read_and_clip_image(plane[i],
-					rawBpl, rightBpl, 8, bpl, h, bpl, ifp);
+				    rawBpl, rightBpl, 8, bpl, h, bpl16, ifp);
 	    if (rc == EOF)
 		error(1, "Premature EOF(pksm) on page %d data, plane %d\n",
 			    PageNum, i);
@@ -1394,7 +1533,7 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		unsigned char *p, *e;
 
-		for (p = plane[i], e = p + bpl*h; p < e; ++p)
+		for (p = plane[i], e = p + bpl16*h; p < e; ++p)
 		    if (*p)
 		    {
 			AnyColor |= 1<<i;
@@ -1444,10 +1583,11 @@ blank_page(FILE *ofp)
     bpl = (w + 7) / 8;
     switch (Model)
     {
-    case MODEL_2300DL:	bpl16 = bpl; break;
-    case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
-    case MODEL_HP_PRO:	bpl16 = (bpl + 15) & ~15; break;
-    default:		error(1, "Bad model %d\n", Model); break;
+    case MODEL_2300DL:		bpl16 = bpl; break;
+    case MODEL_HP1020:		bpl16 = (bpl + 15) & ~15; break;
+    case MODEL_HP_PRO:		bpl16 = (bpl + 15) & ~15; break;
+    case MODEL_HP_PRO_CP:	bpl16 = (bpl + 15) & ~15; break;
+    default:			error(1, "Bad model %d\n", Model); break;
     }
 
     plane = malloc(bpl16 * h);
@@ -1505,6 +1645,7 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	case MODEL_2300DL:	bpl16 = bpl; break;
 	case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
 	case MODEL_HP_PRO:	bpl16 = (bpl + 15) & ~15; break;
+	case MODEL_HP_PRO_CP:	bpl16 = (bpl + 15) & ~15; break;
 	default:		error(1, "Bad model %d\n", Model); break;
 	}
 
@@ -1713,7 +1854,9 @@ main(int argc, char *argv[])
     if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
-    if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
+    if (Model == MODEL_HP1020
+	|| Model == MODEL_HP_PRO
+	|| Model == MODEL_HP_PRO_CP)
     {
 	Bpp = ResX / 600;
 	ResX = 600;
@@ -1774,7 +1917,9 @@ main(int argc, char *argv[])
 	/*
 	 *  Manual Pause
 	 */
-	if (Model == MODEL_HP1020 || Model == MODEL_HP_PRO)
+	if (Model == MODEL_HP1020
+		|| Model == MODEL_HP_PRO
+		|| Model == MODEL_HP_PRO_CP)
 	    load_tray2(stdout);
 
 	fseek(EvenPages, SeekMedia, 0L);

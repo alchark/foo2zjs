@@ -57,7 +57,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.37 2010/07/20 16:36:41 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.38 2010/10/16 15:00:40 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -558,11 +558,13 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     case MODEL_1600W:
     case MODEL_2530DL:
 	fprintf(ofp, "\033&l%dO", 0);
-	fprintf(ofp, "\033*r%dU", Mode == MODE_COLOR ? -1004 : 1);
-	fprintf(ofp, "\033*g%dW", Mode == MODE_COLOR ? 26 : 8);
+	fprintf(ofp, "\033*r%dU",
+	    (Mode == MODE_COLOR && nbie == 4) ? -1004 : 1);
+	fprintf(ofp, "\033*g%dW",
+	    (Mode == MODE_COLOR && nbie == 4) ? 26 : 8);
 	putc(2, ofp);
 	putc(nbie, ofp);
-	np = Mode == MODE_COLOR ? 4 : 1;
+	np = (Mode == MODE_COLOR && nbie == 4) ? 4 : 1;
 	for (i = 0; i < np; ++i)
 	{
 	    putc(ResX>>8, ofp);

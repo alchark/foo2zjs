@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.91 2010/06/15 16:50:56 rick Exp $'
+VERSION='$Id: getweb.in,v 1.100 2011/01/31 12:04:12 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -22,6 +22,7 @@ Usage:
     Convenience script to get extra somethings from the web,
     such as ICC color profiles, firmware, PPD files, etc.
 
+    $ ./getweb 1025     # Get HP LaserJet Pro CP1025nw .ICM files
     $ ./getweb 1215	# Get HP Color LaserJet CP1215 .ICM files
     $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
     $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
@@ -36,6 +37,7 @@ Usage:
     $ ./getweb 4690	# Get Konica Minolta 4690MF .ICM files
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
     $ ./getweb 110	# Get Oki C110 .ICM files
+    $ ./getweb 6121	# Get Xerox Phaser 6121MFP .ICM files
 
     $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
     $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
@@ -54,6 +56,7 @@ Usage:
 
     $ ./getweb 500	# Get Lexmark C500 .ICM files
 
+    $ ./getweb c310	# Get Oki C310dn .ICM files
     $ ./getweb 3100	# Get Oki C3100 .ICM files
     $ ./getweb 3200	# Get Oki C3200 .ICM files
     $ ./getweb 3300	# Get Oki C3300 .ICM files
@@ -64,6 +67,8 @@ Usage:
     $ ./getweb 5500	# Get Oki C5500 .ICM files
     $ ./getweb 5600	# Get Oki C5600 .ICM files
     $ ./getweb 5800	# Get Oki C5800 .ICM files
+
+    $ ./getweb 160	# Get Olivetti d-Color P160W .ICM files
 
     $ ./getweb 1000	# Get HP LJ 1000 firmware file
     $ ./getweb 1005	# Get HP LJ 1005 firmware file
@@ -194,7 +199,7 @@ getone() {
 	copyright "(c) Copyright Hewlett-Packard 2009"
 	;;
     2200dl|2200)
-	if false; then
+	if true; then
 	    gettgz \
 		http://foo2zjs.rkkda.com/icm dl2300.tar.gz \
 		""
@@ -206,7 +211,7 @@ getone() {
 	copyright "(c) Copyright Minolta-QMS 1999"
 	;;
     2300dl|2300)
-	if false; then
+	if true; then
 	    gettgz \
 		http://foo2zjs.rkkda.com/icm dl2300.tar.gz \
 		""
@@ -254,7 +259,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Konica Minolta 2003"
 	;;
-    2530|2490|6115|2480|1600w|1680|1690|4690|110)
+    2530|2490|6115|2480|1600w|1680|1690|4690|110|6121)
 	gettgz \
 	    http://foo2lava.rkkda.com/icm km2530.tar.gz \
 	    ""
@@ -265,7 +270,24 @@ getone() {
 	    ""
 	copyright "(c) Copyright Rick Richardson 2009.  All Rights Reserved"
 	;;
-    1215|1500|1600|2600*)
+    1500)
+	gettgz \
+	    http://foo2hp.rkkda.com/icm hpclj2500.tar.gz \
+	    ""
+	copyright "(c) Copyright Hewlett-Packard 2002"
+	gettgz \
+	    http://foo2hp.rkkda.com/icm hpclj2600n.tar.gz \
+	    ""
+	copyright "(c) Copyright Hewlett-Packard 2003"
+	copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
+	;;
+    1025)
+	gettgz \
+	    http://foo2zjs.rkkda.com/icm hp-cp1025.tar.gz \
+	    ""
+	copyright "(c) Copyright Rick Richardson 2010.  All Rights Reserved"
+	;;
+    1215|1600|2600*)
 	gettgz \
 	    http://foo2hp.rkkda.com/icm hpclj2600n.tar.gz \
 	    ""
@@ -313,6 +335,12 @@ getone() {
 	done
 	copyright "(c) Copyright Okidata 2005, 2006"
 	;;
+    c310)
+	gettgz \
+	    http://foo2hiperc.rkkda.com/icm okic310.tar.gz \
+	    ""
+	copyright "(c) Copyright Okidata 2010"
+	;;
     3100|3200|5100|5150|5200|5250)
 	gettgz \
 	    http://foo2hiperc.rkkda.com/icm okic3200.tar.gz \
@@ -325,7 +353,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Okidata 2006"
 	;;
-    5500|5600|5800)
+    5500|5600|5800|160)
 	gettgz \
 	    http://foo2hiperc.rkkda.com/icm okic5600.tar.gz \
 	    ""
@@ -433,8 +461,10 @@ do
 	# getone 2430 already done
 	# getone cpwl # file doesn't exist 1/28/08
 
+	getone 1500
 	getone 2600n
 	# getone 1215 # already done
+	getone 1025
 
 	getone 2530
 
@@ -444,6 +474,7 @@ do
 
 	getone 500
 
+	getone c310
 	getone 3200
 	getone 3400
 	getone 5600

@@ -14,6 +14,7 @@
 
     </en> </comments>
     <printers>
+	<printer><id>printer/Oki-C310dn</id></printer>
 	<printer><id>printer/Oki-C3100</id></printer>
 	<printer><id>printer/Oki-C3200</id></printer>
 	<printer><id>printer/Oki-C3300</id></printer>
@@ -25,6 +26,7 @@
 	<printer><id>printer/Oki-C5600</id></printer>
 	<printer><id>printer/Oki-C5650</id></printer>
 	<printer><id>printer/Oki-C5800</id></printer>
+	<printer><id>printer/Olivetti-d-Color_P160W</id></printer>
 	<printer><id>printer/Generic-GDI_Printer</id></printer>
     </printers>
 </driver>

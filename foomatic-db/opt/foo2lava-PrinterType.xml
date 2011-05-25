@@ -69,6 +69,12 @@
 	    <driver>foo2lava</driver>
 	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Xerox</make>
+	    <model>Phaser 6121MFP</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2lava-PrinterType-lavaflow-z0">
@@ -150,6 +156,11 @@
 	    	    <make>Oki</make>
 	    	    <model>C110</model>
 	        </constraint>
+		<constraint sense="true">
+		    <driver>foo2lava</driver>
+		    <make>Xerox</make>
+		    <model>Phaser 6121MFP</model>
+		</constraint>
 	    </constraints>
 	</enum_val>
     </enum_vals>

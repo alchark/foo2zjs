@@ -21,6 +21,10 @@ GENERAL
 	- Minolta/QMS 2200 DL			B/W and color
 	- HP LaserJet P2035			B/W
 	- HP LaserJet M1319 MFP			B/W
+	- HP LaserJet Pro P1606dn		B/W
+	- HP LaserJet Pro P1566			B/W
+	- HP LaserJet Pro P1102			B/W
+	- HP LaserJet Pro CP1025nw		B/W and color
 	- HP LaserJet 1022			B/W
 	- HP LaserJet 1020			B/W
 	- HP LaserJet 1018			B/W
@@ -114,6 +118,7 @@ GENERAL
     mats  to monochrome or color HIPERC streams, for driving the Oki C3200,
     C3300n, C3400n, C5100n, and the C5500n HIPERC printers.
 
+	- Oki C310dn
 	- Oki C3100n/C3200n
 	- Oki C3300n/C3400n
 	- Oki C3530n MFP

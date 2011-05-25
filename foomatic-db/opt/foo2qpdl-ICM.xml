@@ -115,8 +115,8 @@
 	</enum_val>
 
 	<enum_val id="ev/foo2qpdl-ICM-3175">
-	    <ev_longname> <en>CLP-3175</en> </ev_longname>
-	    <ev_shortname> <en>clp3175</en> </ev_shortname>
+	    <ev_longname> <en>CLX-3175</en> </ev_longname>
+	    <ev_shortname> <en>clx3175</en> </ev_shortname>
 	    <ev_driverval>-C10 -Gsamclp315-argyll-0.icm</ev_driverval>
 	</enum_val>
 

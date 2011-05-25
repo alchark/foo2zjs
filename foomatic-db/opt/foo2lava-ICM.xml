@@ -50,6 +50,12 @@
 	    <driver>foo2lava</driver>
 	    <arg_defval>ev/foo2lava-ICM-default-z2-oki-c110</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Xerox</make>
+	    <model>Phaser 6121MFP</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-ICM-default-z2-xerox-6121</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2lava-ICM-none">
@@ -75,6 +81,12 @@
 	<enum_val id="ev/foo2lava-ICM-default-z2-oki-c110">
 	    <ev_longname> <en>Oki C110 (default)</en> </ev_longname>
 	    <ev_shortname> <en>oki-c110-default</en> </ev_shortname>
+	    <ev_driverval>-Gkm-1600-rgb-392-bpp1.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2lava-ICM-default-z2-xerox-6121">
+	    <ev_longname> <en>Xerox Phaser 6121 (default)</en> </ev_longname>
+	    <ev_shortname> <en>xerox-6121-default</en> </ev_shortname>
 	    <ev_driverval>-Gkm-1600-rgb-392-bpp1.icm</ev_driverval>
 	</enum_val>
 

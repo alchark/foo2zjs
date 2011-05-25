@@ -54,8 +54,8 @@ max(int a, int b)
 
 #define pwrite(s,n) fwrite((s), 1, (n), stdout)
 
-void            report_levels();
-void            auto_configure();
+void            report_levels(int negate);
+void            auto_configure(void);
 
 /*
  * 'main()' - Main entry and processing of driver.

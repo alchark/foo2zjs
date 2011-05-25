@@ -191,6 +191,9 @@ FILES	=	\
 		icc2ps/COPYING \
 		icc2ps/README \
 		icc2ps/README.foo2zjs \
+		osx-hotplug/Makefile \
+		osx-hotplug/*.m \
+		osx-hotplug/*.1in \
 		ppd-adjust \
 		PPD/*.ppd \
 		crd/zjs/*.crd \
@@ -236,6 +239,8 @@ FILES	=	\
 # sihp1000.img sihp1005.img sihp1020.img sihp1018.img
 # sihpP1005.img sihpP1006.img sihpP1505.img
 
+CUPS_DEVEL := $(shell ls /usr/include/cups/sidechannel.h 2>/dev/null)
+
 # Programs and libraries
 PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode
 PROGS+=		foo2lava lavadecode foo2qpdl qpdldecode opldecode
@@ -244,7 +249,9 @@ PROGS+=		foo2slx slxdecode
 PROGS+=		foo2hiperc hipercdecode
 PROGS+=		gipddecode
 ifneq ($(CUPS_SERVERBIN),)
-    PROGS+=	command2foo2lava-pjl
+    ifneq ($(CUPS_DEVEL),)
+	PROGS+=	command2foo2lava-pjl
+    endif
 endif
 SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
 		foo2xqx-wrapper foo2lava-wrapper foo2qpdl-wrapper \
@@ -352,7 +359,8 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
 #
 # The usual build rules
 #
-all:	all-test $(PROGS) $(BINPROGS) $(SHELLS) getweb all-icc2ps man doc \
+all:	all-test $(PROGS) $(BINPROGS) $(SHELLS) getweb \
+	all-icc2ps all-osx-hotplug man doc \
 	all-done
 
 all-test:
@@ -381,6 +389,15 @@ all-test:
 	    echo "      *** Error: gs is not installed!"; \
 	    echo "      ***"; \
 	    echo "      *** Install ghostscript (gs) package"; \
+	    echo "      ***"; \
+	    exit 1; \
+	fi
+	@if ! type dc >/dev/null 2>&1; then \
+	    echo "      ***"; \
+	    echo "      *** Error: dc is not installed!"; \
+	    echo "      ***"; \
+	    echo "      *** Install dc package"; \
+	    echo "      *** for Ubuntu: sudo apt-get install dc"; \
 	    echo "      ***"; \
 	    exit 1; \
 	fi
@@ -484,6 +501,11 @@ getweb: getweb.in Makefile
 all-icc2ps:
 	cd icc2ps; $(MAKE) all
 
+all-osx-hotplug:
+ifeq ($(UNAME),Darwin)
+	cd osx-hotplug; $(MAKE) all
+endif
+
 ok: ok.o $(LIBJBG)
 	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
 
@@ -526,8 +548,8 @@ command2foo2lava-pjl.o: command2foo2lava-pjl.c
 #
 # Installation rules
 #
-install: all install-test install-prog install-icc2ps install-extra \
-	    install-crd install-foo install-ppd \
+install: all install-test install-prog install-icc2ps install-osx-hotplug \
+	    install-extra install-crd install-foo install-ppd \
 	    install-gui install-desktop install-filter \
 	    install-man install-doc
 	#
@@ -641,6 +663,14 @@ install-icc2ps:
 	#
 	cd icc2ps; $(MAKE) PREFIX=$(PREFIX) install
 
+install-osx-hotplug:
+ifeq ($(UNAME),Darwin)
+	#
+	# Install Mac OSX hotplug utility
+	#
+	cd osx-hotplug; $(MAKE) PREFIX=$(PREFIX) install
+endif
+
 install-crd:
 	#
 	# Install prebuilt CRD files (from m2300w project)
@@ -679,7 +709,7 @@ install-extra:
 	$(INSTALL) -d $(SHAREZJS)/
 	# foo2zjs ICM files (if any)
 	$(INSTALL) $(LPuid) $(LPgid) -m 775 -d $(SHAREZJS)/icm/
-	for i in DL*.icm CP*.icm km2430*.icm; do \
+	for i in DL*.icm CP*.icm km2430*.icm hp-cp1025*.icm; do \
 	    if [ -f $$i ]; then \
 		$(INSTALL) -c -m 644 $$i $(SHAREZJS)/icm/; \
 	    fi; \
@@ -704,7 +734,7 @@ install-extra:
 	done
 	# foo2oak ICM files (if any)
 	$(INSTALL) $(LPuid) $(LPgid) -m 775 -d $(SHAREOAK)/icm/
-	for i in hpclj26*.icm; do \
+	for i in hpclj2[56]*.icm; do \
 	    if [ -f $$i ]; then \
 		$(INSTALL) -c -m 644 $$i $(SHAREOAK)/icm/; \
 	    fi; \
@@ -761,6 +791,7 @@ install-ppd:
 		manuf=`echo "$$ppd" | sed 's/-.*//'`; \
 		$(INSTALL) $(LPgid) -d $(VARPPD)/user/$$manuf; \
 		modify-ppd <$$ppd | gzip > $(VARPPD)/user/$$manuf/$$ppd.gz; \
+		chmod 664 $(VARPPD)/user/$$manuf/$$ppd.gz; \
 	    done; \
 	    ppdmgr -u; \
 	elif [ -d $(PPD) ]; then \
@@ -775,6 +806,7 @@ install-ppd:
 	    cd PPD; \
 	    for ppd in *.ppd; do \
 		modify-ppd <$$ppd | gzip > $(PPD)/foo2zjs/$$ppd.gz; \
+		chmod 664 $(PPD)/foo2zjs/$$ppd.gz; \
 	    done; \
 	fi
 	#
@@ -784,12 +816,14 @@ install-ppd:
 	    cd PPD; \
 	    for ppd in *.ppd; do \
 		modify-ppd <$$ppd | gzip > $(MODEL)/$$ppd.gz; \
+		chmod 664 $(MODEL)/$$ppd.gz; \
 	    done; \
 	elif [ -d $(LOCALMODEL) ]; then \
 	    rm -f $(LOCALMODEL)/KonicaMinolta*; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
 		modify-ppd <$$ppd | gzip > $(LOCALMODEL)/$$ppd.gz; \
+		chmod 664 $(LOCALMODEL)/$$ppd.gz; \
 	    done; \
 	fi
 
@@ -827,7 +861,11 @@ UDEVD=/sbin/udevd
 # For FreeBSD 8.0
 DEVDDIR=/etc/devd
 
+ifeq ($(UNAME),Darwin)
+install-hotplug: install-hotplug-test install-hotplug-osx
+else
 install-hotplug: install-hotplug-test install-hotplug-prog
+endif
 
 install-hotplug-test:
 	#
@@ -856,8 +894,21 @@ install-hotplug-test:
 	#
 
 install-hotplug-prog:
+	#
+	#	remove HPLIP (proprietary) files and install our version
+	#
 	if [ -d $(UDEVDIR) ]; then \
-	    rm -f /lib/udev/rules.d/*-hplj10xx.rules; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_1000*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_1005*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_1018*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_1020*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1005*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1006*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1007*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1008*; \
+	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1505*; \
+	    rm -f $(UDEVDIR)/*hpmud_support.rules; \
+	    rm -f $(LIBUDEVDIR)/*-hplj10xx.rules; \
 	    version=`$(UDEVD) --version 2>/dev/null`; \
 	    if [ "$$version" = "" ]; then version=0; fi; \
 	    echo "*** udev version $$version"; \
@@ -892,6 +943,9 @@ install-hotplug-prog:
 	# modprobe usblp
 	$(USBDIR)/hplj1000 install-usblp
 
+install-hotplug-osx:
+	cd osx-hotplug; $(MAKE) PREFIX=$(PREFIX) install-hotplug
+
 install-filter:
 	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
@@ -917,6 +971,7 @@ cups:	FRC
 # Uninstall
 #
 uninstall:
+	cd osx-hotplug; $(MAKE) PREFIX=$(PREFIX) uninstall
 	-rm -f /etc/hotplug/usb/hplj1000
 	-rm -f /etc/hotplug/usb/hplj1005
 	-rm -f /etc/hotplug/usb/hplj1018
@@ -1005,6 +1060,7 @@ clean:
 	-rm -f pksm2bitcmyk
 	-rm -f *.icm.*.ps
 	cd icc2ps; $(MAKE) $@
+	cd osx-hotplug; $(MAKE) $@
 
 #
 # Header dependencies
@@ -1196,6 +1252,7 @@ ppd:
 	do \
 	    printer=`basename $$i .xml`; \
 	    case "$$printer" in \
+	    *"d-Color_P160"*)   driver=foo2hiperc;; \
 	    *M1005*|*M1120*)    driver=foo2xqx;; \
 	    *P1[05]0[5678]*)    driver=foo2xqx;; \
 	    *P2014*)            driver=foo2xqx;; \
@@ -1206,16 +1263,19 @@ ppd:
 	    *P110*)		driver=foo2zjs-z2;; \
 	    *P156*)		driver=foo2zjs-z2;; \
 	    *P160*)		driver=foo2zjs-z2;; \
+	    *CP102*)		driver=foo2zjs-z3;; \
 	    *1635*|*2035*)      driver=foo2oak-z1;; \
 	    *1600W|*16[89]0*)   driver=foo2lava;; \
 	    *4690*)		driver=foo2lava;; \
 	    *2530*|*24[89]0*)   driver=foo2lava;; \
 	    *6115*)             driver=foo2lava;; \
 	    *C110*)             driver=foo2lava;; \
+	    *6121*)             driver=foo2lava;; \
 	    *1600*|*2600*)      driver=foo2hp;; \
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
-	    *C3[1234]00*)        driver=foo2hiperc;; \
+	    *C310*)             driver=foo2hiperc;; \
+	    *C3[1234]00*)       driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
 	    *C5[12568][05]0*)   driver=foo2hiperc;; \
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
@@ -1238,12 +1298,15 @@ oldppd:
 # Manpage generation.  No, I am not interested in "info" files or
 # HTML documentation.
 #
-man: $(MANPAGES) man-icc2ps
+man: $(MANPAGES) man-icc2ps man-osx-hotplug
 
 $(MANPAGES): macros.man includer-man
 
 man-icc2ps:
 	cd icc2ps; $(MAKE) man
+
+man-osx-hotplug:
+	cd osx-hotplug; $(MAKE) man
 
 .1in.1: 
 	-rm -f $*.1
@@ -1299,6 +1362,9 @@ install-man: man
 	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
 	cd icc2ps; $(MAKE) install-man
+ifeq ($(UNAME),Darwin)
+	cd osx-hotplug; $(MAKE) install-man
+endif
 
 doc: README INSTALL manual.pdf
 
@@ -1316,9 +1382,12 @@ install-doc: doc
 
 GROFF=/usr/local/test/bin/groff
 GROFF=groff
-manual.pdf: $(MANPAGES) icc2ps/foo2zjs-icc2ps.1
+manual.pdf: $(MANPAGES) icc2ps/foo2zjs-icc2ps.1 osx-hotplug/osx-hplj-hotplug.1
 	-$(GROFF) -t -man \
-	    `ls $(MANPAGES) icc2ps/foo2zjs-icc2ps.1 | sort` \
+	    `ls $(MANPAGES) \
+		icc2ps/foo2zjs-icc2ps.1 \
+		osx-hotplug/osx-hplj-hotplug.1 \
+		| sort` \
 	    | ps2pdf - $@
 
 README: README.in
@@ -1534,13 +1603,19 @@ webextra: webicm webfw
 webicm: \
 	icm/dl2300.tar.gz \
 	icm/km2430.tar.gz icm/hpclj2600n.tar.gz \
+	icm/hp-cp1025.tar.gz \
+	icm/hpclj2500.tar.gz \
 	icm/hp1215.tar.gz icm/km2530.tar.gz \
 	icm/km-1600.tar.gz \
 	icm/samclp300.tar.gz icm/samclp315.tar.gz \
 	icm/lexc500.tar.gz \
-	icm/okic3200.tar.gz icm/okic3400.tar.gz icm/okic5600.tar.gz
+	icm/okic310.tar.gz \
+	icm/okic3200.tar.gz \
+	icm/okic3400.tar.gz icm/okic5600.tar.gz
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/dl2300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/km2430.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/hp-cp1025.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hpclj2500.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hpclj2600n.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hp1215.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2lava/icm icm/km2530.tar.gz;
@@ -1548,6 +1623,7 @@ webicm: \
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp315.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic310.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
@@ -1556,6 +1632,10 @@ icm/dl2300.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ CP*.icm DL*.icm
 icm/km2430.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ km2430*.icm
+icm/hp-cp1025.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ hp-cp1025*.icm
+icm/hpclj2500.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ hpclj2500*.icm
 icm/hpclj2600n.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ hpclj2600*.icm
 icm/hp1215.tar.gz: FRC
@@ -1570,6 +1650,8 @@ icm/samclp315.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ samclp315*.icm
 icm/lexc500.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ lexR*.icm
+icm/okic310.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ OKC310*.icm
 icm/okic3200.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OK32*.icm
 icm/okic3400.tar.gz: FRC

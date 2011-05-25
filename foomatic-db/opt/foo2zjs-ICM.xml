@@ -21,6 +21,10 @@
 	    <arg_defval>ev/foo2zjs-ICM-none</arg_defval>
 	</constraint>
 	<constraint sense="true">
+	    <driver>foo2zjs-z3</driver>
+	    <arg_defval>ev/foo2zjs-ICM-HP-CP1025</arg_defval>
+	</constraint>
+	<constraint sense="true">
 	    <make>Minolta</make>
 	    <model>magicolor 2430 DL</model>
 	    <driver>foo2zjs</driver>
@@ -89,6 +93,9 @@
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
 	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
 	        </constraint>
@@ -105,6 +112,9 @@
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
 	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
 	        </constraint>
@@ -120,6 +130,9 @@
 	    <constraints>
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
+	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
 	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
@@ -138,6 +151,9 @@
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
 	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2200_DL</printer>
 	        </constraint>
@@ -152,6 +168,9 @@
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
 	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-Color_PageWorks_Pro_L</printer>
 	        </constraint>
@@ -164,6 +183,9 @@
 	    <constraints>
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
+	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
 	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-Color_PageWorks_Pro_L</printer>
@@ -178,8 +200,25 @@
 	        <constraint sense="false">
 		    <driver>foo2zjs</driver>
 	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-Color_PageWorks_Pro_L</printer>
+	        </constraint>
+	    </constraints>
+	</enum_val>
+
+	<enum_val id="ev/foo2zjs-ICM-HP-CP1025">
+	    <ev_longname> <en>ICM file hp-cp1025.icm</en> </ev_longname>
+	    <ev_shortname> <en>cp1025</en> </ev_shortname>
+	    <ev_driverval>-Ghp-cp1025-rgb-392-bpp1.icm</ev_driverval>
+	    <constraints>
+	        <constraint sense="false">
+		    <driver>foo2zjs</driver>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2zjs-z3</driver>
 	        </constraint>
 	    </constraints>
 	</enum_val>

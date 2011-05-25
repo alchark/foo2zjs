@@ -16,6 +16,10 @@
 	<driver>foo2zjs</driver>
 	<arg_defval>ev/foo2zjs-ColorMode-mono</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	<driver>foo2zjs-z3</driver>
+	<arg_defval>ev/foo2zjs-ColorMode-mono</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2zjs-ColorMode-mono">
@@ -67,6 +71,9 @@
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
 	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro CP1025nw</model>
+	        </constraint>
             </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-PhotoOnly">
@@ -112,6 +119,9 @@
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
 	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro CP1025nw</model>
+	        </constraint>
             </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-PhotoAndText">
@@ -155,6 +165,9 @@
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro CP1025nw</model>
 	        </constraint>
             </constraints>
 	</enum_val>
@@ -201,6 +214,9 @@
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro CP1025nw</model>
 	        </constraint>
             </constraints>
 	</enum_val>

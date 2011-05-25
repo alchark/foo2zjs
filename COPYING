@@ -6,6 +6,7 @@ Copyright HP...
     sihpP1005.img (2009)
     sihpP1006.img (2009)
     sihpP1505.img (2009)
+    hpclj2500rgb.icm (2002)
     hpclj2600n-0.icm (2003) 3700
 
 Copyright Konica Minolta...
@@ -22,6 +23,21 @@ Copyright Konica Minolta...
     km2530_1.icm (2003)
     km2530_2.icm (2003)
 
+Copyright Lexmark...
+    lexRPCA200.icm (2006)
+
+Copyright Oki Data Corporation...
+    OK3200L1.icm (2005)
+    OK3200L2.icm (2005)
+    C3400-L1-BIN-ICC_0603150.icm (2006)
+    C3400-L2-BIN-ICC_0604110.icm (2006)
+    OK5600L1.icm (2005)
+    OK5600L2.icm (2005)
+    OK5600L3.icm (2005)
+    OKC310H1.icm (2010)
+    OKC310H2.icm (2010)
+    OKC310H3.icm (2010)
+
 Copyright Rick Richardson.  All Rights Reserved.
     hpclj2600n-1.icm (2006)
     samclp300-0.icm (2007)
@@ -29,13 +45,11 @@ Copyright Rick Richardson.  All Rights Reserved.
     hp1215-argyll-0.icm (2008)
     samclp315-argyll-0.icm (2009)
     km-1600-rgb-392-bpp1.icm (2009)
+    hp-cp1025-rgb-392-bpp1.icm (2010)
 
 Copyright Samsung...
     CLP-300*cms* (2006)
     CLP-600*cms* (2006)
-
-Copyright Lexmark...
-    lexRPCA200.icm (2006)
 
 PATENTS
     It is possible that certain products which can be built using the jbig

@@ -35,6 +35,12 @@
 	    <ev_driverval>-Gnone.icm</ev_driverval>
 	</enum_val>
 
+        <enum_val id="ev/foo2oak-ICM-hpclj2500">
+            <ev_longname> <en>File hpclj2500rgb.icm</en> </ev_longname>
+            <ev_shortname> <en>hpclj2500</en> </ev_shortname>
+            <ev_driverval>-Ghpclj2500rgb.icm</ev_driverval>
+        </enum_val>
+
         <enum_val id="ev/foo2oak-ICM-hpclj2600n-1">
             <ev_longname> <en>File hpclj2600n-1.icm (ICCFactory 1)</en> </ev_longname>
             <ev_shortname> <en>hpclj2600n-1</en> </ev_shortname>

@@ -1,3 +1,109 @@
+2011-02-10	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: fix perms on PPD files.
+
+2011-01-31	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Oki C310dn.
+
+2011-01-23	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug/osx-hplj-hotplug.1in: Man page
+
+2011-01-21	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug/osx-hplj-hotplug.m:
+	  If FWVER is present, then no download is needed.
+
+2011-01-20	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: make install-hotplug for OSX.
+
+2011-01-19	Rick Richardson <rick.richardson@comcast.net>
+	* Change foo2hp2600-wrapper to remove "expr substr ..." and
+	  replace it with "echo ... | sed ..." for OSX (because expr != gexpr)
+
+2011-01-18	Rick Richardson <rick.richardson@comcast.net>
+	* New program: osx-hplj-hotplug
+	    Does hotplug on Mac OSX.  Add a line to /etc/rc.local and reboot:
+
+	    killall osx-hplj-hotplug; osx-hplj-hotplug \
+		    >/tmp/osx-hplj-hotplug 2>&1 &
+
+2011-01-14	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper, foomatic-db, PPDs: Add Halftone Algoritm.
+	    Standard (QUALITY=1), Accurate Screens (QUALITY=as),
+	    Well Tempered Screens (QUALITY=wts).  WTS is the default.
+	    PLEASE delete and recreate ALL printers.
+
+2011-01-09	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper:
+	    use QUALITY=1 instead of QUALITY=wts due to a bug in gs (8.71+)
+
+2011-01-09	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db, PPDs: Change ICM value for CLX-3175 (comestic)
+
+2010-12-22	Rick Richardson <rick.richardson@comcast.net>
+	* New printers: HP LaserJet 1022n, HP LaserJet 1022nw
+	* hplj1020.desktop: change Name and Comment
+
+2010-12-13	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs.c: with -z3, use BIH width for ZJI_RASTER_X
+	  Tested with a real HP LaserJet Pro CP1025nw printer.
+
+	* ICM for -z3 is done.  Do: make; ./getweb 1025; make install
+	  and PLEASE delete and recreate the foo2zjs-z3 printers
+
+2010-12-12	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs.c: with -z3, adjust to mod(128) pixels.
+
+2010-12-10	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile, hplj1000 et al:
+	    rm /etc/udev/rules.d/*hpmud*laserjet_{1000,1005,1018, 1020,
+			p1005,p1006,p1007,p1008,p1505}*
+
+	    Needed for Ubuntu 10.04 and greater with the proprietary "hplip"
+	    package installed.
+
+	    rm /etc/udev/rules.d/*hpmud_support.rules
+
+	    Needed for Fedora 13+
+
+2010-12-09	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs.c, foo2zjs-wrapper.in, zjsdecode, ppd/*, foomatic-db/*:
+	    Add 4x6, 5x8, and 10x15 page size for HP LaserJet Pro CP1025nw
+
+2010-12-08	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs.c, foo2zjs-wrapper.in, zjsdecode:
+	    Add -z3 for HP LaserJet Pro CP1025nw
+	* New Printer: HP LaserJet Pro CP1025nw
+	    ALPHA quality!!!  No ICM for color yet!!!
+
+2010-11-12	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Olivetti d-Color P160W
+
+2010-11-02	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak-wrapper: Change default HP CLJ 1500 ICM file. Do:
+			make; ./getweb 1500; make install
+
+2010-10-26	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*wrapper: Typo in GAMMAFILE
+
+2010-10-26	József CZOMPÓ <czo@czo.hu>
+	* foo2oak et al:  Add tray 2.
+	* foo2oak.c:  make -A and -B compatible with foo2hp, foo2zjs.
+
+2010-10-16	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c: Iff MODE_COLOR and nbie = 1, then it is a mono page.
+
+2010-10-12	Rick Richardson <rick.richardson@comcast.net>
+	* getweb: move dl2300.tar.gz
+
+2010-08-17	Rick Richardson <rick.richardson@comcast.net>
+	* New foo2lava printer: Xerox Phaser 6121MFP (printer only)
+
+2010-08-09	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: only do command2foo2lava-pjl IFF cups-devel package
+	    is installed
+
+2010-08-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: -z3 resolution
+
 2010-07-28	Rick Richardson <rick.richardson@comcast.net>
 	* Added manual page for foo2zjs-icc2ps.
 

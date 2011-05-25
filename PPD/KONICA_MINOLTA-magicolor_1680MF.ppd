@@ -371,6 +371,20 @@
 
 *OpenGroup: Adjustment/Adjustment
 
+*OpenUI *halftone/Halftone Algorithm: PickOne
+*FoomaticRIPOption halftone: enum CmdLine A
+*OrderDependency: 110 AnySetup *halftone
+*Defaulthalftone: default
+*halftone default/Default: "%% FoomaticRIPOptionSetting: halftone=default"
+*FoomaticRIPOptionSetting halftone=default: "  "
+*halftone as/Accurate Screens (better): "%% FoomaticRIPOptionSetting: halftone=as"
+*FoomaticRIPOptionSetting halftone=as: " -qas  "
+*halftone standard/Standard: "%% FoomaticRIPOptionSetting: halftone=standard"
+*FoomaticRIPOptionSetting halftone=standard: " -q1  "
+*halftone wts/Well Tempered Screens (best): "%% FoomaticRIPOptionSetting: halftone=wts"
+*FoomaticRIPOptionSetting halftone=wts: " -qwts  "
+*CloseUI: *halftone
+
 *OpenUI *ICM/ICM Color Profile: PickOne
 *FoomaticRIPOption ICM: enum CmdLine A
 *OrderDependency: 300 AnySetup *ICM
@@ -409,6 +423,10 @@ m "
 *FoomaticRIPOptionSetting ICM=user3: "-Guser3.icm "
 *ICM user4/File user4.icm: "%% FoomaticRIPOptionSetting: ICM=user4"
 *FoomaticRIPOptionSetting ICM=user4: "-Guser4.icm "
+*ICM xerox-6121-default/Xerox Phaser 6121 (default): "%% FoomaticRIPOptionSetting: ICM=xerox-6121-default"
+*FoomaticRIPOptionSetting ICM=xerox-6121-default: "-Gkm-1600-rgb-392-b&&
+pp1.icm "
+*End
 *CloseUI: *ICM
 
 *CloseGroup: Adjustment

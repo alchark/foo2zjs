@@ -1,5 +1,5 @@
 /*
- * $Id: hipercdecode.c,v 1.5 2009/03/08 00:27:02 rick Exp $
+ * $Id: hipercdecode.c,v 1.6 2011/01/31 22:33:55 rick Exp $
  */
 
 /*b
@@ -337,8 +337,8 @@ decode(FILE *fp)
 			    if (rc == JBG_EOK)
 				break;
 			    if (rc != JBG_EAGAIN && rc != JBG_EOK)
-				error(1, "jbg_dec_in rc=%d (%s)\n",
-				    rc, jbg_strerror(rc));
+				error(1, "jbg_dec_in c=%x i=%d rc=%d (%s)\n",
+				    blk[i], i, rc, jbg_strerror(rc));
 			}
 			if (0) {
 			    printf("\ti=%d (%s)\n", i,  jbg_strerror(rc));

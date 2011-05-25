@@ -1,5 +1,5 @@
 /*
- * $Id: oakdecode.c,v 1.39 2009/10/13 07:42:25 rick Exp $
+ * $Id: oakdecode.c,v 1.40 2010/10/25 18:58:22 rick Exp $
  *
  * Work in progress decoder for Oak Tech. JBIG streams (HP1500)
  *
@@ -401,6 +401,7 @@ decode(FILE *fp)
 	    switch (dwords[0])
 	    {
 	    case 1:	printf(" Source=Tray1"); break;
+	    case 2:	printf(" Source=Tray2"); break;
 	    case 4:	printf(" Source=ManualFeed"); break;
 	    case 7:	printf(" Source=Auto"); break;
 	    default:	printf(" Source=%d", dwords[0]); break;

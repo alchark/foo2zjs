@@ -65,7 +65,7 @@ Status: 0x18
  * TODO: Handle 2 bit mono and color output
  */
 
-static char Version[] = "$Id: foo2oak.c,v 1.64 2009/10/14 10:10:12 rick Exp $";
+static char Version[] = "$Id: foo2oak.c,v 1.66 2010/10/25 23:44:38 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,8 +110,8 @@ int	Model = 0;
 		#define MODEL_LAST	1
 
 int	Color2Mono = 0;
-int	BlackClears = 1;
-int	AllIsBlack = 1;
+int	BlackClears = 0;
+int	AllIsBlack = 0;
 
 int	LogicalOffsetX = 0;
 int	LogicalOffsetY = 0;
@@ -188,7 +188,7 @@ usage(void)
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
-"                    1=tray1 4=manual 7=auto\n"
+"                    1=tray1 2=tray2 4=manual 7=auto\n"
 "                    Code numbers may vary with printer model\n"
 "-J filename       Filename string to send to printer [%s]\n"
 "-U username       Username string to send to printer [%s]\n"
@@ -198,8 +198,9 @@ usage(void)
 "-l <xoff>x<yoff>  Set offset of lower right printable in pixels [%dx%d]\n"
 "-L mask           Send logical clipping values from -u/-l in ZjStream [%d]\n"
 "                  0=no, 1=Y, 2=X, 3=XY\n"
-"-A                Turn off: conversion of C=1,M=1,Y=1 to pure black\n"
-"-B                Turn off: K=1 forces C,M,Y to 0\n"
+"-A                AllIsBlack: convert C=1,M=1,Y=1 to just K=1\n"
+"-B                BlackClears: K=1 forces C,M,Y to 0\n"
+"                  -A, -B work with bitcmyk input only\n"
 "-M mirror         Mirror bytes (0=KM-1635/KM-2035, 1=HP CLJ 1500) [%d]\n"
 "-z model          Model [%d]\n"
 "                    0=HP-1500, 1=KM-1635/2035\n"

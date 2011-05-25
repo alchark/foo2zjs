@@ -5,7 +5,7 @@ TOPICS
     * FEDORA NOTES 
     * UBUNTU NOTES
     * DEBIAN NOTES
-    * OPENSUSE 10.3 NOTES
+    * OPENSUSE 1x.x NOTES
     * ACER ASPIRE ONE NOTES
     * ASUS EEE PC NOTES
     * MAC OS X NOTES
@@ -42,6 +42,7 @@ Compile:
 
 Get extra files from the web, such as .ICM profiles (for color correction)
 and firmware.  Select the model number for your printer:
+    $ ./getweb 1025     # Get HP LaserJet Pro CP1025nw .ICM files
     $ ./getweb 1215	# Get HP Color LaserJet CP1215 .ICM files
     $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
     $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
@@ -55,8 +56,8 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 2530	# Get Konica Minolta magicolor 2530 DL .ICM files
     $ ./getweb 4690     # Get Konica Minolta magicolor 4690MF .ICM files
     $ ./getweb 110      # Get Oki C110 .ICM files
-
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
+    $ ./getweb 6121     # Get Xerox Phaser 6121MFP.ICM files
 
     $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
     $ ./getweb 2200	# Get Minolta/QMS magicolor 2200 DL .ICM files
@@ -73,6 +74,7 @@ and firmware.  Select the model number for your printer:
 
     $ ./getweb 500      # Get Lexmark C500 .ICM files
 
+    $ ./getweb c310     # Get Oki C310dn .ICM files
     $ ./getweb 3200     # Get Oki C3200 .ICM files
     $ ./getweb 3300     # Get Oki C3300 .ICM files
     $ ./getweb 3400     # Get Oki C3400 .ICM files
@@ -82,6 +84,8 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 5500     # Get Oki C5500 .ICM files
     $ ./getweb 5600     # Get Oki C5600 .ICM files
     $ ./getweb 5800     # Get Oki C5800 .ICM files
+
+    $ ./getweb 160	# Get Olivetti d-Color P160W .ICM files
 
     $ ./getweb 1000	# Get HP LaserJet 1000 firmware file
     $ ./getweb 1005	# Get HP LaserJet 1005 firmware file
@@ -158,6 +162,8 @@ GHOSTSCRIPT BUGS
 ----------------
     * ghostscript 8.64 is broken w.r.t. color.  Don't use!
 
+    * ghostscript 9.00 is broken w.r.t. fonts in landscape mode.
+
     * Well Tempered Screening (WTS) works with ghostscript 8.54 thru 8.70+.
       So if you want BEST COLORS, you'll have to install gs 8.54 or better
       if you don't have it.
@@ -178,6 +184,14 @@ GHOSTSCRIPT BUGS
 
 	$ gs.foo --version
 	8.71
+
+    * Halftoning Bug:
+        "The problems with WTS are primarily that it seems to fall down
+	on the halftone generation for some angles when the lpi is high for
+	the current resolution." - Ray Johnston <ray.johnston@artifex.com>
+
+	So choose Standard, Accurate Screens, or reduce the resolution to
+	600x600.
 
     * Ghostscript before 8.55 has a problem with ICM files and 64-bit gcc.
       It causes a segfault with km2430_2.icm. So don't select that one.
@@ -205,7 +219,7 @@ FEDORA NOTES
 UBUNTU NOTES
 ------------
     Install build-essential, tix, foomatic-filters, groff FIRST:
-	$ sudo apt-get install build-essential tix foomatic-filters groff
+	$ sudo apt-get install build-essential tix foomatic-filters groff dc
 
 	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
 	$ tar zxf foo2zjs.tar.gz
@@ -252,14 +266,14 @@ DEBIAN NOTES
 
 	$ firefox http://localhost:631
 
-OPENSUSE 10.3 NOTES
+OPENSUSE 1x.x NOTES
 -------------------
     Do this:
 
 	# zypper install make gcc
 
 	# zypper service-add \
-	    http://download.opensuse.org/repositories/Printing/openSUSE_10.3/ \
+	    http://download.opensuse.org/repositories/Printing/openSUSE_11.3/ \
 	    Printing
 	# zypper up -r Printing -t package
     
@@ -339,8 +353,10 @@ FREEBSD NOTES
 	# ./freebsd-install
 
 	Use:
-	    usb:/dev/ulpt0
-	    usb:/dev/ulpt1
+	    usb:/dev/ulpt0	Device with reset #0
+	    usb:/dev/unlpt0	Device without reset #0
+	    usb:/dev/ulpt1	Device with reset #1
+	    usb:/dev/unlpt1	Device without reset #1
 	for the URI.
 
 	More information:
@@ -480,6 +496,7 @@ CUPS USB NOTES
 	usb://HP/LaserJet%20P1007
 	usb://HP/LaserJet%20P1008
 	usb://HP/LaserJet%20P1505
+	usb://HP/LaserJet%20Professional%20P1102w
 
     Don't use hp://<whatever> because that is for hplip (a closed source,
     proprietary driver).
@@ -523,11 +540,24 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 	    up.  If you downloaded the extra files for the HP above, a typical
 	    command line to load the firmware would be:
 
-	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
-	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
-	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
-	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
-	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+		$ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+		$ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+		$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
+		$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
+		$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+
+	    -OR-
+
+		Add a line to /etc/rc.local and reboot:
+
+		    killall osx-hplj-hotplug; \
+			osx-hplj-hotplug >/tmp/osx-hplj-hotplug 2>&1 &
+
+	    -OR-
+
+		Issue a "make install-hotplug" command:
+	    
+		$ sudo make install-hotplug
 
 	    Light should flash orange for ~5 seconds as the firmware is
 	    getting downloaded.
@@ -611,14 +641,17 @@ MANUAL DUPLEX
 	    1)  System -> Gnome Manual Duplex
 		-OR-
 	    2)  Add to Panel -> Gnome Manual Duplex applet -> Add
+		    ...Do it at least once, then...
 		Print -> GnomeManualDuplex (Virtual Printer) -> Print
-	    
-	Works with *.ps and *.pdf files.
+	    Works with *.ps and *.pdf files.
 
 	- Print odd pages
 	- Wait for confimation message
 	- Insert in the same orientation into the printer
 	- Print reverse even pages
+
+	Howto (video):
+	    http://www.youtube.com/watch?v=c4Ghomz6RQI
 
     -OR-
 	$ psmandup [options] file.ps
@@ -719,11 +752,26 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 	Samsung CLP-315			default resolution
 	Samsung CLP-600			default resolution
 	Samsung CLP-610			default resolution
+	Samsung CLP-620			default resolution
 	HP Color LaserJet 1500		default resolution
 	HP Color LaserJet CP1215	default resolution, 1-bit and 2-bit
 	HP Color LaserJet 2600n		2-bit, default resolution
 
     0)	Pick a vendor, e.g.
+	    google: "Custom Printer Profiles"
+
+	    MadManChan's Custom Printer Profiles
+	    http://people.csail.mit.edu/ericchan/photos/profiles.html
+	    Cost: 20 dollars
+
+	    PC35 PhotoLab Custom Printer Profiling Services
+	    http://printerprofiles.homestead.com/
+	    Cost: 30 dollars
+
+	    Cathy's Profiles
+	    http://www.cathysprofiles.com/
+	    Cost: 35 dollars
+
 	    "Custom ICC ICM colour printer profile RGB or CMYK"
 	    Seller: personalised101
 	    http://stores.ebay.ie/The-Graphics-Depot 

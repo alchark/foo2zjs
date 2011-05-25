@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.136 2010/07/24 15:56:02 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.148 2011/01/14 23:21:39 rick Exp $'
 
 #
 # Printer Notes:
@@ -43,6 +43,8 @@ VERSION='$Id: foo2zjs-wrapper.in,v 1.136 2010/07/24 15:56:02 rick Exp $'
 # HP LaserJet Pro P1102w- Same as 2200 DL, plus needs -P -z2 -L0
 # HP LaserJet Pro P1566	- Same as 2200 DL, plus needs -P -z2 -L0
 # HP LaserJet Pro P1606dn- Same as 2200 DL, plus needs -P -z2 -L0
+#
+# HP LaserJet Pro CP1025nw- Same as 2200 DL, plus needs -P -z3 -L0
 #
 
 PROGNAME="$0"
@@ -78,7 +80,7 @@ Normal Options:
                   -z0:
                     1=standard, 2=transparency, 3=glossy, 257=envelope,
                     259=letterhead, 261=thickstock, 262=postcard, 263=labels
-                  -z1,-z2: above plus
+                  -z1,-z2,-z3: above plus
 		    258=light, 261=cardstock, 263=rough, 265=labels,
                     267=envelope, 273=vellum, 512=color, 513=letterhead,
                     514=preprinted, 515=prepunched, 516=recycled
@@ -93,6 +95,11 @@ Normal Options:
 		    43=postcard, 70=A6, 82=double postcard rotated,
 		    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,
                     258=fanfold german legal
+                  -z3: -z0 plus
+		    43=postcard, 70=A6, 82=double postcard rotated,
+		    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,
+                    258=fanfold german legal, 268=photo4x6, 269=photo5x8,
+		    270=photo10x15
 -n copies         Number of copies [$COPIES]
 -r <xres>x<yres>  Set device resolution in pixels/inch [$RES]
 -s source         Source code to send to printer [$SOURCE]
@@ -116,6 +123,7 @@ Printer Tweaking Options:
                     0=KM 2300DL / HP 1000 / HP 1005
                     1=HP 1018 / HP 1020 / HP 1022
                     2=HP Pro P1102 / P1566 / P1606dn
+                    3=HP Pro CP1025nw
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -191,6 +199,7 @@ DUPLEX=1
 COLOR=
 COLORMODE=default
 MODEL=0
+QUALITY=1
 QUALITY=wts
 MEDIA=1
 COPIES=1
@@ -299,6 +308,9 @@ case "$QUALITY" in
 2)
     GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
     ;;
+as)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
+    ;;
 wts)
     GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
@@ -308,7 +320,7 @@ esac
 #	Validate model code
 #
 case "$MODEL" in
-0|1|2)	;;
+0|1|2|3)	;;
 *)	error "Unknown model code $MODEL";;
 esac
 
@@ -478,6 +490,7 @@ Custom*)
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		# 1)	set_clipping 96 96	288 96;;
 		esac
 		;;
@@ -486,6 +499,7 @@ Custom*)
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		esac
 		;;
 7|executive)	PAPER=7;	paper=executive; XDIM="8700";  YDIM="6300"
@@ -493,6 +507,7 @@ Custom*)
 		0)	set_clipping 206 102	206 102;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		esac
 		;;
 9|a4|A4)	PAPER=9;	paper=a4;        XDIM="9920";  YDIM="7016"
@@ -508,6 +523,7 @@ Custom*)
 		    ;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		esac
 		;;
 11|a5|A5)	PAPER=11;	paper=a5;        XDIM="6992";  YDIM="4960"
@@ -515,6 +531,7 @@ Custom*)
 		0)	set_clipping 200 100	200 100;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		esac
 		;;
 13|b5|B5)	PAPER=13;	paper=b5;        XDIM="8598";  YDIM="6070"
@@ -522,6 +539,7 @@ Custom*)
 		0)	set_clipping 207 107	207 107;;
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
 		esac
 		;;
 259|b5iso|B5ISO) PAPER=259;	paper=b5;        XDIM="8316";  YDIM="5904"
@@ -535,6 +553,7 @@ Custom*)
 		0)	set_clipping 171 78	171 78;;
 		1)	set_clipping 171 78	171 78;;
 		2)	set_clipping 171 2	171 78;;
+		3)	set_clipping 171 2	171 78;;
 		esac
 		;;
 27|envDL)	PAPER=27;	paper=envDL;     XDIM="5200";  YDIM="5200"
@@ -542,6 +561,7 @@ Custom*)
 		0)	set_clipping 176 84	176 84;;
 		1)	set_clipping 176 84	176 84;;
 		2)	set_clipping 176 2	176 84;;
+		3)	set_clipping 176 2	176 84;;
 		esac
 		;;
 28|envC5)	PAPER=28;	paper=envC5;     XDIM="7650";  YDIM="5408"
@@ -549,6 +569,7 @@ Custom*)
 		0)	set_clipping 170 80	169 80;;
 		1)	set_clipping 170 80	169 80;;
 		2)	set_clipping 170 2	169 80;;
+		3)	set_clipping 170 2	169 80;;
 		esac
 		;;
 34|envB5)	PAPER=34;	paper=envB5;     XDIM="8316";  YDIM="5892"
@@ -556,6 +577,7 @@ Custom*)
 		0)	set_clipping 174 74	174 74;;
 		1)	set_clipping 174 74	174 74;;
 		2)	set_clipping 174 2	174 74;;
+		3)	set_clipping 174 2	174 74;;
 		esac
 		;;
 37|envMonarch)	PAPER=37;	paper=envMonarch;XDIM="4650";  YDIM="4500"
@@ -563,12 +585,14 @@ Custom*)
 		0)	set_clipping 174 78	173 78;;
 		1)	set_clipping 174 78	173 78;;
 		2)	set_clipping 174 2	173 78;;
+		3)	set_clipping 174 2	173 78;;
 		esac
 		;;
 70|262|A6)			paper=A6;	XDIM="4956";  YDIM="3498"
 		case "$MODEL" in
 		1)	PAPER=262; set_clipping 174 78	173 78;;
 		2)	PAPER=70; set_clipping 174 2	173 78;;
+		3)	PAPER=70; set_clipping 174 2	173 78;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
 		;;
@@ -576,18 +600,21 @@ Custom*)
 		case "$MODEL" in
 		1)	set_clipping 173 84	173 84;;
 		2)	set_clipping 173 2	173 84;;
+		3)	set_clipping 173 2	173 84;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 263|16k184x260) PAPER=263;      paper=executive;XDIM="8692";  YDIM="6142"
 		case "$MODEL" in
 		2)	set_clipping 122 2	122 87;;
+		3)	set_clipping 122 2	122 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 264|16k195x270) PAPER=264;      paper=executive;XDIM="9212";  YDIM="6378"
 		case "$MODEL" in
 		2)	set_clipping 126 2	126 87;;
+		3)	set_clipping 126 2	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -595,6 +622,7 @@ Custom*)
 		case "$MODEL" in
 		1)	PAPER=260; set_clipping 126 87	126 87;;
 		2)	PAPER=43; set_clipping 126 2	126 87;;
+		3)	PAPER=43; set_clipping 126 2	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -603,6 +631,7 @@ Custom*)
 		case "$MODEL" in
 		1)	PAPER=261; set_clipping 126 87	126 87;;
 		2)	PAPER=82; set_clipping 126 2	126 87;;
+		3)	PAPER=82; set_clipping 126 2	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -611,6 +640,28 @@ Custom*)
 		case "$MODEL" in
 		1)	set_clipping 192 96	192 96;;
 		2)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 2	192 96;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+268|photo4x6)
+		PAPER=268;      paper=a6;	XDIM="4800";  YDIM="3600"
+		case "$MODEL" in
+		3)	set_clipping 192 2	192 96;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+269|photo5x8)
+		PAPER=269;      paper=statement; XDIM="6000";  YDIM="4800"
+		case "$MODEL" in
+		3)	set_clipping 192 2	192 96;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+270|photo10x15)
+		PAPER=270;      paper=postcard; XDIM="4818";  YDIM="3590"
+		case "$MODEL" in
+		3)	set_clipping 192 2	192 96;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -668,9 +719,17 @@ create_crd() {
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
 	EOF
-	if [ "$QUALITY" = wts ]; then
+	if [ "$QUALITY" = wts -o "$QUALITY" = as ]; then
+	    if [ "$QUALITY" = wts ]; then
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS true >> setuserparams
+		EOF
+	    else
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS false >> setuserparams
+		EOF
+	    fi
 	    cat >> $ICCTMP.usecie.ps <<-EOF
-		<< /UseWTS true >> setuserparams
 		<<
 		    /AccurateScreens true
 		    /HalftoneType 1
@@ -689,7 +748,7 @@ create_crd() {
 	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
 	esac
     else
-	GAMMFILE=
+	GAMMAFILE=
     fi
 }
 
@@ -707,7 +766,12 @@ else
     default)	COLORMODE=$DEFAULTCOLORMODE;;
     esac
     case "$GAMMAFILE" in
-    default)	GAMMAFILE=DL2312.icm;;
+    default)
+	    case "$MODEL" in
+	    3)	GAMMAFILE=hp-cp1025-rgb-392-bpp1.icm;;
+	    *)	GAMMAFILE=DL2312.icm::
+	    esac
+	    ;;
     esac
 fi
 
@@ -793,6 +857,8 @@ esac
 
 if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
     PSTOPS_OPTS="$PSTOPS_OPTS -w"
+elif [ "$COLOR" != "" -a "$QUALITY" = as ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -a"
 fi
 
 if [ "" != "$COLOR" ]; then

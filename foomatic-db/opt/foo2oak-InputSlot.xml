@@ -23,6 +23,11 @@
 	    <ev_shortname> <en>Tray1</en> </ev_shortname>
 	    <ev_driverval>1</ev_driverval>
 	</enum_val>
+	<enum_val id="ev/foo2oak-InputSlot-2">
+	    <ev_longname> <en>Tray 2</en> </ev_longname>
+	    <ev_shortname> <en>Tray2</en> </ev_shortname>
+	    <ev_driverval>2</ev_driverval>
+	</enum_val>
 	<enum_val id="ev/foo2oak-InputSlot-4">
 	    <ev_longname> <en>Manual Feed</en> </ev_longname>
 	    <ev_shortname> <en>Manual</en> </ev_shortname>
