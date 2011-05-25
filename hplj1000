@@ -2,9 +2,15 @@
 
 #	hplj1000:
 #	hplj1005:
+#	hplj1018:
 #	hplj1020:
+#	hpljP1005:
+#	hpljP1006:
+#	hpljP1007:
+#	hpljP1008:
+#	hpljP1505:
 #
-#	Hotplug script for HP1000/1005 USB laser printers.  The model number
+#	Hotplug script for HP *1??? USB laser printers.  The model number
 #	that this script deals with is determined from the script name.
 #
 #	Used to download firmware automatically into the printer when it
@@ -134,6 +140,13 @@ case "$0" in
     exit
     ;;
 esac
+
+#
+#	Remove HPLIP proprietary rules!
+#
+model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
+rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
+rm -f /etc/udev/rules.d/*hpmud_support.rules
 
 #
 #	The special command line argument "install-usermap" will install

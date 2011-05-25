@@ -24,6 +24,10 @@
 	    <driver>foo2zjs-z2</driver>
 	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z3</driver>
+	    <arg_defval>ev/foo2xxx-Quality-Normal</arg_defval>
+	</constraint>
 <!--
 	Doesn't have -t option
 	<constraint sense="true">

@@ -100,8 +100,8 @@ Set device resolution in pixels/inch [600x600].
 Source (InputSlot) code to send to printer [7].
 .TS
 | n l | n l.
-1	tray1	4	manual
-7	auto
+1	tray1	2	tray2
+4	manual	7	auto
 .TE
 .TP
 .BI \-J\0 filename
@@ -132,10 +132,10 @@ l l.
 .TE
 .TP
 .BI \-A
-Turn off: conversion of C=1,M=1,Y=1 to pure black.
+AllIsBlack: convert C=1,M=1,Y=1 to just K=1.  Works with bitcmyk input only.
 .TP
 .BI \-B
-Turn off: K=1 forces C,M,Y to 0.
+BlackClears: K=1 forces C,M,Y to 0.  Works with bitcmyk input only.
 .TP
 .BI \-M\0 mirror
 Mirror bytes. Mirror is 0 for Kyocera KM-1635/KM-2035 and 1 for the

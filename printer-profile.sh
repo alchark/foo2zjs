@@ -15,7 +15,7 @@ DESCRIPTION
     computes an ICM profile using the Argyll Color Management System.
 
     Manuf is "sam".  Model is "clp-300" or "clp-315".
-    Manuf is "hp".  Model is "2600" or "cp1215".
+    Manuf is "hp".  Model is "2600" or "cp1215" or "cp1025".
     Manuf is "km".  Model is "1600" or "2300" or "2530".
 
     "rgb" is the usual setting.  "patches" is a multiple 196 per page.
@@ -36,13 +36,14 @@ BUGS
     gs 8.64 and before has problems with 32-bit machines and color profile
     data.  Don't use!
 
-    You need Argyll_V1.1.0 or later in $BETABIN.
+    You need Argyll_V1.3.2 or later in $ARGYLL_BIN.
 
 SEE ALSO
     http://www.xritephoto.com/html/colormunkisplash.htm
 	from Amazon, \$390 shipped
     http://www.argyllcms.com/
 	free!
+    http://www.argyllcms.com/Argyll_V${ARGYLL_VER}_src.zip
 EOF
 
 	exit 1
@@ -81,10 +82,14 @@ trap "exit 1" ERR
 #
 #       Process the options
 #
-BETABIN=$HOME/src/Argyll_V1.1.1/bin
-export PATH=$BETABIN:$PATH
+ARGYLL_VER=1.3.2
+ARGYLL_ROOT=$HOME/src/Argyll_V${ARGYLL_VER}
+ARGYLL_REF=$ARGYLL_ROOT/ref
+ARGYLL_BIN=$ARGYLL_ROOT/bin
+export PATH=$ARGYLL_BIN:$PATH
 
 REMPRINT=amd
+REMPRINT=none
 REMSCAN=mac
 REMSCAN=none
 RGB=rgb
@@ -105,8 +110,16 @@ do
 done
 shift `expr $OPTIND - 1`
 
-if [ ! -x $BETABIN/printtarg ]; then
-    error "No beta bin in $BETABIN!"
+if [ ! -x $ARGYLL_BIN/printtarg ]; then
+    error "No Argyll bin in $ARGYLL_BIN!"
+fi
+
+#
+#	Reference ICM for colprof
+#
+reficm=$ARGYLL_REF/sRGB.icm
+if [ ! -r $reficm ]; then
+    error "No ref. icm in '$reficm'"
 fi
 
 #
@@ -175,15 +188,22 @@ sam*)
     ;;
 hp*)
     MANUF=hp
-    FOO=foo2hp
     case "$MODEL" in
     *2600*)
+	FOO=foo2hp
 	WRAPPER="foo2hp2600-wrapper $RES_r $BPP_b -z0 -c -C10 -Gnone.icm"
 	OUT="nc 192.168.1.12 9100 < xxx.prn"
 	;;
     *cp1215*)
+	FOO=foo2hp
 	WRAPPER="foo2hp2600-wrapper $RES_r $BPP_b -z1 -c -C10 -Gnone.icm"
 	OUT="root cp xxx.prn /dev/usb/lp2"
+	;;
+    *cp1025*)
+	FOO=foo2zjs
+	WRAPPER="foo2zjs-wrapper $RES_r -z3 -c -C10 -Gnone.icm"
+	OUT="root cp xxx.prn /dev/usb/lp2"
+	OUT="nc 192.168.1.16 9100 < xxx.prn"
 	;;
     *)
 	usage
@@ -235,8 +255,8 @@ echo "******************************* printtarg ******************************"
 # -iCM	Select target instrument, CM = ColorMunki
 # -pLetter
 # -R0	Use given random start number
-echo "$BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp"
-$BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp
+echo "$ARGYLL_BIN/printtarg -h -v -iCM -p Letter -R0 $mrp"
+$ARGYLL_BIN/printtarg -h -v -iCM -p Letter -R0 $mrp
 
 evince $mrp.ps &
 
@@ -266,13 +286,13 @@ echo
 echo "******************************* chartread ******************************"
 case "$REMSCAN" in
 ''|none)
-    echo "$BETABIN/chartread $mrp"
-    $BETABIN/chartread $mrp
+    echo "$ARGYLL_BIN/chartread $mrp"
+    $ARGYLL_BIN/chartread $mrp
     ;;
 *)
-    echo "scp $mrp.ti2 mac:"
-    scp $mrp.ti2 mac:
-    echo "$BETABIN/chartread $mrp"
+    echo "scp $mrp.ti2 $REMSCAN:"
+    scp $mrp.ti2 $REMSCAN:
+    echo "$ARGYLL_BIN/chartread $mrp"
     echo  -n "Scanned on remote system $REMSCAN? [y/n]? "
     read yes
     case "$yes" in
@@ -287,15 +307,16 @@ echo
 echo "******************************** colprof *******************************"
 case $RGB in
 rgb)
-    echo "colprof -v -D\"$mrp\" -qm -cmt -dpp $mrp"
-    colprof -v -D"$mrp" -qm -cmt -dpp $mrp
+    echo "colprof -v -D\"$mrp\" -S $reficm -qm -cmt -dpp $mrp"
+    colprof -v -D"$mrp" -S $reficm -qm -cmt -dpp $mrp
     ;;
 cymk)
-    echo "colprof -v -D\"$mrp\" -qm  -cmt -dpp -kr $mrp"
-    colprof -v -D"$mrp" -qm  -cmt -dpp -kr $mrp
+    echo "colprof -v -D\"$mrp\" -S $reficm -qm  -cmt -dpp -kr $mrp"
+    colprof -v -D"$mrp" -S $reficm -qm  -cmt -dpp -kr $mrp
     ;;
 esac
 
-root cp $mrp.icc /usr/share/$FOO/icm/testing.icm
+mv $mrp.icc $mrp.icm
+root cp $mrp.icm /usr/share/$FOO/icm/testing.icm
 echo "/usr/share/$FOO/icm/testing.icm created!"
 ls -l /usr/share/$FOO/icm/

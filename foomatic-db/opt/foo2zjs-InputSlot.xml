@@ -24,6 +24,10 @@
 	    <driver>foo2zjs-z2</driver>
 	    <arg_defval>ev/foo2zjs-InputSlot-7</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z3</driver>
+	    <arg_defval>ev/foo2zjs-InputSlot-7</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2zjs-InputSlot-1">
@@ -59,6 +63,9 @@
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
 		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-magicolor_2200_DL</printer>
 		</constraint>
@@ -83,6 +90,9 @@
 		</constraint>
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
+		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
 		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-Color_PageWorks_Pro_L</printer>
@@ -122,6 +132,9 @@
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
 		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-magicolor_2200_DL</printer>
 		</constraint>
@@ -160,6 +173,9 @@
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
 		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
+		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-magicolor_2300_DL</printer>
 		</constraint>
@@ -181,6 +197,9 @@
 		</constraint>
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
+		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
 		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-Color_PageWorks_Pro_L</printer>
@@ -224,6 +243,9 @@
 		</constraint>
 		<constraint sense="false">
 		    <driver>foo2zjs-z2</driver>
+		</constraint>
+		<constraint sense="false">
+		    <driver>foo2zjs-z3</driver>
 		</constraint>
 		<constraint sense="true">
 		    <printer>Minolta-magicolor_2200_DL</printer>

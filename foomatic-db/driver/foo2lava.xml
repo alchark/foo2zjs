@@ -25,6 +25,7 @@
 	<printer><id>printer/KONICA_MINOLTA-magicolor_4690MF</id></printer>
 	<printer><id>printer/Oki-C110</id></printer>
 	<printer><id>printer/Xerox-Phaser_6115MFP</id></printer>
+	<printer><id>printer/Xerox-Phaser_6121MFP</id></printer>
 	<printer><id>printer/Generic-GDI_Printer</id></printer>
     </printers>
 </driver>

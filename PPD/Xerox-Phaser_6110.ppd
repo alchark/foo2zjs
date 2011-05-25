@@ -363,6 +363,20 @@
 
 *OpenGroup: Adjustment/Adjustment
 
+*OpenUI *halftone/Halftone Algorithm: PickOne
+*FoomaticRIPOption halftone: enum CmdLine A
+*OrderDependency: 110 AnySetup *halftone
+*Defaulthalftone: default
+*halftone default/Default: "%% FoomaticRIPOptionSetting: halftone=default"
+*FoomaticRIPOptionSetting halftone=default: "  "
+*halftone as/Accurate Screens (better): "%% FoomaticRIPOptionSetting: halftone=as"
+*FoomaticRIPOptionSetting halftone=as: " -qas  "
+*halftone standard/Standard: "%% FoomaticRIPOptionSetting: halftone=standard"
+*FoomaticRIPOptionSetting halftone=standard: " -q1  "
+*halftone wts/Well Tempered Screens (best): "%% FoomaticRIPOptionSetting: halftone=wts"
+*FoomaticRIPOptionSetting halftone=wts: " -qwts  "
+*CloseUI: *halftone
+
 *OpenUI *ICM/ICM Color Profile: PickOne
 *FoomaticRIPOption ICM: enum CmdLine A
 *OrderDependency: 300 AnySetup *ICM
@@ -377,14 +391,14 @@
 *FoomaticRIPOptionSetting ICM=clp610: "-z2 "
 *ICM clp620/CLP-620: "%% FoomaticRIPOptionSetting: ICM=clp620"
 *FoomaticRIPOptionSetting ICM=clp620: "-z3 "
-*ICM clp3175/CLP-3175: "%% FoomaticRIPOptionSetting: ICM=clp3175"
-*FoomaticRIPOptionSetting ICM=clp3175: "-C10 -Gsamclp315-argyll-0.icm &&
-"
-*End
 *ICM clx2160/CLX-2160: "%% FoomaticRIPOptionSetting: ICM=clx2160"
 *FoomaticRIPOptionSetting ICM=clx2160: "-C10 -Gsamclp300-0.icm "
 *ICM clx3160/CLX-3160: "%% FoomaticRIPOptionSetting: ICM=clx3160"
 *FoomaticRIPOptionSetting ICM=clx3160: "-C10 -Gsamclp300-0.icm "
+*ICM clx3175/CLX-3175: "%% FoomaticRIPOptionSetting: ICM=clx3175"
+*FoomaticRIPOptionSetting ICM=clx3175: "-C10 -Gsamclp315-argyll-0.icm &&
+"
+*End
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
 *ICM ph6110/Phaser 6110: "%% FoomaticRIPOptionSetting: ICM=ph6110"

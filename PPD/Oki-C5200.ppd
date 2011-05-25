@@ -347,6 +347,20 @@
 
 *OpenGroup: Adjustment/Adjustment
 
+*OpenUI *halftone/Halftone Algorithm: PickOne
+*FoomaticRIPOption halftone: enum CmdLine A
+*OrderDependency: 110 AnySetup *halftone
+*Defaulthalftone: default
+*halftone default/Default: "%% FoomaticRIPOptionSetting: halftone=default"
+*FoomaticRIPOptionSetting halftone=default: "  "
+*halftone as/Accurate Screens (better): "%% FoomaticRIPOptionSetting: halftone=as"
+*FoomaticRIPOptionSetting halftone=as: " -qas  "
+*halftone standard/Standard: "%% FoomaticRIPOptionSetting: halftone=standard"
+*FoomaticRIPOptionSetting halftone=standard: " -q1  "
+*halftone wts/Well Tempered Screens (best): "%% FoomaticRIPOptionSetting: halftone=wts"
+*FoomaticRIPOptionSetting halftone=wts: " -qwts  "
+*CloseUI: *halftone
+
 *OpenUI *Compression/Compression Mode: PickOne
 *FoomaticRIPOption Compression: enum CmdLine A
 *OrderDependency: 120 AnySetup *Compression
@@ -371,6 +385,12 @@
 *End
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
+*ICM OK160L1/OK160L1.icm - 600dpi Multi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L1"
+*FoomaticRIPOptionSetting ICM=OK160L1: "-C10 -GOK5600L1.icm "
+*ICM OK160L2/OK160L2.icm - 1200dpi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L2"
+*FoomaticRIPOptionSetting ICM=OK160L2: "-C10 -GOK5600L2.icm "
+*ICM OK160L3/OK160L3.icm - 600dpi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L3"
+*FoomaticRIPOptionSetting ICM=OK160L3: "-C10 -GOK5600L3.icm "
 *ICM OK3200L1/OK3200L1.icm - 1200dpi C3100/C3200/C5100/C5200: "%% FoomaticRIPOptionSetting: ICM=OK3200L1"
 *FoomaticRIPOptionSetting ICM=OK3200L1: "-C10 -GOK3200L1.icm "
 *ICM OK3200L2/OK3200L2.icm - 600dpi C3100/C3200/C5100/C5200: "%% FoomaticRIPOptionSetting: ICM=OK3200L2"
@@ -381,6 +401,12 @@
 *FoomaticRIPOptionSetting ICM=OK5600L2: "-C10 -GOK5600L2.icm "
 *ICM OK5600L3/OK5600L3.icm - 600dpi C5500/C5600/C5800: "%% FoomaticRIPOptionSetting: ICM=OK5600L3"
 *FoomaticRIPOptionSetting ICM=OK5600L3: "-C10 -GOK5600L3.icm "
+*ICM OKC310H1/OKC310H1.icm - 600dpi Multi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H1"
+*FoomaticRIPOptionSetting ICM=OKC310H1: "-C10 -GOKC310H1.icm "
+*ICM OKC310H2/OKC310H2.icm - 1200dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H2"
+*FoomaticRIPOptionSetting ICM=OKC310H2: "-C10 -GOKC310H2.icm "
+*ICM OKC310H3/OKC310H3.icm - 600dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H3"
+*FoomaticRIPOptionSetting ICM=OKC310H3: "-C10 -GOKC310H3.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
 *CloseUI: *ICM

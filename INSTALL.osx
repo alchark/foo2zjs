@@ -1,8 +1,10 @@
 ==============================================================================
-MAC OSX INSTALLATION NOTES - HP LaserJet 1018/1020 and Color LaserJet 1600/2600n
+MAC OSX INSTALLATION NOTES -
+
+HP LaserJet 1018/1020 and Color LaserJet 1600/2600n and Color LaserJet CP1215
 Using the "MacPorts" project
 ==============================================================================
-by Rick Richardson 02/21/08
+by Rick Richardson 01/20/11
 
 1) Browse to:
     http://developer.apple.com/tools/download/
@@ -32,13 +34,13 @@ by Rick Richardson 02/21/08
 	ghostscript                    @8.70           print/ghostscript
 
 4) Browse to:
-    http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.4.tar.gz
+    http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.5.tar.gz
 
     and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper):
 
-    $ wget http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.4.tar.gz
-    $ tar zxvf foomatic-filters-4.0.4.tar.gz
-    $ cd foomatic-filters-4.0.4
+    $ wget http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.5.tar.gz
+    $ tar zxvf foomatic-filters-4.0.5.tar.gz
+    $ cd foomatic-filters-4.0.5
     $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr
     $ make
     $ sudo make install
@@ -68,16 +70,31 @@ by Rick Richardson 02/21/08
 7) If HP LaserJet 10xx, you must send a firmware file to the printer each time
    you power it up:
 
-    For HP LasetJet 1018:
-	$ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
-    For HP LasetJet 1020:
-	$ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
-    For HP LasetJet P1005:
-	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
-    For HP LasetJet P1006:
-	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
-    For HP LasetJet P1505:
-	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+	For HP LasetJet 1018:
+	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+	For HP LasetJet 1020:
+	    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+	For HP LasetJet P1005:
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
+	For HP LasetJet P1006:
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
+	For HP LasetJet P1505:
+	    $ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
+
+    -OR-
+
+	Add a line to /etc/rc.local and reboot:
+
+	killall osx-hplj-hotplug; osx-hplj-hotplug >/tmp/osx-hplj-hotplug 2>&1 &
+
+    -OR-
+
+	Issue a "make install-hotplug" command:
+
+	$ sudo make install-hotplug
+
+    Light should flash orange for ~5 seconds as the firmware is
+    getting downloaded.
 
 Sample Screenshots:
 

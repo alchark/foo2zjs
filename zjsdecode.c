@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.80 2010/07/23 21:18:09 rick Exp $
+ * $Id: zjsdecode.c,v 1.83 2010/12/09 19:29:01 rick Exp $
  */
 
 /*b
@@ -175,8 +175,8 @@ decode(FILE *fp)
     int         	bpp = 1;
     int			totSize = 0;
     int			i;
-    char		*strmedia[516+1];
-    char		*strpage[264+1];
+    char		*strmedia[600+1];
+    char		*strpage[300+1];
     char		*strsource[] = {
 			    /*00*/ "eject", "tray1", "unk", "unk", "tray2",
 			    /*05*/ "unk", "unk", "auto"
@@ -196,18 +196,38 @@ decode(FILE *fp)
     strmedia[259] = "letterhead";
     strmedia[260] = "unk / bond";
     strmedia[261] = "thickstock / cardstock";
-    strmedia[262] = "postcard / heavy";
+    strmedia[262] = "postcard / heavy 111-130g";
     strmedia[263] = "labels / rough";
     strmedia[265] = "unk / labels";
     strmedia[267] = "unk / envelope";
     strmedia[273] = "unk / vellum";
-    strmedia[282] = "unk / medium";
-    strmedia[283] = "unk / extra heavy";
+    strmedia[276] = "unk / z3: hp tough paper";
+    strmedia[282] = "unk / medium / z3: mid-weight 96-110g";
+    strmedia[283] = "unk / extra heavy 131-175g";
+    strmedia[284] = "unk / z3: heavy glossy 111-130g";
+    strmedia[285] = "unk / z3: extra heavy glossy 131-175g";
+    strmedia[286] = "unk / z3: card glossy 176-220g";
+    strmedia[287] = "unk / z3: heavy envelope";
+    strmedia[289] = "unk / z3: heavy rough";
+    strmedia[305] = "unk / z3: hp laserjet 90g";
+    strmedia[306] = "unk / z3: hp color laser matte 105g";
+    strmedia[307] = "unk / z3: hp premium choice matte 120g";
+    strmedia[308] = "unk / z3: hp color laser brochure matte 160g";
+    strmedia[309] = "unk / z3: hp superior laser matte 160g";
+    strmedia[310] = "unk / z3: hp cover matte 200g";
+    strmedia[311] = "unk / z3: hp presentation glossy 130g";
+    strmedia[312] = "unk / z3: hp color laser brochure glossy 160g";
+    strmedia[313] = "unk / z3: hp superior laser glossy 160g";
+    strmedia[314] = "unk / z3: hp color laser photo glossy 220g";
+    strmedia[316] = "unk / z3: hp tri-fold color laser brochure 160g";
+    strmedia[317] = "unk / z3: hp matte photo 200g";
+    strmedia[318] = "unk / z3: hp professional laser glossy 130g";
     strmedia[512] = "unk / color";
     strmedia[513] = "unk / letterhead";
     strmedia[514] = "unk / preprinted";
     strmedia[515] = "unk / prepunched";
     strmedia[516] = "unk / recycled";
+    strmedia[600] = "unk / unspecified";
 
     for (i = 0; i < sizeof(strpage)/sizeof(strpage[0]); ++i)
         strpage[i] = "unk";
@@ -233,6 +253,9 @@ decode(FILE *fp)
     strpage[34] = "envB5";
     strpage[28] = "envC5";
     strpage[27] = "envDL";
+    strpage[268] = "z3-4x6";
+    strpage[269] = "z3-5x8";
+    strpage[270] = "z3-10x15cm";
 
     /*
      * Zenographics ZX format

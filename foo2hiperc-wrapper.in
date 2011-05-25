@@ -18,11 +18,12 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hiperc-wrapper.in,v 1.17 2010/07/24 15:59:47 rick Exp $'
+VERSION='$Id: foo2hiperc-wrapper.in,v 1.25 2011/01/31 12:23:43 rick Exp $'
 
 #
 # Printer Notes:
 #
+# Oki Data C310dn
 # Oki Data C3100
 # Oki Data C3200
 # Oki Data C3300
@@ -32,6 +33,7 @@ VERSION='$Id: foo2hiperc-wrapper.in,v 1.17 2010/07/24 15:59:47 rick Exp $'
 # Oki Data C5500
 # Oki Data C5600
 # Oki Data C5800
+# Olivetti d-Color P160W
 #
 
 PROGNAME="$0"
@@ -56,7 +58,8 @@ Usage:
 	Foomatic printer wrapper for the foo2hiperc printer driver.
 	This script reads a Postscript ps-file or standard input
 	and converts it to a Oki Data HIPERC stream for the
-	C3100/C3200/C3250/C3400/C5100/C5250n/C5500/C5600/C5800 printers.
+	C310/C3100/C3200/C3250/C3400/C5100/C5250n/C5500/C5600/C5800
+	printers.
 
 Normal Options:
 -c                Print in color (else monochrome)
@@ -271,6 +274,9 @@ case "$QUALITY" in
     ;;
 2)
     GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
+    ;;
+as)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
 wts)
     GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
@@ -510,9 +516,17 @@ create_crd() {
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
 	EOF
-	if [ "$QUALITY" = wts ]; then
+	if [ "$QUALITY" = wts -o "$QUALITY" = as ]; then
+	    if [ "$QUALITY" = wts ]; then
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS true >> setuserparams
+		EOF
+	    else
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS false >> setuserparams
+		EOF
+	    fi
 	    cat >> $ICCTMP.usecie.ps <<-EOF
-		<< /UseWTS true >> setuserparams
 		<<
 		    /AccurateScreens true
 		    /HalftoneType 1
@@ -531,7 +545,7 @@ create_crd() {
 	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
 	esac
     else
-	GAMMFILE=
+	GAMMAFILE=
     fi
 }
 
@@ -619,6 +633,8 @@ esac
 
 if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
     PSTOPS_OPTS="$PSTOPS_OPTS -w"
+elif [ "$COLOR" != "" -a "$QUALITY" = as ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -a"
 fi
 
 if [ "" != "$COLOR" ]; then

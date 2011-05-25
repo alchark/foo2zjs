@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hp2600-wrapper.in,v 1.70 2010/07/24 15:59:47 rick Exp $'
+VERSION='$Id: foo2hp2600-wrapper.in,v 1.77 2011/01/20 00:59:57 rick Exp $'
 
 #
 # Printer Notes:
@@ -201,7 +201,6 @@ COLORMODE=default
 MODEL=0
 QUALITY=1
 QUALITY=wts
-
 MEDIA=1
 COPIES=1
 PAPER=1
@@ -274,10 +273,10 @@ do
 	G)	GAMMAFILE="$OPTARG";;
 	I)	INTENT="$OPTARG";;
 	O)	case "$OPTARG" in
-		c=*|C=*) OFF_C=`expr substr $OPTARG 3 99`;;
-		m=*|M=*) OFF_M=`expr substr $OPTARG 3 99`;;
-		y=*|Y=*) OFF_Y=`expr substr $OPTARG 3 99`;;
-		k=*|K=*) OFF_K=`expr substr $OPTARG 3 99`;;
+		c=*|C=*) OFF_C=`echo "$OPTARG" | sed "s/^..//"`;;
+		m=*|M=*) OFF_M=`echo "$OPTARG" | sed "s/^..//"`;;
+		y=*|Y=*) OFF_Y=`echo "$OPTARG" | sed "s/^..//"`;;
+		k=*|K=*) OFF_K=`echo "$OPTARG" | sed "s/^..//"`;;
 		*)	error "Not [cmyk]=NUM!";;
 		esac
 		;;
@@ -404,6 +403,9 @@ case "$QUALITY" in
     ;;
 2)
     GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
+    ;;
+as)
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
     ;;
 wts)
     GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
@@ -639,9 +641,17 @@ create_crd() {
 		%!PS-Adobe-3.0
 		<</UseCIEColor true>>setpagedevice
 	EOF
-	if [ "$QUALITY" = wts ]; then
+	if [ "$QUALITY" = wts -o "$QUALITY" = as ]; then
+	    if [ "$QUALITY" = wts ]; then
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS true >> setuserparams
+		EOF
+	    else
+		cat >> $ICCTMP.usecie.ps <<-EOF
+		    << /UseWTS false >> setuserparams
+		EOF
+	    fi
 	    cat >> $ICCTMP.usecie.ps <<-EOF
-		<< /UseWTS true >> setuserparams
 		<<
 		    /AccurateScreens true
 		    /HalftoneType 1
@@ -660,7 +670,7 @@ create_crd() {
 	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
 	esac
     else
-	GAMMFILE=
+	GAMMAFILE=
     fi
 }
 
@@ -736,6 +746,8 @@ esac
 
 if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
     PSTOPS_OPTS="$PSTOPS_OPTS -w"
+elif [ "$COLOR" != "" -a "$QUALITY" = as ]; then
+    PSTOPS_OPTS="$PSTOPS_OPTS -a"
 fi
 
 if [ "" != "$COLOR" ]; then

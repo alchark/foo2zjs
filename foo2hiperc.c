@@ -6,7 +6,7 @@ This program converts pbm (B/W) images and 1-bit-per-pixel cmyk images
 is some information about the ZJS format at http://ddk.zeno.com.
 
 With this utility, you can print to some HP printers, such as these:
-    - Oki C3200, C3300n, C3400n, C5100n, C5500n
+    - Oki C310dn, C3100, C3200, C3300n, C3400n, C5100n, C5500n
 
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.27 2009/12/03 23:12:55 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.28 2011/01/31 12:23:43 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -137,7 +137,7 @@ usage(void)
 "   foo2hiperc [options] <pbmraw-file >hiperc-file\n"
 "\n"
 "	Convert Ghostscript pbmraw format to a monochrome HIPERC stream,\n"
-"	for driving the Oki C3100 to C5800 color laser printers.\n"
+"	for driving the Oki C310, C3100 to C5800 color laser printers.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"
 "		-sPAPERSIZE=letter -r600x600 -sDEVICE=pbmraw \\ \n"
@@ -148,7 +148,7 @@ usage(void)
 "   foo2hiperc [options] <pksmraw-file >hiperc-file\n"
 "\n"
 "	Convert Ghostscript bitcmyk or pksmraw format to a color HIPERC stream,\n"
-"	for driving the Oki C3100 to C5800 color laser printers\n"
+"	for driving the Oki C310, C3100 to C5800 color laser printers\n"
 "	N.B. Color correction is expected to be performed by ghostscript.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"

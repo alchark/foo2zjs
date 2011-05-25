@@ -58,7 +58,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.44 2010/05/06 13:18:27 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.46 2010/08/07 21:55:52 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -568,7 +568,7 @@ start_page_init(FILE *ofp)
 	break;
     case MODEL_CLP620:
 	fprintf(ofp, "%c", 5);
-	fprintf(ofp, "%c%c", 2, 6);
+	fprintf(ofp, "%c%c", Bpp, (ResX/Bpp) / 100);
 	break;
     default:
 	fprintf(ofp, "%c", 2);
@@ -833,7 +833,7 @@ start_doc(FILE *ofp)
     {
     case MODEL_CLP620:
 	fprintf(ofp, "@PJL SET RESOLUTION=600\r\n");
-	fprintf(ofp, "@PJL SET BITSPERPIXEL=2\r\n");
+	fprintf(ofp, "@PJL SET BITSPERPIXEL=%d\r\n", ResX / 600);
 	break;
     }
 

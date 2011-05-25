@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.14 2010/05/13 13:21:06 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.15 2011/01/13 17:48:29 rick Exp $'
 
 PROGNAME="$0"
 
@@ -18,9 +18,10 @@ DESCRIPTION
 OPTIONS
     -h ydimpts	For rotate -r, y dimension points
     -r		Rotate 90 clockwise
+    -a		Accurate Screens code
     -c		CIEColor
     -n		Neuter CUPS cupsPSLevel2
-    -w		Accurate screens and Well Tempered Screens code
+    -w		Well Tempered Screens code
     -D lvl	Debug level
 EOF
 
@@ -97,6 +98,18 @@ if [ $WTS = 1 ]; then
 	    /Angle 37\
 	>> sethalftone
         '
+elif [ $ACCURATE = 1 ]; then
+    w='/%%Page:.*[      ]1[     ]*$/ i\
+	<< /UseWTS false >> setuserparams \
+	<<\
+	    /AccurateScreens true\
+	    /HalftoneType 1\
+	    /HalftoneName (Round Dot Screen) cvn\
+	    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}\
+	    /Frequency 137\
+	    /Angle 37\
+	>> sethalftone
+	'
 else
     w=
 fi

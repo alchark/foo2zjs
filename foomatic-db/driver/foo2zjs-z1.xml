@@ -18,6 +18,8 @@
 	<printer><id>printer/HP-LaserJet_1018</id></printer>
 	<printer><id>printer/HP-LaserJet_1020</id></printer>
 	<printer><id>printer/HP-LaserJet_1022</id></printer>
+	<printer><id>printer/HP-LaserJet_1022n</id></printer>
+	<printer><id>printer/HP-LaserJet_1022nw</id></printer>
 	<printer><id>printer/HP-LaserJet_P2035</id></printer>
 	<printer><id>printer/HP-LaserJet_P2035n</id></printer>
 	<printer><id>printer/HP-LaserJet_M1319_MFP</id></printer>

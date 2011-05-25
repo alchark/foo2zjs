@@ -1,7 +1,10 @@
 UNAME := $(shell uname)
+
 PREFIX=	/usr
+PREFIX=	$(DESTDIR)/usr
 BIN=	$(PREFIX)/bin
 MANDIR=$(PREFIX)/share/man
+
 SRC=	icc2ps.c xgetopt.c
 LIB=	cmscam97.c cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
 	cmslut.c cmsmatsh.c cmsmtrx.c cmsnamed.c cmspack.c cmspcs.c cmsps2.c \

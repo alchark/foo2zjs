@@ -117,6 +117,7 @@ typedef struct
 /************************************************************************/
 #define	OAK_TYPE_SOURCE		0x28	// DWORD argument: paper source
 				#define OAK_SOURCE_TRAY1	1
+				#define OAK_SOURCE_TRAY2	2
 				#define OAK_SOURCE_MANUAL	4
 				#define OAK_SOURCE_AUTO		7
 
