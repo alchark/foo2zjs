@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2QPDL.PPD"
 *Manufacturer:	"Samsung"
-*Product:	"(CLP-310)"
+*Product:	"(CLP-310 Series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "DRV:Dfoo2qpdl,R1,M0,TF;"
+*1284DeviceID: "MFG:Samsung;MDL:CLP-310 Series;CMD:SPLC;DRV:Dfoo2qpdl,R1,M0,TF;"
 
 *driverName foo2qpdl/foo2qpdl: ""
 *driverType F/Filter: ""
@@ -91,6 +91,9 @@
 *Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
 *FoomaticRIPOptionSetting Quality=normal: "  "
 *CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=z2: "-z2 "
 
 *OpenUI *ColorMode/Color Mode: PickOne
 *FoomaticRIPOption ColorMode: enum CmdLine A
@@ -247,18 +250,6 @@
 *FoomaticRIPOptionSetting MediaType=transparency: "-m11 "
 *CloseUI: *MediaType
 
-*OpenUI *Duplex/Duplex Printing: PickOne
-*FoomaticRIPOption Duplex: enum CmdLine A
-*OrderDependency: 210 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex DuplexNoTumble/Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=DuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexNoTumble: "-d4 "
-*Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexTumble: "-d5 "
-*Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
-*FoomaticRIPOptionSetting Duplex=None: "-d1 "
-*CloseUI: *Duplex
-
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
 *FoomaticRIPOptionPrototype Copies: "-n%s "
@@ -384,6 +375,8 @@
 *FoomaticRIPOptionSetting ICM=clp600: "-z1 "
 *ICM clp610/CLP-610: "%% FoomaticRIPOptionSetting: ICM=clp610"
 *FoomaticRIPOptionSetting ICM=clp610: "-z2 "
+*ICM clp620/CLP-620: "%% FoomaticRIPOptionSetting: ICM=clp620"
+*FoomaticRIPOptionSetting ICM=clp620: "-z3 "
 *ICM clp3175/CLP-3175: "%% FoomaticRIPOptionSetting: ICM=clp3175"
 *FoomaticRIPOptionSetting ICM=clp3175: "-C10 -Gsamclp315-argyll-0.icm &&
 "
@@ -408,36 +401,6 @@
 
 *OpenGroup: Miscellaneous/Miscellaneous
 
-*OpenUI *Nup/N-up Printing: PickOne
-*FoomaticRIPOption Nup: enum CmdLine A
-*OrderDependency: 200 AnySetup *Nup
-*DefaultNup: 1up
-*Nup 1up/1-up: "%% FoomaticRIPOptionSetting: Nup=1up"
-*FoomaticRIPOptionSetting Nup=1up: " "
-*Nup 2up/2-up: "%% FoomaticRIPOptionSetting: Nup=2up"
-*FoomaticRIPOptionSetting Nup=2up: "-2 "
-*Nup 3up/3-up: "%% FoomaticRIPOptionSetting: Nup=3up"
-*FoomaticRIPOptionSetting Nup=3up: "-3 "
-*Nup 4up/4-up: "%% FoomaticRIPOptionSetting: Nup=4up"
-*FoomaticRIPOptionSetting Nup=4up: "-4 "
-*Nup 6up/6-up: "%% FoomaticRIPOptionSetting: Nup=6up"
-*FoomaticRIPOptionSetting Nup=6up: "-6 "
-*Nup 8up/8-up: "%% FoomaticRIPOptionSetting: Nup=8up"
-*FoomaticRIPOptionSetting Nup=8up: "-8 "
-*Nup 10up/10-up: "%% FoomaticRIPOptionSetting: Nup=10up"
-*FoomaticRIPOptionSetting Nup=10up: "-10 "
-*Nup 12up/12-up: "%% FoomaticRIPOptionSetting: Nup=12up"
-*FoomaticRIPOptionSetting Nup=12up: "-12 "
-*Nup 14up/14-up: "%% FoomaticRIPOptionSetting: Nup=14up"
-*FoomaticRIPOptionSetting Nup=14up: "-14 "
-*Nup 15up/15-up: "%% FoomaticRIPOptionSetting: Nup=15up"
-*FoomaticRIPOptionSetting Nup=15up: "-15 "
-*Nup 16up/16-up: "%% FoomaticRIPOptionSetting: Nup=16up"
-*FoomaticRIPOptionSetting Nup=16up: "-16 "
-*Nup 18up/18-up: "%% FoomaticRIPOptionSetting: Nup=18up"
-*FoomaticRIPOptionSetting Nup=18up: "-18 "
-*CloseUI: *Nup
-
 *OpenUI *NupOrient/N-up Orientation: PickOne
 *FoomaticRIPOption NupOrient: enum CmdLine A
 *OrderDependency: 200 AnySetup *NupOrient
@@ -449,6 +412,36 @@
 *NupOrient sea/Seascape: "%% FoomaticRIPOptionSetting: NupOrient=sea"
 *FoomaticRIPOptionSetting NupOrient=sea: "-os "
 *CloseUI: *NupOrient
+
+*OpenUI *NupPages/N-up Printing: PickOne
+*FoomaticRIPOption NupPages: enum CmdLine A
+*OrderDependency: 200 AnySetup *NupPages
+*DefaultNupPages: 1up
+*NupPages 1up/1-up: "%% FoomaticRIPOptionSetting: NupPages=1up"
+*FoomaticRIPOptionSetting NupPages=1up: " "
+*NupPages 2up/2-up: "%% FoomaticRIPOptionSetting: NupPages=2up"
+*FoomaticRIPOptionSetting NupPages=2up: "-2 "
+*NupPages 3up/3-up: "%% FoomaticRIPOptionSetting: NupPages=3up"
+*FoomaticRIPOptionSetting NupPages=3up: "-3 "
+*NupPages 4up/4-up: "%% FoomaticRIPOptionSetting: NupPages=4up"
+*FoomaticRIPOptionSetting NupPages=4up: "-4 "
+*NupPages 6up/6-up: "%% FoomaticRIPOptionSetting: NupPages=6up"
+*FoomaticRIPOptionSetting NupPages=6up: "-6 "
+*NupPages 8up/8-up: "%% FoomaticRIPOptionSetting: NupPages=8up"
+*FoomaticRIPOptionSetting NupPages=8up: "-8 "
+*NupPages 10up/10-up: "%% FoomaticRIPOptionSetting: NupPages=10up"
+*FoomaticRIPOptionSetting NupPages=10up: "-10 "
+*NupPages 12up/12-up: "%% FoomaticRIPOptionSetting: NupPages=12up"
+*FoomaticRIPOptionSetting NupPages=12up: "-12 "
+*NupPages 14up/14-up: "%% FoomaticRIPOptionSetting: NupPages=14up"
+*FoomaticRIPOptionSetting NupPages=14up: "-14 "
+*NupPages 15up/15-up: "%% FoomaticRIPOptionSetting: NupPages=15up"
+*FoomaticRIPOptionSetting NupPages=15up: "-15 "
+*NupPages 16up/16-up: "%% FoomaticRIPOptionSetting: NupPages=16up"
+*FoomaticRIPOptionSetting NupPages=16up: "-16 "
+*NupPages 18up/18-up: "%% FoomaticRIPOptionSetting: NupPages=18up"
+*FoomaticRIPOptionSetting NupPages=18up: "-18 "
+*CloseUI: *NupPages
 
 *CloseGroup: Miscellaneous
 

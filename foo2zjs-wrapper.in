@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.119 2009/05/11 17:35:55 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.136 2010/07/24 15:56:02 rick Exp $'
 
 #
 # Printer Notes:
@@ -31,9 +31,18 @@ VERSION='$Id: foo2zjs-wrapper.in,v 1.119 2009/05/11 17:35:55 rick Exp $'
 #
 # HP LaserJet 1000	- Same as 2200 DL, plus needs -P
 # HP LaserJet 1005	- Same as 2200 DL, plus needs -P
+#
 # HP LaserJet 1018	- Same as 2200 DL, plus needs -P -z1 -L0
 # HP LaserJet 1020	- Same as 2200 DL, plus needs -P -z1 -L0
+# HP LaserJet 1022	- Same as 2200 DL, plus needs -P -z1 -L0
+# HP LaserJet M1319 MFP	- Same as 2200 DL, plus needs -P -z1 -L0
 # HP LaserJet P2035	- Same as 2200 DL, plus needs -P -z1 -L0
+# HP LaserJet P2035n	- Same as 2200 DL, plus needs -P -z1 -L0
+#
+# HP LaserJet Pro P1102	- Same as 2200 DL, plus needs -P -z2 -L0
+# HP LaserJet Pro P1102w- Same as 2200 DL, plus needs -P -z2 -L0
+# HP LaserJet Pro P1566	- Same as 2200 DL, plus needs -P -z2 -L0
+# HP LaserJet Pro P1606dn- Same as 2200 DL, plus needs -P -z2 -L0
 #
 
 PROGNAME="$0"
@@ -66,17 +75,31 @@ Normal Options:
 -d duplex         Duplex code to send to printer [$DUPLEX]
                     1=off, 2=longedge, 3=shortedge
 -m media          Media code to send to printer [$MEDIA]
+                  -z0:
                     1=standard, 2=transparency, 3=glossy, 257=envelope,
                     259=letterhead, 261=thickstock, 262=postcard, 263=labels
+                  -z1,-z2: above plus
+		    258=light, 261=cardstock, 263=rough, 265=labels,
+                    267=envelope, 273=vellum, 512=color, 513=letterhead,
+                    514=preprinted, 515=prepunched, 516=recycled
 -p paper          Paper code [$PAPER]
-                    1=letter, 5=legal, 7=executive, 9=A4, 11=A5, 13=B5
+                  -z0:
+                    1=letter, 5=legal, 7=executive, 9=A4, 11=A5, 13=B5jis
                     20=env#10, 27=envDL 28=envC5 34=envB5 37=envMonarch
+                  -z1: -z0 plus
+		    257=16K 197x273, 258=fanfold german legal, 259=b5iso,
+                    260=postcard, 261=doublepostcard, 262=A6
+                  -z2: -z0 plus
+		    43=postcard, 70=A6, 82=double postcard rotated,
+		    257=16K 197x273, 263=16K 184x260, 264=16K 195x270,
+                    258=fanfold german legal
 -n copies         Number of copies [$COPIES]
 -r <xres>x<yres>  Set device resolution in pixels/inch [$RES]
 -s source         Source code to send to printer [$SOURCE]
                     1=upper, 2=lower, 4=manual, 7=auto
 		    Code numbers may vary with printer model.
 -t                Draft mode.  Every other pixel is white.
+-T density        Print density (1-5) [$DENSITY]
 -2/-3/-4/-6/-8/-10/-12/-14/-15/-16/-18
                   Print with N-up (requires psutils)
 -o orient         For N-up: -op is portrait, -ol is landscape, -os is seascape.
@@ -89,7 +112,10 @@ Printer Tweaking Options:
 -P                Do not output START_PLANE codes.  May be needed by some
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
--z model          Model: 0=2300DL 1=hp1020 [0]
+-z model          Model: [0]
+                    0=KM 2300DL / HP 1000 / HP 1005
+                    1=HP 1018 / HP 1020 / HP 1022
+                    2=HP Pro P1102 / P1566 / P1606dn
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -153,7 +179,7 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs.foo -v >/dev/null 2>&1; then
+if eval gs.foo -v >/dev/null 2>&1; then
         GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
@@ -184,6 +210,7 @@ INTENT=0
 GSOPTS=
 EXTRAPAD=
 SAVETONER=
+DENSITY=3       #Medium
 NUP_ORIENT=
 GSDEV=-sDEVICE=pbmraw
 # What mode to use if the user wants us to pick the "best" mode
@@ -198,7 +225,7 @@ case `$GSBIN --version` in
 *)	DEFAULTCOLORMODE=2
 	;;
 esac
-while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
+while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tT:z:ABS:D:G:I:PX:Vh?" opt
 do
 	case $opt in
 	b)	GSBIN="$OPTARG";;
@@ -212,6 +239,7 @@ do
 	r)	RES="$OPTARG";;
 	s)	SOURCE="$OPTARG";;
 	t)	SAVETONER="-t";;
+	T)      DENSITY="$OPTARG";;
 	z)	MODEL="$OPTARG";;
 	l)	CLIP_LR="-l $OPTARG";;
 	u)	CLIP_UL="-u $OPTARG";;
@@ -280,7 +308,7 @@ esac
 #	Validate model code
 #
 case "$MODEL" in
-0|1)	;;
+0|1|2)	;;
 *)	error "Unknown model code $MODEL";;
 esac
 
@@ -288,16 +316,25 @@ esac
 #	Validate media code
 #
 case "$MEDIA" in
-1|standard)	MEDIA=1;;
-2|transparency)	MEDIA=2;;
-3|glossy)	MEDIA=3;;
-257|envelope)	MEDIA=257;;
-259|letterhead)	MEDIA=259;;
-261|thickstock)	MEDIA=261;;
-262|postcard)	MEDIA=262;;
-263|labels)	MEDIA=263;;
-[0-9]*)		;;
-*)		error "Unknown media code $MEDIA";;
+1|standard|plain)		MEDIA=1;;
+2|transparency)			MEDIA=2;;
+3|glossy)			MEDIA=3;;
+257|envelope)			MEDIA=257;;	# -z0
+258|light)			MEDIA=258;;	# -z1, -z2
+259|letterhead)			MEDIA=259;;	# -z0
+261|thickstock|cardstock)	MEDIA=261;;
+262|postcard|heavy)		MEDIA=262;;
+263|labels|rough)		MEDIA=263;;	# -z0 labels, -z[12] rough
+265|labels)			MEDIA=265;;	# -z1, -z2
+267|envelope)			MEDIA=267;;	# -z1, -z2
+273|vellum)			MEDIA=267;;	# -z1, -z2
+512|color)			MEDIA=512;;
+513|letterhead)			MEDIA=513;;	# -z1, -z2
+514|preprinted)			MEDIA=514;;	# -z1, -z2
+515|prepunched)			MEDIA=515;;	# -z1, -z2
+516|recycled)			MEDIA=516;;	# -z1, -z2
+[0-9]*)				;;
+*)				error "Unknown media code $MEDIA";;
 esac
 
 #
@@ -331,6 +368,14 @@ case "$RES" in
 1200x600)	;;
 2400x600)	;;
 *)		error "Illegal resolution $RES";;
+esac
+
+#
+#	Validate Print Density
+#
+case "$DENSITY" in
+1|2|3|4|5)	;;
+*)		error "Illegal print density (-T) $DENSITY";;
 esac
 
 #
@@ -372,6 +417,22 @@ set_clipping() {
 }
 
 case "$PAPER" in
+Custom*x*)
+		# Command line only
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=256;        paper=letter;
+		MEDIA=261
+                set_clipping 2 100     2 100
+		;;
 Custom*)
 		#%%BeginFeature: *CustomPageSize True
 		#216
@@ -416,6 +477,7 @@ Custom*)
 		case "$MODEL" in
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
 		# 1)	set_clipping 96 96	288 96;;
 		esac
 		;;
@@ -423,12 +485,14 @@ Custom*)
 		case "$MODEL" in
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
 		esac
 		;;
 7|executive)	PAPER=7;	paper=executive; XDIM="8700";  YDIM="6300"
 		case "$MODEL" in
 		0)	set_clipping 206 102	206 102;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
 		esac
 		;;
 9|a4|A4)	PAPER=9;	paper=a4;        XDIM="9920";  YDIM="7016"
@@ -443,50 +507,113 @@ Custom*)
 		    fi
 		    ;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
 		esac
 		;;
 11|a5|A5)	PAPER=11;	paper=a5;        XDIM="6992";  YDIM="4960"
 		case "$MODEL" in
 		0)	set_clipping 200 100	200 100;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
 		esac
 		;;
 13|b5|B5)	PAPER=13;	paper=b5;        XDIM="8598";  YDIM="6070"
 		case "$MODEL" in
 		0)	set_clipping 207 107	207 107;;
 		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
+		esac
+		;;
+259|b5iso|B5ISO) PAPER=259;	paper=b5;        XDIM="8316";  YDIM="5904"
+		case "$MODEL" in
+		1)	set_clipping 192 96	192 96;;
+		*)	error "Unimplemented paper code $PAPER";;
 		esac
 		;;
 20|"env#10")	PAPER=20;	paper=env10;     XDIM="4950";  YDIM="5700"
 		case "$MODEL" in
 		0)	set_clipping 171 78	171 78;;
 		1)	set_clipping 171 78	171 78;;
+		2)	set_clipping 171 2	171 78;;
 		esac
 		;;
 27|envDL)	PAPER=27;	paper=envDL;     XDIM="5200";  YDIM="5200"
 		case "$MODEL" in
 		0)	set_clipping 176 84	176 84;;
 		1)	set_clipping 176 84	176 84;;
+		2)	set_clipping 176 2	176 84;;
 		esac
 		;;
 28|envC5)	PAPER=28;	paper=envC5;     XDIM="7650";  YDIM="5408"
 		case "$MODEL" in
 		0)	set_clipping 170 80	169 80;;
 		1)	set_clipping 170 80	169 80;;
+		2)	set_clipping 170 2	169 80;;
 		esac
 		;;
 34|envB5)	PAPER=34;	paper=envB5;     XDIM="8316";  YDIM="5892"
 		case "$MODEL" in
 		0)	set_clipping 174 74	174 74;;
 		1)	set_clipping 174 74	174 74;;
+		2)	set_clipping 174 2	174 74;;
 		esac
 		;;
 37|envMonarch)	PAPER=37;	paper=envMonarch;XDIM="4650";  YDIM="4500"
 		case "$MODEL" in
 		0)	set_clipping 174 78	173 78;;
 		1)	set_clipping 174 78	173 78;;
+		2)	set_clipping 174 2	173 78;;
 		esac
 		;;
+70|262|A6)			paper=A6;	XDIM="4956";  YDIM="3498"
+		case "$MODEL" in
+		1)	PAPER=262; set_clipping 174 78	173 78;;
+		2)	PAPER=70; set_clipping 174 2	173 78;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+		;;
+257|16k197x273) PAPER=257;      paper=executive;XDIM="9306";  YDIM="6448"
+		case "$MODEL" in
+		1)	set_clipping 173 84	173 84;;
+		2)	set_clipping 173 2	173 84;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+263|16k184x260) PAPER=263;      paper=executive;XDIM="8692";  YDIM="6142"
+		case "$MODEL" in
+		2)	set_clipping 122 2	122 87;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+264|16k195x270) PAPER=264;      paper=executive;XDIM="9212";  YDIM="6378"
+		case "$MODEL" in
+		2)	set_clipping 126 2	126 87;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+43|260|postcard)		paper=executive;XDIM="4728";  YDIM="3498"
+		case "$MODEL" in
+		1)	PAPER=260; set_clipping 126 87	126 87;;
+		2)	PAPER=43; set_clipping 126 2	126 87;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+82|261|doublepostcardrotated)
+				paper=executive;XDIM="6996";  YDIM="4722"
+		case "$MODEL" in
+		1)	PAPER=261; set_clipping 126 87	126 87;;
+		2)	PAPER=82; set_clipping 126 2	126 87;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
+258|fanfoldgermanlegal)
+		PAPER=258;      paper=legal;	XDIM="10200";  YDIM="7800"
+		case "$MODEL" in
+		1)	set_clipping 192 96	192 96;;
+		2)	set_clipping 192 2	192 96;;
+		*)	error "Unimplemented paper code $PAPER";;
+		esac
+                ;;
 *)		error "Unimplemented paper code $PAPER";;
 esac
 # e.g. /usr/share/ghostscript/7.07/lib/gs_statd.ps
@@ -702,7 +829,7 @@ $PREFILTER \
 | ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
     -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null) 3>&1 \
 | foo2zjs -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
-	    -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
+	    -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER -T$DENSITY \
 	    -J "$LPJOB" -U "$USER" \
 	    $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD -D$DEBUG
 
@@ -715,7 +842,7 @@ if [ -x /usr/bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2zjs -r$RES -g$DIM -p$PAPER -m$MEDIA \
 -n$COPIES -d$DUPLEX -s$SOURCE -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG \
-$SAVETONER $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
+$SAVETONER -T$DENSITY $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
 fi
 
 #

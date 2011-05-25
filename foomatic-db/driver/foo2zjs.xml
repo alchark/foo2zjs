@@ -1,3 +1,7 @@
+<!--
+     foo2zjs driver
+-->
+
 <driver id="driver/foo2zjs">
     <name>foo2zjs</name>
     <url>http://foo2zjs.rkkda.com/</url>
@@ -12,9 +16,9 @@
 
 	&lt;p&gt;
 	
-	It is possible that this driver will also work for the HP LaserJet
-	1000, 1005, 1018, 1020 and other Zenographics-based printers, but the
-	author cannot test this.
+	This driver will also work for the HP LaserJet 1000, 1005,
+	1018, 1020, 1022, P1102, P1566, P1606dn, P2035, and other
+	Zenographics-based printers.
 
     </en> </comments>
     <printers>
@@ -24,11 +28,6 @@
 	<printer><id>printer/Minolta-Color_PageWorks_Pro_L</id></printer>
 	<printer><id>printer/HP-LaserJet_1000</id></printer>
 	<printer><id>printer/HP-LaserJet_1005</id></printer>
-	<printer><id>printer/HP-LaserJet_1018</id></printer>
-	<printer><id>printer/HP-LaserJet_1020</id></printer>
-	<printer><id>printer/HP-LaserJet_1022</id></printer>
-	<printer><id>printer/HP-LaserJet_P2035</id></printer>
-	<printer><id>printer/HP-LaserJet_M1319_MFP</id></printer>
 	<printer><id>printer/Generic-ZjStream_Printer</id></printer>
 	<printer><id>printer/Generic-GDI_Printer</id></printer>
     </printers>

@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.89 2009/06/23 18:31:20 rick Exp $'
+VERSION='$Id: getweb.in,v 1.91 2010/06/15 16:50:56 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -35,6 +35,7 @@ Usage:
     $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
     $ ./getweb 4690	# Get Konica Minolta 4690MF .ICM files
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
+    $ ./getweb 110	# Get Oki C110 .ICM files
 
     $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
     $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
@@ -178,19 +179,19 @@ getone() {
 	gettgz \
 	    http://foo2zjs.rkkda.com/firmware sihpP1005.tar.gz \
 	    ""
-	copyright "(c) Copyright Hewlett-Packard 2008"
+	copyright "(c) Copyright Hewlett-Packard 2009"
 	;;
     [pP]100[68])
 	gettgz \
 	    http://foo2zjs.rkkda.com/firmware sihpP1006.tar.gz \
 	    ""
-	copyright "(c) Copyright Hewlett-Packard 2008"
+	copyright "(c) Copyright Hewlett-Packard 2009"
 	;;
     [pP]1505)
 	gettgz \
 	    http://foo2zjs.rkkda.com/firmware sihpP1505.tar.gz \
 	    ""
-	copyright "(c) Copyright Hewlett-Packard 2008"
+	copyright "(c) Copyright Hewlett-Packard 2009"
 	;;
     2200dl|2200)
 	if false; then
@@ -253,7 +254,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Konica Minolta 2003"
 	;;
-    2530|2490|6115|2480|1600w|1680|1690|4690)
+    2530|2490|6115|2480|1600w|1680|1690|4690|110)
 	gettgz \
 	    http://foo2lava.rkkda.com/icm km2530.tar.gz \
 	    ""
@@ -369,6 +370,7 @@ getone() {
 	    *1215*)		driver=foo2hp;;
 	    *2530*|*24[89]0*)	driver=foo2lava;;
 	    *6115*)		driver=foo2lava;;
+	    *C110*)		driver=foo2lava;;
 	    *C500*)		driver=foo2slx;;
 	    *C3[234]00*)	driver=foo2hiperc;;
 	    *C5[12568]00*)	driver=foo2hiperc;;

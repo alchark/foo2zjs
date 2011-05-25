@@ -52,7 +52,7 @@ typedef struct
     char	string[64];	// "OTHER" padded with 0's
     // WORD	pad;		// "PAD_PAD_" as needed.
 } OAK_OTHER;
-typedef OAK_OTHER	HDR_0D;
+//typedef OAK_OTHER	HDR_0D;
 
 /*
  * date/time record
@@ -70,7 +70,7 @@ typedef struct
     WORD	tm_sec;		// Second (0-59)
     // DWORD	pad;
 } OAK_TIME;
-typedef OAK_TIME	HDR_0C;
+//typedef OAK_TIME	HDR_0C;
 
 /*
  * Filename record
@@ -80,6 +80,25 @@ typedef struct
 {
     char	string[64];	// "OTHER" padded with 0's
 } OAK_FILENAME;
+
+/*
+ * Duplex record
+ */
+#define	OAK_TYPE_DUPLEX		0x0F
+typedef struct
+{
+    DWORD	duplex;		// Duplex
+    DWORD	short_edge;
+} OAK_DUPLEX;
+
+/*
+ * Driver record
+ */
+#define	OAK_TYPE_DRIVER		0x1F
+typedef struct
+{
+    char	string[36];	// "OTHER" padded with 0's
+} OAK_DRIVER;
 
 /*
  * End of document
@@ -128,7 +147,7 @@ typedef struct
 typedef struct
 {
     DWORD	copies;		// Number of copies
-    DWORD	unk;		// collate????
+    DWORD	duplex;		// Duplex
 } OAK_COPIES;
 
 #define	OAK_TYPE_PAPER		0x2B

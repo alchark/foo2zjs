@@ -1,3 +1,194 @@
+2010-07-28	Rick Richardson <rick.richardson@comcast.net>
+	* Added manual page for foo2zjs-icc2ps.
+
+2010-07-26	Rick Richardson <rick.richardson@comcast.net>
+	* command2foo2lava-pjl.c: switched to use foo2zjsNegateMarkerLevels
+
+2010-07-25	Rick Richardson <rick.richardson@comcast.net>
+	* command2foo2lava-pjl.c: improved formatting
+
+2010-07-24	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: add eval gs.foo for BSD
+
+2010-07-22	Rick Richardson <rick.richardson@comcast.net>
+	* Modify "modify-ppd" file for *cupsSNMPSupplies: False
+	* Modify: foo2zjs for Duplex and -z2 (HP P1606dn)
+
+2010-07-20	Rick Richardson <rick.richardson@comcast.net>
+	* Reinhold Kainhofer <reinhold@kainhofer.com>
+	    * New file: command2foo2lava-pjl.c
+	    * New file: modify-ppd
+	    * Change PPD's for Konica Minolta mc1600W, mc1680MF, mc1690MF,
+	      mc2490 MF, mc2530 DL, mc4690MF, and Oki C110 if cups-devel
+	      is installed.
+	    Used for reporting marker (toner) levels via PJL on
+	    foo2lava printers.
+	* command2foo2lava-pjl.c: Add a sleep(5) for mc2530 DL
+	* command2foo2lava-pjl.c: Add IMGDRUM, CONSUMETONERCOUNTERFEIT*
+	* command2foo2lava-pjl.c: Read PPD file for product
+
+2010-06-20	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs, foo2zjs-wrapper, foomatic and ppd file:
+	    Add Printer Density.  For HP zjs printers.  Please remove
+	    and recreate the printers.
+
+2010-06-19	Rick Richardson <rick.richardson@comcast.net>
+	* Add manual page for gipddecode.
+	* foo2xqx, foo2xqx-wrapper, foomatic and ppd file:
+	    Add Printer Density.  For HP xqx printers.  Please remove
+	    and recreate the printers.
+
+2010-06-15	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl foomatic-db and PPD files: fix Duplex for clp-6100, clp-610,
+	  clp-620. Manual Duplex is no longer supported. Use Gnome-Manual-Duplex
+	  instead.
+
+	  Please delete and recreate the Samsung CLP-6?? printers.
+
+	* New Printer: Oki C110
+
+2010-05-28	Rick Richardson <rick.richardson@comcast.net>
+	* Split out foo2zjs into:
+	    foo2zjs	- Minolta 2200 DL, 2300 DL, HP 1000, HP 1005
+	    foo2zjs-z1	- HP 1018, 1020, 1022, M1319MFP, P2035
+	    foo2zjs-z2	- HP Laserjet Pro P1102, P1102w, P1566, P1606dn
+
+	* Add new paper sizes and media types to foo2zjs-z1 and foo2zjs-z2
+	    A6, 16K *, Postcard and Double Postcard, German Legal (8.5 x 13!)
+
+	* PLEASE delete and recreate the foo2zjs-z1 and foo2zjs-z2 printers!!!
+	  Otherwise, Page Size will be "Letter" even if you set it to A4.
+	  This is a Cups problem (cups-1.4.2-26.fc11.i586).
+
+2010-05-24	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2xxx-{Copies,Nup,NupOrient}.xml: include foo2oak-z1 driver
+
+2010-05-07	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs.c: if Model == MODEL_HP_PRO, blank initial lines
+	    for 0.25".  Sheesh!!!
+	* Modify: foo2zjs-wrapper: -z2 set_clipping <x1> 2 <x2> <y2>
+
+2010-05-06	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2qpdl.c: modolo 256 on custom paper size.
+
+2010-05-04	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2qpdl-wrapper: modolo 256 some papers (i.e. env#10)
+
+2010-05-02	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: hplj10xx_gui.tcl to put in the status
+
+2010-05-01	Rick Richardson <rick.richardson@comcast.net>
+	* Upgrade P1005, P1006, P1505 firmware to 09/16/2009
+
+2010-04-29	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: hplj10xx_gui.tcl to put in the pagecount
+
+2010-04-21	Rick Richardson <rick.richardson@comcast.net>
+	* New Printers: Oki C5650
+
+2010-04-12	Rick Richardson <rick.richardson@comcast.net>
+	* New Printers: HP LaserJet Pro P1102, P1102w
+	* New Printers: HP LaserJet Pro P1566
+	* New Printers: HP LaserJet Pro P1606dn
+
+2010-04-09	Rick Richardson <rick.richardson@comcast.net>
+	* hplj10xx.rules: implement old(1.47-) and new(1.48+) rules
+
+2010-03-29	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Samsung CLP-620 added to foo2qpdl et al.
+
+2010-03-26	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: install-hotplug: remove system-config-printer-udev.
+
+2010-03-11	Rick Richardson <rick.richardson@comcast.net>
+	* foo2xqx-wrapper: Add -p257, -p263, -p264 for 16K* paper.
+	* foomatic-db and .ppd files: Add three 16K papers to foo2xqx driver.
+	* Makefile: Get rid of Ubuntu 9.*'s
+		/lib/udev/rules.d/85-hplj10xx.rules
+	  because it does not work!
+
+2010-03-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: Bug fix for custom page size.  Some versions
+	  of CUPS don't embed the size in the PS file:
+	    %%BeginFeature: *CustomPageSize True
+	    552.755920410156 765.354370117188 1 0.000000 0.000000
+	  and only list it in the command line:
+	    foo2zjs-wrapper -pCustom.533x765
+	* Fix WARN with cupstestppd PPD/*.ppd:
+	    EnvB5 -> EnvISOB5
+	    Nup -> NupPages
+	* Fix FAIL with cupstestppd PPD/*.ppd:
+	    ManualDuplex -> no (replaced by GnomeManualDuplex)
+	    http://sourceforge.net/projects/g-manual-duplex/
+
+2010-03-06	Rick Richardson <rick.richardson@comcast.net>
+	* New Printers: HP LaserJet P1505n, P2014n, P2035n
+
+2010-03-02	Rick Richardson <rick.richardson@comcast.net>
+	* Updated foo2lava manual pages
+	* Adjust Makefile so it doesn't do some tests (gs 8.71 is flaky)
+
+2010-02-26	Rick Richardson <rick.richardson@comcast.net>
+	* Added freebsd-install for FreeBSD 8.x
+
+2010-02-25	Rick Richardson <rick.richardson@comcast.net>
+	* Added /etc/devd/hplj10xx.conf for FreeBSD 8.x
+
+2010-02-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hp2600-wrapper: add -O to log for debugging.
+
+2010-01-23	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000 install-usblp: remove bug
+
+2010-01-06	Rick Richardson <rick.richardson@comcast.net>
+	* Updated: printer-profile script to Argyll_V1.1.0_RC4
+
+2009-12-03	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hiperc.c: C5600: Set Duplex like this:
+	    if (Duplex == DMDUPLEX_OFF)
+	            rec[6] = be32(0);
+	    else
+		    rec[6] = be32( (PageNum & 1) ? 0x100 : 0x200);
+	* foo2hiperc.c: Don't do EvenPages() when auto-duplex.
+
+2009-11-12	Rick Richardson <rick.richardson@comcast.net>
+	* foo2xqx.c: set PJL ECONOMODE ON/OFF 
+
+2009-11-06	Rick Richardson <rick.richardson@comcast.net>
+	* Updated: printer-profile script to Argyll_V1.1.0_RC1
+
+2009-10-27	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000: add an exit 0 to install-usblp
+
+2009-10-25	jkan <jkanefendt@googlemail.com>
+	* foo2hp.c: add alignment for -b2
+
+2009-10-17	Rick Richardson <rick.richardson@comcast.net>
+	* clp-310: fix PPD file
+
+2009-10-14	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak: Fix sprintf bug
+
+2009-10-13	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak, foo2oak-wrapper: Add short edge
+
+2009-10-12	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak, foo2oak-wrapper:
+		Change papercode UNK for KM-1635
+		Add OAK_DRIVER record.
+		Adjust JBG parms
+
+2009-10-10	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak: Add a DUPLEX record type.
+
+2009-10-09	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak, foo2oak-wrapper, foomatic, and PPD's: 
+	    Add Duplex option for Kyocera Mita KM-1635, KM-2035.
+
+2009-09-22	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hp, foo2hp2600-wrapper, foomatic, and PPD's: 
+	    HP LJC CP1215: Add alignment for Cyan, Magenta, or Yellow.
+
 2009-09-08	Rick Richardson <rick.richardson@comcast.net>
 	* For Ubuntu 9.10 Alpha 5:  fix Makefile and hplj1000
 	    to *not* list usblp in /etc/modprobe.d/blacklist*

@@ -63,6 +63,12 @@
 	    <driver>foo2lava</driver>
 	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Oki</make>
+	    <model>C110</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2lava-PrinterType-lavaflow-z0">
@@ -138,6 +144,11 @@
 		    <driver>foo2lava</driver>
 	    	    <make>KONICA MINOLTA</make>
 	    	    <model>magicolor 4690MF</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>Oki</make>
+	    	    <model>C110</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>

@@ -17,46 +17,59 @@
 	    <arg_defval>ev/foo2zjs-PrinterType-Color</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1000</model>
+	    <make>HP</make> <model>LaserJet 1000</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1005</model>
+	    <make>HP</make> <model>LaserJet 1005</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1018</model>
+	    <make>HP</make> <model>LaserJet 1018</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW-z1</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1020</model>
+	    <make>HP</make> <model>LaserJet 1020</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW-z1</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1022</model>
+	    <make>HP</make> <model>LaserJet 1022</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW-z1</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet P2035</model>
+	    <make>HP</make> <model>LaserJet P2035</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW-z1</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet M1319 MFP</model>
+	    <make>HP</make> <model>LaserJet M1319 MFP</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-PrinterType-BW-z1</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>HP</make> <model>LaserJet Pro P1102</model>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2zjs-PrinterType-BW-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>HP</make> <model>LaserJet Pro P1102w</model>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2zjs-PrinterType-BW-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>HP</make> <model>LaserJet Pro P1566</model>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2zjs-PrinterType-BW-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>HP</make> <model>LaserJet Pro P1606dn</model>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2zjs-PrinterType-BW-z2</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>
@@ -72,23 +85,19 @@
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1000</model>
+	    	    <make>HP</make> <model>LaserJet 1000</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1005</model>
+	    	    <make>HP</make> <model>LaserJet 1005</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Generic</make>
-	    	    <model>GDI Printer</model>
-	        </constraint>
+	    	    <make>Generic</make> <model>GDI Printer</model>
+		</constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Generic</make>
-	    	    <model>ZjStream Printer</model>
+	    	    <make>Generic</make> <model>ZjStream Printer</model>
 	        </constraint>
             </constraints>
 	</enum_val>
@@ -104,28 +113,51 @@
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1018</model>
+	    	    <make>HP</make> <model>LaserJet 1018</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1020</model>
+	    	    <make>HP</make> <model>LaserJet 1020</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1022</model>
+	    	    <make>HP</make> <model>LaserJet 1022</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet P2035</model>
+	    	    <make>HP</make> <model>LaserJet P2035</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>HP</make>
-	    	    <model>LaserJet M1319 MFP</model>
+	    	    <make>HP</make> <model>LaserJet M1319 MFP</model>
+	        </constraint>
+            </constraints>
+	</enum_val>
+	<enum_val id="ev/foo2zjs-PrinterType-BW-z2">
+	    <ev_longname> <en>Black-and-white printer</en> </ev_longname>
+		<!-- A multilingual <comments> block can appear here, too;
+		 it should be treated as documentation for the user. -->
+	    <ev_shortname> <en>BWz2</en> </ev_shortname>
+	    <ev_driverval>-P -z2 -L0</ev_driverval>
+	    <constraints>
+	        <constraint sense="false">
+		    <driver>foo2zjs</driver>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2zjs</driver>
+	    	    <make>HP</make> <model>LaserJet Pro P1102</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2zjs</driver>
+	    	    <make>HP</make> <model>LaserJet Pro P1102w</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2zjs</driver>
+	    	    <make>HP</make> <model>LaserJet Pro P1566</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2zjs</driver>
+	    	    <make>HP</make> <model>LaserJet Pro P1606dn</model>
 	        </constraint>
             </constraints>
 	</enum_val>
@@ -141,28 +173,23 @@
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Minolta</make>
-	    	    <model>magicolor 2200 DL</model>
+	    	    <make>Minolta</make> <model>magicolor 2200 DL</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Minolta</make>
-	    	    <model>magicolor 2300 DL</model>
+	    	    <make>Minolta</make> <model>magicolor 2300 DL</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Minolta</make>
-	    	    <model>magicolor 2430 DL</model>
+	    	    <make>Minolta</make> <model>magicolor 2430 DL</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Generic</make>
-	    	    <model>GDI Printer</model>
+	    	    <make>Generic</make> <model>GDI Printer</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <driver>foo2zjs</driver>
-	    	    <make>Generic</make>
-	    	    <model>ZjStream Printer</model>
+	    	    <make>Generic</make> <model>ZjStream Printer</model>
 	        </constraint>
             </constraints>
 	</enum_val>

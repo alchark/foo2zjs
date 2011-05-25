@@ -1,3 +1,6 @@
+<!--
+     foo2zjs 
+-->
 <option type="enum" id="opt/foo2zjs-MediaType">
     <!-- A multilingual <comments> block can appear here, too;
        it should be treated as documentation for the user. -->

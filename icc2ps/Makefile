@@ -1,6 +1,7 @@
 UNAME := $(shell uname)
 PREFIX=	/usr
 BIN=	$(PREFIX)/bin
+MANDIR=$(PREFIX)/share/man
 SRC=	icc2ps.c xgetopt.c
 LIB=	cmscam97.c cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
 	cmslut.c cmsmatsh.c cmsmtrx.c cmsnamed.c cmspack.c cmspcs.c cmsps2.c \
@@ -12,7 +13,9 @@ ifeq ($(UNAME),SunOS)
     CC=gcc
 endif
 
-all: foo2zjs-icc2ps
+.SUFFIXES: .1 .1in
+
+all: foo2zjs-icc2ps man
 
 foo2zjs-icc2ps: $(SRC) $(LIB)
 	$(CC) $(CFLAGS) $(SRC) $(LIB) -lm -o $@
@@ -20,8 +23,30 @@ foo2zjs-icc2ps: $(SRC) $(LIB)
 install: all
 	$(INSTALL) -c foo2zjs-icc2ps $(BIN)
 
+man:	foo2zjs-icc2ps.1
+
+.1in.1: 
+	-rm -f $*.1
+	MODver=$(VERSION); \
+	../includer-man -v DEF1=$(OLDGROFF) $*.1in | sed > $*.1 \
+	    -e "s@\$${URLOAK}@$(URLOAK)@" \
+	    -e "s@\$${URLZJS}@$(URLZJS)@" \
+	    -e "s@\$${URLHP}@$(URLHP)@" \
+	    -e "s@\$${URLXQX}@$(URLXQX)@" \
+	    -e "s@\$${URLLAVA}@$(URLLAVA)@" \
+	    -e "s@\$${URLQPDL}@$(URLQPDL)@" \
+	    -e "s@\$${URLSLX}@$(URLSLX)@" \
+	    -e "s@\$${URLHC}@$(URLHC)@" \
+	    -e "s/\$${MODver}/$$MODver/"
+	chmod -w $*.1
+
+install-man: man
+	$(INSTALL) -d -m 755 $(MANDIR)
+	$(INSTALL) -d -m 755 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 foo2zjs-icc2ps.1 $(MANDIR)/man1/
+
 clean:
-	rm -f *.o foo2zjs-icc2ps
+	rm -f *.o foo2zjs-icc2ps *.1
 
 foo2zjs-icc2ps: icc34.h lcms.h
 

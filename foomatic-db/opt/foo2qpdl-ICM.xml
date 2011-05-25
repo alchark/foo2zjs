@@ -74,6 +74,12 @@
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-610</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
+	    <model>CLP-620</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-620</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2qpdl-ICM-none">
@@ -130,6 +136,12 @@
 	    <ev_longname> <en>CLP-610</en> </ev_longname>
 	    <ev_shortname> <en>clp610</en> </ev_shortname>
 	    <ev_driverval>-z2</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2qpdl-ICM-620">
+	    <ev_longname> <en>CLP-620</en> </ev_longname>
+	    <ev_shortname> <en>clp620</en> </ev_shortname>
+	    <ev_driverval>-z3</ev_driverval>
 	</enum_val>
 
         <enum_val id="ev/foo2qpdl-ICM-testing">

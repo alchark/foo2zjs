@@ -34,6 +34,13 @@ print job that are usually controlled on a per job basis.
 .BI \-c
 Force color mode if autodetect doesn't work.
 .TP
+.BI \-d\0 duplex
+Duplex code to send to printer [1].
+.TS
+| n l | n l | n l .
+1	off	2	long edge	3	short edge
+.TE
+.TP
 .BI \-g\0 xpix x ypix
 Set page dimensions in pixels [10200x6600].
 .TP
@@ -133,6 +140,11 @@ Turn off: K=1 forces C,M,Y to 0.
 .BI \-M\0 mirror
 Mirror bytes. Mirror is 0 for Kyocera KM-1635/KM-2035 and 1 for the
 HP Color LaserJet 1500. The default is 1.
+.TP
+.BI \-z\0 model
+Model is 0 for the HP Color LaserJet 1500,
+and 1 for the Kyocera KM-1635/KM-2035 copiers.
+The default is 0.
 .SS Debugging Options
 These options are used for debugging \fBfoo2oak\fP.
 .TP

@@ -73,7 +73,7 @@ typedef enum {
     ZJI_INTERLACE	=19,	// 0 or 1
     ZJI_PLANE		=20,	// Plane number, 1=C, 2=M, 3=Y, 4=K
     ZJI_PALETTE		=21,	// translation table (dimensions in item type)
-
+    ZJI_RET		=22,	// HP's Resolution Enhancement Technology
     ZJI_ECONOMODE	=23,	// HP's "EconoMode", 0=OFF, 1=ON
 
     ZJI_BITMAP_TYPE	=0x65,	// hp2600: ?

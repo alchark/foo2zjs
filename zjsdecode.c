@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.67 2009/04/22 13:00:27 rick Exp $
+ * $Id: zjsdecode.c,v 1.80 2010/07/23 21:18:09 rick Exp $
  */
 
 /*b
@@ -141,6 +141,15 @@ print_bih(unsigned char bih[20])
 }
 
 void
+proff(int curOff)
+{
+    if (PrintOffset)
+	printf("%d:     ", curOff);
+    else if (PrintHexOffset)
+	printf("%6x:    ", curOff);
+}
+
+void
 decode(FILE *fp)
 {
     DWORD	magic;
@@ -165,6 +174,65 @@ decode(FILE *fp)
     int         	incrY = 0;
     int         	bpp = 1;
     int			totSize = 0;
+    int			i;
+    char		*strmedia[516+1];
+    char		*strpage[264+1];
+    char		*strsource[] = {
+			    /*00*/ "eject", "tray1", "unk", "unk", "tray2",
+			    /*05*/ "unk", "unk", "auto"
+			};
+    #define STRARY(X, A) \
+                            ((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
+                            ? A[X] : "UNK"
+
+    for (i = 0; i < sizeof(strmedia)/sizeof(strmedia[0]); ++i)
+        strmedia[i] = "unk";
+    /* Konica / HP */
+    strmedia[1] = "standard / plain";
+    strmedia[2] = "transparency / transparency";
+    strmedia[3] = "glossy / unknown";
+    strmedia[257] = "envelope";
+    strmedia[258] = "unk / light";
+    strmedia[259] = "letterhead";
+    strmedia[260] = "unk / bond";
+    strmedia[261] = "thickstock / cardstock";
+    strmedia[262] = "postcard / heavy";
+    strmedia[263] = "labels / rough";
+    strmedia[265] = "unk / labels";
+    strmedia[267] = "unk / envelope";
+    strmedia[273] = "unk / vellum";
+    strmedia[282] = "unk / medium";
+    strmedia[283] = "unk / extra heavy";
+    strmedia[512] = "unk / color";
+    strmedia[513] = "unk / letterhead";
+    strmedia[514] = "unk / preprinted";
+    strmedia[515] = "unk / prepunched";
+    strmedia[516] = "unk / recycled";
+
+    for (i = 0; i < sizeof(strpage)/sizeof(strpage[0]); ++i)
+        strpage[i] = "unk";
+    strpage[1] = "letter";
+    strpage[5] = "legal";
+    strpage[9] = "a4";
+    strpage[7] = "executive";
+    strpage[258] = "fanfold german legal";
+    strpage[11] = "a5";
+    strpage[70] = "z2-a6"; /* p1102 */
+    strpage[13] = "b5jis";
+    strpage[259] = "b5iso";
+    strpage[264] = "16k 195x270";
+    strpage[263] = "16k 184x260";
+    strpage[257] = "16k 197x273";
+    strpage[260] = "z1-postcard";
+    strpage[261] = "z1-double postcard";
+    strpage[262] = "z1-a6"; /* hp 1020 */
+    strpage[43] = "postcard";
+    strpage[82] = "z2-double postcard rotated";
+    strpage[20] = "env#10";
+    strpage[37] = "envMonarch";
+    strpage[34] = "envB5";
+    strpage[28] = "envC5";
+    strpage[27] = "envDL";
 
     /*
      * Zenographics ZX format
@@ -196,11 +264,32 @@ decode(FILE *fp)
 	    curOff += strlen(buf);
 	    if (strcmp(buf, "@PJL ENTER LANGUAGE = ZJS\r\n") == 0)
 		break;
-	    if (strcmp(buf, "@PJL USTATUS TIMED = 30\n") == 0)
-	    {
-		rc = fread(buf, 52, 1, fp);
-		break;
-	    }
+	    if (0) {}
+            else if (strncmp(buf, "@PJL USTATUS TIMED = ", 21) == 0)
+            {
+                rc = fread(buf, 52, 1, fp);
+                if (rc != 1) return;
+                debug(2, "buf=%s\n", buf);
+                proff(curOff);
+                buf[51] = 0;
+                printf("%s\n", buf);
+                curOff += 43;
+                proff(curOff);
+                printf("\\033%s\n", buf+44);
+                curOff += 9;
+                break;
+            }
+            else if (strncmp(buf, "@PJL SET JOBATTR=", 17) == 0)
+            {
+                rc = fread(buf, 9, 1, fp);
+                if (rc != 1) return;
+                buf[9] = 0;
+                curOff += 9;
+                proff(curOff);
+                printf("\\033%s\n", buf+1);
+                curOff += 9;
+                break;
+            }
 	}
 	if (feof(fp))
 	{
@@ -303,7 +392,7 @@ decode(FILE *fp)
 
 	if (hdr.type == ZJT_ZX_0x0e)
 	{
-	    int	i, c;
+	    int	c;
 
 	    if (PrintOffset)
 		printf("	%d:", curOff);
@@ -338,7 +427,7 @@ decode(FILE *fp)
 	    int			isize;
 	    DWORD		val;
 	    char		buf[512];
-	    int			i, c;
+	    int			c;
 
 	    if (PrintOffset)
 		printf("	%d:	", curOff);
@@ -395,6 +484,7 @@ decode(FILE *fp)
 		CODESTR(ZJI_BITMAP_STRIDE)		break;
 		CODESTR(ZJI_INCRY)			break;
 		CODESTR(ZJI_JBIG_BIH)			break;
+		CODESTR(ZJI_RET)			break;
 		CODESTR(ZJI_ECONOMODE)			break;
 		CODESTR(ZJI_HP_CDOTS)			break;
 		CODESTR(ZJI_HP_MDOTS)			break;
@@ -436,6 +526,12 @@ decode(FILE *fp)
 		    case 3:		printf(" [magenta]"); break;
 		    }
 		}
+		else if (ihdr.item == ZJI_DMMEDIATYPE)
+		    printf(" [%s]", STRARY(val, strmedia));
+		else if (ihdr.item == ZJI_DMPAPER)
+		    printf(" [%s]", STRARY(val, strpage));
+		else if (ihdr.item == ZJI_DMDEFAULTSOURCE)
+		    printf(" [%s]", STRARY(val, strsource));
 		else if (ihdr.item == ZJI_INCRY)
 		    incrY = val;
 		else if (ihdr.item == ZJI_VIDEO_BPP)
@@ -515,6 +611,8 @@ decode(FILE *fp)
 
 	if (size)
 	{
+	    int	totlen = size;
+
 	    if (PrintOffset)
 		printf("	%d:", curOff);
 	    else if (PrintHexOffset)
@@ -577,6 +675,20 @@ decode(FILE *fp)
 		    int	c;
 		    c = fgetc(fp);
 		    ++curOff;
+		    if ((totlen-size) <= 16)
+		    {
+			if ((totlen-size) == 1)
+			    printf("\t");
+			printf(" %02x", c);
+			if ((totlen-size) == 16)
+			    printf("\n\t...");
+		    }
+		    else if (size < 20)
+		    {
+			printf(" %02x", c);
+			if (size == 0)
+			    printf("\n");
+		    }
 		    if (rfp)
 			fputc(c, rfp);
 		    if (DecFile)
@@ -661,8 +773,22 @@ decode(FILE *fp)
 	    {
 		while (size--)
 		{
-		    fgetc(fp);
+		    c = fgetc(fp);
 		    ++curOff;
+		    if ((totlen-size) <= 16)
+		    {
+			if ((totlen-size) == 1)
+			    printf("\t");
+			printf(" %02x", c);
+			if ((totlen-size) == 16)
+			    printf("\n\t...");
+		    }
+		    else if (size < 20)
+		    {
+			printf(" %02x", c);
+			if (size == 0)
+			    printf("\n");
+		    }
 		}
 		if (rfp)
 		{

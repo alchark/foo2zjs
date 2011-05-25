@@ -1,5 +1,5 @@
 /*
- * $Id: xqxdecode.c,v 1.17 2009/03/08 00:27:02 rick Exp $
+ * $Id: xqxdecode.c,v 1.18 2010/04/30 17:33:03 rick Exp $
  */
 
 /*b
@@ -189,10 +189,12 @@ decode(FILE *fp)
 	    else
 		fputs(buf, stdout);
 	    curOff += strlen(buf);
-	    if (strcmp(buf, "@PJL USTATUS TIMED = 30\n") == 0)
+	    if (0) {}
+	    else if (strncmp(buf, "@PJL USTATUS TIMED = ", 21) == 0)
 	    {
 		rc = fread(buf, 52, 1, fp);
 		if (rc != 1) return;
+		debug(2, "buf=%s\n", buf);
 		proff(curOff);
 		buf[51] = 0;
 		printf("%s\n", buf);

@@ -42,6 +42,12 @@
 	</constraint>
 	<constraint sense="true">
 	    <make>Samsung</make>
+	    <model>CLP-620</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-PrinterType-z3</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
 	    <model>CLX-3175</model>
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-PrinterType-z2</arg_defval>
@@ -81,6 +87,11 @@
 	        <constraint sense="false">
 		    <driver>foo2qpdl</driver>
 		    <make>Samsung</make>
+		    <model>CLP-620</model>
+	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2qpdl</driver>
+		    <make>Samsung</make>
 		    <model>CLX-3175</model>
 	        </constraint>
 	    </constraints>
@@ -115,6 +126,11 @@
 	        <constraint sense="true">
 		    <driver>foo2qpdl</driver>
 		    <make>Samsung</make>
+		    <model>CLP-310</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2qpdl</driver>
+		    <make>Samsung</make>
 		    <model>CLP-315</model>
 	        </constraint>
 	        <constraint sense="true">
@@ -126,6 +142,23 @@
 		    <driver>foo2qpdl</driver>
 		    <make>Samsung</make>
 		    <model>CLX-3175</model>
+	        </constraint>
+	    </constraints>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-PrinterType-z3">
+	    <ev_longname> <en>z3 printer</en> </ev_longname>
+		<!-- A multilingual <comments> block can appear here, too;
+		 it should be treated as documentation for the user. -->
+	    <ev_shortname> <en>z3</en> </ev_shortname>
+	    <ev_driverval>-z3</ev_driverval>
+	    <constraints>
+	        <constraint sense="false">
+		    <driver>foo2qpdl</driver>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2qpdl</driver>
+		    <make>Samsung</make>
+		    <model>CLP-620</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>

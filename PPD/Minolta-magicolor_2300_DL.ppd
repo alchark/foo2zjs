@@ -139,12 +139,12 @@
 *FoomaticRIPOptionSetting PageSize=B5: "-p13 "
 *PageSize Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *FoomaticRIPOptionSetting PageSize=Env10: "-p20 "
-*PageSize EnvB5/Env B5: "%% FoomaticRIPOptionSetting: PageSize=EnvB5"
-*FoomaticRIPOptionSetting PageSize=EnvB5: "-p34 "
 *PageSize EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *FoomaticRIPOptionSetting PageSize=EnvC5: "-p28 "
 *PageSize EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
 *FoomaticRIPOptionSetting PageSize=EnvDL: "-p27 "
+*PageSize EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
+*FoomaticRIPOptionSetting PageSize=EnvISOB5: "-p34 "
 *PageSize EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
 *FoomaticRIPOptionSetting PageSize=EnvMonarch: "-p37 "
 *PageSize Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
@@ -161,9 +161,9 @@
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion B5/B5: "%% FoomaticRIPOptionSetting: PageSize=B5"
 *PageRegion Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
-*PageRegion EnvB5/Env B5: "%% FoomaticRIPOptionSetting: PageSize=EnvB5"
 *PageRegion EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
 *PageRegion EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
+*PageRegion EnvISOB5/Env ISO B5: "%% FoomaticRIPOptionSetting: PageSize=EnvISOB5"
 *PageRegion EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
 *PageRegion Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
 *PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
@@ -175,9 +175,9 @@
 *ImageableArea A5/A5: "11.34 11.34 408.66 583.66"
 *ImageableArea B5/B5: "11.34 11.34 486.66 696.66"
 *ImageableArea Env10/Env #10: "11.34 11.34 285.66 672.66"
-*ImageableArea EnvB5/Env B5: "11.34 11.34 486.66 696.66"
 *ImageableArea EnvC5/Env C5: "11.34 11.34 447.66 637.66"
 *ImageableArea EnvDL/Env DL: "11.34 11.34 299.66 611.66"
+*ImageableArea EnvISOB5/Env ISO B5: "11.34 11.34 486.66 696.66"
 *ImageableArea EnvMonarch/Env Monarch: "11.34 11.34 267.66 528.66"
 *ImageableArea Executive/Executive: "11.34 11.34 510.66 744.66"
 *ImageableArea Legal/Legal: "11.34 11.34 600.66 996.66"
@@ -188,9 +188,9 @@
 *PaperDimension A5/A5: "420 595"
 *PaperDimension B5/B5: "498 708"
 *PaperDimension Env10/Env #10: "297 684"
-*PaperDimension EnvB5/Env B5: "498 708"
 *PaperDimension EnvC5/Env C5: "459 649"
 *PaperDimension EnvDL/Env DL: "311 623"
+*PaperDimension EnvISOB5/Env ISO B5: "498 708"
 *PaperDimension EnvMonarch/Env Monarch: "279 540"
 *PaperDimension Executive/Executive: "522 756"
 *PaperDimension Legal/Legal: "612 1008"
@@ -237,10 +237,6 @@
 *FoomaticRIPOptionSetting Duplex=DuplexNoTumble: "-d2 "
 *Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
 *FoomaticRIPOptionSetting Duplex=DuplexTumble: "-d3 "
-*Duplex ManualDuplexNoTumble/Manual Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=ManualDuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=ManualDuplexNoTumble: "-d4 "
-*Duplex ManualDuplexTumble/Manual Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=ManualDuplexTumble"
-*FoomaticRIPOptionSetting Duplex=ManualDuplexTumble: "-d5 "
 *Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
 *FoomaticRIPOptionSetting Duplex=None: "-d1 "
 *CloseUI: *Duplex
@@ -400,36 +396,6 @@
 
 *OpenGroup: Miscellaneous/Miscellaneous
 
-*OpenUI *Nup/N-up Printing: PickOne
-*FoomaticRIPOption Nup: enum CmdLine A
-*OrderDependency: 200 AnySetup *Nup
-*DefaultNup: 1up
-*Nup 1up/1-up: "%% FoomaticRIPOptionSetting: Nup=1up"
-*FoomaticRIPOptionSetting Nup=1up: " "
-*Nup 2up/2-up: "%% FoomaticRIPOptionSetting: Nup=2up"
-*FoomaticRIPOptionSetting Nup=2up: "-2 "
-*Nup 3up/3-up: "%% FoomaticRIPOptionSetting: Nup=3up"
-*FoomaticRIPOptionSetting Nup=3up: "-3 "
-*Nup 4up/4-up: "%% FoomaticRIPOptionSetting: Nup=4up"
-*FoomaticRIPOptionSetting Nup=4up: "-4 "
-*Nup 6up/6-up: "%% FoomaticRIPOptionSetting: Nup=6up"
-*FoomaticRIPOptionSetting Nup=6up: "-6 "
-*Nup 8up/8-up: "%% FoomaticRIPOptionSetting: Nup=8up"
-*FoomaticRIPOptionSetting Nup=8up: "-8 "
-*Nup 10up/10-up: "%% FoomaticRIPOptionSetting: Nup=10up"
-*FoomaticRIPOptionSetting Nup=10up: "-10 "
-*Nup 12up/12-up: "%% FoomaticRIPOptionSetting: Nup=12up"
-*FoomaticRIPOptionSetting Nup=12up: "-12 "
-*Nup 14up/14-up: "%% FoomaticRIPOptionSetting: Nup=14up"
-*FoomaticRIPOptionSetting Nup=14up: "-14 "
-*Nup 15up/15-up: "%% FoomaticRIPOptionSetting: Nup=15up"
-*FoomaticRIPOptionSetting Nup=15up: "-15 "
-*Nup 16up/16-up: "%% FoomaticRIPOptionSetting: Nup=16up"
-*FoomaticRIPOptionSetting Nup=16up: "-16 "
-*Nup 18up/18-up: "%% FoomaticRIPOptionSetting: Nup=18up"
-*FoomaticRIPOptionSetting Nup=18up: "-18 "
-*CloseUI: *Nup
-
 *OpenUI *NupOrient/N-up Orientation: PickOne
 *FoomaticRIPOption NupOrient: enum CmdLine A
 *OrderDependency: 200 AnySetup *NupOrient
@@ -441,6 +407,36 @@
 *NupOrient sea/Seascape: "%% FoomaticRIPOptionSetting: NupOrient=sea"
 *FoomaticRIPOptionSetting NupOrient=sea: "-os "
 *CloseUI: *NupOrient
+
+*OpenUI *NupPages/N-up Printing: PickOne
+*FoomaticRIPOption NupPages: enum CmdLine A
+*OrderDependency: 200 AnySetup *NupPages
+*DefaultNupPages: 1up
+*NupPages 1up/1-up: "%% FoomaticRIPOptionSetting: NupPages=1up"
+*FoomaticRIPOptionSetting NupPages=1up: " "
+*NupPages 2up/2-up: "%% FoomaticRIPOptionSetting: NupPages=2up"
+*FoomaticRIPOptionSetting NupPages=2up: "-2 "
+*NupPages 3up/3-up: "%% FoomaticRIPOptionSetting: NupPages=3up"
+*FoomaticRIPOptionSetting NupPages=3up: "-3 "
+*NupPages 4up/4-up: "%% FoomaticRIPOptionSetting: NupPages=4up"
+*FoomaticRIPOptionSetting NupPages=4up: "-4 "
+*NupPages 6up/6-up: "%% FoomaticRIPOptionSetting: NupPages=6up"
+*FoomaticRIPOptionSetting NupPages=6up: "-6 "
+*NupPages 8up/8-up: "%% FoomaticRIPOptionSetting: NupPages=8up"
+*FoomaticRIPOptionSetting NupPages=8up: "-8 "
+*NupPages 10up/10-up: "%% FoomaticRIPOptionSetting: NupPages=10up"
+*FoomaticRIPOptionSetting NupPages=10up: "-10 "
+*NupPages 12up/12-up: "%% FoomaticRIPOptionSetting: NupPages=12up"
+*FoomaticRIPOptionSetting NupPages=12up: "-12 "
+*NupPages 14up/14-up: "%% FoomaticRIPOptionSetting: NupPages=14up"
+*FoomaticRIPOptionSetting NupPages=14up: "-14 "
+*NupPages 15up/15-up: "%% FoomaticRIPOptionSetting: NupPages=15up"
+*FoomaticRIPOptionSetting NupPages=15up: "-15 "
+*NupPages 16up/16-up: "%% FoomaticRIPOptionSetting: NupPages=16up"
+*FoomaticRIPOptionSetting NupPages=16up: "-16 "
+*NupPages 18up/18-up: "%% FoomaticRIPOptionSetting: NupPages=18up"
+*FoomaticRIPOptionSetting NupPages=18up: "-18 "
+*CloseUI: *NupPages
 
 *CloseGroup: Miscellaneous
 

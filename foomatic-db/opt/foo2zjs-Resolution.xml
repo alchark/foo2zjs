@@ -17,14 +17,20 @@
 	    <arg_defval>ev/foo2zjs-Resolution-1200x600</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1000</model>
+	    <driver>foo2zjs-z1</driver>
+	    <arg_defval>ev/foo2zjs-Resolution-1200x600</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z2</driver>
+	    <arg_defval>ev/foo2zjs-Resolution-1200x600</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>HP</make> <model>LaserJet 1000</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-Resolution-600x600</arg_defval>
 	</constraint>
 	<constraint sense="true">
-	    <make>HP</make>
-	    <model>LaserJet 1005</model>
+	    <make>HP</make> <model>LaserJet 1005</model>
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-Resolution-600x600</arg_defval>
 	</constraint>
@@ -38,8 +44,19 @@
 	    <ev_driverval>600x600</ev_driverval>
 	    <constraints>
 	        <constraint sense="false">
-	    	    <make>Minolta</make>
-	    	    <model>magicolor 2200 DL</model>
+	    	    <make>Minolta</make> <model>magicolor 2200 DL</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1102</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1102w</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1566</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1606dn</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>
@@ -51,12 +68,10 @@
 	    <ev_driverval>1200x600</ev_driverval>
 	    <constraints>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1000</model>
+	    	    <make>HP</make> <model>LaserJet 1000</model>
 	        </constraint>
 	        <constraint sense="false">
-	    	    <make>HP</make>
-	    	    <model>LaserJet 1005</model>
+	    	    <make>HP</make> <model>LaserJet 1005</model>
 	        </constraint>
             </constraints>
 	</enum_val>
@@ -81,6 +96,18 @@
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet 1022</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1102</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1102w</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1566</model>
+	        </constraint>
+	        <constraint sense="false">
+	    	    <make>HP</make> <model>LaserJet Pro P1606dn</model>
 	        </constraint>
 	        <constraint sense="false">
 	    	    <make>HP</make> <model>LaserJet P2035</model>

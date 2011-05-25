@@ -16,6 +16,14 @@
 	    <driver>foo2zjs</driver>
 	    <arg_defval>ev/foo2zjs-Duplex-1</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z1</driver>
+	    <arg_defval>ev/foo2zjs-Duplex-1</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2zjs-z2</driver>
+	    <arg_defval>ev/foo2zjs-Duplex-1</arg_defval>
+	</constraint>
 	<constraint sense="false">
 	    <make>HP</make> <model>LaserJet 1000</model>
 	</constraint>
@@ -29,7 +37,22 @@
 	    <make>HP</make> <model>LaserJet 1020</model>
 	</constraint>
 	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet 1022</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet Pro P1102</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet Pro P1102w</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet Pro P1566</model>
+	</constraint>
+	<constraint sense="false">
 	    <make>HP</make> <model>LaserJet P2035</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>HP</make> <model>LaserJet P2035n</model>
 	</constraint>
 	<constraint sense="false">
 	    <make>HP</make> <model>LaserJet M1319 MFP</model>
@@ -51,6 +74,7 @@
 	    <ev_shortname> <en>DuplexTumble</en> </ev_shortname>
 	    <ev_driverval>3</ev_driverval>
 	</enum_val>
+<!--
 	<enum_val id="ev/foo2zjs-Duplex-4">
 	    <ev_longname> <en>Manual Long Edge (Standard)</en> </ev_longname>
 	    <ev_shortname> <en>ManualDuplexNoTumble</en> </ev_shortname>
@@ -61,5 +85,6 @@
 	    <ev_shortname> <en>ManualDuplexTumble</en> </ev_shortname>
 	    <ev_driverval>5</ev_driverval>
 	</enum_val>
+-->
     </enum_vals>
 </option>

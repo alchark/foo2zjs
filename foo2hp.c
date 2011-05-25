@@ -8,6 +8,7 @@ is some information about the ZJS format at http://ddk.zeno.com.
 With this utility, you can print to some HP, such as these:
      - HP LaserJet 2600n	mono or color
      - HP LaserJet 1600		mono or color
+     - HP LaserJet CP1215	mono or color
 
 AUTHORS
 You can contact the current author at mailto:rick.richardson@comcast.net
@@ -41,7 +42,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hp.c,v 1.44 2009/04/22 12:56:16 rick Exp $";
+static char Version[] = "$Id: foo2hp.c,v 1.47 2009/10/26 01:39:44 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,6 +86,8 @@ int	ExtraPad = 0;
 
 int	LogicalOffsetX = 0;
 int	LogicalOffsetY = 0;
+
+int	CMYK_Offset[4] = {0, 0, 0, 0};
 
 #define LOGICAL_CLIP_X	2
 #define LOGICAL_CLIP_Y	1
@@ -177,6 +180,7 @@ usage(void)
 "-A                AllIsBlack: convert C=1,M=1,Y=1 to just K=1\n"
 "-B                BlackClears: K=1 forces C,M,Y to 0\n"
 "                  -A, -B work with bitcmyk input only\n"
+"-O c,m,y,k        Alignment of CMYK in rows [%d,%d,%d,%d]\n"
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
@@ -199,6 +203,7 @@ usage(void)
     , UpperLeftX , UpperLeftY
     , LowerRightX , LowerRightY
     , LogicalClip
+    , CMYK_Offset[0], CMYK_Offset[1], CMYK_Offset[2], CMYK_Offset[3]
     , ExtraPad
     , Debug
     , Version
@@ -808,7 +813,7 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     bpl = (bpl + 15) & ~15;
     AnyColor = 0;
     for (i = 0; i < 4; ++i)
-	memset(plane[i], 0, bpl * h);
+	memset(plane[i], 0, bpl * (h + abs(CMYK_Offset[i])) );
 
     //
     // Unpack the combined plane into individual color planes
@@ -887,7 +892,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 
     for (i = 0; i < 4; ++i)
     {
-	plane[i] = malloc(bpl16 * h);
+	plane[i] = malloc(bpl16 * (h + abs(CMYK_Offset[i])) );
 	if (!plane[i]) error(3, "Cannot allocate space for bit plane\n");
 	debug(1, "malloc plane[%d] = %x\n", i, plane[i]);
     }
@@ -909,7 +914,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    }
 	}
 
-	bitmaps[i] = plane[i];
+	bitmaps[i] = plane[i] + CMYK_Offset[i] * bpl16;
     }
 
     if (Color2Mono)
@@ -930,12 +935,70 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 int
 pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 {
-    int i;
+    int i, j;
     unsigned char *bitmaps[4];
 
-    for (i = 0; i < 4; ++i)
-	bitmaps[i] = plane[i];
+    int w16;
+    int bpl;
 
+    if (Bpp == 2)
+        w16 = (w + 63) & ~63;
+    else
+        w16 = (w + 127) & ~127;
+
+    // bytes per line
+    bpl = (w16 * Bpp + 7) / 8;
+
+    if (AnyColor && (AllIsBlack || BlackClears))
+    {
+	for (i = 0; i < h * bpl; ++i) 
+	{
+	    for (j = 0; j < 8; j += Bpp) 
+	    {
+  	        unsigned char mask = (Bpp == 2 ? 0x03 : 0x01) << j;
+
+		if ((BlackClears && (plane[3][i] & mask) == mask) ||
+		    (AllIsBlack &&
+		    (plane[0][i] & plane[1][i] & plane[2][i] & mask) == mask)) 
+		{
+		    plane[0][i] &= ~mask;
+		    plane[1][i] &= ~mask;
+		    plane[2][i] &= ~mask;
+		    plane[3][i] |= mask;
+		}
+	    }
+	}
+    }
+
+
+    for (i = 0; i < 4; ++i) 
+    {
+         if (CMYK_Offset[i]) 
+	 {
+	     unsigned char *tmp = malloc(h * bpl);
+	     if (!tmp) error(3, "Cannot allocate space for bitmap\n");
+	     debug(1, "malloc bitmaps[%d] = %x\n", i, tmp);
+
+	     if (CMYK_Offset[i] < 0) 
+	     {
+	         memcpy(tmp, plane[i] - CMYK_Offset[i] * bpl,
+				    (h + CMYK_Offset[i]) * bpl);
+		 memset(tmp + (h + CMYK_Offset[i]) * bpl, 0,
+				    -CMYK_Offset[i] * bpl);
+	     }
+	     else 
+	     {
+	         memcpy(tmp + (CMYK_Offset[i] * bpl), plane[i],
+				    (h - CMYK_Offset[i])  * bpl);
+		 memset(tmp, 0, CMYK_Offset[i] * bpl);
+	     }
+
+	     free(plane[i]);
+	     plane[i] = tmp;
+	 }
+	 bitmaps[i] = plane[i];
+    }
+  
     if (Color2Mono)
 	write_bitmap_page(w, h, 1, &bitmaps[Color2Mono-1], ofp);
     else if (AnyColor)
@@ -1612,10 +1675,11 @@ int
 main(int argc, char *argv[])
 {
     int	c;
+    int	rc;
     int i, j;
 
     while ( (c = getopt(argc, argv,
-		    "b:cd:g:n:m:p:r:s:tu:l:L:ABPJ:S:U:X:D:V?h")) != EOF)
+		    "b:cd:g:n:m:p:r:s:tu:l:L:ABO:PJ:S:U:X:D:V?h")) != EOF)
 	switch (c)
 	{
 	case 'b':	Bpp = atoi(optarg);
@@ -1662,8 +1726,16 @@ main(int argc, char *argv[])
 			break;
 	case 'A':	AllIsBlack = !AllIsBlack; break;
 	case 'B':	BlackClears = !BlackClears; break;
-	case 'P':	OutputStartPlane = !OutputStartPlane; break;
 	case 'J':	if (optarg[0]) Filename = optarg; break;
+	case 'O':
+			rc = sscanf(optarg, "%d,%d,%d,%d",
+			    &CMYK_Offset[0], &CMYK_Offset[1],
+			    &CMYK_Offset[2], &CMYK_Offset[3]);
+			if (rc != 4)
+			    error(1, "Alignment error '%s' for -O c,m,y,k\n",
+				optarg);
+			break;
+	case 'P':	OutputStartPlane = !OutputStartPlane; break;
 	case 'U':	if (optarg[0]) Username = optarg; break;
 	case 'X':	ExtraPad = atoi(optarg); break;
 	case 'D':	Debug = atoi(optarg); break;

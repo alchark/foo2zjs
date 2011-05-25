@@ -16,7 +16,12 @@ foo2xqx-wrapper \- Convert Postscript into a XQX printer stream
 is a Foomatic compatible printer wrapper for the \fBfoo2xqx\fP printer driver.
 This script reads a Postscript \fIps-file\fP or standard input
 and converts it to XQX printer format
-for driving the HP LaserJet M1005 MFP
+for driving
+the HP LaserJet P1005/P1006/P1007/P1008,
+the HP LaserJet P1505,
+the HP LaserJet P2014,
+the HP LaserJet M1005 MFP,
+the HP LaserJet M1120 MFP,
 and other XQX-based printers.
 .P
 This script can be used in a standalone fashion, but is intended to
@@ -62,7 +67,8 @@ box;
 7	executive	13	B5
 20	env #10	27	env DL
 28	env C5	34	env B5
-37	env Monarch		
+37	env Monarch	257	16k 197x273
+263	16k 184x260	263	16k 195x270
 .TE
 .TP
 .BI \-n\0 copies
@@ -82,6 +88,9 @@ box;
 .TP
 .BI \-t
 Draft mode.  Every other pixel is white.
+.TP
+.BI \-T\0 density
+Print density (1-5).  The default is 3 (medium).
 .TP
 .BI "\-2 \-3 \-4 \-5 \-6 \-8 \-9 \-10 \-12 \-14 \-15 \-16 \-18"
 Print in N-up.  Requires the \fBpsutils\fP package.

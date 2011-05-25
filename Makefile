@@ -1,3 +1,4 @@
+LANG=C
 UNAME := $(shell uname)
 MACH := $(shell uname -m | sed 's/i.86/x86_32/')
 
@@ -33,6 +34,7 @@ SHAREHC=$(PREFIX)/share/foo2hiperc
 MANDIR=$(PREFIX)/share/man
 DOCDIR=$(PREFIX)/share/doc/foo2zjs/
 INSTALL=install
+ROOT=root
 
 # Pathnames for referenced packages...
 FOODB=$(DESTDIR)/usr/share/foomatic/db/source
@@ -43,6 +45,7 @@ LPgid=-glp
 ifeq ($(UNAME),Darwin)
     LPuid=-oroot
     LPgid=-gwheel
+    ROOT=sudo
 endif
 ifeq ($(UNAME),FreeBSD)
     LPuid=-oroot
@@ -77,6 +80,8 @@ endif
 ifeq ($(UNAME),SunOS)
     MODTIME= `ls -e $$1 | cut -c42-61`
 endif
+
+CUPS_SERVERBIN := $(shell cups-config --serverbin 2>/dev/null)
 
 #
 # Files for tarball
@@ -157,6 +162,7 @@ FILES	=	\
 		slxdecode.c \
 		slxdecode.1in \
 		gipddecode.c \
+		gipddecode.1in \
 		foo2zjs-wrapper.in \
 		foo2zjs-wrapper.1in \
 		foo2hp2600-wrapper.in \
@@ -179,6 +185,7 @@ FILES	=	\
 		foomatic-test \
 		getweb.in \
 		icc2ps/*.[ch] \
+		icc2ps/*.1in \
 		icc2ps/Makefile \
 		icc2ps/AUTHORS \
 		icc2ps/COPYING \
@@ -195,7 +202,7 @@ FILES	=	\
 		usb_printerid.c \
 		usb_printerid.1in \
 		hplj1000 \
-		hplj10xx.rules \
+		hplj10xx.rules* \
 		msexpand \
 		oak.h \
 		foo2oak.c \
@@ -217,8 +224,12 @@ FILES	=	\
 		includer-man \
 		macros.man \
 		regress.txt \
-		printer-profile \
+		printer-profile.sh \
 		printer-profile.1in \
+		freebsd-install \
+		hplj10xx.conf \
+		modify-ppd \
+		command2foo2lava-pjl.c \
 		$(NULL)
 
 # hpclj2600n-0.icm km2430_0.icm km2430_1.icm km2430_2.icm samclp300-0.icm
@@ -232,11 +243,14 @@ PROGS+=		foo2oak oakdecode
 PROGS+=		foo2slx slxdecode
 PROGS+=		foo2hiperc hipercdecode
 PROGS+=		gipddecode
-PROGS+=		printer-profile
+ifneq ($(CUPS_SERVERBIN),)
+    PROGS+=	command2foo2lava-pjl
+endif
 SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
 		foo2xqx-wrapper foo2lava-wrapper foo2qpdl-wrapper \
 		foo2slx-wrapper foo2hiperc-wrapper
 SHELLS+=	foo2zjs-pstops
+SHELLS+=	printer-profile
 MANPAGES=	foo2zjs-wrapper.1 foo2zjs.1 zjsdecode.1
 MANPAGES+=	foo2oak-wrapper.1 foo2oak.1 oakdecode.1
 MANPAGES+=	foo2hp2600-wrapper.1 foo2hp.1
@@ -245,6 +259,7 @@ MANPAGES+=	foo2lava-wrapper.1 foo2lava.1 lavadecode.1 opldecode.1
 MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1 qpdldecode.1
 MANPAGES+=	foo2slx-wrapper.1 foo2slx.1 slxdecode.1
 MANPAGES+=	foo2hiperc-wrapper.1 foo2hiperc.1 hipercdecode.1
+MANPAGES+=	gipddecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 MANPAGES+=	printer-profile.1
 LIBJBG	=	jbig.o jbig_ar.o
@@ -502,12 +517,18 @@ slxdecode: slxdecode.o $(LIBJBG)
 gipddecode: gipddecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
 
+command2foo2lava-pjl: command2foo2lava-pjl.o
+	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@
+
+command2foo2lava-pjl.o: command2foo2lava-pjl.c
+	$(CC) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
+
 #
 # Installation rules
 #
 install: all install-test install-prog install-icc2ps install-extra \
 	    install-crd install-foo install-ppd \
-	    install-gui install-desktop \
+	    install-gui install-desktop install-filter \
 	    install-man install-doc
 	#
 	# If you use CUPS, then restart the spooler:
@@ -516,7 +537,7 @@ install: all install-test install-prog install-icc2ps install-extra \
 	# Now use your printer configuration GUI to create a new printer.
 	#
 	# On Redhat 7.2/7.3/8.0/9.0 and Fedora Core 1-5, run "printconf-gui".
-	# On Fedora Core 6 and Fedora 7/8/9/10/11, run "system-config-printer".
+	# On Fedora 6/7/8/9/10/11/12, run "system-config-printer".
 	# On Mandrake, run "printerdrake"
 	# On Suse 9.x/10.x/11.x, run "yast"
 	# On Ubuntu 5.10/6.06/6.10/7.04, run "gnome-cups-manager"
@@ -588,6 +609,8 @@ install-foo:
 	#
 	@if [ -d $(FOODB) ]; then \
 	    for dir in driver printer opt; do \
+		echo install -d $(FOODB)/$$dir/; \
+		$(INSTALL) -d $(FOODB)/$$dir/; \
 		echo install -m 644 foomatic-db/$$dir/*.xml $(FOODB)/$$dir/; \
 		$(INSTALL) -c -m 644 foomatic-db/$$dir/*.xml $(FOODB)/$$dir/; \
 	    done \
@@ -730,13 +753,14 @@ install-ppd:
 	#
 	# Install PPD files for CUPS
 	#
+	export PATH=$$PATH:`pwd`:; \
 	if [ -x /usr/sbin/ppdmgr -a -s $(VARPPD)/ppdcache ]; then \
 	    $(INSTALL) $(LPgid) -d $(VARPPD)/user; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
 		manuf=`echo "$$ppd" | sed 's/-.*//'`; \
 		$(INSTALL) $(LPgid) -d $(VARPPD)/user/$$manuf; \
-		gzip < $$ppd > $(VARPPD)/user/$$manuf/$$ppd.gz; \
+		modify-ppd <$$ppd | gzip > $(VARPPD)/user/$$manuf/$$ppd.gz; \
 	    done; \
 	    ppdmgr -u; \
 	elif [ -d $(PPD) ]; then \
@@ -750,20 +774,22 @@ install-ppd:
             [ -d $(PPD)/foo2zjs ] || mkdir $(PPD)/foo2zjs; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
-		gzip < $$ppd > $(PPD)/foo2zjs/$$ppd.gz; \
+		modify-ppd <$$ppd | gzip > $(PPD)/foo2zjs/$$ppd.gz; \
 	    done; \
 	fi
+	#
+	export PATH=$$PATH:`pwd`:; \
 	if [ -d $(MODEL) ]; then \
 	    rm -f $(MODEL)/KonicaMinolta*; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
-		gzip < $$ppd > $(MODEL)/$$ppd.gz; \
+		modify-ppd <$$ppd | gzip > $(MODEL)/$$ppd.gz; \
 	    done; \
 	elif [ -d $(LOCALMODEL) ]; then \
 	    rm -f $(LOCALMODEL)/KonicaMinolta*; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
-		gzip < $$ppd > $(LOCALMODEL)/$$ppd.gz; \
+		modify-ppd <$$ppd | gzip > $(LOCALMODEL)/$$ppd.gz; \
 	    done; \
 	fi
 
@@ -795,7 +821,12 @@ install-gui:
 
 USBDIR=/etc/hotplug/usb
 UDEVDIR=/etc/udev/rules.d
+LIBUDEVDIR=/lib/udev/rules.d
 RULES=hplj10xx.rules
+UDEVD=/sbin/udevd
+# For FreeBSD 8.0
+DEVDDIR=/etc/devd
+
 install-hotplug: install-hotplug-test install-hotplug-prog
 
 install-hotplug-test:
@@ -810,12 +841,34 @@ install-hotplug-test:
 	    echo "      ***"; \
 	    exit 1; \
 	fi
+	@if test -r $(LIBUDEVDIR)/*-printers.rules; then \
+	    echo "      ***"; \
+	    echo "      *** Error: system-config-printer-udev is installed!"; \
+	    echo "      ***"; \
+	    echo "      *** Remove it with: (Fedora)"; \
+	    echo "      *** 	# yum remove system-config-printer-udev"; \
+	    echo "      *** OR (Ubuntu, Debian)"; \
+	    echo "      *** 	$$ sudo apt-get remove system-config-printer-udev"; \
+	    echo "      ***"; \
+	    exit 1; \
+	fi
 	# ... OK!
 	#
 
 install-hotplug-prog:
 	if [ -d $(UDEVDIR) ]; then \
-	    $(INSTALL) -c -m 644 $(RULES) $(UDEVDIR)/11-$(RULES); \
+	    rm -f /lib/udev/rules.d/*-hplj10xx.rules; \
+	    version=`$(UDEVD) --version 2>/dev/null`; \
+	    if [ "$$version" = "" ]; then version=0; fi; \
+	    echo "*** udev version $$version"; \
+	    if [ "$$version" -lt 148 ]; then \
+		$(INSTALL) -c -m 644 $(RULES).old $(UDEVDIR)/11-$(RULES); \
+	    else \
+		$(INSTALL) -c -m 644 $(RULES) $(UDEVDIR)/11-$(RULES); \
+	    fi \
+	fi
+	if [ -d $(DEVDDIR) ]; then \
+	    $(INSTALL) -c -m 644 hplj10xx.conf $(DEVDDIR)/; \
 	fi
 	[ -d $(USBDIR) ] || $(INSTALL) -d -m 755 $(USBDIR)/
 	$(INSTALL) -c -m 755 hplj1000 $(USBDIR)/
@@ -838,6 +891,11 @@ install-hotplug-prog:
 	$(USBDIR)/hpljP1505 install-usermap
 	# modprobe usblp
 	$(USBDIR)/hplj1000 install-usblp
+
+install-filter:
+	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
+	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
+	fi
 
 cups:	FRC
 	if [ -x /etc/init.d/cups ]; then \
@@ -880,7 +938,9 @@ uninstall:
 	-rm -f $(MANDIR)/man1/foo2xqx*.1 $(MANDIR)/man1/xqxdecode.1
 	-rm -f $(MANDIR)/man1/opldecode.1 $(MANDIR)/man1/rodecode.1
 	-rm -f $(MANDIR)/man1/foo2hiperc*.1 $(MANDIR)/man1/hipercdecode.1
+	-rm -f $(MANDIR)/man1/gipddecode.1
 	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
+	-rm -f $(MANDIR)/man1/foo2zjs-icc2ps.1
 	-rm -rf /usr/share/foo2zjs/
 	-rm -rf /usr/share/foo2hp/
 	-rm -rf /usr/share/foo2oak/
@@ -899,10 +959,13 @@ uninstall:
 	-rm -f /usr/bin/foo2slx-wrapper /usr/bin/foo2slx /usr/bin/slxdecode
 	-rm -f /usr/bin/foo2hiperc-wrapper /usr/bin/foo2hiperc
 	-rm -f /usr/bin/hipercdecode
+	-rm -f /usr/bin/gipddecode
 	-rm -f /usr/bin/opldecode
 	-rm -f /usr/bin/rodecode
 	-rm -f /usr/bin/foo2zjs-icc2ps
 	-rm -f /usr/bin/foo2zjs-pstops
+	-rm -f /usr/bin/command2foo2lava-pjl
+	-rm -f /usr/lib/cups/filter/command2foo2lava-pjl
 	-rm -f /usr/share/applications/hplj1020.desktop
 	-rm -f /usr/share/pixmaps/hplj1020_icon.png
 	-cd foomatic-db; for i in `find driver opt printer -name "*.xml"`; do \
@@ -928,6 +991,7 @@ clean:
 	-rm -f foo2slx.o slxdecode.o
 	-rm -f foo2hiperc.o hipercdecode.o
 	-rm -f opldecode.o gipddecode.o
+	-rm -f command2foo2lava-pjl.o
 	-rm -f foo2oak.html foo2zjs.html foo2hp.html foo2xqx.html foo2lava.html
 	-rm -f foo2slx.html foo2qpdl.html foo2hiperc.html
 	-rm -f index.html
@@ -947,6 +1011,7 @@ clean:
 #
 zjsdecode.o: zjs.h jbig.h
 foo2zjs.o: zjs.h jbig.h
+foo2oak.o: oak.h jbig.h
 jbig.o: jbig.h
 foo2hp.o: zjs.h jbig.h cups.h
 foo2xqx.o: xqx.h jbig.h
@@ -960,6 +1025,7 @@ qpdldecode.o: jbig.h
 opldecode.o: jbig.h
 slxdecode.o: slx.h jbig.h
 xqxdecode.o: xqx.h jbig.h
+gipddecode.o: slx.h jbig.h
 
 #
 # foo2* Regression tests
@@ -976,13 +1042,14 @@ test:		testzjs testhp
 # foo2zjs Regression tests
 #
 testzjs:	testpage.zm \
-		testpage.zc10 testpage.zc1 testpage.zc2 testpage.zc3 \
+		testpage.zc10 \
 		lj1000.zm lj1020.zm
+# testpage.zc1 testpage.zc2 testpage.zc3 \
 
 testpage.zm: testpage.ps foo2zjs-wrapper foo2zjs Makefile FRC
 	#
 	# Tests will pass only if you are using ghostscript-7.05-24.7
-	# or ghostscript-8.62 (gs.foo)
+	# or ghostscript-8.70 (gs.foo)
 	#
 	# Monochrome test page for Minolta 2200/2300 DL
 	PATH=.:$$PATH time -p foo2zjs-wrapper testpage.ps > $@
@@ -1022,7 +1089,7 @@ lj1020.zm: testpage.ps foo2zjs-wrapper foo2zjs Makefile FRC
 	#
 	# Monochrome test page for HP LJ1020
 	PATH=.:$$PATH time -p foo2zjs-wrapper -r600x600 -P -z1 \
-	    testpage.ps >$@
+	    testpage.ps | sed "/JOBATTR/d" >$@
 	@got=`md5sum $@`; grep -q "$$got" regress.txt || \
 	    { echo "*** Test failure, got $$got"; ls -l $@; exit 1; }
 
@@ -1112,6 +1179,9 @@ xxx.zm: FRC
 
 #
 #	PPD files
+#	
+#	Don't edit the PPD files.  Instead, change the
+#	foomatic/{device,printer,opt}/*.xml files or the "modify-ppd" script.
 #
 FOOPRINT=*.xml
 ppd:
@@ -1125,27 +1195,33 @@ ppd:
 	for i in foomatic-db/printer/$(FOOPRINT); \
 	do \
 	    printer=`basename $$i .xml`; \
-	    echo $$printer; \
 	    case "$$printer" in \
 	    *M1005*|*M1120*)    driver=foo2xqx;; \
 	    *P1[05]0[5678]*)    driver=foo2xqx;; \
 	    *P2014*)            driver=foo2xqx;; \
 	    *1500*|*OAKT*)      driver=foo2oak;; \
-	    *P2035*)		driver=foo2zjs;; \
+	    *1018*|*102[02]*)	driver=foo2zjs-z1;; \
+	    *P2035*)		driver=foo2zjs-z1;; \
+	    *1319*)		driver=foo2zjs-z1;; \
+	    *P110*)		driver=foo2zjs-z2;; \
+	    *P156*)		driver=foo2zjs-z2;; \
+	    *P160*)		driver=foo2zjs-z2;; \
 	    *1635*|*2035*)      driver=foo2oak-z1;; \
 	    *1600W|*16[89]0*)   driver=foo2lava;; \
 	    *4690*)		driver=foo2lava;; \
 	    *2530*|*24[89]0*)   driver=foo2lava;; \
 	    *6115*)             driver=foo2lava;; \
+	    *C110*)             driver=foo2lava;; \
 	    *1600*|*2600*)      driver=foo2hp;; \
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
 	    *C3[1234]00*)        driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
-	    *C5[12568]00*)      driver=foo2hiperc;; \
+	    *C5[12568][05]0*)   driver=foo2hiperc;; \
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
 	    *)                  driver=foo2zjs;; \
 	    esac; \
+	    echo $$driver - $$printer; \
 	    ENGINE=../foomatic/foomatic-db-engine; \
 	    PERL5LIB=$$ENGINE/lib \
 		FOOMATICDB=foomatic-db \
@@ -1162,9 +1238,12 @@ oldppd:
 # Manpage generation.  No, I am not interested in "info" files or
 # HTML documentation.
 #
-man: $(MANPAGES)
+man: $(MANPAGES) man-icc2ps
 
 $(MANPAGES): macros.man includer-man
+
+man-icc2ps:
+	cd icc2ps; $(MAKE) man
 
 .1in.1: 
 	-rm -f $*.1
@@ -1214,10 +1293,12 @@ install-man: man
 	$(INSTALL) -c -m 644 foo2hiperc.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 foo2hiperc-wrapper.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 hipercdecode.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 gipddecode.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
+	cd icc2ps; $(MAKE) install-man
 
 doc: README INSTALL manual.pdf
 
@@ -1235,8 +1316,10 @@ install-doc: doc
 
 GROFF=/usr/local/test/bin/groff
 GROFF=groff
-manual.pdf: $(MANPAGES)
-	-$(GROFF) -t -man $(MANPAGES) | ps2pdf - $@
+manual.pdf: $(MANPAGES) icc2ps/foo2zjs-icc2ps.1
+	-$(GROFF) -t -man \
+	    `ls $(MANPAGES) icc2ps/foo2zjs-icc2ps.1 | sort` \
+	    | ps2pdf - $@
 
 README: README.in
 	rm -f $@
@@ -1365,56 +1448,56 @@ zjsindex: foo2zjs.html archzjs.gif thermometer.gif webphotos
 	ln -sf foo2zjs.html index.html
 	ncftpput -m -f $(FTPSITE) foo2zjs \
 	    index.html style.css archzjs.gif thermometer.gif \
-	    flags.png INSTALL INSTALL.osx zjsfavicon.png \
+	    images/flags.png INSTALL INSTALL.osx images/zjsfavicon.png \
 	    printer-photos/printers.jpg;
 
 oakindex: foo2oak.html archoak.gif thermometer.gif webphotos
 	ln -sf foo2oak.html index.html
 	ncftpput -m -f $(FTPSITE) foo2oak \
 	    index.html style.css archoak.gif thermometer.gif \
-	    flags.png INSTALL \
+	    images/flags.png INSTALL \
 	    printer-photos/printers.jpg;
 
 hpindex: foo2hp.html archhp.gif thermometer.gif webphotos
 	ln -sf foo2hp.html index.html
 	ncftpput -m -f $(FTPSITE) foo2hp \
 	    index.html style.css archhp.gif thermometer.gif \
-	    flags.png INSTALL hpfavicon.png \
+	    images/flags.png INSTALL images/hpfavicon.png \
 	    printer-photos/printers.jpg;
 
 xqxindex: foo2xqx.html archxqx.gif thermometer.gif webphotos
 	ln -sf foo2xqx.html index.html
 	ncftpput -m -f $(FTPSITE) foo2xqx \
 	    index.html style.css archxqx.gif thermometer.gif \
-	    flags.png INSTALL xqxfavicon.png \
+	    images/flags.png INSTALL images/xqxfavicon.png \
 	    printer-photos/printers.jpg;
 
 lavaindex: foo2lava.html archlava.gif thermometer.gif webphotos
 	ln -sf foo2lava.html index.html
 	ncftpput -m -f $(FTPSITE) foo2lava \
 	    index.html style.css archlava.gif thermometer.gif \
-	    flags.png INSTALL lavafavicon.png \
+	    images/flags.png INSTALL images/lavafavicon.png \
 	    printer-photos/printers.jpg;
 
 qpdlindex: foo2qpdl.html archqpdl.gif thermometer.gif webphotos
 	ln -sf foo2qpdl.html index.html
 	ncftpput -m -f $(FTPSITE) foo2qpdl \
 	    index.html style.css archqpdl.gif thermometer.gif \
-	    flags.png INSTALL qpdlfavicon.png \
+	    images/flags.png INSTALL images/qpdlfavicon.png \
 	    printer-photos/printers.jpg;
 
 slxindex: foo2slx.html archslx.gif thermometer.gif webphotos
 	ln -sf foo2slx.html index.html
 	ncftpput -m -f $(FTPSITE) foo2slx \
 	    index.html style.css archslx.gif thermometer.gif \
-	    flags.png INSTALL slxfavicon.png \
+	    images/flags.png INSTALL images/slxfavicon.png \
 	    printer-photos/printers.jpg;
 
 hcindex: foo2hiperc.html archhiperc.gif thermometer.gif webphotos
 	ln -sf foo2hiperc.html index.html
 	ncftpput -m -f $(FTPSITE) foo2hiperc \
 	    index.html style.css archhiperc.gif thermometer.gif \
-	    flags.png INSTALL hipercfavicon.png \
+	    images/flags.png INSTALL images/hipercfavicon.png \
 	    printer-photos/printers.jpg;
 
 foo2zjs.html: warning.html contribute.html resources.html unsupported.html
@@ -1531,3 +1614,6 @@ pksm2bitcmyk: pksm2bitcmyk.c
 
 phorum-logo.gif: archhp.fig
 	fig2dev -L gif -m.25 archhp.fig | giftrans -t "#ffffff" -o $@
+
+w:	all
+	$(ROOT) $(MAKE) install install-hotplug

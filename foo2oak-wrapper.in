@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2oak-wrapper.in,v 1.47 2009/05/11 17:35:55 rick Exp $'
+VERSION='$Id: foo2oak-wrapper.in,v 1.51 2010/07/24 15:59:47 rick Exp $'
 
 #
 # Printer Notes:
@@ -26,6 +26,7 @@ VERSION='$Id: foo2oak-wrapper.in,v 1.47 2009/05/11 17:35:55 rick Exp $'
 #	HP Color LaserJet 1500:	-z0 (mirror bytes)
 #
 #	Kyocera Mita KM-1635:	-z1 (rotate 90)
+#	Kyocera Mita KM-2035:	-z1 (rotate 90)
 #
 
 PROGNAME="$0"
@@ -53,6 +54,8 @@ Usage:
 Normal Options:
 -b bits           Bits per plane (1 or 2) [$BPP]
 -c                Print in color (else monochrome)
+-d duplex         Duplex code to send to printer [$DUPLEX]
+                    1=off, 2=longedge, 3=shortedge
 -m media          Media code to send to printer [$MEDIA]
                     0=auto 1=plain 2=preprinted 3=letterhead 4=graytrans
                     5=prepunched 6=labels 7=bond 8=recycled 9=color
@@ -141,7 +144,7 @@ nup() {
 #
 # N.B. := operator used here, when :- would be better, because "ash"
 # doesn't have :-
-if gs.foo -v >/dev/null 2>&1; then
+if eval gs.foo -v >/dev/null 2>&1; then
         GSBIN=${GSBIN:-gs.foo}
 else
         GSBIN=${GSBIN:-gs}
@@ -373,6 +376,21 @@ set_clipping() {
 }
 
 case "$PAPER" in
+Custom*x*)
+		# Command line only
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		    error "Custom page size '$PAPER' != 1-99999"
+		fi
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=296;        paper=letter;
+                set_clipping 2 100     2 100
+		;;
 Custom*)
 		#%%BeginFeature: *CustomPageSize True
 		#216
@@ -663,7 +681,7 @@ $PREFILTER \
 | ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
     -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null 2>/dev/null) 3>&1 \
 | foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
-	    -M$MIRROR $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
+	    -z$MODEL -M$MIRROR $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
 	    -J "$LPJOB" -U "$USER" \
 	    $BC $AIB $COLOR2MONO -D$DEBUG
 
@@ -675,7 +693,7 @@ if [ -x /usr/bin/logger ]; then
 	"$GSBIN $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS $GAMMAFILE"
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA \
--n$COPIES -d$DUPLEX -s$SOURCE -M$MIRROR $COLOR -b$BPP \
+-n$COPIES -d$DUPLEX -s$SOURCE -z$MODEL -M$MIRROR $COLOR -b$BPP \
 $CLIP_UL $CLIP_LR $CLIP_LOG \
 $BC $AIB $COLOR2MONO"
 fi
