@@ -51,31 +51,6 @@
 	        </constraint>
             </constraints>
 	</enum_val>
-	<enum_val id="ev/foo2zjs-ColorMode-color">
-	    <ev_longname> <en>Color</en> </ev_longname>
-	    <comments><en>
-		Prints in color using the best compromise setting.
-	    </en></comments>
-	    <ev_shortname> <en>Color</en> </ev_shortname>
-	    <ev_driverval>-c</ev_driverval>
-	    <constraints>
-	        <constraint sense="false">
-	    	    <make>HP</make> <model>LaserJet 1000</model>
-	        </constraint>
-	        <constraint sense="false">
-	    	    <make>HP</make> <model>LaserJet 1005</model>
-	        </constraint>
-	        <constraint sense="false">
-	    	    <make>HP</make> <model>LaserJet 1018</model>
-	        </constraint>
-	        <constraint sense="false">
-	    	    <make>HP</make> <model>LaserJet 1020</model>
-	        </constraint>
-	        <constraint sense="false">
-	    	    <make>HP</make> <model>LaserJet 1022</model>
-	        </constraint>
-            </constraints>
-	</enum_val>
 	<enum_val id="ev/foo2zjs-ColorMode-PhotoOnly">
 	    <ev_longname> <en>Color - Photo Only</en> </ev_longname>
 	    <comments><en>

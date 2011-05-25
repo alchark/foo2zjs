@@ -14,14 +14,14 @@
     <constraints>
 	<constraint sense="true">
 	<driver>foo2lava</driver>
-	<arg_defval>ev/foo2lava-MediaType-1</arg_defval>
+	<arg_defval>ev/foo2lava-MediaType-0</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>
-	<enum_val id="ev/foo2lava-MediaType-1">
+	<enum_val id="ev/foo2lava-MediaType-0">
 	    <ev_longname> <en>Plain Paper</en> </ev_longname>
 	    <ev_shortname> <en>plain</en> </ev_shortname>
-	    <ev_driverval>1</ev_driverval>
+	    <ev_driverval>0</ev_driverval>
 	</enum_val>
 	<enum_val id="ev/foo2lava-MediaType-4">
 	    <ev_longname> <en>Transparency</en> </ev_longname>

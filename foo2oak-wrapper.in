@@ -18,12 +18,13 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2oak-wrapper.in,v 1.24 2006/12/17 16:00:06 rick Exp $'
+VERSION='$Id: foo2oak-wrapper.in,v 1.28 2007/06/11 00:48:32 rick Exp $'
 
 PROGNAME="$0"
 BASENAME=`basename $PROGNAME`
 PREFIX=/usr
 SHARE=$PREFIX/share/foo2oak
+PATH=$PATH:/sw/bin:/opt/local/bin
 
 #
 #	Log the command line, for debugging and problem reports
@@ -192,6 +193,17 @@ done
 shift `expr $OPTIND - 1`
 
 #
+# If there is an argument left, take it as the file to print.
+# Else, the input comes from stdin.
+#
+if [ $# -ge 1 ]; then
+    if [ "$LPJOB" = "" ]; then
+	LPJOB="$1"
+    fi
+    exec < $1
+fi
+
+#
 #	Select the ghostscript device to use
 #
 case "$BPP" in
@@ -305,14 +317,38 @@ set_clipping() {
 }
 
 case "$PAPER" in
-[0-9]*x*[0-9])
-		XDIM=`echo "$PAPER" | sed 's/x.*//' `
-		YDIM=`echo "$PAPER" | sed 's/.*x//' `
-		XDIM=`awk -vval=$XDIM 'BEGIN{ print int(val * 1200.0) }' `
-		YDIM=`awk -vval=$YDIM 'BEGIN{ print int(val * 600.0) }' `
-		set_clipping 140 100	140 100
-		paper=letter
-		PAPER=256
+Custom*)
+		#%%BeginFeature: *CustomPageSize True
+		#216
+		#360
+		#0
+		#0
+		#0
+		#pop pop pop pop pop
+
+		TMPFILE=/tmp/cus$$
+		cat >$TMPFILE
+		exec <$TMPFILE
+
+		XDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;p;}'`
+		case "$XDIM" in
+		""|0*)
+		    rm -f $TMPFILE
+		    error "Custom page size XDIM != 1-99999"
+		    ;;
+		esac
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+
+		YDIM=`head -n 1000 $TMPFILE | sed -n '/CustomPageSize/{n;n;p;}'`
+		case "$YDIM" in
+		""|0*)
+		    rm -f $TMPFILE
+		    error "Custom page size YDIM != 1-99999"
+		    ;;
+		esac
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		PAPER=1;        paper=letter;
+                set_clipping 2 100     2 100
 		;;
 1|letter)	PAPER=1;	paper=letter;    XDIM="10200"; YDIM="6600"
 		set_clipping 140 100	140 100
@@ -342,17 +378,6 @@ case "$RES" in
 2400x600)	XDIM=`expr $XDIM \* 2`;;
 esac
 DIM="${XDIM}x${YDIM}"
-
-#
-# If there is an argument left, take it as the file to print.
-# Else, the input comes from stdin.
-#
-if [ $# -ge 1 ]; then
-    if [ "$LPJOB" = "" ]; then
-	LPJOB="$1"
-    fi
-    exec < $1
-fi
 
 #
 # Filter thru psnup if N-up printing has been requested
@@ -574,7 +599,7 @@ $PREFILTER \
 #
 if [ $DEBUG = 0 -a -x /usr/bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- \
-	"gs $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPT"
+	"gs $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS"
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2oak -r$RES -g$DIM -p$PAPER -m$MEDIA \
 -n$COPIES -d$DUPLEX -s$SOURCE $COLOR -b$BPP $CLIP_UL $CLIP_LR $CLIP_LOG \
@@ -590,6 +615,7 @@ if [ $DEBUG -eq 0 ]; then
 	file="$ICCTMP.$i"
 	[ -f $file ] && rm -f $file
     done
+    [ -f "$TMPFILE" ] && rm -f $TMPFILE
 fi
 
 exit 0

@@ -1,5 +1,5 @@
 /*
- * $Id: okidecode.c,v 1.9 2006/12/07 13:33:50 rick Exp $
+ * $Id: okidecode.c,v 1.12 2007/06/27 22:23:24 rick Exp $
  */
 
 /*b
@@ -40,6 +40,7 @@ char	*RawFile;
 char	*DecFile;
 int	PrintOffset = 0;
 int	PrintHexOffset = 0;
+FILE	*FpRaw[4];
 
 void
 debug(int level, char *fmt, ...)
@@ -174,7 +175,13 @@ decode(FILE *fp)
 		printf("%d:	", curOff);
 	    else if (PrintHexOffset)
 		printf("%6x:	", curOff);
-	    fputs(buf, stdout);
+	    if (buf[0] == '\033')
+	    {
+		printf("\\033");
+		fputs(buf+1, stdout);
+	    }
+	    else
+		fputs(buf, stdout);
 	    curOff += strlen(buf);
 	    if (strcmp(buf, "@PJL ENTER LANGUAGE=HIPERC\n") == 0)
 		break;
@@ -269,6 +276,15 @@ decode(FILE *fp)
 		    if (blklen >= 11)
 			printf("...");
 		    printf("\n");
+		    if (RawFile && !FpRaw[pn])
+		    {
+			sprintf(buf, "%s-%02d-%d.jbg",
+					RawFile, pageNum, pn);
+			FpRaw[pn] = fopen(buf, "w");
+			fwrite(bih[pn], 1, 20, FpRaw[pn]);
+		    }
+		    if (FpRaw[pn])
+			fwrite(blk, 1, blklen, FpRaw[pn]);
 		    if (DecFile)
 		    {
 			size_t		cnt;
@@ -290,9 +306,21 @@ decode(FILE *fp)
 			for (i = 0; i < blklen; ++i)
 			{
 			    rc = jbg_dec_in(&s[pn], &blk[i], 1, &cnt);
-			    if (rc == JBG_EAGAIN && rc == JBG_OK)
+			    if (rc == JBG_OK)
+				break;
+			    if (rc != JBG_EAGAIN && rc != JBG_OK)
 				error(1, "jbg_dec_in rc=%d (%s)\n",
 				    rc, jbg_strerror(rc, 0));
+			}
+			if (0) {
+			    printf("\ti=%d (%s)\n", i,  jbg_strerror(rc, 0));
+			    len = jbg_dec_getsize(&s[pn]);
+			    image = jbg_dec_getimage(&s[pn], 0);
+			    printf("\tlen=%d image=%lx (%s)\n",
+				len, (long) image, jbg_strerror(rc, 0));
+			    for (i=0; i<len; ++i)
+				if (image[i])
+				    printf("image[%d] = %x\n", i, image[i]);
 			}
 			if (rc == JBG_OK)
 			{
@@ -349,7 +377,13 @@ decode(FILE *fp)
 	    printf("%d:	", curOff);
 	else if (PrintHexOffset)
 	    printf("%6x:	", curOff);
-	fputs(buf, stdout);
+	if (buf[0] == '\033')
+	{
+	    printf("\\033");
+	    fputs(buf+1, stdout);
+	}
+	else
+	    fputs(buf, stdout);
 	curOff += strlen(buf);
 	if (strcmp(buf, "@PJL ENTER LANGUAGE=HIPERC\n") == 0)
 	    break;

@@ -41,7 +41,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hp.c,v 1.36 2006/12/07 13:24:30 rick Exp $";
+static char Version[] = "$Id: foo2hp.c,v 1.38 2007/07/15 14:31:55 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,6 +91,8 @@ int	LogicalOffsetY = 0;
 int	LogicalClip = LOGICAL_CLIP_X | LOGICAL_CLIP_Y;
 int	SaveToner = 0;
 int	PageNum = 0;
+
+int	IsCUPS = 0;
 
 FILE	*EvenPages = NULL;
 typedef struct
@@ -526,7 +528,7 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
 void
 start_bitmap_page(int w, int h, int nbie, FILE *ofp)
 {
-    //static int		pageno = 0;
+    static int		pageno = 0;
     int			nitems;
 
     nitems = 13;
@@ -549,7 +551,10 @@ start_bitmap_page(int w, int h, int nbie, FILE *ofp)
 
     //item_uint32_write(ZJI_OFFSET_X,            LogicalOffsetX, ofp);
     //item_uint32_write(ZJI_OFFSET_Y,            LogicalOffsetY, ofp);
-    //item_uint32_write(ZJI_MINOLTA_PAGE_NUMBER, ++pageno,       ofp);
+    ++pageno;
+    //item_uint32_write(ZJI_MINOLTA_PAGE_NUMBER, pageno,       ofp);
+    if (IsCUPS)
+	fprintf(stderr, "PAGE: %d %d\n", pageno, Copies);
 }
 
 void
@@ -1004,7 +1009,8 @@ read_and_clip_image(unsigned char *buf,
 		error(1, "Premature EOF(2) on input at y=%d\n", y);
 	}
 
-	memset(rowp, 0, bpl16);
+	if (bpl != bpl16)
+	    memset(rowp, 0, bpl16);
 	rc = fread(rowp, bpl, 1, ifp);
 	if (rc == 0 && y == 0 && !UpperLeftY && !UpperLeftX)
 	    goto eof;
@@ -1664,6 +1670,9 @@ main(int argc, char *argv[])
 
     argc -= optind;
     argv += optind;
+
+    if (getenv("DEVICE_URL"))
+	IsCUPS = 1;
 
     start_doc(stdout);
 

@@ -1,3 +1,53 @@
+==============================================================================
+INSTALLATION NOTES - HP LaserJet 1018/1020
+==============================================================================
+by Rick Richardson 04/21/07
+
+1) Browse to:
+    http://developer.apple.com/tools/download/
+
+   Download and install "Xcode", the C compiler.
+
+2) Browse to:
+    http://www.finkproject.org/download/
+
+    Download and install "fink".
+
+3) Do:
+    $ apt-get install ghostscript
+
+4) Browse to:
+    http://www.linux-foundation.org/en/OpenPrinting/MacOSX/foomatic
+
+    and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper).
+    If you are installing from source:
+
+    $ ./configure --prefix=/usr
+    $ make
+    $ sudo make install
+
+5) Now install foo2zjs.  Browse to:
+    http://foo2zjs.rkkda.com/
+
+    and follow the instructions.
+
+6) Now configure the printer.  Browse to:
+    http://foo2zjs.rkkda.com/macosx/
+
+7) You must send a firmware file to the printer each time you power it up:
+
+    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+	-OR-
+    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+
+
+
+
+
+
+
+
+===============================================================================
 INSTALLATION NOTES -- foo2zjs + magicolor 2200DL + OSX
 ===============================================================================
 by Clint Morgan <clint@morgantechnologies.com> - 12/29/2003
@@ -10,10 +60,8 @@ of foo2zjs on a Mac running OS X, specifically 10.3 (Panther), so you can print
 to a magicolor 2200DL.  However, the same instructions should apply to other
 foo2zjs compatible printers and OS X 10.2 (Jaguar) or newer.
 
-Further more, these notes assume your printer is hooked up on a network.  I
-assume you could use a DB25-to-USB conversion cable to hook your printer
-directly to your Mac.  In that case, these instructions will still benefit
-you, but you will need to adjust item 3e of these instructions accordingly.
+These notes are for a network attached printer.  USB printers will not
+work right now because OSX doesn't have a raw USB device like linux does.
 
 These instructions are as-is.  I can't guarantee they will work for everyone,
 that I'll be able to answer any questions, nor that any URLs mentioned in these
@@ -142,6 +190,14 @@ INSTALLATION
    g) Select the make of your printer.  This is "Minolta" for the 2200DL.
    h) Select the model of your printer.
 
+HP LASERJET 1000/1005/1018/1020 NOTES
+-------------------------------------
+    You must send a firmware file to the printer each time you power it
+    up.  If you downloaded the extra files for the HP above, a typical
+    command line to load the firmware would be:
+
+                lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+                lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
 
 YOU'RE DONE
 -----------

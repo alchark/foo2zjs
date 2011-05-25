@@ -5,15 +5,8 @@ This program converts pbm (B/W) images and 1-bit-per-pixel cmyk images
 (both produced by ghostscript) to Zenographics ZJ-stream format. There
 is some information about the ZJS format at http://ddk.zeno.com.
 
-With this utility, you can print to some HP and Minolta/QMS printers,
-such as these:
-     - Minolta/QMS 2300 DL	B/W and color
-     - Minolta/QMS 2200 DL	B/W and color
-     - Minolta/QMS 2430 DL	B/W and color
-     - HP LaserJet 1000		B/W
-     - HP LaserJet 1005		B/W
-     - HP LaserJet 1018		B/W
-     - HP LaserJet 1020		B/W
+With this utility, you can print to some HP printers, such as these:
+     - HP LaserJet M1005 MFP		B/W
 
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
@@ -21,8 +14,8 @@ also uses Markus Kuhn's jbig-kit compression library (included, but
 also available at http://www.cl.cam.ac.uk/~mgk25/jbigkit/).
 
 The program was overhauled by Rick Richardson to limit data chunk size
-to 65536 bytes, add command line options, add color support for the
-Minolta/QMS 2300DL, and other miscellaneous features.
+to 65536 bytes, add command line options, add color support,
+and other miscellaneous features.
 
 You can contact the current author at mailto:rick.richardson@comcast.net
 
@@ -55,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2xqx.c,v 1.14 2006/12/07 13:24:31 rick Exp $";
+static char Version[] = "$Id: foo2xqx.c,v 1.16 2007/07/15 14:31:56 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,6 +101,8 @@ int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
 
+int	IsCUPS = 0;
+
 FILE	*EvenPages = NULL;
 typedef struct
 {
@@ -136,28 +131,27 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"   foo2zjs [options] <pbmraw-file >zjs-file\n"
+"   foo2xqx [options] <pbmraw-file >xqx-file\n"
 "\n"
 "	Convert Ghostscript pbmraw format to a monochrome ZJS stream,\n"
-"	for driving the Minolta/QMS 2300 DL network color laser printer\n"
-"	and other Zenographics-based black and white printers.\n"
+"	for driving the HP LaserJet M1005 MFP laser printer.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"
 "		-sPAPERSIZE=letter -r1200x600 -sDEVICE=pbmraw \\ \n"
 "		-sOutputFile=- - < testpage.ps \\ \n"
-"	| foo2zjs -r1200x600 -g10200x6600 -p1 >testpage.zm\n"
+"	| foo2xqx -r1200x600 -g10200x6600 -p1 >testpage.zm\n"
 "\n"
-"   foo2zjs [options] <bitcmyk-file >zjs-file\n"
-"   foo2zjs [options] <pksmraw-file >zjs-file\n"
+"   foo2xqx [options] <bitcmyk-file >xqx-file\n"
+"   foo2xqx [options] <pksmraw-file >xqx-file\n"
 "\n"
 "	Convert Ghostscript bitcmyk or pksmraw format to a color ZJS stream,\n"
-"	for driving the Minolta/QMS 2300 DL network color laser printer\n"
+"	for driving the HP LaserJet M1005 MFP color laser printer\n"
 "	N.B. Color correction is expected to be performed by ghostscript.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"
 "	    -sPAPERSIZE=letter -g10200x6600 -r1200x600 -sDEVICE=bitcmyk \\ \n"
 "	    -sOutputFile=- - < testpage.ps \\ \n"
-"	| foo2zjs -r1200x600 -g10200x6600 -p1 >testpage.zc\n"
+"	| foo2xqx -r1200x600 -g10200x6600 -p1 >testpage.zc\n"
 "\n"
 "Normal Options:\n"
 "-c                Force color mode if autodetect doesn't work\n"
@@ -444,6 +438,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     unsigned long	w, h;
     int			nitems;
     int			pause = 0;
+    static int		pageno = 0;
 
     /* error handling */
     if (!current)
@@ -495,6 +490,10 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     }
     item_uint32_write(XQXI_DMPAPER,             PaperCode,      ofp);
     item_uint32_write(XQXI_END,                 0xdeadbeef,     ofp);
+
+    ++pageno;
+    if (IsCUPS)
+	fprintf(stderr, "PAGE: %d %d\n", pageno, Copies);
 }
 
 void
@@ -1398,6 +1397,9 @@ main(int argc, char *argv[])
 
     argc -= optind;
     argv += optind;
+
+    if (getenv("DEVICE_URL"))
+	IsCUPS = 1;
 
     Bpp = ResX / 600;
     ResX = 600;

@@ -56,7 +56,20 @@
 
 
 
-*VariablePaperSize: False
+*HWMargins: 11.34 11.34 11.34 11.34
+*VariablePaperSize: True
+*MaxMediaWidth: 100000
+*MaxMediaHeight: 100000
+*NonUIOrderDependency: 135 AnySetup *CustomPageSize
+*CustomPageSize True: "pop pop pop pop pop
+%% FoomaticRIPOptionSetting: PageSize=Custom"
+*End
+*FoomaticRIPOptionSetting PageSize=Custom: "-pCustom.%0x%1 "
+*ParamCustomPageSize Width: 1 points 36 100000
+*ParamCustomPageSize Height: 2 points 36 100000
+*ParamCustomPageSize Orientation: 3 int 0 0
+*ParamCustomPageSize WidthOffset: 4 points 0 0
+*ParamCustomPageSize HeightOffset: 5 points 0 0
 
 *FoomaticIDs: HP-LaserJet_1018 foo2zjs
 *FoomaticRIPCommandLine: "foo2zjs-wrapper %A"

@@ -1,3 +1,154 @@
+2007-07-18	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava: Puts DOTS/WHITEDOTS immediately after JBIG, for 2490.
+
+2007-07-15	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hp foo2lava foo2oak foo2qpdl foo2xqx foo2zjs:
+	    If called by CUPS, print page accounting stuff to stderr.
+	    This is a misfeature of CUPS only.
+
+2007-07-12	Rick Richardson <rick.richardson@comcast.net>
+	* foo2{zjs,lava,xqx}-wrapper: Bug: color && res=600
+	* lavadecode: Bug: -d decfile 
+
+2007-07-01	Rick Richardson <rick.richardson@comcast.net>
+	* KonicaMinolta-magicolor_2530_DL.xml and .ppd:
+	    Change IEEE-1284 string.
+
+2007-06-29	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: Change to limit chunk size to 0x80000 for CLP-600.
+
+2007-06-27	Rick Richardson <rick.richardson@comcast.net>
+	* qpdldecode: Increase buffer to 5120*1024.
+
+2007-06-24	Rick Richardson <rick.richardson@comcast.net>
+	* qpdldecode: xres/yes decode.
+
+2007-06-23	Rick Richardson <rick.richardson@comcast.net>
+	* qpdldecode: Put in want and got for the checksum.
+
+2007-06-10	Rick Richardson <rick.richardson@comcast.net>
+	* *-wrapper: MAC OS X: Add /opt/local/bin (gs) to PATH for MAC OS X
+	    DarwinPorts.
+
+2007-06-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava: foomatic entries for 2480.
+	* foo2lava: ICM entries for 2530, 2490, 2530
+	* foo2qpdl: ICM entries for cc none.
+	* foo2lava: custom page size
+
+2007-06-04	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava: Add -z1 (2480MF) to produce OPL data.
+
+2007-06-02	Rick Richardson <rick.richardson@comcast.net>
+	* opldecode: Decode OPL print streams, e.g.  magicolor 2480 MF.
+
+2007-06-01	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: Change ICM from -z0 to -C10 -Gsamclp300-0.icm
+	* getweb: Add 300, 600, 3160, 6110 to get profiles from the web.
+
+	    $ make
+	    $ ./getweb 300 	# or 3160, 6110
+	    # make install cups
+
+	    Delete Samsung CLP-300/600, CLX-3160, Xerox Phaser 6110/6115MFP
+	    and recreate them again.
+
+2007-05-16	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl-wrapper: fix it again.  NOTE: use only gs 7.07 OR gs 8.54+
+	to print color!!!!  Ubuntu has a problem with gs 8.15!!!
+
+2007-05-15	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl-wrapper: Fix gamma for black text (black-text.ps).
+	    For Samsung CLP-300/600, CLX-3160, Xerox Phaser 6110/6115MFP.
+
+2007-05-08	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: Implement Custom Page Size.
+	* foo2zjs, foo2lava, foo2xqx: Implement Custom Page Size.
+	* *.ppd: Implement Custom Page Size.
+
+	$ lpr -Php1022 -o PageSize=Custom.4x6in ~/testpage.ps
+
+2007-04-27	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl.c: Fix bug with 600x600 resolution.
+	* foo2qpdl.c: COLORMODE=MONO if Mode==MODE_MONO
+
+2007-04-24	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: Install in /usr/share/ppd/foo2zjs (Debian 4.0).
+
+2007-04-18	Rick Richardson <rick.richardson@comcast.net>
+	* Doc: INSTALL.osx improved.
+
+2007-04-13	Rick Richardson <rick.richardson@comcast.net>
+	* Add: Xerox Phaser 6115MFP
+
+2007-04-11	Rick Richardson <rick.richardson@comcast.net>
+	* getweb: MAC OS X: use 'curl' instead of 'wget'
+	* *-wrapper: MAC OS X: Add /sw/bin (gs) to PATH for MAC OS X fink.
+
+2007-04-02	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: Fix logging: GAMMAFILE, GSOPTS
+
+2007-03-13	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl: Add ICM profiles to PPD files.
+
+2007-03-11	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl-wrapper: models -z0, -z1
+
+2007-03-10	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl.c: Implement -d4, -d5 (manual duplex)
+	* foo2qpdl: PPD et al.
+
+2007-03-09	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl.c: Implement -t (Save Toner)
+	* foo2qpdl.c: Implement -2/3/4/etc. (Nup)
+	* foo2qpdl.c: RECTYPE 0x0 is per page.
+
+2007-03-08	Rick Richardson <rick.richardson@comcast.net>
+	* manual.pdf: pdfbookmark -count
+	* Xerox-Phaser-6110.xml: autodetect
+	* Xerox-Phaser-6110.ppd: autodetect
+
+2007-03-03	Rick Richardson <rick.richardson@comcast.net>
+	* Add:	foo2qpdl et al for Xerox Phaser 6110.
+
+2007-02-27	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c: Cosmetic: \033&l0H instead of \f.
+
+2007-02-26	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c: Insert formfeed (\f).
+
+2007-02-25	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl.c: pn goes from 4, 1, 2, 3
+	* foo2lava.c: config image data command #=4(2).
+
+2007-02-24	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl.c: blp16 for color
+    
+2007-02-20	Rick Richardson <rick.richardson@comcast.net>
+	* Add:	foo2qpdl et al for Samsung CLP-300, CLP-600, CLX-3160.
+		Only JBIG (type 0x13) compression is implemented.
+		Alpha quality.
+2007-02-04	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c:  Set \033*r-1004U for color.
+
+2007-02-03	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c:  Set XOFFSET/YOFFSET to ResX / 6.
+	* foo2lava.c:  26 byte config image data command #=4(2).
+	* foo2lava.c:  Pad JBIG data to a multiple of 32 bytes.
+
+2007-01-28	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c:  put in 8 or 26 byte config image data command.
+	* foo2lava-MediaType.xml: use -m0 for plain paper.
+
+2007-01-27	Rick Richardson <rick.richardson@comcast.net>
+	* foo2lava.c:  Pad JBIG data to a multiple of 16 bytes.
+
+2007-01-20	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000: Add "foo2zjs: " to the output.
+
+2007-01-08	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: bug with install-hotplug and hplj1000
+
 2006-12-24	Rick Richardson <rick.richardson@comcast.net>
 	* foo2lava: Add black/non-black pixel counts.  Ditto for color.
 

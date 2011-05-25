@@ -6,7 +6,13 @@ This program converts pbm (B/W) images and 1-bit-per-pixel cmyk images
 
 With this utility, you can print to some HP and Minolta/QMS printers,
 such as these:
+    Model 0:
+     - Konica Minolta magicolor 2490 MF		B/W and color
      - Konica Minolta magicolor 2530 DL		B/W and color
+     - Xerox Phaser 6115MFP			B/W and color
+
+    Model 1:
+     - Konica Minolta magicolor 2480 MF		B/W and color
 
 AUTHORS
 It also uses Markus Kuhn's jbig-kit compression library (included, but
@@ -43,7 +49,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.10 2006/12/24 06:22:52 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.26 2007/07/19 02:44:31 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,6 +71,7 @@ int	ResX = 1200;
 int	ResY = 600;
 int	Bpp = 1;
 int	PaperCode = 1;
+char	*PaperStr = "na_letter_8.5x11in";
 int	PageWidth = 1200 * 8.5;
 int	PageHeight = 600 * 11;
 int	UpperLeftX = 0;
@@ -75,16 +82,16 @@ int	Copies = 1;
 int	Duplex = 1;
 int	SourceCode = 255;
 int	MediaCode = 0;
+char	*MediaStr = "plain";
 char	*Username = NULL;
 char	*Filename = NULL;
 int	Mode = 0;
 		#define MODE_MONO	1
 		#define MODE_COLOR	2
 int	Model = 0;
-		#define MODEL_2300DL	0
-		#define MODEL_HP1020	1
-		#define MODEL_2530DL	2
-		#define MODEL_LAST	2
+		#define MODEL_2530DL	0
+		#define MODEL_2480MF	1
+		#define MODEL_LAST	1
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -107,6 +114,8 @@ int	BihH;
 int	Dots[4];
 int	TotalDots;
 
+int	IsCUPS = 0;
+
 FILE	*EvenPages = NULL;
 typedef struct
 {
@@ -125,7 +134,7 @@ long JbgOptions[5] =
     /* L0 */
     128,
     /* MX */
-    16,
+    0,
     /* MY */
     0
 };
@@ -193,7 +202,7 @@ usage(void)
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
-"-z model          Model: 0=2300DL 1=hp1020 [%d]\n"
+"-z model          Model: 0=2530DL (LAVAFLOW), 1=2480MF (OPL) [%d]\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -394,27 +403,101 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
     if (current->len != 20)
 	error(1,"wrong BIH length\n"); 
 
+    if (Model == MODEL_2480MF)
+    {
+	int w, h, x = 0;
+
+	switch (planeNum)
+	{
+	case 3: x = 0x00FFFF; break;
+	case 2: x = 0xFF00FF; break;
+	case 1: x = 0xFFFF00; break;
+	}
+	fprintf(fp, "RasterObject.Planes=%06X,0,0,0,0,0,0;", x);
+
+	/* startpage, jbig_bih, jbig_bid, jbig_end, endpage */
+	w = (((long) current->data[ 4] << 24)
+	    | ((long) current->data[ 5] << 16)
+	    | ((long) current->data[ 6] <<  8)
+	    | (long) current->data[ 7]);
+	h = (((long) current->data[ 8] << 24)
+	    | ((long) current->data[ 9] << 16)
+	    | ((long) current->data[10] <<  8)
+	    | (long) current->data[11]);
+	fprintf(fp, "RasterObject.Width=%d;", w);
+	fprintf(fp, "RasterObject.Height=%d;", h);
+    }
+
     for (current = *root; current && current->len; current = current->next)
     {
 	if (current == *root)
 	{
-	    fprintf(fp, "\033*b20V");
-	    fwrite(current->data, 1, current->len, fp);
+	    switch (Model)
+	    {
+	    case MODEL_2530DL:
+		fprintf(fp, "\033*b20V");
+		fwrite(current->data, 1, current->len, fp);
+		break;
+	    case MODEL_2480MF:
+		fprintf(fp, "RasterObject.Data#%d=", (int) current->len);
+		fwrite(current->data, 1, current->len, fp);
+		fprintf(fp, ";");
+		break;
+	    }
 	}
 	else
 	{
+	    int i;
+	    int pad;
+	    #define PAD 32
+
 	    len = current->len;
 	    next = current->next;
-	    fprintf(fp, "\033*b%d%s", len, next ? "V" : "W");
-	    fwrite(current->data, 1, len, fp);
+	    if (!next || !next->len)
+                pad = PAD * ((len+PAD-1)/PAD) - len;
+            else
+                pad = 0;
+	    switch (Model)
+	    {
+	    case MODEL_2530DL:
+		fprintf(fp, "\033*b%d%s", len + pad, next ? "V" : "W");
+		fwrite(current->data, 1, len, fp);
+		for (i = 0; i < pad; i++)
+		    putc(0, fp);
+		break;
+	    case MODEL_2480MF:
+		fprintf(fp, "RasterObject.Data#%d=", len + pad);
+		fwrite(current->data, 1, len, fp);
+		for (i = 0; i < pad; i++)
+		    putc(0, fp);
+		fprintf(fp, ";");
+		break;
+	    }
 	}
     }
 
     free_chain(*root);
 
-    //chunk_write(ZJT_END_JBIG, 0, 0, fp);
-    //if (planeNum)
-	//chunk_write(ZJT_END_PLANE, 0, 0, fp);
+    switch (planeNum)
+    {
+    case 0: case 4:
+	fprintf(fp, "\033*x%dK", Dots[3]);
+	fprintf(fp, "\033*x%dW", TotalDots - Dots[3]);
+	break;
+    case 3:
+	fprintf(fp, "\033*x%dY", Dots[0]);
+	fprintf(fp, "\033*x%dU", TotalDots - Dots[0]);
+	break;
+    case 2:
+	fprintf(fp, "\033*x%dM", Dots[1]);
+	fprintf(fp, "\033*x%dV", TotalDots - Dots[1]);
+	break;
+    case 1:
+	fprintf(fp, "\033*x%dC", Dots[2]);
+	fprintf(fp, "\033*x%dZ", TotalDots - Dots[2]);
+	break;
+    }
+
     return 0;
 }
 
@@ -423,6 +506,8 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 {
     BIE_CHAIN		*current = *root;
     unsigned long	w, h;
+    int			i, np;
+    static int		pageno = 0;
 
     /* error handling */
     if (!current)
@@ -443,43 +528,76 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	    | (long) current->data[11]);
     TotalDots = w*h;
 
-    fprintf(ofp, "\033&l%dO", 0);
-    fprintf(ofp, "\033*r%dU", Mode == MODE_COLOR ? 1004 : 1);
-    fprintf(ofp, "\033*g%dW", Mode == MODE_COLOR ? 26 : 8);
-    fprintf(ofp, "\033*b%dM", 1234);
-    fprintf(ofp, "\033&l%dA", PaperCode);
-    fprintf(ofp, "\033&l%dH", SourceCode);
-    fprintf(ofp, "\033&l%dM", MediaCode);
-    fprintf(ofp, "\033&l%dE", 0);
-    fprintf(ofp, "\033*r%dS", (int) w);
-    fprintf(ofp, "\033*r%dT", (int) h);
-    fprintf(ofp, "\033&l%dU", 0);
-    fprintf(ofp, "\033&l%dZ", 0);
-    fprintf(ofp, "\033*p%dX", 200);
-    fprintf(ofp, "\033*p%dY", 200);
+    switch (Model)
+    {
+    case MODEL_2530DL:
+	fprintf(ofp, "\033&l%dO", 0);
+	fprintf(ofp, "\033*r%dU", Mode == MODE_COLOR ? -1004 : 1);
+	fprintf(ofp, "\033*g%dW", Mode == MODE_COLOR ? 26 : 8);
+	putc(2, ofp);
+	putc(nbie, ofp);
+	np = Mode == MODE_COLOR ? 4 : 1;
+	for (i = 0; i < np; ++i)
+	{
+	    putc(ResX>>8, ofp);
+	    putc(ResX, ofp);
+	    putc(ResY>>8, ofp);
+	    putc(ResY, ofp);
+	    putc(0, ofp);
+	    //putc(Mode == MODE_COLOR ? 2 : 0, ofp);	// Number of bpc
+	    putc(2, ofp);
+	}
+	fprintf(ofp, "\033*b%dM", 1234);
+	fprintf(ofp, "\033&l%dA", PaperCode);
+	if (PaperCode == 101)
+	{
+	    fprintf(ofp, "\033&f%dG", PageHeight * 720 / ResY);	// Custom Y
+	    fprintf(ofp, "\033&f%dF", PageWidth * 720 / ResX);	// Custom X
+	}
+	fprintf(ofp, "\033&l%dH", SourceCode);
+	fprintf(ofp, "\033&l%dM", MediaCode);
+	fprintf(ofp, "\033&l%dE", 0);
+	fprintf(ofp, "\033*r%dS", (int) w);
+	fprintf(ofp, "\033*r%dT", (int) h);
+	fprintf(ofp, "\033&l%dU", 0);
+	fprintf(ofp, "\033&l%dZ", 0);
+	fprintf(ofp, "\033*p%dX", ResX / 6);
+	fprintf(ofp, "\033*p%dY", ResX / 6);
 
-    fprintf(ofp, "\033*r1A");
+	fprintf(ofp, "\033*r1A");
+	break;
+    case MODEL_2480MF:
+	fprintf(ofp, "MediaSize=%s;", PaperStr);
+	fprintf(ofp, "MediaType=%s;", MediaStr);
+	fprintf(ofp, "MediaInputTrayCheck=top;");
+	fprintf(ofp, "RasterObject.BitsPerPixel=1;");
+	break;
+    }
 
     if ((PageNum & 1) == 0 && EvenPages)
 	SeekMedia = ftell(EvenPages) - 4;
+
+    ++pageno;
+    if (IsCUPS)
+	fprintf(stderr, "PAGE: %d %d\n", pageno, Copies);
 }
 
 void
 end_page(FILE *ofp)
 {
-    if (Mode == MODE_COLOR)
+    switch (Model)
     {
-	fprintf(ofp, "\033*x%dY", Dots[0]);
-	fprintf(ofp, "\033*x%dU", TotalDots - Dots[0]);
-	fprintf(ofp, "\033*x%dM", Dots[1]);
-	fprintf(ofp, "\033*x%dV", TotalDots - Dots[1]);
-	fprintf(ofp, "\033*x%dC", Dots[2]);
-	fprintf(ofp, "\033*x%dZ", TotalDots - Dots[2]);
+    case MODEL_2530DL:
+	fprintf(ofp, "\033*rC");
+	if (0)
+	    fprintf(ofp, "\f");		// Eject page
+	else
+	    fprintf(ofp, "\033&l0H");	// Eject page
+	break;
+    case MODEL_2480MF:
+	fprintf(ofp, "Event=EndOfPage;");
+	break;
     }
-    fprintf(ofp, "\033*x%dK", Dots[3]);
-    fprintf(ofp, "\033*x%dW", TotalDots - Dots[3]);
-
-    fprintf(ofp, "\033*r0C");
 }
 
 int
@@ -518,6 +636,9 @@ output_jbig(unsigned char *start, size_t len, void *cbarg)
 {
     BIE_CHAIN	*current, **root = (BIE_CHAIN **) cbarg;
     int		size = 65536;	// Printer does strange things otherwise.
+
+    if (Model == MODEL_2480MF)
+	size = 32768;
 
     if ( (*root) == NULL)
     {
@@ -575,41 +696,63 @@ start_doc(FILE *fp)
     time_t	now;
     struct tm	*tmp;
 
-    now = time(NULL);
-    tmp = localtime(&now);
-    strftime(buf, sizeof(buf), "%m/%d/%Y", tmp);
-
-    fprintf(fp, "\033%%-12345X@PJL JOB NAME=\"%s\"\n",
-	Filename ? Filename : "stdin");
-    fprintf(fp, "\033%%-12345X@PJL JOB USERNAME=\"%s\"\n",
-	Username ? Username : "");
-    fprintf(fp, "\033%%-12345X@PJL JOB TIMESTAMP=\"%s\"\n", buf);
-    #ifdef linux
+    switch (Model)
     {
-	struct utsname u;
+    case MODEL_2530DL:
+	now = time(NULL);
+	tmp = localtime(&now);
+	strftime(buf, sizeof(buf), "%m/%d/%Y", tmp);
 
-	u.release[0] = 0;
-	uname(&u);
+	fprintf(fp, "\033%%-12345X@PJL JOB NAME=\"%s\"\n",
+	    Filename ? Filename : "stdin");
+	fprintf(fp, "\033%%-12345X@PJL JOB USERNAME=\"%s\"\n",
+	    Username ? Username : "");
+	fprintf(fp, "\033%%-12345X@PJL JOB TIMESTAMP=\"%s\"\n", buf);
+	#ifdef linux
+	{
+	    struct utsname u;
 
-	fprintf(fp, "\033%%-12345X@PJL JOB OSINFO=\"Linux/%s\"\n", u.release);
+	    u.release[0] = 0;
+	    uname(&u);
+
+	    fprintf(fp, "\033%%-12345X@PJL JOB OSINFO=\"Linux/%s\"\n",
+		    u.release);
+	}
+	#else
+	    fprintf(fp, "\033%%-12345X@PJL JOB OSINFO=\"%s\"\n", "Unknown");
+	#endif
+	fprintf(fp, "\033%%-12345X@PJL ENTER LANGUAGE=LAVAFLOW\n");
+	fprintf(fp, "\033E");
+	fprintf(fp, "\033&l%dS", Duplex-1);
+	fprintf(fp, "\033&l%dG", 0);
+	fprintf(fp, "\033&u%dD", ResX);
+	fprintf(fp, "\033&l%dX", 1);
+	fprintf(fp, "\033&x%dX", 1);
+	break;
+    case MODEL_2480MF:
+	fprintf(fp, "Event=StartOfJob;");
+	fprintf(fp, "OSVersion=Linux;");
+	fprintf(fp, "DrvVersion=2.0.1410.0;");
+	fprintf(fp, "Resolution=%dx%d;", ResX, ResY);
+	fprintf(fp, "RasterObject.Compression=JBIG;");
+	fprintf(fp, "Sides=%sSided;", (Duplex-1) ? "Two" : "One");
+	break;
     }
-    #else
-	fprintf(fp, "\033%%-12345X@PJL JOB OSINFO=\"%s\"\n", "Unknown");
-    #endif
-    fprintf(fp, "\033%%-12345X@PJL ENTER LANGUAGE=LAVAFLOW\n");
-    fprintf(fp, "\033E");
-    fprintf(fp, "\033&l%dS", Duplex-1);
-    fprintf(fp, "\033&l%dG", 0);
-    fprintf(fp, "\033&u%dD", ResX);
-    fprintf(fp, "\033&l%dX", 1);
-    fprintf(fp, "\033&x%dX", 1);
 }
 
 void
 end_doc(FILE *fp)
 {
-    fprintf(fp, "\033E");
-    fprintf(fp, "\033%%-12345X");
+    switch (Model)
+    {
+    case MODEL_2530DL:
+	fprintf(fp, "\033E");
+	fprintf(fp, "\033%%-12345X");
+	break;
+    case MODEL_2480MF:
+	fprintf(fp, "Event=EndOfJob;");
+	break;
+    }
 }
 
 void
@@ -820,15 +963,15 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
     int	bpl, bpl16;
 
     RealWidth = w;
-    if (Model == MODEL_HP1020)
-	w = (w + 127) & ~127;
+    //if (Model == MODEL_HP1020)
+	//w = (w + 127) & ~127;
 
     Dots[3] = 0;
     bpl = (w + 7) / 8;
-    if (Model == MODEL_2300DL)
+    //if (Model == MODEL_2300DL)
 	bpl16 = bpl;
-    else
-	bpl16 = (bpl + 15) & ~15;
+    //else
+	//bpl16 = (bpl + 15) & ~15;
 
     if (SaveToner)
     {
@@ -1219,12 +1362,13 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	bpl = (w + 7) / 8;
 	rightBpl = (rawW - UpperLeftX + 7) / 8;
 
-	switch (Model)
-	{
-	case MODEL_2300DL:	bpl16 = bpl; break;
-	case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
-	default:		error(1, "Bad model %d\n", Model); break;
-	}
+	//switch (Model)
+	//{
+	//case MODEL_2300DL:	bpl16 = bpl; break;
+	//case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
+	//default:		error(1, "Bad model %d\n", Model); break;
+	//}
+	bpl16 = bpl;
 
 	buf = malloc(bpl16 * h);
 	if (!buf)
@@ -1266,12 +1410,13 @@ blank_page(FILE *ofp)
     w = PageWidth - UpperLeftX - LowerRightX;
     h = PageHeight - UpperLeftY - LowerRightY;
     bpl = (w + 7) / 8;
-    switch (Model)
-    {
-    case MODEL_2300DL:	bpl16 = bpl; break;
-    case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
-    default:		error(1, "Bad model %d\n", Model); break;
-    }
+    bpl16 = bpl;
+    //switch (Model)
+    //{
+    //case MODEL_2300DL:	bpl16 = bpl; break;
+    //case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
+    //default:		error(1, "Bad model %d\n", Model); break;
+    //}
 
     plane = malloc(bpl16 * h);
     if (!plane)
@@ -1360,9 +1505,17 @@ main(int argc, char *argv[])
 			if (PageHeight < 0 || PageHeight > 1000000)
 			    error(1, "Illegal Y value '%s' for -g\n", optarg);
 			break;
-	case 'm':	MediaCode = atoi(optarg); break;
+	case 'm':	if (isalpha(optarg[0]))
+			    MediaStr = optarg;
+			else
+			    MediaCode = atoi(optarg);
+			break;
 	case 'n':	Copies = atoi(optarg); break;
-	case 'p':	PaperCode = atoi(optarg); break;
+	case 'p':	if (strstr(optarg,"in") || strstr(optarg, "mm"))
+			    PaperStr = optarg;
+			else
+			    PaperCode = atoi(optarg);
+			break;
 	case 'r':	if (parse_xy(optarg, &ResX, &ResY))
 			    error(1, "Illegal format '%s' for -r\n", optarg);
 			break;
@@ -1411,7 +1564,10 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
-    if (Model == MODEL_HP1020)
+    if (getenv("DEVICE_URL"))
+	IsCUPS = 1;
+
+    if (0)//Model == MODEL_HP1020)
     {
 	Bpp = ResX / 600;
 	ResX = 600;
@@ -1471,7 +1627,7 @@ int	media;
 	/*
 	 *  Manual Pause
 	 */
-	if (Model == MODEL_HP1020)
+	if (0)//Model == MODEL_HP1020)
 	    load_tray2(stdout);
 
 	fseek(EvenPages, SeekMedia, 0L);
