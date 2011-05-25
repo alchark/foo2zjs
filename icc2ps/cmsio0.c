@@ -77,7 +77,11 @@ size_t MemoryRead(LPVOID buffer, size_t size, size_t count, struct _lcms_iccprof
      size_t len = size * count;
      size_t extent = ResData -> Pointer + len;
 
-      if (len < size || len < count) {
+	if (len == 0) {
+		return 0;
+	}
+
+	if (len / size != count) {
           cmsSignalError(LCMS_ERRC_ABORTED, "Read from memory error. Integer overflow with count / size.");
           return 0;
       }

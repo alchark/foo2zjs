@@ -158,7 +158,7 @@ main(int argc, char *argv[])
 	    filhdr[12] = size>> 8;
 	    filhdr[13] = size>> 0;
 
-	    fwrite(filhdr, 1, sizeof(filhdr), stdout);
+	    rc = fwrite(filhdr, 1, sizeof(filhdr), stdout);
 
 	    /*
 	     * Create and write the section header
@@ -166,7 +166,7 @@ main(int argc, char *argv[])
 	    //memset(sechdr+2, 0, sizeof(sechdr)-2);
 
 	    check = docheck(check, sechdr, sizeof(sechdr));
-	    fwrite(sechdr, 1, sizeof(sechdr), stdout);
+	    rc = fwrite(sechdr, 1, sizeof(sechdr), stdout);
 	}
 	else if (memcmp(elf, "\276\357AB", 4) == 0)
 	{
@@ -200,7 +200,7 @@ main(int argc, char *argv[])
 	    hdr[6] = size>> 8;
 	    hdr[7] = size>> 0;
 
-	    fwrite(hdr, 1, sizeof(hdr), stdout);
+	    rc = fwrite(hdr, 1, sizeof(hdr), stdout);
 	}
 	else
 	{
@@ -212,7 +212,7 @@ main(int argc, char *argv[])
 	 */
 	if (iself)
 	    check = docheck(check, elf, sizeof(elf));
-	fwrite(elf, 1, sizeof(elf), stdout);
+	rc = fwrite(elf, 1, sizeof(elf), stdout);
 
 	/*
 	 * Write out the remainder of the file
@@ -221,7 +221,7 @@ main(int argc, char *argv[])
 	{
 	    if (iself)
 		check = docheck(check, buf, len);
-	    fwrite(buf, 1, len, stdout);
+	    rc = fwrite(buf, 1, len, stdout);
 	}
 
 	fclose(fp);

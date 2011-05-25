@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.31 2008/09/05 15:05:54 rick Exp $
+ * $Id: lavadecode.c,v 1.32 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -484,7 +484,7 @@ decode(FILE *fp)
 				if (imageCnt[pn] == 0)
 				    fprintf(dfp, "P4\n%8d %8d\n", w, h);
 				imageCnt[pn] += incrY;
-				fwrite(image, 1, len, dfp);
+				rc = fwrite(image, 1, len, dfp);
 				fclose(dfp);
 			    }
 			}

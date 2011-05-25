@@ -1,5 +1,5 @@
 /*
- * $Id: gipddecode.c,v 1.26 2008/09/23 23:30:35 rick Exp $
+ * $Id: gipddecode.c,v 1.27 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -585,7 +585,7 @@ decode(FILE *fp)
 	    switch (ihdr.type)
 	    {
 	    case SLIT_UINT32:
-		fread(&val, len = sizeof(val), 1, fp);
+		rc = fread(&val, len = sizeof(val), 1, fp);
 		curOff += len;
 		val = be32(val);
 		isize -= 4;
@@ -619,7 +619,7 @@ decode(FILE *fp)
 		break;
 	    default:
 	    case SLIT_BYTELUT:
-		fread(&val, len = sizeof(val), 1, fp);
+		rc = fread(&val, len = sizeof(val), 1, fp);
 		curOff += len;
 		val = be32(val);
 		isize -= 4;
@@ -702,7 +702,7 @@ decode(FILE *fp)
 			rfp = fopen(buf, "w");
 		    }
 		    if (rfp)
-			fwrite(bih, bihlen, 1, rfp);
+			rc = fwrite(bih, bihlen, 1, rfp);
 		    if (DecFile)
 		    {
 			size_t	cnt;
@@ -751,7 +751,7 @@ decode(FILE *fp)
 				    if (imageCnt[pn] == 0)
 					fprintf(dfp, "P4\n%8d %8d\n", w, h);
 				    imageCnt[pn] += incrY;
-				    fwrite(image, 1, len, dfp);
+				    rc = fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				}
 			    }

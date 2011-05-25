@@ -18,12 +18,14 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hp2600-wrapper.in,v 1.62 2008/12/07 00:45:18 rick Exp $'
+VERSION='$Id: foo2hp2600-wrapper.in,v 1.65 2009/05/11 17:35:55 rick Exp $'
 
 #
 # Printer Notes:
 #
-# hp2600 -
+# HP Color LaserJet 1600:	-z0
+# HP Color LaserJet 2600n:	-z0
+# HP Color LaserJet CP1215:	-z1
 #
 
 PROGNAME="$0"
@@ -35,7 +37,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #
 #	Log the command line, for debugging and problem reports
 #
-if [ -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger -o -x /bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
 fi
 
@@ -591,6 +593,10 @@ create_crd() {
 	none.icm | */none.icm)
 	    ;;
 	*)
+	    if [ -x /usr/bin/logger ]; then
+		logger -t "$BASENAME" -p lpr.info -- \
+		"`basename $ICC2PS` -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps"
+	    fi
 	    $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
 		|| error "Problem converting .ICM file to Postscript"
 	    ;;

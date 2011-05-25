@@ -18,18 +18,21 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2lava-wrapper.in,v 1.36 2009/01/21 07:52:13 rick Exp $'
+VERSION='$Id: foo2lava-wrapper.in,v 1.39 2009/05/11 17:35:55 rick Exp $'
 
 #
 # Printer Notes:
 #
 # LAVAFLOW:
-#	Konica Minolta 2530 DL
-#	Konica Minolta 2490 MF
-#	Xerox Phaser 6115MFP
+#	Konica Minolta magicolor 2530 DL -	-z0
+#	Konica Minolta magicolor 2490 MF -	-z0
+#	Xerox Phaser 6115MFP -			-z0
+#	Konica Minolta magicolor 1600W -	-z2
+#	Konica Minolta magicolor 1680MF -	-z2
+#	Konica Minolta magicolor 1690MF -	-z2
 #
 # OPL:
-#	Konica Minolta 2480 MF
+#	Konica Minolta 2480 MF -		-z1
 #
 
 PROGNAME="$0"
@@ -41,7 +44,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #
 #	Log the command line, for debugging and problem reports
 #
-if [ -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger -o -x /bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- "foo2lava-wrapper $@" </dev/null
 fi
 
@@ -87,7 +90,7 @@ Printer Tweaking Options:
 -P                Do not output START_PLANE codes.  May be needed by some
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
--z model          Model: 0=2530DL (LAVAFLOW) or 1=2480MF (OPL) [0]
+-z model          Model: 0=2530DL or 2=1600W (LAVAFLOW) or 1=2480MF (OPL) [0]
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -272,7 +275,11 @@ else
 fi
 case "$GAMMAFILE" in
 default)
-    GAMMAFILE=km2530-jconner-d50.icm
+    if [ $MODEL = 0 ]; then
+	GAMMAFILE=km2530-jconner-d50.icm
+    else
+	GAMMAFILE=km-1600-rgb-392-bpp1.icm
+    fi
     ;;
 none) GAMMAFILE=;;
 esac
@@ -297,7 +304,7 @@ esac
 #	Validate model code
 #
 case "$MODEL" in
-0|1)	;;
+0|1|2)	;;
 *)	error "Unknown model code $MODEL";;
 esac
 
@@ -516,6 +523,10 @@ create_crd() {
         none.icm | */none.icm)
             ;;
         *)
+	    if [ -x /usr/bin/logger ]; then
+		logger -t "$BASENAME" -p lpr.info -- \
+		"`basename $ICC2PS` -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps"
+	    fi
             $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
                 || error "Problem converting .ICM file to Postscript"
             ;;

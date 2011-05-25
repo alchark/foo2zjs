@@ -1,5 +1,5 @@
 /*
- * $Id: xqxdecode.c,v 1.16 2008/09/05 15:05:55 rick Exp $
+ * $Id: xqxdecode.c,v 1.17 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -306,7 +306,7 @@ decode(FILE *fp)
 				if (imageCnt[planeNum] == 0)
 				    fprintf(dfp, "P4\n%8d %8d\n", w, h);
 				imageCnt[planeNum] += incrY;
-				fwrite(image, 1, len, dfp);
+				rc = fwrite(image, 1, len, dfp);
 				fclose(dfp);
 			    }
 			}

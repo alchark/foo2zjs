@@ -8,6 +8,7 @@ is some information about the ZJS format at http://ddk.zeno.com.
 With this utility, you can print to some HP printers, such as these:
     - Samsung CLP-300	-z0
     - Samsung CLP-600	-z1
+    - Samsung CLP-310	-z2
     - Samsung CLP-315	-z2
     - Samsung CLP-610	-z2
     - Samsung CLX-2160 (printer only)		(like CLP-300)
@@ -56,7 +57,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.39 2008/12/31 12:52:25 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.41 2009/05/30 09:42:55 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -201,9 +202,9 @@ usage(void)
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
 "-z model          Model [%d]\n"
-"                    0=CLP-300/CLX-2160/CLX-3160\n"
+"                    0=CLP-300, CLX-2160, CLX-3160\n"
 "                    1=CLP-600\n"
-"                    2=CLP-315/CLP-610/CLX-3175\n"
+"                    2=CLP-310, CLP-315, CLP-610, CLX-3175\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -700,9 +701,11 @@ write_page_banded(int nbie, unsigned char *bm[4], int w, int h, int pn,
 
 	    if (firstbih)
 	    {
+		int rc;
+
 		/* RECTYPE: 0x14 - BIH */
 		fprintf(ofp, "%c", 0x14);
-		fwrite(chain->data, 20, 1, ofp);
+		rc = fwrite(chain->data, 20, 1, ofp);
 		fprintf(ofp, "%c%c%c", 0, 0, 1);
 		/* UNK:  maybe horiz. margin?
 		 * Values: 78 for 3in to 104 for 8.5in
@@ -967,11 +970,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1257,6 +1261,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1264,7 +1269,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1387,11 +1392,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

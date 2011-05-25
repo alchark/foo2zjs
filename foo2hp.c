@@ -41,7 +41,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hp.c,v 1.42 2009/02/19 16:35:08 rick Exp $";
+static char Version[] = "$Id: foo2hp.c,v 1.44 2009/04/22 12:56:16 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -348,13 +348,14 @@ chunk_write_rsvd(unsigned long type, unsigned int rsvd,
 		    unsigned long items, unsigned long size, FILE *fp)
 {
     ZJ_HEADER	chunk;
+    int		rc;
 
     chunk.type = be32(type);
     chunk.items = be32(items);
     chunk.size = be32(sizeof(ZJ_HEADER) + size);
     chunk.reserved = be16(rsvd);
     chunk.signature = 0x5a5a;
-    fwrite(&chunk, 1, sizeof(ZJ_HEADER), fp);
+    rc = fwrite(&chunk, 1, sizeof(ZJ_HEADER), fp);
 }
 
 static void
@@ -368,13 +369,14 @@ static void
 item_uint32_write(unsigned short item, unsigned long value, FILE *fp)
 {
     ZJ_ITEM_UINT32 item_uint32;
+    int		rc;
 
     item_uint32.header.size = be32(sizeof(ZJ_ITEM_UINT32));
     item_uint32.header.item = be16(item);
     item_uint32.header.type = ZJIT_UINT32;
     item_uint32.header.param = 0;
     item_uint32.value = be32(value);
-    fwrite(&item_uint32, 1, sizeof(ZJ_ITEM_UINT32), fp);
+    rc = fwrite(&item_uint32, 1, sizeof(ZJ_ITEM_UINT32), fp);
 }
 
 static int
@@ -382,6 +384,7 @@ item_str_write(unsigned short item, char *str, FILE *fp)
 {
     int			lenpadded;
     ZJ_ITEM_HEADER	hdr;
+    int			rc;
 
     lenpadded = 4 * ((strlen(str)+1 + 3) / 4);
 
@@ -391,8 +394,8 @@ item_str_write(unsigned short item, char *str, FILE *fp)
     hdr.param = 0;
     if (fp)
     {
-	fwrite(&hdr, sizeof(hdr), 1, fp);
-	fwrite(str, lenpadded, 1, fp);
+	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	rc = fwrite(str, lenpadded, 1, fp);
     }
     return (sizeof(hdr) + lenpadded);
 }
@@ -403,6 +406,7 @@ item_bytelut_write(unsigned short item, int size, unsigned char *p, FILE *fp)
     int			lenpadded;
     ZJ_ITEM_HEADER	hdr;
     DWORD		val;
+    int			rc;
 
     lenpadded = 4 * ((size + 3) / 4);
 
@@ -413,9 +417,9 @@ item_bytelut_write(unsigned short item, int size, unsigned char *p, FILE *fp)
     if (fp)
     {
 	val = be32(size);
-	fwrite(&hdr, sizeof(hdr), 1, fp);
-	fwrite(&val, 4, 1, fp);
-	fwrite(p, lenpadded, 1, fp);
+	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	rc = fwrite(&val, 4, 1, fp);
+	rc = fwrite(p, lenpadded, 1, fp);
     }
     return (sizeof(hdr) + 4 + lenpadded);
 }
@@ -450,6 +454,7 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
     BIE_CHAIN	*next;
     int		i, len, pad_len;
     #define	PADTO		4
+    int		rc;
 
     debug(3, "Write Plane %d\n", planeNum); 
 
@@ -502,8 +507,6 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
     {
 	if (current == *root)
 	{
-//	    chunk_write(ZJT_JBIG_BIH, 0, current->len, fp);
-	    //fwrite(current->data, 1, current->len, fp);
 	}
 	else
 	{
@@ -514,7 +517,7 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
 	    else
 		pad_len = 0;
 	    //chunk_write(ZJT_JBIG_BID, 0, len + pad_len, fp);
-	    fwrite(current->data, 1, len, fp);
+	    rc = fwrite(current->data, 1, len, fp);
 	    for (i = 0; i < pad_len; i++ )
 		putc(0, fp);
 	}
@@ -690,11 +693,11 @@ write_bitmap_page(int w, int h, int np, unsigned char *bitmaps[4], FILE *ofp)
 	size += item_bytelut_write(0, 20, (unsigned char *) bih, NULL);
 
 	chunk_write_rsvd(ZJT_2600N, 0x74, nitems, size, ofp);
-	item_uint32_write(0x65,               1,           		ofp);
-	item_uint32_write(0x68,               w16*Bpp,         		ofp);
-	item_uint32_write(0x6b,               w16*Bpp,         		ofp);
+	item_uint32_write(ZJI_BITMAP_TYPE,    1,           		ofp);
+	item_uint32_write(ZJI_BITMAP_PIXELS,  w16*Bpp,         		ofp);
+	item_uint32_write(ZJI_BITMAP_STRIDE,  w16*Bpp,         		ofp);
 	item_uint32_write(ZJI_INCRY,          100,         		ofp);
-	item_uint32_write(0x6a,               1,           		ofp);
+	item_uint32_write(ZJI_BITMAP_BPP,     1,           		ofp);
 	item_uint32_write(ZJI_VIDEO_BPP,      Bpp,        	 	ofp);
 	item_uint32_write(ZJI_PLANE,          (np==1) ? 4 : p+1,	ofp);
 	item_bytelut_write(ZJI_JBIG_BIH, 20, (unsigned char *) bih,	ofp);
@@ -742,8 +745,9 @@ start_doc(FILE *fp)
     char		header[4] = "JZJZ";	// Big-endian data
     int			nitems;
     int			size;
+    int			rc;
 
-    fwrite(header, 1, sizeof(header), fp);
+    rc = fwrite(header, 1, sizeof(header), fp);
 
     nitems = 3;
     size = nitems * sizeof(ZJ_ITEM_UINT32);
@@ -895,11 +899,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
+	    int rc;
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
+		rc = fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1118,6 +1123,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1125,7 +1131,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1246,11 +1252,13 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

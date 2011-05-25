@@ -1,5 +1,5 @@
 /*
- * $Id: opldecode.c,v 1.5 2008/09/05 15:05:54 rick Exp $
+ * $Id: opldecode.c,v 1.6 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -237,7 +237,7 @@ jbig_decode1(unsigned char ch, int pn, int page, struct jbg_dec_state *pstate,
 	    if (dfp)
 	    {
 		    fprintf(dfp, "P4\n%8d %8d\n", w, h);
-		fwrite(image, 1, len, dfp);
+		rc = fwrite(image, 1, len, dfp);
 		fclose(dfp);
 	    }
 	}

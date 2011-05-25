@@ -217,6 +217,8 @@ FILES	=	\
 		includer-man \
 		macros.man \
 		regress.txt \
+		printer-profile \
+		printer-profile.1in \
 		$(NULL)
 
 # hpclj2600n-0.icm km2430_0.icm km2430_1.icm km2430_2.icm samclp300-0.icm
@@ -230,6 +232,7 @@ PROGS+=		foo2oak oakdecode
 PROGS+=		foo2slx slxdecode
 PROGS+=		foo2hiperc hipercdecode
 PROGS+=		gipddecode
+PROGS+=		printer-profile
 SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
 		foo2xqx-wrapper foo2lava-wrapper foo2qpdl-wrapper \
 		foo2slx-wrapper foo2hiperc-wrapper
@@ -243,6 +246,7 @@ MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1 qpdldecode.1
 MANPAGES+=	foo2slx-wrapper.1 foo2slx.1 slxdecode.1
 MANPAGES+=	foo2hiperc-wrapper.1 foo2hiperc.1 hipercdecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
+MANPAGES+=	printer-profile.1
 LIBJBG	=	jbig.o jbig_ar.o
 BINPROGS=
 
@@ -512,11 +516,11 @@ install: all install-test install-prog install-icc2ps install-extra \
 	# Now use your printer configuration GUI to create a new printer.
 	#
 	# On Redhat 7.2/7.3/8.0/9.0 and Fedora Core 1-5, run "printconf-gui".
-	# On Fedora Core 6 and Fedora 7/8/9, run "system-config-printer".
+	# On Fedora Core 6 and Fedora 7/8/9/10/11, run "system-config-printer".
 	# On Mandrake, run "printerdrake"
 	# On Suse 9.x/10.x/11.x, run "yast"
 	# On Ubuntu 5.10/6.06/6.10/7.04, run "gnome-cups-manager"
-	# On Ubuntu 7.10/8.x, run "system-config-printer".
+	# On Ubuntu 7.10/8.x/9.x, run "system-config-printer".
 
 install-test:
 	#
@@ -691,7 +695,7 @@ install-extra:
 	done
 	# foo2lava ICM files (if any)
 	$(INSTALL) $(LPuid) $(LPgid) -m 775 -d $(SHARELAVA)/icm/
-	for i in km2530*.icm; do \
+	for i in km-1600*.icm km2530*.icm; do \
 	    if [ -f $$i ]; then \
 		$(INSTALL) -c -m 644 $$i $(SHARELAVA)/icm/; \
 	    fi; \
@@ -832,6 +836,8 @@ install-hotplug-prog:
 	$(USBDIR)/hpljP1007 install-usermap
 	$(USBDIR)/hpljP1008 install-usermap
 	$(USBDIR)/hpljP1505 install-usermap
+	# modprobe usblp
+	$(USBDIR)/hplj1000 install-usblp
 
 cups:	FRC
 	if [ -x /etc/init.d/cups ]; then \
@@ -1127,10 +1133,12 @@ ppd:
 	    *1500*|*OAKT*)      driver=foo2oak;; \
 	    *P2035*)		driver=foo2zjs;; \
 	    *1635*|*2035*)      driver=foo2oak-z1;; \
-	    *1600*|*2600*)      driver=foo2hp;; \
-	    *1215*)		driver=foo2hp;; \
+	    *1600W|*16[89]0*)   driver=foo2lava;; \
+	    *4690*)		driver=foo2lava;; \
 	    *2530*|*24[89]0*)   driver=foo2lava;; \
 	    *6115*)             driver=foo2lava;; \
+	    *1600*|*2600*)      driver=foo2hp;; \
+	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
 	    *C3[1234]00*)        driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
@@ -1209,6 +1217,7 @@ install-man: man
 	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
 
 doc: README INSTALL manual.pdf
 
@@ -1349,53 +1358,64 @@ webindex: INSTALL zjsindex oakindex hpindex xqxindex lavaindex \
 
 webpics: redhat suse ubuntu mandriva fedora
 
-zjsindex: foo2zjs.html archzjs.gif thermometer.gif
+webphotos:
+	cd printer-photos; $(MAKE)
+
+zjsindex: foo2zjs.html archzjs.gif thermometer.gif webphotos
 	ln -sf foo2zjs.html index.html
 	ncftpput -m -f $(FTPSITE) foo2zjs \
 	    index.html style.css archzjs.gif thermometer.gif \
-	    flags.png INSTALL INSTALL.osx zjsfavicon.png;
+	    flags.png INSTALL INSTALL.osx zjsfavicon.png \
+	    printer-photos/printers.jpg;
 
-oakindex: foo2oak.html archoak.gif thermometer.gif
+oakindex: foo2oak.html archoak.gif thermometer.gif webphotos
 	ln -sf foo2oak.html index.html
 	ncftpput -m -f $(FTPSITE) foo2oak \
 	    index.html style.css archoak.gif thermometer.gif \
-	    flags.png INSTALL;
+	    flags.png INSTALL \
+	    printer-photos/printers.jpg;
 
-hpindex: foo2hp.html archhp.gif thermometer.gif
+hpindex: foo2hp.html archhp.gif thermometer.gif webphotos
 	ln -sf foo2hp.html index.html
 	ncftpput -m -f $(FTPSITE) foo2hp \
 	    index.html style.css archhp.gif thermometer.gif \
-	    flags.png INSTALL hpfavicon.png;
+	    flags.png INSTALL hpfavicon.png \
+	    printer-photos/printers.jpg;
 
-xqxindex: foo2xqx.html archxqx.gif thermometer.gif
+xqxindex: foo2xqx.html archxqx.gif thermometer.gif webphotos
 	ln -sf foo2xqx.html index.html
 	ncftpput -m -f $(FTPSITE) foo2xqx \
 	    index.html style.css archxqx.gif thermometer.gif \
-	    flags.png INSTALL xqxfavicon.png;
+	    flags.png INSTALL xqxfavicon.png \
+	    printer-photos/printers.jpg;
 
-lavaindex: foo2lava.html archlava.gif thermometer.gif
+lavaindex: foo2lava.html archlava.gif thermometer.gif webphotos
 	ln -sf foo2lava.html index.html
 	ncftpput -m -f $(FTPSITE) foo2lava \
 	    index.html style.css archlava.gif thermometer.gif \
-	    flags.png INSTALL lavafavicon.png;
+	    flags.png INSTALL lavafavicon.png \
+	    printer-photos/printers.jpg;
 
-qpdlindex: foo2qpdl.html archqpdl.gif thermometer.gif
+qpdlindex: foo2qpdl.html archqpdl.gif thermometer.gif webphotos
 	ln -sf foo2qpdl.html index.html
 	ncftpput -m -f $(FTPSITE) foo2qpdl \
 	    index.html style.css archqpdl.gif thermometer.gif \
-	    flags.png INSTALL qpdlfavicon.png;
+	    flags.png INSTALL qpdlfavicon.png \
+	    printer-photos/printers.jpg;
 
-slxindex: foo2slx.html archslx.gif thermometer.gif
+slxindex: foo2slx.html archslx.gif thermometer.gif webphotos
 	ln -sf foo2slx.html index.html
 	ncftpput -m -f $(FTPSITE) foo2slx \
 	    index.html style.css archslx.gif thermometer.gif \
-	    flags.png INSTALL slxfavicon.png;
+	    flags.png INSTALL slxfavicon.png \
+	    printer-photos/printers.jpg;
 
-hcindex: foo2hiperc.html archhiperc.gif thermometer.gif
+hcindex: foo2hiperc.html archhiperc.gif thermometer.gif webphotos
 	ln -sf foo2hiperc.html index.html
 	ncftpput -m -f $(FTPSITE) foo2hiperc \
 	    index.html style.css archhiperc.gif thermometer.gif \
-	    flags.png INSTALL hipercfavicon.png;
+	    flags.png INSTALL hipercfavicon.png \
+	    printer-photos/printers.jpg;
 
 foo2zjs.html: warning.html contribute.html resources.html unsupported.html
 foo2hp.html: warning.html contribute.html resources.html unsupported.html
@@ -1428,15 +1448,20 @@ mandriva: FRC
 #
 webextra: webicm webfw
 
-webicm: icm/km2430.tar.gz icm/hpclj2600n.tar.gz \
+webicm: \
+	icm/dl2300.tar.gz \
+	icm/km2430.tar.gz icm/hpclj2600n.tar.gz \
 	icm/hp1215.tar.gz icm/km2530.tar.gz \
+	icm/km-1600.tar.gz \
 	icm/samclp300.tar.gz icm/samclp315.tar.gz \
 	icm/lexc500.tar.gz \
 	icm/okic3200.tar.gz icm/okic3400.tar.gz icm/okic5600.tar.gz
+	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/dl2300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/km2430.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hpclj2600n.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hp1215.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2lava/icm icm/km2530.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2lava/icm icm/km-1600.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp315.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
@@ -1444,6 +1469,8 @@ webicm: icm/km2430.tar.gz icm/hpclj2600n.tar.gz \
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
 
+icm/dl2300.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ CP*.icm DL*.icm
 icm/km2430.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ km2430*.icm
 icm/hpclj2600n.tar.gz: FRC
@@ -1452,6 +1479,8 @@ icm/hp1215.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ hp1215*.icm
 icm/km2530.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ km2530*.icm
+icm/km-1600.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ km-1600*.icm
 icm/samclp300.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ samclp300*.icm
 icm/samclp315.tar.gz: FRC

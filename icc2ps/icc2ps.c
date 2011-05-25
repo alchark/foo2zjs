@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
      if (nargs != 0 && nargs != 1)
      {
 	 fprintf(stderr,
-		"little cms PostScript converter - v1.5+v1.18beta1+foo2zjs\n\n");
+		"little cms PostScript converter - v1.5+v1.18+foo2zjs\n\n");
 	 Help();            
      }
 	

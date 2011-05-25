@@ -14,20 +14,25 @@ Compile:
 
 Get extra files from the web, such as .ICM profiles (for color correction)
 and firmware.  Select the model number for your printer:
-    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
-    $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
-    $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
     $ ./getweb 1215	# Get HP Color LaserJet CP1215 .ICM files
+    $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
+    $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
+    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
 
-    $ ./getweb 2530	# Get Konica Minolta magicolor 2530 DL .ICM files
-    $ ./getweb 2490	# Get Konica Minolta magicolor 2490 MF .ICM files
+    $ ./getweb 1600w    # Get Konica Minolta magicolor 1600W .ICM files
+    $ ./getweb 1680     # Get Konica Minolta magicolor 1680MF .ICM files
+    $ ./getweb 1690     # Get Konica Minolta magicolor 1690MF .ICM files
     $ ./getweb 2480	# Get Konica Minolta magicolor 2480 MF .ICM files
+    $ ./getweb 2490	# Get Konica Minolta magicolor 2490 MF .ICM files
+    $ ./getweb 2530	# Get Konica Minolta magicolor 2530 DL .ICM files
+    $ ./getweb 4690     # Get Konica Minolta magicolor 4690MF .ICM files
+
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
 
-    $ ./getweb 2430	# Get Konica Minolta magicolor 2430 DL .ICM files
-    $ ./getweb 2300	# Get Minolta/QMS magicolor 2300 DL .ICM files
-    $ ./getweb 2200	# Get Minolta/QMS magicolor 2200 DL .ICM files
     $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
+    $ ./getweb 2200	# Get Minolta/QMS magicolor 2200 DL .ICM files
+    $ ./getweb 2300	# Get Minolta/QMS magicolor 2300 DL .ICM files
+    $ ./getweb 2430	# Get Konica Minolta magicolor 2430 DL .ICM files
 
     $ ./getweb 300      # Get Samsung CLP-300 .ICM files
     $ ./getweb 315      # Get Samsung CLP-315 .ICM files
@@ -49,16 +54,16 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 5600     # Get Oki C5600 .ICM files
     $ ./getweb 5800     # Get Oki C5800 .ICM files
 
-    $ ./getweb 1020	# Get HP LaserJet 1020 firmware file
-    $ ./getweb 1018	# Get HP LaserJet 1018 firmware file
-    $ ./getweb 1005	# Get HP LaserJet 1005 firmware file
     $ ./getweb 1000	# Get HP LaserJet 1000 firmware file
+    $ ./getweb 1005	# Get HP LaserJet 1005 firmware file
+    $ ./getweb 1018	# Get HP LaserJet 1018 firmware file
+    $ ./getweb 1020	# Get HP LaserJet 1020 firmware file
 
-    $ ./getweb P1505	# Get HP LaserJet P1505 firmware file
-    $ ./getweb P1008	# Get HP LaserJet P1008 firmware file
-    $ ./getweb P1007	# Get HP LaserJet P1007 firmware file
-    $ ./getweb P1006	# Get HP LaserJet P1006 firmware file
     $ ./getweb P1005	# Get HP LaserJet P1005 firmware file
+    $ ./getweb P1006	# Get HP LaserJet P1006 firmware file
+    $ ./getweb P1007	# Get HP LaserJet P1007 firmware file
+    $ ./getweb P1008	# Get HP LaserJet P1008 firmware file
+    $ ./getweb P1505	# Get HP LaserJet P1505 firmware file
 
 Install driver, foomatic XML files, PPD files, and extra files:
     $ su		OR	$ sudo make install
@@ -79,7 +84,7 @@ it will not pass since different versions of Ghostscript generate different
 raster images:
     # make test
 
-Create printers (Fedora 6/7/8/9/10 and Ubuntu 7.10/8.x):
+Create printers (Fedora 6/7/8/9/10/11 and Ubuntu 7.10/8.x/9.x):
     # system-config-printer
 
 Create printers (Redhat 7.2/7.3/8.0/9.0, Fedora Core 1-5):
@@ -391,9 +396,12 @@ MINOLTA-QMS 2200/2300 DL NOTES
     get the v2.55 firmware upgrade, try:
 	./getweb 2300dl_fw
 
-USB NOTES
----------
+CUPS USB NOTES
+--------------
     If you are using the USB port, then the URI should be:
+	usb:/dev/usb/lp0
+	usb:/dev/usb/lp1
+    OR
 	usb://Samsung/CLP-310%20Series
 	usb://Samsung/CLP-310%20Series
 	usb://HP/Color%20LaserJet%20CP1215
@@ -405,12 +413,9 @@ USB NOTES
 	usb://HP/LaserJet%20P1005
 	usb://HP/LaserJet%20P1006
 	usb://HP/LaserJet%20P1505
-    OR
-	usb:/dev/usb/lp0
-	usb:/dev/usb/lp1
 
-    Don't use hp://<whatever> because that is for hplib (a closed source
-    driver).
+    Don't use hp://<whatever> because that is for hplib (a closed source,
+    proprietary driver).
 
 
 HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
@@ -503,9 +508,9 @@ CUSTOM PAGE SIZE
 
     Append "PageSize=Custom.MMMxNNNin" to the lpr command.  E.G.
 
-    $ lpr -P hp2600 -o PageSize=Custom.4x6in ~/testpage.ps
-    $ lpr -P hp2600 -o PageSize=Custom.10x15cm ~/testpage.ps
-    $ lpr -P hp1020 -o PageSize=Custom.4x6in ~/testpage.ps
+    $ lpr -P hp2600 -o media=letter -o PageSize=Custom.4x6in ~/testpage.ps
+    $ lpr -P hp2600 -o media=letter -o PageSize=Custom.10x15cm ~/testpage.ps
+    $ lpr -P hp1020 -o media=letter -o PageSize=Custom.4x6in ~/testpage.ps
 
     Or, use a GUI that allows the custom size parameters, e.g.
     "evince" - PostScript and PDF File Viewer.
@@ -516,6 +521,34 @@ SET DEFAULT MEDIA WITH CUPS
     # lpoptions -o media=A4
 	-OR-
     # lpoptions -o media=Letter
+
+MANUAL DUPLEX
+-------------
+
+    See:
+	http://www.rastersoft.com/gtkpsproc.html
+
+	- Print odd pages
+	- Wait for confimation message
+	- Insert 180 degrees into printer
+	- Print reverse even pages
+
+    -OR-
+	Print -> Page Setup -> Only print -> Odd Sheets
+
+	then:
+
+	Print -> Page Setup -> Only print -> Even Sheets
+
+    -OR-
+	Print -> Job -> Odd Pages
+
+	then:
+
+	Print -> Job -> Even Pages 
+
+    Ref:
+	http://bugzilla.gnome.org/show_bug.cgi?id=520598
 
 UPDATE
 ------
@@ -658,7 +691,9 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 CUSTOM ICC/ICM COLOR PRINTER PROFILE (ARGYLL)
 ---------------------------------------------
     Reference:
-	http://www.argyllcms.com/
+	firefox http://www.xritephoto.com/html/colormunkisplash.htm
+	firefox http://www.argyllcms.com/
+	man printer-profile
 
     DON'T DO THIS ON A 32-BIT (i386) PROCESSOR!
 	Ghostscript (8.63) has problems.  Weird color profile data.
@@ -668,60 +703,9 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (ARGYLL)
 
     YOU HAVE BEEN WARNED!!!
 
-    Free!
+    Execute:
+	$ man printer-profile
+	$ printer-profile  manuf model [rgb|cmyk] [patches] [ink-limit]
 
-    Sample: Samsung CLP-315
-    -----------------------
-
-    On dual:
-    $ targen -v  -d4 -l200 -f962 clp315
-	OR
-    $ targen -v  -d4 -l200 -f1924 clp315
-		      ^--- Green tint to black otherwise
-
-    $ printtarg -v -s -iSS -pLetter clp315
-    $ gs clp315.ps
-
-    print it...
-
-    $ scp clp315.ps amd:
-    $ root chmod 666 /dev/usb/*
-
-    On amd: (64-bit because ghostscript has a problem with 32-bit):
-    $ foo2qpdl-wrapper -z2 -c -C10 -Gnone.icm clp315.ps |
-	ssh dual "cat >/dev/usb/lp1"
-
-    scanned on a Canon LIDE 70 at 300 DPI, color, no auto-clip ...
-
-    On mac:
-    $ scp clp315.TIF dual:clp315.tif
-	OR
-    $ scp clp315-1.TIF dual:clp315-1.tif
-    $ scp clp315-2.TIF dual:clp315-2.tif
-
-    On dual:
-    $ mv ~/clp315*.tif .
-    $ convert -resize 50% clp315.tif xxx.tif
-	OR
-    $ convert -resize 50% clp315-1.tif xxx-1.tif
-    $ convert -resize 50% clp315-2.tif xxx-2.tif
-
-    $ scanin -dipn -v -c xxx.tif clp315.cht ../scanner/scanner.icc clp315
-	OR
-    $ scanin -dipn -v -c xxx-1.tif clp315_01.cht ../scanner/scanner.icc clp315
-    $ scanin -dipn -v -ca xxx-2.tif clp315_02.cht ../scanner/scanner.icc clp315
-
-    $ xv diag.tif
-	Look for a01, a02, etc.
-
-    $ colprof -v -D"clp315" -qm  -cmt -dpp -kr clp315
-    [snip]
-    profile check complete, peak err = 5.914383, avg err = 1.314669
-
-    ICC is clp315.icc
-
-    Print test page with clp315.icc
-    $ foo2qpdl-wrapper -z2 -c -C10 -G clp315.icc testpage-cups.ps > /dev/usb/lp1
-
-    If it is OK, send "clp315.icc" to rick.richardson@comcast.net
+    If it is OK, send "testing.icm" to rick.richardson@comcast.net
 	for inclusion in foo2zjs.

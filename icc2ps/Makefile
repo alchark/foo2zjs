@@ -30,6 +30,6 @@ regress: all
 	@for i in ../icm/*.icm; do \
 	    b=`basename $$i`; \
 	    ./foo2zjs-icc2ps -o $$i -t0 | grep -v Created >$$b.ps; \
+	    md5sum $$b.ps; \
 	done
-	@md5sum *icm.ps
 	@rm -f *icm.ps

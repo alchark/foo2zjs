@@ -1,5 +1,5 @@
 ==============================================================================
-MAC OSX INSTALLATION NOTES - HP LaserJet 1018/1020
+MAC OSX INSTALLATION NOTES - HP LaserJet 1018/1020 and Color LaserJet 1600/2600n
 Using the "MacPorts" project
 ==============================================================================
 by Rick Richardson 02/21/08
@@ -21,14 +21,19 @@ by Rick Richardson 02/21/08
     $ sudo port install wget
     $ sudo port install ghostscript
 
+	NOTE: Use ghostscript 8.63 or before OR 8.64_2 or after if you want
+	color (i.e. HP CP1215, Samsung, etc..  gs 8.64_1 has a bug in it.
+	Reference: http://bugs.ghostscript.com/show_bug.cgi?id=690287
+
 4) Browse to:
-    http://www.linuxprinting.org/download/foomatic/oldstuff/foomatic-filters-3.0.2.tar.gz
+    http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.3.tar.gz
 
-    and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper).
+    and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper):
 
-    $ tar zxvf foomatic-filters-3.0.2.tar.gz
-    $ cd foomatic-filters-3.0.2
-    $ ./configure --prefix=/usr
+    $ wget http://www.linuxprinting.org/download/foomatic/foomatic-filters-4.0.3.tar.gz
+    $ tar zxvf foomatic-filters-4.0.3.tar.gz
+    $ cd foomatic-filters-4.0.3
+    $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr
     $ make
     $ sudo make install
 
@@ -54,13 +59,19 @@ by Rick Richardson 02/21/08
 
 	Set Printer Options -> Color Mode -> Color
 
-
 7) If HP LaserJet 10xx, you must send a firmware file to the printer each time
    you power it up:
 
-    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
-	-OR-
-    $ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+    For HP LasetJet 1018:
+	$ lp -oraw /usr/share/foo2zjs/firmware/sihp1018.dl
+    For HP LasetJet 1020:
+	$ lp -oraw /usr/share/foo2zjs/firmware/sihp1020.dl
+    For HP LasetJet P1005:
+	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1005.dl
+    For HP LasetJet P1006:
+	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1006.dl
+    For HP LasetJet P1505:
+	$ lp -oraw /usr/share/foo2xqx/firmware/sihpP1505.dl
 
 Sample Screenshots:
 
@@ -99,7 +110,7 @@ by Rick Richardson 04/21/07
 	$ sudo apt-get install fink
 
 3) Do:
-    $ apt-get install ghostscript
+    $ sudo apt-get install ghostscript
 
 4) Browse to:
     http://www.linuxprinting.org/download/foomatic/foomatic-filters-3.0-current.tar.gz

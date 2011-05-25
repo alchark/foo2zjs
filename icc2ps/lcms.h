@@ -73,7 +73,7 @@
 
 // ********** End of configuration toggles ******************************
 
-#define LCMS_VERSION        117
+#define LCMS_VERSION        118
 
 // Microsoft VisualC++
 
@@ -139,7 +139,7 @@ typedef    pthread_rwlock_t      LCMS_RWLOCK_T;
 #   define USE_BIG_ENDIAN      1
 #endif
 
-#if defined(__sgi__) || defined(__sgi) || defined(__powerpc__) || defined(sparc) || defined(__ppc__)
+#if defined(__sgi__) || defined(__sgi) || defined(__powerpc__) || defined(sparc) || defined(__ppc__) || defined(__s390__) || defined(__s390x__)
 #   define USE_BIG_ENDIAN      1
 #endif
 
@@ -153,7 +153,7 @@ typedef    pthread_rwlock_t      LCMS_RWLOCK_T;
 # endif
 #endif
 
-#if __BIG_ENDIAN__
+#ifdef __BIG_ENDIAN__
 #   define USE_BIG_ENDIAN      1
 #endif
 
@@ -1423,7 +1423,11 @@ LCMS_INLINE void* _cmsMalloc(size_t size)
 LCMS_INLINE void* _cmsCalloc(size_t nmemb, size_t size)
 {
     size_t alloc = nmemb * size;
-    if (alloc < nmemb || alloc < size) {
+
+	if (size == 0) {
+		return _cmsMalloc(0);
+	}
+	if (alloc / size != nmemb) {
         return NULL;
     }
     return _cmsMalloc(alloc);

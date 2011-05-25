@@ -1,5 +1,5 @@
 /*
- * $Id: hipercdecode.c,v 1.4 2008/09/05 15:05:54 rick Exp $
+ * $Id: hipercdecode.c,v 1.5 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -296,10 +296,10 @@ decode(FILE *fp)
 			sprintf(buf, "%s-%02d-%d.jbg",
 					RawFile, pageNum, pn);
 			FpRaw[pn] = fopen(buf, "w");
-			fwrite(bih[pn], 1, 20, FpRaw[pn]);
+			rc = fwrite(bih[pn], 1, 20, FpRaw[pn]);
 		    }
 		    if (FpRaw[pn])
-			fwrite(blk, 1, blklen, FpRaw[pn]);
+			rc = fwrite(blk, 1, blklen, FpRaw[pn]);
 		    if (uncompressed)
 		    {
 			if (DecFile && !FpDec[pn])
@@ -311,7 +311,7 @@ decode(FILE *fp)
 			    fprintf(FpDec[pn], "%9d %9d\n", w, h);
 			}
 			if (FpDec[pn])
-			    fwrite(blk, 1, blklen, FpDec[pn]);
+			    rc = fwrite(blk, 1, blklen, FpDec[pn]);
 		    }
 		    else if (DecFile)
 		    {
@@ -324,7 +324,7 @@ decode(FILE *fp)
 			    rc = jbg_dec_in(&s[pn], bih[pn], 20, NULL);
 			    if (rc == JBG_EIMPL)
 				error(1, "JBIG uses unimplemented feature\n");
-			    // fwrite(bih, 20, 1, dfp);
+			    // rc = fwrite(bih, 20, 1, dfp);
 			    imageCnt[pn] = 20;
 			    len = jbg_dec_getsize(&s[pn]);
 			    image = jbg_dec_getimage(&s[pn], 0);
@@ -367,7 +367,7 @@ decode(FILE *fp)
 			    if (!dfp)
 				error(1, "Couldn't open '%s'.\n", buf);
 			    fprintf(dfp, "P4\n%8d %8d\n", w, h);
-			    fwrite(image, 1, len, dfp);
+			    rc = fwrite(image, 1, len, dfp);
 			    fclose(dfp);
 
 			    jbg_dec_free(&s[pn]);

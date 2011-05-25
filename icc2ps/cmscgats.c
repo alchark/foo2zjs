@@ -500,6 +500,7 @@ LCMSBOOL _cmsMakePath(const char *relPath, const char *basePath, char *buffer)
         }
     }
     strncpy(buffer, relPath, MAX_PATH - 1);
+	buffer[MAX_PATH-1] = 0;
     return TRUE;
 }
 
@@ -967,10 +968,14 @@ LCMSBOOL GetVal(LPIT8 it8, char* Buffer, size_t max, const char* ErrorTitle)
 {
     switch (it8->sy) {
 
-    case SIDENT:  strncpy(Buffer, it8->id, max); break;
+    case SIDENT:  strncpy(Buffer, it8->id, max); 
+                  Buffer[max-1]=0;
+                  break;
     case SINUM:   snprintf(Buffer, max, "%d", it8 -> inum); break;
     case SDNUM:   snprintf(Buffer, max, it8->DoubleFormatter, it8 -> dnum); break;
-    case SSTRING: strncpy(Buffer, it8->str, max); break;
+    case SSTRING: strncpy(Buffer, it8->str, max); 
+                  Buffer[max-1] = 0;
+                  break;
 
 
     default:
@@ -1318,6 +1323,7 @@ LCMSBOOL  LCMSEXPORT cmsIT8SetSheetType(LCMSHANDLE hIT8, const char* Type)
         LPIT8 it8 = (LPIT8) hIT8;
 
         strncpy(it8 ->SheetType, Type, MAXSTR-1);
+        it8 ->SheetType[MAXSTR-1] = 0;
         return TRUE;
 }
 
@@ -1946,6 +1952,7 @@ LCMSBOOL HeaderSection(LPIT8 it8)
 
         case SIDENT:
                 strncpy(VarName, it8->id, MAXID-1);
+                VarName[MAXID-1] = 0;
                 
                 if (!IsAvailableOnList(it8-> ValidKeywords, VarName, NULL, &Key)) {
 
@@ -2120,6 +2127,7 @@ void CookPointers(LPIT8 it8)
                     char Buffer[256];
                 
                     strncpy(Buffer, Data, 255);
+                    Buffer[255] = 0;
                                        
                     if (strlen(Buffer) <= strlen(Data))
                         strcpy(Data, Buffer);
@@ -2308,6 +2316,7 @@ LCMSHANDLE LCMSEXPORT cmsIT8LoadFromFile(const char* cFileName)
      
 
     strncpy(it8->FileStack[0]->FileName, cFileName, MAX_PATH-1);    
+    it8->FileStack[0]->FileName[MAX_PATH-1] = 0;
 
     if (!ParseIT8(it8, type-1)) { 
     
@@ -2620,6 +2629,7 @@ const char* LCMSEXPORT cmsIT8GetPatchName(LCMSHANDLE hIT8, int nPatch, char* buf
         if (!buffer) return Data;
 
         strncpy(buffer, Data, MAXSTR-1);        
+        buffer[MAXSTR-1] = 0;
         return buffer;
 }
 

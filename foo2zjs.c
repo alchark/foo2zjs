@@ -55,7 +55,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.82 2007/12/09 06:57:03 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.84 2009/03/07 21:46:43 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -342,13 +342,14 @@ chunk_write_rsvd(unsigned long type, unsigned int rsvd,
 		    unsigned long items, unsigned long size, FILE *fp)
 {
     ZJ_HEADER	chunk;
+    int		rc;
 
     chunk.type = be32(type);
     chunk.items = be32(items);
     chunk.size = be32(sizeof(ZJ_HEADER) + size);
     chunk.reserved = be16(rsvd);
     chunk.signature = 0x5a5a;
-    fwrite(&chunk, 1, sizeof(ZJ_HEADER), fp);
+    rc = fwrite(&chunk, 1, sizeof(ZJ_HEADER), fp);
 }
 
 static void
@@ -362,13 +363,14 @@ static void
 item_uint32_write(unsigned short item, unsigned long value, FILE *fp)
 {
     ZJ_ITEM_UINT32 item_uint32;
+    int		rc;
 
     item_uint32.header.size = be32(sizeof(ZJ_ITEM_UINT32));
     item_uint32.header.item = be16(item);
     item_uint32.header.type = ZJIT_UINT32;
     item_uint32.header.param = 0;
     item_uint32.value = be32(value);
-    fwrite(&item_uint32, 1, sizeof(ZJ_ITEM_UINT32), fp);
+    rc = fwrite(&item_uint32, 1, sizeof(ZJ_ITEM_UINT32), fp);
 }
 
 static int
@@ -376,6 +378,7 @@ item_str_write(unsigned short item, char *str, FILE *fp)
 {
     int			lenpadded;
     ZJ_ITEM_HEADER	hdr;
+    int			rc;
 
     lenpadded = 4 * ((strlen(str)+1 + 3) / 4);
 
@@ -385,8 +388,8 @@ item_str_write(unsigned short item, char *str, FILE *fp)
     hdr.param = 0;
     if (fp)
     {
-	fwrite(&hdr, sizeof(hdr), 1, fp);
-	fwrite(str, lenpadded, 1, fp);
+	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	rc = fwrite(str, lenpadded, 1, fp);
     }
     return (sizeof(hdr) + lenpadded);
 }
@@ -421,6 +424,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
     BIE_CHAIN	*next;
     int		i, len, pad_len;
     #define	PADTO		4
+    int		rc;
 
     debug(3, "Write Plane %d\n", planeNum); 
 
@@ -443,7 +447,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	if (current == *root)
 	{
 	    chunk_write(ZJT_JBIG_BIH, 0, current->len, fp);
-	    fwrite(current->data, 1, current->len, fp);
+	    rc = fwrite(current->data, 1, current->len, fp);
 	}
 	else
 	{
@@ -454,7 +458,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    else
 		pad_len = 0;
 	    chunk_write(ZJT_JBIG_BID, 0, len + pad_len, fp);
-	    fwrite(current->data, 1, len, fp);
+	    rc = fwrite(current->data, 1, len, fp);
 	    for (i = 0; i < pad_len; i++ )
 		putc(0, fp);
 	}
@@ -642,8 +646,9 @@ start_doc(FILE *fp)
     char		header[4] = "JZJZ";	// Big-endian data
     int			nitems;
     int			size;
+    int 		rc;
 
-    fwrite(header, 1, sizeof(header), fp);
+    rc = fwrite(header, 1, sizeof(header), fp);
 
     nitems = 3;
     if (Model == MODEL_2300DL)
@@ -788,10 +793,11 @@ int
 cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 {
     BIE_CHAIN *chain[4];
-    int i;
+    int	i;
     int	bpl = (w + 7) / 8;
     unsigned char *plane[4], *bitmaps[4][1];
     struct jbg_enc_state se[4]; 
+    int		rc;
 
     RealWidth = w;
     for (i = 0; i < 4; ++i)
@@ -812,7 +818,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
+		rc = fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1064,6 +1070,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int	rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1071,7 +1078,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1194,7 +1201,7 @@ pksm_pages(FILE *ifp, FILE *ofp)
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1521,6 +1528,7 @@ main(int argc, char *argv[])
     if (EvenPages)
     {
 	DWORD	media;
+	int	rc;
 
 	// Handle odd page count
 	if ( (PageNum & 1) == 1)
@@ -1541,7 +1549,7 @@ main(int argc, char *argv[])
 
 	fseek(EvenPages, SeekMedia, 0L);
 	media = be32(DMMEDIA_LETTERHEAD);
-	fwrite(&media, 1, sizeof(DWORD), EvenPages);
+	rc = fwrite(&media, 1, sizeof(DWORD), EvenPages);
 
 	// Write even pages in reverse order
 	for (i = SeekIndex-1; i >= 0; --i)

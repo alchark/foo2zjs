@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.82 2008/12/31 07:14:19 rick Exp $'
+VERSION='$Id: getweb.in,v 1.89 2009/06/23 18:31:20 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -22,22 +22,27 @@ Usage:
     Convenience script to get extra somethings from the web,
     such as ICC color profiles, firmware, PPD files, etc.
 
-    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
-    $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
-    $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
     $ ./getweb 1215	# Get HP Color LaserJet CP1215 .ICM files
+    $ ./getweb 1500	# Get HP Color LaserJet 1500 .ICM files
+    $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
+    $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
 
-    $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
-    $ ./getweb 2490	# Get Konica Minolta 2490 MF .ICM files
+    $ ./getweb 1600w	# Get Konica Minolta 1600W .ICM files
+    $ ./getweb 1680	# Get Konica Minolta 1680MF .ICM files
+    $ ./getweb 1690	# Get Konica Minolta 1690MF .ICM files
     $ ./getweb 2480	# Get Konica Minolta 2480 MF .ICM files
+    $ ./getweb 2490	# Get Konica Minolta 2490 MF .ICM files
+    $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
+    $ ./getweb 4690	# Get Konica Minolta 4690MF .ICM files
     $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
 
-    $ ./getweb 2430	# Get Konica Minolta 2430 DL .ICM files
-    $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
     $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
+    $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
+    $ ./getweb 2430	# Get Konica Minolta 2430 DL .ICM files
     $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
 
     $ ./getweb 300	# Get Samsung CLP-300 .ICM files
+    $ ./getweb 310	# Get Samsung CLP-310 .ICM files
     $ ./getweb 315	# Get Samsung CLP-315 .ICM files
     $ ./getweb 600	# Get Samsung CLP-600 .ICM files
     $ ./getweb 610	# Get Samsung CLP-610 .ICM files
@@ -59,16 +64,16 @@ Usage:
     $ ./getweb 5600	# Get Oki C5600 .ICM files
     $ ./getweb 5800	# Get Oki C5800 .ICM files
 
-    $ ./getweb 1020	# Get HP LJ 1020 firmware file
-    $ ./getweb 1018	# Get HP LJ 1005 firmware file
-    $ ./getweb 1005	# Get HP LJ 1005 firmware file
     $ ./getweb 1000	# Get HP LJ 1000 firmware file
+    $ ./getweb 1005	# Get HP LJ 1005 firmware file
+    $ ./getweb 1018	# Get HP LJ 1005 firmware file
+    $ ./getweb 1020	# Get HP LJ 1020 firmware file
 
-    $ ./getweb p1505	# Get HP LJ P1505 firmware file
-    $ ./getweb p1008	# Get HP LJ P1008 firmware file
-    $ ./getweb p1007	# Get HP LJ P1007 firmware file
-    $ ./getweb p1006	# Get HP LJ P1006 firmware file
     $ ./getweb p1005	# Get HP LJ P1005 firmware file
+    $ ./getweb p1006	# Get HP LJ P1006 firmware file
+    $ ./getweb p1007	# Get HP LJ P1007 firmware file
+    $ ./getweb p1008	# Get HP LJ P1008 firmware file
+    $ ./getweb p1505	# Get HP LJ P1505 firmware file
 
     $ ./getweb all	# Get everything above
 
@@ -188,15 +193,27 @@ getone() {
 	copyright "(c) Copyright Hewlett-Packard 2008"
 	;;
     2200dl|2200)
-	getexe \
-	    ftp://ftp.minolta-qms.com/pub/crc/out_going/win2000 m22dlicc.exe \
-	    "*.icm"
+	if false; then
+	    gettgz \
+		http://foo2zjs.rkkda.com/icm dl2300.tar.gz \
+		""
+	else
+	    getexe \
+		http://printer.konicaminolta.net/drivers/win2000 m22dlicc.exe \
+		"*.icm"
+	fi
 	copyright "(c) Copyright Minolta-QMS 1999"
 	;;
     2300dl|2300)
-	getexe \
-	    ftp://ftp.minolta-qms.com/pub/crc/out_going/other m23dlicc.exe \
-	    "*.icm"
+	if false; then
+	    gettgz \
+		http://foo2zjs.rkkda.com/icm dl2300.tar.gz \
+		""
+	else
+	    getexe \
+		http://printer.konicaminolta.net/drivers/other m23dlicc.exe \
+		"*.icm"
+	fi
 	gettgz \
 	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
 	    ""
@@ -213,6 +230,10 @@ getone() {
 	;;
     cpwl|pageworks)
 	if true; then
+	    gettgz \
+		http://foo2zjs.rkkda.com/icm dl2300.tar.gz \
+		""
+	else
 	    getexe \
 		ftp://ftp.minolta-qms.com/pub/crc/out_going/windows cpplxp.exe \
 		"*.IC_"
@@ -223,8 +244,8 @@ getone() {
 		./msexpand $base.ic_
 		rm -f $base.ic_
 	    done
-	    copyright "(c) Copyright Minolta-QMS 1998"
 	fi
+	copyright "(c) Copyright Minolta-QMS 1998"
 	;;
     2430)
 	gettgz \
@@ -232,12 +253,16 @@ getone() {
 	    ""
 	copyright "(c) Copyright Konica Minolta 2003"
 	;;
-    2530|2490|6115|2480)
+    2530|2490|6115|2480|1600w|1680|1690|4690)
 	gettgz \
 	    http://foo2lava.rkkda.com/icm km2530.tar.gz \
 	    ""
 	copyright "(c) Copyright Konica Minolta 2005"
 	copyright "(c) Copyright Rick Richardson 2007.  All Rights Reserved"
+	gettgz \
+	    http://foo2lava.rkkda.com/icm km-1600.tar.gz \
+	    ""
+	copyright "(c) Copyright Rick Richardson 2009.  All Rights Reserved"
 	;;
     1215|1500|1600|2600*)
 	gettgz \
@@ -253,7 +278,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
 	;;
-    300|315|2160|3160|3175|6110)
+    300|310|315|2160|3160|3175|6110)
 	gettgz \
 	    http://foo2qpdl.rkkda.com/icm samclp300.tar.gz \
 	    ""
