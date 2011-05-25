@@ -55,7 +55,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.77 2006/12/07 13:24:31 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.79 2007/07/15 14:31:56 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,6 +110,8 @@ int	SaveToner = 0;
 int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
+
+int	IsCUPS = 0;
 
 FILE	*EvenPages = NULL;
 typedef struct
@@ -498,7 +500,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     if (LogicalOffsetY != 0)
 	++nitems;
     if (Model == MODEL_2300DL)
-	nitems += 2;
+	nitems += 4;
 
     if (Model == MODEL_2300DL)
 	chunk_write(ZJT_START_PAGE,
@@ -518,6 +520,13 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 	item_uint32_write(ZJI_OFFSET_X,        LogicalOffsetX, ofp);
     if (LogicalOffsetY != 0)
 	item_uint32_write(ZJI_OFFSET_Y,        LogicalOffsetY, ofp);
+    if (Model == MODEL_2300DL)
+    {
+	item_uint32_write(ZJI_MINOLTA_CUSTOM_X,
+	    PaperCode == 256 ? PageWidth : 0,                  ofp);
+	item_uint32_write(ZJI_MINOLTA_CUSTOM_Y,
+	    PaperCode == 256 ? PageHeight : 0,                  ofp);
+    }
     item_uint32_write(ZJI_NBIE,                nbie,           ofp);
     item_uint32_write(ZJI_RESOLUTION_X,        ResX,           ofp);
     item_uint32_write(ZJI_RESOLUTION_Y,        ResY,           ofp);
@@ -527,8 +536,11 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
     item_uint32_write(ZJI_DMMEDIATYPE,         MediaCode,      ofp);
     if ((PageNum & 1) == 0 && EvenPages)
 	SeekMedia = ftell(EvenPages) - 4;
+    ++pageno;
     if (Model == MODEL_2300DL)
-	item_uint32_write(ZJI_MINOLTA_PAGE_NUMBER, ++pageno,       ofp);
+	item_uint32_write(ZJI_MINOLTA_PAGE_NUMBER, pageno,       ofp);
+    if (IsCUPS)
+	fprintf(stderr, "PAGE: %d %d\n", pageno, Copies);
 }
 
 void
@@ -1458,6 +1470,9 @@ main(int argc, char *argv[])
 
     argc -= optind;
     argv += optind;
+
+    if (getenv("DEVICE_URL"))
+	IsCUPS = 1;
 
     if (Model == MODEL_HP1020)
     {

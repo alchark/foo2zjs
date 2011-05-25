@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.15 2006/12/23 13:40:51 rick Exp $
+ * $Id: lavadecode.c,v 1.29 2007/07/17 13:09:29 rick Exp $
  */
 
 /*b
@@ -77,12 +77,12 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"	xqxdecode [options] < zjs-file\n"
+"	lavadecode [options] < zjs-file\n"
 "\n"
-"	Decode a XQX stream into human readable form.\n"
+"	Decode a LAVAFLOW stream into human readable form.\n"
 "\n"
-"	A XQX stream is the printer langauge used by some HP LaserJet\n"
-"	printers, such as the HP LaserJet M1005 (MFP).\n"
+"	A LAVAFLOW stream is the printer langauge used by some Konica\n"
+"	Minolta printers, such as the magicolor 2530 DL and 2490 MF.\n"
 "\n"
 "\n"
 "Options:\n"
@@ -100,25 +100,28 @@ void
 print_bih(unsigned char bih[20])
 {
     unsigned int xd, yd, l0;
+    char hdr[] = "\n\t\t\t\t";
+
+    if (!PrintOffset && !PrintHexOffset) hdr[strlen(hdr)-1] = 0;
 
     xd = (bih[4] << 24) | (bih[5] << 16) | (bih[6] << 8) | (bih[7] << 0);
     yd = (bih[8] << 24) | (bih[9] << 16) | (bih[10] << 8) | (bih[11] << 0);
     l0 = (bih[12] << 24) | (bih[13] << 16) | (bih[14] << 8) | (bih[15] << 0);
 
-    printf("		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d\n",
-	 bih[0], bih[1], bih[2], bih[3], xd, yd);
+    printf("%sDL = %d, D = %d, P = %d, - = %d, XY = %d x %d",
+	 hdr, bih[0], bih[1], bih[2], bih[3], xd, yd);
 
-    printf("		L0 = %d, MX = %d, MY = %d\n",
-	 l0, bih[16], bih[17]);
+    printf("%sL0 = %d, MX = %d, MY = %d",
+	 hdr, l0, bih[16], bih[17]);
 
-    printf("		Order   = %d %s%s%s%s%s\n", bih[18],
+    printf("%sOrder   = %d %s%s%s%s%s", hdr, bih[18],
 	bih[18] & JBG_HITOLO ? " HITOLO" : "",
 	bih[18] & JBG_SEQ ? " SEQ" : "",
 	bih[18] & JBG_ILEAVE ? " ILEAVE" : "",
 	bih[18] & JBG_SMID ? " SMID" : "",
 	bih[18] & 0xf0 ? " other" : "");
 
-    printf("		Options = %d %s%s%s%s%s%s%s%s\n", bih[19],
+    printf("%sOptions = %d %s%s%s%s%s%s%s%s", hdr, bih[19],
 	bih[19] & JBG_LRLTWO ? " LRLTWO" : "",
 	bih[19] & JBG_VLENGTH ? " VLENGTH" : "",
 	bih[19] & JBG_TPDON ? " TPDON" : "",
@@ -127,9 +130,41 @@ print_bih(unsigned char bih[20])
 	bih[19] & JBG_DPPRIV ? " DPPRIV" : "",
 	bih[19] & JBG_DPLAST ? " DPLAST" : "",
 	bih[19] & 0x80 ? " other" : "");
-    printf("		%u stripes, %d layers, %d planes\n",
+    printf("%s%u stripes, %d layers, %d planes",
+	hdr,
 	((yd >> bih[1]) +  ((((1UL << bih[1]) - 1) & xd) != 0) + l0 - 1) / l0,
 	bih[1] - bih[0], bih[2]);
+}
+
+void
+print_config(unsigned char *c)
+{
+    char hdr[] = "\n\t\t\t\t";
+
+    if (!PrintOffset && !PrintHexOffset) hdr[strlen(hdr)-1] = 0;
+
+    if (c[1] == 1)
+    {
+	printf("%sfmt=%d np=%d",
+	    hdr, c[0], c[1]);
+	printf("%sBLACK:	X=%d, Y=%d, unk=%d, #=%d(%d)",
+	    hdr, (c[2]<<8) + c[3], (c[4]<<8) + c[5], c[6], 1 << c[7], c[7]);
+    }
+    else if (c[1] == 4)
+    {
+	printf("%sfmt=%d np=%d",
+	    hdr, c[0], c[1]);
+	printf("%sYEL:	X=%d, Y=%d, unk=%d, #=%d(%d)",
+	    hdr, (c[2]<<8) + c[3], (c[4]<<8) + c[5], c[6], 1 << c[7], c[7]);
+	printf("%sMAG:	X=%d, Y=%d, unk=%d, #=%d(%d)",
+	    hdr, (c[8]<<8) + c[9], (c[10]<<8) + c[11], c[12], 1 << c[13], c[13]);
+	printf("%sCYA:	X=%d, Y=%d, unk=%d, #=%d(%d)",
+	    hdr, (c[14]<<8) + c[15], (c[16]<<8) + c[17], c[18], 1 << c[19], c[19]);
+	printf("%sBLK:	X=%d, Y=%d, unk=%d, #=%d(%d)",
+	    hdr, (c[20]<<8) + c[21], (c[22]<<8) + c[23], c[24], 1 << c[25], c[25]);
+    }
+    else
+	error(1, "config image data is not 8 or 26 bytes!\n");
 }
 
 void
@@ -160,6 +195,7 @@ decode(FILE *fp)
     char		buf[1024];
     char		*strpage[837+1];
     int			i;
+    int			totval = 0;
 
     for (i = 0; i < sizeof(strpage)/sizeof(strpage[0]); ++i)
 	strpage[i] = "unk";
@@ -175,6 +211,7 @@ decode(FILE *fp)
     strpage[90] = "envDL";
     strpage[91] = "envC5";
     strpage[92] = "envC6";
+    strpage[101] = "custom";
     strpage[835] = "photo4x6";
     strpage[837] = "photo10x15";
 
@@ -194,7 +231,7 @@ decode(FILE *fp)
 	{
 	    int		state = 0;
 	    char	intro = 0, groupc = 0;
-	    int		val = 0;
+	    int		neg = 0, val = 0, pres = 0;
 	    size_t		cnt;
 	    unsigned char	ch;
 	
@@ -204,8 +241,16 @@ decode(FILE *fp)
 		switch (state)
 		{
 		case 0:
-		    if (c == '\033') state = '\033';
-		    if (c == '\033') proff(curOff-1);
+		    if (c == '\033')
+		    {
+			state = '\033';
+			proff(curOff-1);
+		    }
+		    else
+		    {
+			proff(curOff-1);
+			printf("ch=0x%x\n", c);
+		    }
 		    break;
 		case '\033':
 		    if (c >= 'A' && c <= 'Z')
@@ -229,7 +274,7 @@ decode(FILE *fp)
 		    {
 			groupc = c;
 			state = 'v';
-			val = 0;
+			pres = neg = val = 0;
 		    }
 		    break;
 		case 'v':
@@ -243,7 +288,7 @@ decode(FILE *fp)
 			    };
 			char *strorient[] = { "port", "land" };
 			char *strsource[] = {
-			    /*00*/ "unk", "tray1", "unk", "unk", "tray2",
+			    /*00*/ "eject", "tray1", "unk", "unk", "tray2",
 			    /*05*/ "unk", "unk", "auto"
 			    };
 			char *strmedia[] = { 
@@ -255,7 +300,12 @@ decode(FILE *fp)
 			    /*25*/ "postcard", "labels", "recycled", "glossy",
 			    };
 
-			printf("\\033%c%c%d%c", intro, groupc, val, c);
+			if (neg) val = -val;
+
+			if (pres)
+			    printf("\\033%c%c%d%c", intro, groupc, val, c);
+			else
+			    printf("\\033%c%c%c\t", intro, groupc, c);
 			state = 0;
 			if (intro == '&' && groupc == 'l' && c == 'S')
 			    printf("\t\tDUPLEX: [%s]", STRARY(val, strduplex));
@@ -280,16 +330,27 @@ decode(FILE *fp)
 			    printf("\t\tMEDIA TYPE: [%s]",
 				STRARY(val, strmedia));
 			if (intro == '*' && groupc == 'r' && c == 'S')
-			    printf("\t\tX RASTER: [%d]", val);
+			    printf("\t\tX RASTER: [%d,0x%x]", val, val);
 			if (intro == '*' && groupc == 'r' && c == 'T')
-			    printf("\t\tY RASTER: [%d]", val);
+			    printf("\t\tY RASTER: [%d,0x%x]", val, val);
+			if (intro == '&' && groupc == 'f' && c == 'F')
+			    printf("\t\tX CUSTOM: [%d,0x%x]", val, val);
+			if (intro == '&' && groupc == 'f' && c == 'G')
+			    printf("\t\tY CUSTOM: [%d,0x%x]", val, val);
 			if (intro == '*' && groupc == 'r' && c == 'U')
 			{
 			    nbie = val & 7;
 			    printf("\t\tNBIE: [%d]", nbie);
 			}
 			if (intro == '*' && groupc == 'g' && c == 'W')
+			{
+			    unsigned char config[1024];
+			
 			    printf("\t\tBW/COLOR: [%d]", val);
+			    rc = fread(config, val, 1, fp);
+			    curOff += val;
+			    print_config(config);
+			}
 			if (intro == '*' && groupc == 'b' && c == 'M')
 			    printf("\t\tCOMPRESSION: [%d]", val);
 			if (intro == '*' && groupc == 'r' && c == 'C')
@@ -325,8 +386,9 @@ decode(FILE *fp)
 			}
 			if (intro == '*' && groupc == 'b' && c == 'W')
 			{
-			    printf("\tJBIG data (end)");
+			    printf("\t\tJBIG data (end) [%d,0x%x]", val, val);
 			    state = 'd';
+			    totval = val;
 			}
 			if (intro == '*' && groupc == 'b' && c == 'V')
 			{
@@ -339,11 +401,11 @@ decode(FILE *fp)
 				rc = fread(bih, bihlen = sizeof(bih), 1, fp);
 				curOff += bihlen;
 				if (nbie == 4 && pn >= 1 && pn <= 4)
-				    printf("\t\t[%s]\n", color[pn-1]);
+				    printf("\t\t[%s]", color[pn-1]);
 				else if (nbie == 1)
-				    printf("\t\t[%s]\n", "black");
+				    printf("\t\t[%s]", "black");
 				else
-				    printf("\t\t[%s]\n", "unknown");
+				    printf("\t\t[%s]", "unknown");
 				print_bih(bih);
 				if (DecFile)
 				{
@@ -357,22 +419,45 @@ decode(FILE *fp)
 			    }
 			    else
 			    {
-				printf("\tJBIG data (first)");
+				printf("\t\tJBIG data (first) [%d,0x%x]",
+					val, val);
 				state = 'd';
+				totval = val;
 			    }
 			}
 			printf("\n");
+			if (state == 'd')
+			    printf("\t\t\t");
 		    }
 		    else if (c >= '0' && c <= '9')
 		    {
+			pres = 1;
 			val *= 10; val += c - '0';
 		    }
+		    else if (c == '-')
+			neg = 1;
+		    else if (c == '+')
+			neg = 0;
+		    else
+			error(1, "c=%d\n", c);
 		    break;
 		case 'd':
 		    --val;
+		    #define MAXTOT 16
+		    if ((totval-val) <= MAXTOT)
+		    {
+			printf(" %02x", c);
+			if ((totval-val) == MAXTOT)
+			    printf("\n\t\t\t...");
+		    }
+		    else if (val < 16)
+			printf(" %02x", c);
 		    if (val == 0)
+		    {
 			state = 0;
-		    if (!DecFile)
+			printf("\n");
+		    }
+		    if (!DecFile || s[pn].s == 0)
 			break;
 
 		    ch = c;

@@ -56,7 +56,20 @@
 
 
 
-*VariablePaperSize: False
+*HWMargins: 11.34 11.34 11.34 11.34
+*VariablePaperSize: True
+*MaxMediaWidth: 100000
+*MaxMediaHeight: 100000
+*NonUIOrderDependency: 135 AnySetup *CustomPageSize
+*CustomPageSize True: "pop pop pop pop pop
+%% FoomaticRIPOptionSetting: PageSize=Custom"
+*End
+*FoomaticRIPOptionSetting PageSize=Custom: "-pCustom.%0x%1 "
+*ParamCustomPageSize Width: 1 points 36 100000
+*ParamCustomPageSize Height: 2 points 36 100000
+*ParamCustomPageSize Orientation: 3 int 0 0
+*ParamCustomPageSize WidthOffset: 4 points 0 0
+*ParamCustomPageSize HeightOffset: 5 points 0 0
 
 *FoomaticIDs: KonicaMinolta-magicolor_2490_MF foo2lava
 *FoomaticRIPCommandLine: "foo2lava-wrapper %A"
@@ -165,7 +178,7 @@
 *OrderDependency: 150 AnySetup *MediaType
 *DefaultMediaType: plain
 *MediaType plain/Plain Paper: "%% FoomaticRIPOptionSetting: MediaType=plain"
-*FoomaticRIPOptionSetting MediaType=plain: "-m1 "
+*FoomaticRIPOptionSetting MediaType=plain: "-m0 "
 *MediaType envelope/Envelope: "%% FoomaticRIPOptionSetting: MediaType=envelope"
 *FoomaticRIPOptionSetting MediaType=envelope: "-m22 "
 *MediaType glossy/Glossy: "%% FoomaticRIPOptionSetting: MediaType=glossy"
@@ -222,8 +235,16 @@
 *FoomaticRIPOption ColorMode: enum CmdLine A
 *OrderDependency: 120 AnySetup *ColorMode
 *DefaultColorMode: Monochrome
-*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c "
+*ColorMode PhotoOnly/Color - Photo Only: "%% FoomaticRIPOptionSetting: ColorMode=PhotoOnly"
+*FoomaticRIPOptionSetting ColorMode=PhotoOnly: "-c -C1 "
+*ColorMode PhotosAndText/Color - Photos and Text: "%% FoomaticRIPOptionSetting: ColorMode=PhotosAndText"
+*FoomaticRIPOptionSetting ColorMode=PhotosAndText: "-c -C2 "
+*ColorMode Color/Color - Best Compromise: "%% FoomaticRIPOptionSetting: ColorMode=Color"
+*FoomaticRIPOptionSetting ColorMode=Color: "-c -C2 "
+*ColorMode GraphicsAndText/Color - Graphics and Text: "%% FoomaticRIPOptionSetting: ColorMode=GraphicsAndText"
+*FoomaticRIPOptionSetting ColorMode=GraphicsAndText: "-c -C3 "
+*ColorMode ICM/Color - use ICM color profile: "%% FoomaticRIPOptionSetting: ColorMode=ICM"
+*FoomaticRIPOptionSetting ColorMode=ICM: "-c -C10 "
 *ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
 *FoomaticRIPOptionSetting ColorMode=Monochrome: " "
 *CloseUI: *ColorMode
@@ -337,7 +358,28 @@
 *Copies 100/100: "%% FoomaticRIPOptionSetting: Copies=100"
 *CloseUI: *Copies
 
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=lavaflow: "-z0 "
+
 *CloseGroup: General
+
+*OpenGroup: Adjustment/Adjustment
+
+*OpenUI *ICM/ICM Color Profile: PickOne
+*FoomaticRIPOption ICM: enum CmdLine A
+*OrderDependency: 300 AnySetup *ICM
+*DefaultICM: km2530_1
+*ICM km2530_0/km2530_0 - Resolution 600: "%% FoomaticRIPOptionSetting: ICM=km2530_0"
+*FoomaticRIPOptionSetting ICM=km2530_0: "-Gkm2530_0.icm "
+*ICM km2530_1/km2530_1 - Resolution 1200: "%% FoomaticRIPOptionSetting: ICM=km2530_1"
+*FoomaticRIPOptionSetting ICM=km2530_1: "-Gkm2530_1.icm "
+*ICM km2530_2/km2530_2 - Resolution 2400: "%% FoomaticRIPOptionSetting: ICM=km2530_2"
+*FoomaticRIPOptionSetting ICM=km2530_2: "-Gkm2530_2.icm "
+*ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
+*FoomaticRIPOptionSetting ICM=none: "-Gnone.icm "
+*CloseUI: *ICM
+
+*CloseGroup: Adjustment
 
 *OpenGroup: Miscellaneous/Miscellaneous
 

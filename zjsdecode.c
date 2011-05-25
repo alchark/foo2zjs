@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.53 2006/12/07 13:33:51 rick Exp $
+ * $Id: zjsdecode.c,v 1.54 2007/05/08 00:23:49 rick Exp $
  */
 
 /*b
@@ -359,6 +359,8 @@ decode(FILE *fp)
 		CODESTR(ZJI_OFFSET_Y)			break;
 		CODESTR(ZJI_RASTER_X)			break;
 		CODESTR(ZJI_RASTER_Y)			break;
+		CODESTR(ZJI_MINOLTA_CUSTOM_X)		break;
+		CODESTR(ZJI_MINOLTA_CUSTOM_Y)		break;
 		CODESTR(ZJI_COLLATE)			break;
 		CODESTR(ZJI_QUANTITY)			break;
 		CODESTR(ZJI_VIDEO_BPP)			break;

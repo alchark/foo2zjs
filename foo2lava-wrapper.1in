@@ -141,7 +141,7 @@
 .       \}
 .   \}
 .   ds hhh \\*[rr_labels!\\n[rr_i]]
-.   pdfbookmark \\n[rr_count] Link\\n[rr_i] "\\*[hhh]"
+.   pdfbookmark -\\n[rr_count] Link\\n[rr_i] "\\*[hhh]"
 .\}
 ..
 '\"
@@ -175,7 +175,7 @@
 '\"	MANUAL PAGE SOURCE
 '\"==========================================================================
 .SH NAME
-foo2lava-wrapper \- Convert Postscript into a LAVAFLOW printer stream
+foo2lava-wrapper \- Convert Postscript into a LAVAFLOW or OPL printer stream
 .SH SYNOPSIS
 .B foo2lava-wrapper
 .RI [ options "] [" ps-file ]
@@ -184,7 +184,8 @@ foo2lava-wrapper \- Convert Postscript into a LAVAFLOW printer stream
 is a Foomatic compatible printer wrapper for the \fBfoo2lava\fP printer driver.
 This script reads a Postscript \fIps-file\fP or standard input
 and converts it to Zenographics LAVAFLOW printer format
-for driving the Konica Minolta magicolor 2530 DL network color laser printer
+for driving the Konica Minolta magicolor 2530 DL network color laser printer,
+the Konica Minolta magicolor 2480/2490 MF AIO printer,
 and other Zenographics-based LAVAFLOW printers.
 .P
 This script can be used in a standalone fashion, but is intended to
@@ -310,7 +311,7 @@ l l.
 .TE
 .TP
 .BI \-z\0 model
-Model: 0=2530DL.  Default is 0.
+Model: 0=2530DL (lavaflow) or 1=2480MF (opl).  Default is 0.
 .SS Color Tweaking Options
 These are the options used to control the quality of color output.
 Color correction is currently a WORK IN PROGRESS.

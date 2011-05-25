@@ -141,7 +141,7 @@
 .       \}
 .   \}
 .   ds hhh \\*[rr_labels!\\n[rr_i]]
-.   pdfbookmark \\n[rr_count] Link\\n[rr_i] "\\*[hhh]"
+.   pdfbookmark -\\n[rr_count] Link\\n[rr_i] "\\*[hhh]"
 .\}
 ..
 '\"
@@ -176,7 +176,7 @@
 '\"==========================================================================
 .SH NAME
 foo2lava \- Convert Ghostscript pbmraw or bitcmyk format into a
-LAVAFLOW printer stream
+LAVAFLOW or a OPL printer stream
 .SH SYNOPSIS
 .B foo2lava
 .RI [ options "] <" pbmraw-file " >" lava-file
@@ -189,8 +189,9 @@ LAVAFLOW printer stream
 .SH DESCRIPTION
 .B foo2lava
 converts Ghostscript pbmraw, bitcmyk, or pksmraw output formats to monochrome
-or color LAVAFLOW streams,
-for driving the Konica Minolta magicolor 2530 DL network color laser printer
+or color LAVAFLOW or OPL streams,
+for driving the Konica Minolta magicolor 2530 DL network color laser printer,
+the Konica Minolta magicolor 2480/2480 MF AIO printer,
 and other Zenographics-based LAVAFLOW printers.
 
 .SH COMMAND LINE OPTIONS
@@ -293,7 +294,7 @@ AllIsBlack: convert C=1,M=1,Y=1 to just K=1.  Works with bitcmyk input only.
 BlackClears: K=1 forces C,M,Y to 0.  Works with bitcmyk input only.
 .TP
 .BI \-z\0 model
-Model: 0=2530DL.  Default is 0.
+Model: 0=2530DL (lavaflow) or 1=2480MF (opl).  Default is 0.
 .SS Debugging Options
 These options are used for debugging \fBfoo2lava\fP.
 .TP

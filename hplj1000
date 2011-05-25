@@ -48,17 +48,17 @@ USBID=/bin/usb_printerid
 if [ -t 1 ]; then
     # Running from a tty...
     log() {
-	echo "$PROGNAME: $@"
+	echo "$PROGNAME: foo2zjs: $@"
     }
 elif [ -x /usr/bin/logger ]; then
     # Have logger...
     log() {
-	logger -t "$PROGNAME" -- "$@"
+	logger -t "$PROGNAME" -- "foo2zjs: $@"
     }
 else
     # No logger...
     log() {
-	echo "$PROGNAME: $@" >> /var/log/messages
+	echo "$PROGNAME: foo2zjs: $@" >> /var/log/messages
     }
 fi
 
@@ -110,6 +110,7 @@ install-usermap)
 		log "No /etc/hotplug usermap!"
 		exit
 	fi
+	chmod 664 $USERMAP
 	ex - $USERMAP <<-EOF
 	g/^hplj$MODEL/d
 	\$a
@@ -123,7 +124,7 @@ install-usermap)
 	log "usb_printerid on the usb device and send the output to:"
 	log "rick.richardson@comcast.net"
     fi
-    exit
+    exit 0
     ;;
 esac
  

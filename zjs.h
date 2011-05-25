@@ -102,7 +102,9 @@ typedef enum {
 
     /* for START_PAGE */
     ZJI_MINOLTA_PAGE_NUMBER	= 0x8110,	// Number of this page
-    // Also 8111, 8113, 8114, 8116-811D; meanings unknown
+    // Also 8111, 8116-811D; meanings unknown
+    ZJI_MINOLTA_CUSTOM_X	= 0x8113,	// Custom Page Width
+    ZJI_MINOLTA_CUSTOM_Y	= 0x8114,	// Custom Page Height
 
     /* for END_PAGE */
     // Also 8101, 8110; meanings unknown

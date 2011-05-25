@@ -85,5 +85,10 @@
 	    <ev_shortname> <en>EnvMonarch</en> </ev_shortname>
 	    <ev_driverval>37</ev_driverval>
 	</enum_val>
+	<enum_val id="ev/foo2oakzjs-PageSize-Custom">
+	    <ev_longname> <en>Custom</en> </ev_longname>
+	    <ev_shortname> <en>Custom</en> </ev_shortname>
+	    <ev_driverval>Custom.%0x%1</ev_driverval>
+	</enum_val>
     </enum_vals>
 </option>

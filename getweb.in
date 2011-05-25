@@ -12,12 +12,21 @@ Usage:
 
     $ ./getweb 2600n	# Get HP Color LaserJet 2600n .ICM files
     $ ./getweb 1600	# Get HP Color LaserJet 1600 .ICM files
+
     $ ./getweb 2530	# Get Konica Minolta 2530 DL .ICM files
     $ ./getweb 2490	# Get Konica Minolta 2490 MF .ICM files
+    $ ./getweb 2480	# Get Konica Minolta 2480 MF .ICM files
+    $ ./getweb 6115	# Get Xerox Phaser 6115MFP .ICM files
+
     $ ./getweb 2430	# Get Konica Minolta 2430 DL .ICM files
     $ ./getweb 2300	# Get Minolta 2300 DL .ICM files
     $ ./getweb 2200	# Get Minolta 2200 DL .ICM files
     $ ./getweb cpwl	# Get Minolta Color PageWorks/Pro L .ICM files
+
+    $ ./getweb 300	# Get Samsung CLP-300 .ICM files
+    $ ./getweb 600	# Get Samsung CLP-600 .ICM files
+    $ ./getweb 3160	# Get Samsung CLX-3160 .ICM files
+    $ ./getweb 6110	# Get Xerox Phaser 6110 and 6110MFP .ICM files
 
     $ ./getweb 1020	# Get HP LJ1020 firmware file
     $ ./getweb 1018	# Get HP LJ1005 firmware file
@@ -41,6 +50,17 @@ error() {
 	echo "`basename $PROGNAME`: $1" >&2
 	exit 1
 }
+
+SYSTEM=$(uname -s)
+WGET=$(type wget 2>/dev/null)
+if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
+then
+    WGETOPTS=
+    wget() {
+	shift
+	curl -o $*
+    }
+fi
 
 #
 #	Download a .EXE file from the web, unzip it, and extract the
@@ -141,7 +161,7 @@ getone() {
 	    http://foo2zjs.rkkda.com km2430.tar.gz \
 	    ""
 	;;
-    2530|2490)
+    2530|2490|6115|2480)
 	gettgz \
 	    http://foo2lava.rkkda.com km2530.tar.gz \
 	    ""
@@ -154,6 +174,14 @@ getone() {
 	    http://foo2zjs.rkkda.com km2430.tar.gz \
 	    "km2430_2.icm"
 	;;
+    300|3160|6110)
+	gettgz \
+	    http://foo2qpdl.rkkda.com samclp300.tar.gz \
+	    ""
+	;;
+    600)
+	;;
+
     xPPD)
 	# Snarf PPD files from linuxprinting
 	[ -d PPD ] || mkdir PPD
@@ -187,7 +215,9 @@ getone() {
 	    *M1005*)		driver=foo2xqx;;
 	    *1500*|*OAKT*)	driver=foo2oak;;
 	    *1600*|*2600*)	driver=foo2hp;;
-	    *2530*|*2490*)	driver=foo2lava;;
+	    *2530*|*24[89]0*)	driver=foo2lava;;
+	    *6115*)		driver=foo2lava;;
+	    *CLP*|*CLX*|*6110*)	driver=foo2qpdl;;
 	    *)			driver=foo2zjs;;
 	    esac
 	    ENGINE=../foomatic/foomatic-db-engine
@@ -233,12 +263,19 @@ do
 	getone 1005
 	getone 1018
 	getone 1020
+
 	getone 2200
 	getone 2300
 	# getone 2430 already done
 	getone cpwl
+
 	getone 2600n
+
 	getone 2530
+
+	getone 300
+	# getone 6110 already done
+	getone 600
 	;;
     *)	
 	getone $i
