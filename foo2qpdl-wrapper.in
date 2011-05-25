@@ -18,12 +18,13 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.37 2009/01/21 07:52:13 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.40 2009/05/30 09:42:55 rick Exp $'
 
 #
 # Printer Notes:
 #
 # Samsung CLP-300: -z0, ICM
+# Samsung CLP-310: -z2, ICM
 # Samsung CLP-315: -z2, ICM
 # Samsung CLP-600: -z1, CRD, need ICM for black text
 # Samsung CLP-610: -z2, CRD, need ICM for black text
@@ -43,7 +44,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #
 #	Log the command line, for debugging and problem reports
 #
-if [ -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger -o -x /bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
 fi
 
@@ -91,9 +92,9 @@ Printer Tweaking Options:
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
 -z model          Printer Model [$MODEL]
-                         0=CLP-300/CLX-2160/CLX-3160
+                         0=CLP-300, CLX-2160, CLX-3160
                          1=CLP-600
-                         2=CLP-315/CLP-610/CLX-3175
+                         2=CLP-310, CLP-315, CLP-610, CLX-3175
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
@@ -502,8 +503,12 @@ create_crd() {
 	none | none.icm | */none.icm)
 	    ;;
 	*)
+	    if [ -x /usr/bin/logger ]; then
+		logger -t "$BASENAME" -p lpr.info -- \
+		"`basename $ICC2PS` -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps"
+	    fi
 	    $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
-	    || error "Problem converting .ICM file to Postscript"
+		|| error "Problem converting .ICM file to Postscript"
 	    ;;
 	esac
 

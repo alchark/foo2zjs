@@ -42,7 +42,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2slx.c,v 1.20 2007/12/13 15:30:50 rick Exp $";
+static char Version[] = "$Id: foo2slx.c,v 1.21 2009/03/08 00:05:28 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -331,13 +331,14 @@ chunk_write_rsvd(unsigned long type, unsigned int rsvd,
 		    unsigned long items, unsigned long size, FILE *fp)
 {
     SL_HEADER	chunk;
+    int		rc;
 
     chunk.type = be32(type);
     chunk.items = be32(items);
     chunk.size = be32(sizeof(SL_HEADER) + size);
     chunk.reserved = be16(rsvd);
     chunk.signature = 0xa5a5;
-    fwrite(&chunk, 1, sizeof(SL_HEADER), fp);
+    rc = fwrite(&chunk, 1, sizeof(SL_HEADER), fp);
 }
 
 static void
@@ -351,26 +352,28 @@ static void
 item_uint32_write(unsigned short item, unsigned long value, FILE *fp)
 {
     SL_ITEM_UINT32 item_uint32;
+    int		rc;
 
     item_uint32.header.size = be32(sizeof(SL_ITEM_UINT32));
     item_uint32.header.item = be16(item);
     item_uint32.header.type = SLIT_UINT32;
     item_uint32.header.param = 0;
     item_uint32.value = be32(value);
-    fwrite(&item_uint32, 1, sizeof(SL_ITEM_UINT32), fp);
+    rc = fwrite(&item_uint32, 1, sizeof(SL_ITEM_UINT32), fp);
 }
 
 static void
 item_int32_write_pad(unsigned short item, long value, int pad, FILE *fp)
 {
     SL_ITEM_INT32 item_int32;
+    int		rc;
 
     item_int32.header.size = be32(sizeof(SL_ITEM_INT32) + pad);
     item_int32.header.item = be16(item);
     item_int32.header.type = SLIT_INT32;
     item_int32.header.param = 0;
     item_int32.value = be32(value);
-    fwrite(&item_int32, 1, sizeof(SL_ITEM_INT32), fp);
+    rc = fwrite(&item_int32, 1, sizeof(SL_ITEM_INT32), fp);
     while (pad--)
 	fputc(0, fp);
 }
@@ -380,6 +383,7 @@ item_str_write(unsigned short item, char *str, FILE *fp)
 {
     int			lenpadded;
     SL_ITEM_HEADER	hdr;
+    int			rc;
 
     lenpadded = 4 * ((strlen(str)+1 + 3) / 4);
 
@@ -389,8 +393,8 @@ item_str_write(unsigned short item, char *str, FILE *fp)
     hdr.param = 0;
     if (fp)
     {
-	fwrite(&hdr, sizeof(hdr), 1, fp);
-	fwrite(str, lenpadded, 1, fp);
+	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	rc = fwrite(str, lenpadded, 1, fp);
     }
     return (sizeof(hdr) + lenpadded);
 }
@@ -424,6 +428,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
     BIE_CHAIN	*current = *root;
     BIE_CHAIN	*next;
     int		i, len, pad_len;
+    int		rc;
     #define	PADTO		4
 
     debug(3, "Write Plane %d\n", planeNum); 
@@ -447,7 +452,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	if (current == *root)
 	{
 	    chunk_write(SLT_JBIG_BIH, 0, current->len, fp);
-	    fwrite(current->data, 1, current->len, fp);
+	    rc = fwrite(current->data, 1, current->len, fp);
 	}
 	else
 	{
@@ -458,7 +463,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    else
 		pad_len = 0;
 	    chunk_write(SLT_JBIG_BID, 0, len + pad_len, fp);
-	    fwrite(current->data, 1, len, fp);
+	    rc = fwrite(current->data, 1, len, fp);
 	    for (i = 0; i < pad_len; i++ )
 		putc(0, fp);
 	}
@@ -642,8 +647,9 @@ start_doc(FILE *fp)
     int			nitems;
     int			size;
     int			pad1 = 12;
+    int			rc;
 
-    fwrite(header, 1, sizeof(header), fp);
+    rc = fwrite(header, 1, sizeof(header), fp);
 
     nitems = 12;
     size = nitems * sizeof(SL_ITEM_UINT32) + pad1;
@@ -793,11 +799,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
+	    int rc;
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
+		rc = fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1049,6 +1056,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1056,7 +1064,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1175,11 +1183,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1506,6 +1515,7 @@ main(int argc, char *argv[])
     if (EvenPages)
     {
 	DWORD	media;
+	int	rc;
 
 	// Handle odd page count
 	if ( (PageNum & 1) == 1)
@@ -1526,7 +1536,7 @@ main(int argc, char *argv[])
 
 	fseek(EvenPages, SeekMedia, 0L);
 	media = be32(DMMEDIA_LETTERHEAD);
-	fwrite(&media, 1, sizeof(DWORD), EvenPages);
+	rc = fwrite(&media, 1, sizeof(DWORD), EvenPages);
 
 	// Write even pages in reverse order
 	for (i = SeekIndex-1; i >= 0; --i)

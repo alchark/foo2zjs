@@ -188,7 +188,8 @@ icTagTypeSignature ReadBase(LPLCMSICCPROFILE Icc)
 {
     icTagBase Base;
 
-    Icc -> Read(&Base, sizeof(icTagBase), 1, Icc);
+    if (Icc -> Read(&Base, sizeof(icTagBase), 1, Icc) != 1) 
+		return (icTagTypeSignature) 0;
     AdjustEndianess32((LPBYTE) &Base.sig);
 
     return Base.sig;
@@ -260,9 +261,7 @@ void EvalCHRM(LPcmsCIEXYZ Dest, LPMAT3 Chrm, LPcmsCIEXYZ Src)
 // Read profile header and validate it
 
 static
-LPLCMSICCPROFILE ReadHeader(LPLCMSICCPROFILE Icc,
-                            LCMSBOOL lIsFromMemory,
-                            DWORD dwSize)
+LPLCMSICCPROFILE ReadHeader(LPLCMSICCPROFILE Icc, LCMSBOOL lIsFromMemory)
 {
      icTag Tag;
      icHeader Header;
@@ -289,10 +288,6 @@ LPLCMSICCPROFILE ReadHeader(LPLCMSICCPROFILE Icc,
 
        if (Header.magic != icMagicNumber) goto ErrorCleanup;
 
-       if (dwSize && dwSize != Header.size) {
-            goto ErrorCleanup;
-        }
-              
        if (Icc ->Read(&TagCount, sizeof(icInt32Number), 1, Icc) != 1)
                      goto ErrorCleanup;
 
@@ -818,10 +813,8 @@ LCMSBOOL ReadLUT16(LPLCMSICCPROFILE Icc, LPLUT NewLUT)
        if (nTabSize > 0) {
 
            PtrW = (LPWORD) _cmsCalloc(sizeof(WORD), nTabSize);
-           if (PtrW == NULL) {
-               _cmsFree(PtrW);
+           if (PtrW == NULL) 
                return FALSE;
-           }
 
            NewLUT -> T = PtrW;
            NewLUT -> Tsize = (unsigned int) (nTabSize * sizeof(WORD));
@@ -944,7 +937,7 @@ LPGAMMATABLE ReadCurve(LPLCMSICCPROFILE  Icc)
            if (Icc -> Read(&Reserved, sizeof(icUInt16Number), 1, Icc) != 1) return NULL;
            
            AdjustEndianess16((LPBYTE) &Type);
-           if (Type > 5) {
+           if (Type > 4) {
 
                 cmsSignalError(LCMS_ERRC_ABORTED, "Unknown parametric curve type '%d' found.", Type);
                 return NULL;
@@ -1053,7 +1046,7 @@ LPGAMMATABLE ReadCurveReversed(LPLCMSICCPROFILE Icc)
            if (Icc -> Read(&Reserved, sizeof(icUInt16Number), 1, Icc) != 1) return NULL;
            
            AdjustEndianess16((LPBYTE) &Type);
-           if (Type > 5) {
+           if (Type > 4) {
 
                 cmsSignalError(LCMS_ERRC_ABORTED, "Unknown parametric curve type '%d' found.", Type);
                 return NULL;
@@ -1236,6 +1229,7 @@ LCMSBOOL ReadSetOfCurves(LPLCMSICCPROFILE Icc, size_t Offset, LPLUT NewLUT, int 
     }
     
     NewLUT = cmsAllocLinearTable(NewLUT, Curves, nLocation);
+    if (NewLUT == NULL) goto Error;
     
     for (i=0; i < nCurves; i++) 
         cmsFreeGamma(Curves[i]);
@@ -1243,11 +1237,10 @@ LCMSBOOL ReadSetOfCurves(LPLCMSICCPROFILE Icc, size_t Offset, LPLUT NewLUT, int 
     return TRUE;
 
 Error:
-    for (i=0; i < nCurves; i++) {
 
+    for (i=0; i < nCurves; i++) 
         if (Curves[i]) 
             cmsFreeGamma(Curves[i]);
-    }
 
     return FALSE;
 
@@ -1636,9 +1629,7 @@ int ReadEmbeddedTextTag(LPLCMSICCPROFILE Icc, size_t size, char* Name, size_t si
             for (i=0; i < Offset; i++) {
                     
                     char Discard;
-                    // No return checking; could lead to large loop in
-                    // combination with int oflow above computing Offset.
-                    Icc ->Read(&Discard, 1, 1, Icc);
+                    if (Icc ->Read(&Discard, 1, 1, Icc) != 1) return -1;
             }
 
 
@@ -1672,8 +1663,7 @@ int ReadEmbeddedTextTag(LPLCMSICCPROFILE Icc, size_t size, char* Name, size_t si
 }
 
 
-// Take an ASCII item. Takes at most LCMS_DESC_MAX
-
+// Take an ASCII item. Takes at most size_max bytes
 
 int LCMSEXPORT cmsReadICCTextEx(cmsHPROFILE hProfile, icTagSignature sig, char *Name, size_t size_max)
 {
@@ -1685,19 +1675,27 @@ int LCMSEXPORT cmsReadICCTextEx(cmsHPROFILE hProfile, icTagSignature sig, char *
     if (n < 0)         
         return -1;
     
+     size   = Icc -> TagSizes[n];
+    
     if (Icc -> TagPtrs[n]) {
 
-        CopyMemory(Name, Icc -> TagPtrs[n], Icc -> TagSizes[n]);
+        if (size > size_max)
+            size = size_max;
+
+        CopyMemory(Name, Icc -> TagPtrs[n], size);
+
         return (int) Icc -> TagSizes[n];
     }
 
     offset = Icc -> TagOffsets[n];
-    size   = Icc -> TagSizes[n];
+   
 
     if (Icc -> Seek(Icc, offset))
             return -1;
       
-    return ReadEmbeddedTextTag(Icc, size, Name, size_max);
+    if (ReadEmbeddedTextTag(Icc, size, Name, size_max) < 0) return -1;
+
+	return size;
 }
 
 // Keep compatibility with older versions
@@ -2022,8 +2020,6 @@ int cmsReadICCnamedColorList(cmsHTRANSFORM xform, cmsHPROFILE hProfile, icTagSig
                     char Root[33];
 
                     ZeroMemory(Colorant, sizeof(WORD) * MAXCHANNELS);
-                    // No return value checking; could cause trouble with
-                    // large count.
                     Icc -> Read(Root, 1, 32, Icc);
                     Icc -> Read(PCS,  3, sizeof(WORD), Icc);
 
@@ -2583,7 +2579,7 @@ cmsHPROFILE LCMSEXPORT cmsOpenProfileFromFile(const char *lpFileName, const char
        NewIcc = _cmsCreateProfileFromFilePlaceholder(lpFileName);
         if (!NewIcc) return NULL;
       
-       if (!ReadHeader(NewIcc, FALSE, 0)) return NULL;
+       if (!ReadHeader(NewIcc, FALSE)) return NULL;
                       
        ReadCriticalTags(NewIcc);
 
@@ -2603,7 +2599,7 @@ cmsHPROFILE LCMSEXPORT cmsOpenProfileFromMem(LPVOID MemPtr, DWORD dwSize)
        NewIcc = _cmsCreateProfileFromMemPlaceholder(MemPtr, dwSize); 
        if (!NewIcc) return NULL;
        
-       if (!ReadHeader(NewIcc, TRUE, dwSize)) return NULL;
+       if (!ReadHeader(NewIcc, TRUE)) return NULL;
              
        ReadCriticalTags(NewIcc);
 
@@ -3047,8 +3043,8 @@ LCMSBOOL SaveNamedColorList(LPcmsNAMEDCOLORLIST NamedColorList, LPLCMSICCPROFILE
     count         = TransportValue32(NamedColorList ->nColors);
     nDeviceCoords = TransportValue32(NamedColorList ->ColorantCount);
 
-    strncpy(prefix, (const char*) NamedColorList->Prefix, 32);
-    strncpy(suffix, (const char*) NamedColorList->Suffix, 32);
+    strncpy(prefix, (const char*) NamedColorList->Prefix, 31);
+    strncpy(suffix, (const char*) NamedColorList->Suffix, 31);
                   
     suffix[31] = prefix[31] = 0;
 

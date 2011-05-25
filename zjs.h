@@ -76,8 +76,12 @@ typedef enum {
 
     ZJI_ECONOMODE	=23,	// HP's "EconoMode", 0=OFF, 1=ON
 
+    ZJI_BITMAP_TYPE	=0x65,	// hp2600: ?
     ZJI_JBIG_BIH	=0x66,	// Bi-level Image Header
+    ZJI_BITMAP_PIXELS	=0x68,	// hp2600: ?
     ZJI_INCRY		=0x69,	// Incremental Y
+    ZJI_BITMAP_BPP	=0x6a,	// hp2600: ?
+    ZJI_BITMAP_STRIDE	=0x6b,	// hp2600: ?
 
     ZJI_ZX_0x6c		=0x6c,	// ZX: color order ???
 				// cmyk=04030201, rgb=0b0a09, mono=0c

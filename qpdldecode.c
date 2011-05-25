@@ -1,5 +1,5 @@
 /*
- * $Id: qpdldecode.c,v 1.30 2008/09/18 09:35:34 rick Exp $
+ * $Id: qpdldecode.c,v 1.31 2009/03/08 00:27:02 rick Exp $
  */
 
 /*b
@@ -489,7 +489,7 @@ if (0) printf("OK\n");
 				    if (imageCnt[pn] == 0)
 					fprintf(dfp, "P4\n%8d %8d\n", w, h);
 				    //imageCnt[pn] += incrY;
-				    fwrite(image, 1, len, dfp);
+				    rc = fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				    dfp = NULL;
 				}
@@ -511,7 +511,7 @@ if (0) printf("OK\n");
 				    fprintf(dfp, "P4\n%8d %8d\n", w, h*stripe);
 				    imageCnt[pn] += 1;
 				    fseek(dfp, stripe * h * wb, SEEK_SET);
-				    fwrite(image, 1, len, dfp);
+				    rc = fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				    dfp = NULL;
 				}

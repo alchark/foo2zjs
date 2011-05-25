@@ -169,6 +169,19 @@ install-usermap)
     fi
     exit 0
     ;;
+install-usblp)
+    for f in /etc/modprobe.d/blacklist*; do
+	if grep -q usblp $f; then
+	    ed - $f <<-EOF
+		g/^blacklist.*usblp/d
+		w
+		q
+		EOF
+	    #echo $f
+	    /sbin/modprobe usblp
+	fi
+    done
+    ;;
 esac
  
 #
@@ -207,7 +220,7 @@ elif [ -x $PRINTERID ]; then
     #
     # Sniff around for printers that need a firmware download
     #
-    usblps=`find /dev/usb -name lp*`" "`find /dev -name usblp*`
+    usblps=`find /dev/usb -name 'lp*'`" "`find /dev -name 'usblp*'`
     for dev in $usblps; do
 	status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
 	if [ "$status" != "" ]; then

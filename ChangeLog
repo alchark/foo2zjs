@@ -1,3 +1,71 @@
+2009-09-08	Rick Richardson <rick.richardson@comcast.net>
+	* For Ubuntu 9.10 Alpha 5:  fix Makefile and hplj1000
+	    to *not* list usblp in /etc/modprobe.d/blacklist*
+
+2009-06-23	Rick Richardson <rick.richardson@comcast.net>
+	* Moved: Minolta-QMS Page Page, 2200 DL, 2300 DL *.icm files
+
+2009-06-14	Rick Richardson <rick.richardson@comcast.net>
+	* New foo2lava printer:
+	    Konica-Minolta magicolor 4690MF
+	* upgate getweb for the 4690 printer
+
+2009-06-07	Rick Richardson <rick.richardson@comcast.net>
+	* Moved: Minolta-QMS Page Page, 2200 DL, 2300 DL *.icm files
+
+2009-05-30	Rick Richardson <rick.richardson@comcast.net>
+	* Added: Samsung CLP-310 manual pages.
+
+2009-05-11	Rick Richardson <rick.richardson@comcast.net>
+	* On SUSE, /bin/logger instead of /usr/bin/logger
+
+2009-05-04	Rick Richardson <rick.richardson@comcast.net>
+	* Added: Samsung CLP-310 like CLP-315.  The case is white!
+
+2009-04-22	Rick Richardson <rick.richardson@comcast.net>
+	* Update: zjsdecode, foo2hp.c: Add ZJI_BITMAP_xxx types.
+
+2009-04-13	Rick Richardson <rick.richardson@comcast.net>
+	* Fix: hplj1000 to protect against /lp*
+
+2009-03-24	Rick Richardson <rick.richardson@comcast.net>
+	* Add: km-1600-rgb-392-bpp1.icm for color correction using
+	    the X-rite ColorMunki and Argyll.
+	    For KONICA MINOLTA 1600W, 1680MF, 1690MF
+	    Delete 1600W, re-download, make, ./getweb 1600w, make install
+
+2009-03-24	Rick Richardson <rick.richardson@comcast.net>
+	* Modify: foo2zjs-icc2ps to "Little CMS" (lcms), v1.18.
+	$ make regress
+	[same as 03/01/09]
+
+2009-03-14	Rick Richardson <rick.richardson@comcast.net>
+	* New foo2lava printers: 
+	    Konica-Minolta magicolor 1600W
+	    Konica-Minolta magicolor 1680MF
+	    Konica-Minolta magicolor 1690MF
+	  ALPHA QUALITY!  PRINTER ONLY!
+
+2009-03-08	Rick Richardson <rick.richardson@comcast.net>
+	* New: printer-profile script using X-Rite ColorMunki and Argyll CMS
+
+2009-03-08	Rick Richardson <rick.richardson@comcast.net>
+	* Updated samclp-315-argyll-0.icm for color correction using
+	    the X-rite ColorMunki and Argyll!
+	  Do:
+	     $ ./getweb 315
+	     $ su
+	     # make install
+
+2009-03-07	Rick Richardson <rick.richardson@comcast.net>
+	* Clean up fwrite/fread/fscanf warnings on Ubuntu 8.10.
+
+2009-03-04	Rick Richardson <rick.richardson@comcast.net>
+	* zjsdecode: Add bpp=2 when doing -d.  Produces a .pgm file.
+
+2009-03-04	Rick Richardson <rick.richardson@comcast.net>
+	* foo2*-wrapper: Add logging of foo2zjs-icc2ps
+
 2009-03-01	Rick Richardson <rick.richardson@comcast.net>
 	* Modify: foo2zjs-icc2ps to "Little CMS" (lcms), v1.18 beta 1.
 	$ make regress

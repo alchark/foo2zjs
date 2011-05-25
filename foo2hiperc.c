@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.24 2008/12/29 23:19:20 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.25 2009/03/08 00:35:31 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -416,6 +416,7 @@ start_page_compressed(int nbie, int w, int h, int plane, unsigned char *bih,
 {
     int		h256 = ((h + 255) / 256) * 256;
     DWORD	rec[13];
+    int		rc;
 
     rec[0] = be32(52);			//reclen=52
     rec[1] = be32(0);			//rectype=0
@@ -433,10 +434,10 @@ start_page_compressed(int nbie, int w, int h, int plane, unsigned char *bih,
     rec[6] = be32(0x10000000);			//block0: data
 
     rec[7] = be32(20);			//block1: len=20
-    fwrite(rec, 32, 1, ofp);
+    rc = fwrite(rec, 32, 1, ofp);
 
     ((DWORD *) bih)[2] = be32(h256);
-    fwrite(bih, 20, 1, ofp);
+    rc = fwrite(bih, 20, 1, ofp);
 }
 
 void
@@ -455,6 +456,7 @@ write_plane_compressed(int nbie, unsigned char *buf, int w, int h, int plane,
 	int			lines = (h-y) > ns ? ns : (h-y);
 	int			chainlen;
 	DWORD			rec[5];
+	int			rc;
 
 	bitmaps[0] = buf + y * ((w+7)/8);
 	chain = NULL;
@@ -482,9 +484,9 @@ write_plane_compressed(int nbie, unsigned char *buf, int w, int h, int plane,
 	rec[3] = be32(plane << 24);	//block0: black
 
 	rec[4] = be32(chainlen);	//block1: len
-	fwrite(rec, 20, 1, ofp);
+	rc = fwrite(rec, 20, 1, ofp);
 	for (current = chain->next; current; current = current->next)
-	    fwrite(current->data, 1, current->len, ofp);
+	    rc = fwrite(current->data, 1, current->len, ofp);
     }
 }
 
@@ -526,6 +528,7 @@ write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 	unsigned char *buf = current->data;
 	int plane = pn - 1;
 	int y = 0;
+	int rc;
 
 	len = current->len;
 	next = current->next;
@@ -538,8 +541,8 @@ write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 	rec[3] = be32(plane << 24);	//block0: black
 
 	rec[4] = be32(blklen);	//block1: len
-	fwrite(rec, 20, 1, ofp);
-	fwrite(buf + y*(w/8), 1, blklen, ofp);
+	rc = fwrite(rec, 20, 1, ofp);
+	rc = fwrite(buf + y*(w/8), 1, blklen, ofp);
     }
     free_chain(*root);
 
@@ -551,10 +554,11 @@ end_page(FILE *ofp)
 {
     DWORD	rec[2];
     static int	pageno = 0;
+    int		rc;
 
     rec[0] = be32(8);	//reclen=8
     rec[1] = be32(255);	//rectype=255
-    fwrite(rec, 8, 1, ofp);
+    rc = fwrite(rec, 8, 1, ofp);
 
     ++pageno;
     if (IsCUPS)
@@ -566,6 +570,7 @@ start_page_uncompressed(int nbie, int w, int h, int plane, FILE *ofp)
 {
     DWORD	rec[13];
     int		h256 = ((h + 255) / 256) * 256;
+    int		rc;
 
     rec[0] = be32(52);			//reclen=52
     rec[1] = be32(0);			//rectype=0
@@ -587,7 +592,7 @@ start_page_uncompressed(int nbie, int w, int h, int plane, FILE *ofp)
     rec[10] = be32(h256);			//block1: height
     rec[11] = be32(256);		//block1: rows
     rec[12] = be32(0);			//block1: data
-    fwrite(rec, 52, 1, ofp);
+    rc = fwrite(rec, 52, 1, ofp);
 }
 
 void
@@ -598,6 +603,7 @@ write_plane_uncompressed(unsigned char *buf, int w, int h, int plane, FILE *ofp)
     int		x, y;
     int		blklen;
     DWORD	rec[5];
+    int		rc;
 
     for (y = 0; y < h; y += 256)
     {
@@ -612,8 +618,8 @@ write_plane_uncompressed(unsigned char *buf, int w, int h, int plane, FILE *ofp)
 	rec[3] = be32(plane << 24);	//block0: black
 
 	rec[4] = be32(w256);		//block1: len
-	fwrite(rec, 20, 1, ofp);
-	fwrite(buf + y*(w/8), 1, blklen, ofp);
+	rc = fwrite(rec, 20, 1, ofp);
+	rc = fwrite(buf + y*(w/8), 1, blklen, ofp);
     }
 
     // Pad to 256 lines...
@@ -895,11 +901,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1215,6 +1222,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1222,7 +1230,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1345,11 +1353,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

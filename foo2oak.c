@@ -63,7 +63,7 @@ Status: 0x18
  * TODO: Handle 2 bit mono and color output
  */
 
-static char Version[] = "$Id: foo2oak.c,v 1.56 2008/05/03 14:30:40 rick Exp $";
+static char Version[] = "$Id: foo2oak.c,v 1.57 2009/03/08 00:35:31 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -430,15 +430,16 @@ oak_record(FILE *fp, int type, void *payload, int paylen)
     OAK_HDR	hdr;
     static char	pad[] = "PAD_PAD_PAD_PAD_";
     static int	pageno = 0;
+    int		rc;
 
     memcpy(hdr.magic, OAK_HDR_MAGIC, sizeof(hdr.magic));
     hdr.type = type;
     hdr.len = (sizeof(hdr) + paylen + 15) & ~0x0f;
 
-    fwrite(&hdr, 1, sizeof(hdr), fp);
+    rc = fwrite(&hdr, 1, sizeof(hdr), fp);
     if (payload && paylen)
-	fwrite(payload, 1, paylen, fp);
-    fwrite(pad, 1, hdr.len - (sizeof(hdr) + paylen), fp);
+	rc = fwrite(payload, 1, paylen, fp);
+    rc = fwrite(pad, 1, hdr.len - (sizeof(hdr) + paylen), fp);
 
     if (type == OAK_TYPE_START_PAGE)
     {
@@ -855,6 +856,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	int			chainlen;
 	int			padlen;
 	static char		pad[] = "PAD_PAD_PAD_PAD_";
+	int			rc;
 
 	int	lines = (h-y) > N ? N : (h-y);
 
@@ -899,9 +901,9 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	    oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	    for (current = chain->next; current; current = current->next)
-		fwrite(current->data, 1, current->len, ofp);
+		rc = fwrite(current->data, 1, current->len, ofp);
 	    padlen = recdata.padlen - recdata.datalen;  
-	    fwrite(pad, 1, padlen, ofp);
+	    rc = fwrite(pad, 1, padlen, ofp);
 
 	    free_chain(chain);
 	}
@@ -989,6 +991,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	int			chainlen;
 	int			padlen;
 	static char		pad[] = "PAD_PAD_PAD_PAD_";
+	int			rc;
 
 	int	lines = (h-y) > N ? N : (h-y);
 
@@ -1031,9 +1034,9 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	for (current = chain->next; current; current = current->next)
-	    fwrite(current->data, 1, current->len, ofp);
+	    rc = fwrite(current->data, 1, current->len, ofp);
 	padlen = recdata.padlen - recdata.datalen;  
-	fwrite(pad, 1, padlen, ofp);
+	rc = fwrite(pad, 1, padlen, ofp);
 	free_chain(chain);
     }
  
@@ -1129,6 +1132,7 @@ pgm_page(unsigned char *raw, int w, int h, FILE *ofp)
 	int			chainlen;
 	int			padlen;
 	static char		pad[] = "PAD_PAD_PAD_PAD_";
+	int			rc;
 
 	int	lines = (h-y) > N ? N : (h-y);
 
@@ -1173,9 +1177,9 @@ pgm_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	    oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	    for (current = chain->next; current; current = current->next)
-		fwrite(current->data, 1, current->len, ofp);
+		rc = fwrite(current->data, 1, current->len, ofp);
 	    padlen = recdata.padlen - recdata.datalen;  
-	    fwrite(pad, 1, padlen, ofp);
+	    rc = fwrite(pad, 1, padlen, ofp);
 
 	    free_chain(chain);
 	}
@@ -1305,6 +1309,7 @@ cups_page(unsigned char *raw, int w, int h, FILE *ofp)
 	int			chainlen;
 	int			padlen;
 	static char		pad[] = "PAD_PAD_PAD_PAD_";
+	int			rc;
 
 	int	lines = (h-y) > N ? N : (h-y);
 
@@ -1351,9 +1356,9 @@ cups_page(unsigned char *raw, int w, int h, FILE *ofp)
 		recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 		oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 		for (current = chain->next; current; current = current->next)
-		    fwrite(current->data, 1, current->len, ofp);
+		    rc = fwrite(current->data, 1, current->len, ofp);
 		padlen = recdata.padlen - recdata.datalen;  
-		fwrite(pad, 1, padlen, ofp);
+		rc = fwrite(pad, 1, padlen, ofp);
 
 		free_chain(chain);
 	    }
@@ -1519,6 +1524,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1526,7 +1532,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }

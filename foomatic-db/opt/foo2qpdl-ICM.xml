@@ -28,6 +28,12 @@
 	</constraint>
 	<constraint sense="true">
 	    <make>Samsung</make>
+	    <model>CLP-310</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-315</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
 	    <model>CLP-315</model>
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-315</arg_defval>
@@ -85,7 +91,7 @@
 	</enum_val>
 
 	<enum_val id="ev/foo2qpdl-ICM-315">
-	    <ev_longname> <en>CLP-315</en> </ev_longname>
+	    <ev_longname> <en>CLP-310/315</en> </ev_longname>
 	    <ev_shortname> <en>clp315</en> </ev_shortname>
 	    <ev_driverval>-C10 -Gsamclp315-argyll-0.icm</ev_driverval>
 	</enum_val>
@@ -126,10 +132,22 @@
 	    <ev_driverval>-z2</ev_driverval>
 	</enum_val>
 
-        <enum_val id="ev/foo2qpdl-ICM-testing-300">
+        <enum_val id="ev/foo2qpdl-ICM-testing">
             <ev_longname> <en>File testing.icm</en> </ev_longname>
             <ev_shortname> <en>testing</en> </ev_shortname>
             <ev_driverval>-C10 -Gtesting.icm</ev_driverval>
+        </enum_val>
+
+        <enum_val id="ev/foo2qpdl-ICM-testing2">
+            <ev_longname> <en>File testing2.icm</en> </ev_longname>
+            <ev_shortname> <en>testing2</en> </ev_shortname>
+            <ev_driverval>-C10 -Gtesting2.icm</ev_driverval>
+        </enum_val>
+
+        <enum_val id="ev/foo2qpdl-ICM-testing3">
+            <ev_longname> <en>File testing3.icm</en> </ev_longname>
+            <ev_shortname> <en>testing3</en> </ev_shortname>
+            <ev_driverval>-C10 -Gtesting3.icm</ev_driverval>
         </enum_val>
 
     </enum_vals>

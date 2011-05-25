@@ -374,8 +374,18 @@
 *OpenUI *ICM/ICM Color Profile: PickOne
 *FoomaticRIPOption ICM: enum CmdLine A
 *OrderDependency: 300 AnySetup *ICM
-*DefaultICM: km2530-jc
-*ICM km2530-jc/km2530-jconner-d50.icm (default): "%% FoomaticRIPOptionSetting: ICM=km2530-jc"
+*DefaultICM: km2530-default
+*ICM km1600/km-1600-rgb-392-bpp1.icm: "%% FoomaticRIPOptionSetting: ICM=km1600"
+*FoomaticRIPOptionSetting ICM=km1600: "-Gkm-1600-rgb-392-bpp1.icm "
+*ICM km1600-default/km-16* (default): "%% FoomaticRIPOptionSetting: ICM=km1600-default"
+*FoomaticRIPOptionSetting ICM=km1600-default: "-Gkm-1600-rgb-392-bpp1.&&
+icm "
+*End
+*ICM km2530-default/km2530 (default): "%% FoomaticRIPOptionSetting: ICM=km2530-default"
+*FoomaticRIPOptionSetting ICM=km2530-default: "-Gkm2530-jconner-d50.ic&&
+m "
+*End
+*ICM km2530-jc/km2530-jconner-d50.icm: "%% FoomaticRIPOptionSetting: ICM=km2530-jc"
 *FoomaticRIPOptionSetting ICM=km2530-jc: "-Gkm2530-jconner-d50.icm "
 *ICM km2530_0/km2530_0.icm - Resolution 600: "%% FoomaticRIPOptionSetting: ICM=km2530_0"
 *FoomaticRIPOptionSetting ICM=km2530_0: "-Gkm2530_0.icm "

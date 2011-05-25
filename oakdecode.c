@@ -1,5 +1,5 @@
 /*
- * $Id: oakdecode.c,v 1.31 2008/05/02 04:08:13 rick Exp $
+ * $Id: oakdecode.c,v 1.32 2009/03/08 00:27:02 rick Exp $
  *
  * Work in progress decoder for Oak Tech. JBIG streams (HP1500)
  *
@@ -527,7 +527,7 @@ decode(FILE *fp)
 		    iswap32(&hdr3c.bih.l0);
 		}
 		if (FpRaw[plane][subplane])
-		    fwrite(&hdr3c.bih, 1, 20, FpRaw[plane][subplane]);
+		    rc = fwrite(&hdr3c.bih, 1, 20, FpRaw[plane][subplane]);
 		if (FpDec[plane][subplane])
 		{
 		    rc = jbg_dec_in(&s[plane][subplane],
@@ -547,7 +547,7 @@ decode(FILE *fp)
 		break;
 	    curOff += size;
 	    if (FpRaw[plane][subplane])
-		fwrite(ibuf, 1, size, FpRaw[plane][subplane]);
+		rc = fwrite(ibuf, 1, size, FpRaw[plane][subplane]);
 	    if (FpDec[plane][subplane])
 	    {
 		unsigned char *image;
@@ -571,7 +571,7 @@ decode(FILE *fp)
 		    = jbg_dec_getwidth(&s[plane][subplane]);
 		image = jbg_dec_getimage(&s[plane][subplane], 0);
 		if (image)
-		    fwrite(image, 1, jbg_dec_getsize(&s[plane][subplane]),
+		    rc = fwrite(image, 1, jbg_dec_getsize(&s[plane][subplane]),
 			FpDec[plane][subplane]);
 		else
 		    debug(0, "Missing image p=%d/%d %dx%d!\n",

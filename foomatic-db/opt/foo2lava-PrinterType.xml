@@ -12,9 +12,8 @@
 	<arg_proto>%s </arg_proto>
     </arg_execution>
     <constraints>
-	<constraint sense="true">
+	<constraint sense="false">
 	    <driver>foo2lava</driver>
-	    <arg_defval>ev/foo2lava-PrinterType-lavaflow</arg_defval>
 	</constraint>
 	<constraint sense="true">
 	    <make>KONICA MINOLTA</make>
@@ -22,23 +21,75 @@
 	    <driver>foo2lava</driver>
 	    <arg_defval>ev/foo2lava-PrinterType-opl</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 2490 MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z0</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 2530 DL</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z0</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Xerox</make>
+	    <model>Phaser 6115MFP</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z0</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1600W</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1680MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1690MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 4690MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-PrinterType-lavaflow-z2</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
-	<enum_val id="ev/foo2lava-PrinterType-lavaflow">
-	    <ev_longname> <en>LAVAFLOW printer</en> </ev_longname>
+	<enum_val id="ev/foo2lava-PrinterType-lavaflow-z0">
+	    <ev_longname> <en>LAVAFLOW printer z0</en> </ev_longname>
 		<!-- A multilingual <comments> block can appear here, too;
 		 it should be treated as documentation for the user. -->
-	    <ev_shortname> <en>lavaflow</en> </ev_shortname>
+	    <ev_shortname> <en>lavaflow_z0</en> </ev_shortname>
 	    <ev_driverval>-z0</ev_driverval>
 	    <constraints>
-	        <constraint sense="true">
-		    <driver>foo2lava</driver>
-	        </constraint>
 	        <constraint sense="false">
 		    <driver>foo2lava</driver>
-	    	    <make>KONICA MINOLTA</make>
-	    	    <model>magicolor 2480 MF</model>
 	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 2490 MF</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 2530 DL</model>
+	        </constraint>
+		<constraint sense="true">
+		    <driver>foo2lava</driver>
+		    <make>Xerox</make>
+		    <model>Phaser 6115MFP</model>
+		</constraint>
 	    </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2lava-PrinterType-opl">
@@ -55,6 +106,38 @@
 		    <driver>foo2lava</driver>
 	    	    <make>KONICA MINOLTA</make>
 	    	    <model>magicolor 2480 MF</model>
+	        </constraint>
+	    </constraints>
+	</enum_val>
+	<enum_val id="ev/foo2lava-PrinterType-lavaflow-z2">
+	    <ev_longname> <en>LAVAFLOW printer z2</en> </ev_longname>
+		<!-- A multilingual <comments> block can appear here, too;
+		 it should be treated as documentation for the user. -->
+	    <ev_shortname> <en>lavaflow_z2</en> </ev_shortname>
+	    <ev_driverval>-z2</ev_driverval>
+	    <constraints>
+	        <constraint sense="false">
+		    <driver>foo2lava</driver>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 1600W</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 1680MF</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 1690MF</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2lava</driver>
+	    	    <make>KONICA MINOLTA</make>
+	    	    <model>magicolor 4690MF</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>

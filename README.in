@@ -19,6 +19,8 @@ GENERAL
 	- Konica Minolta magicolor 2430 DL	B/W and color
 	- Minolta/QMS 2300 DL			B/W and color
 	- Minolta/QMS 2200 DL			B/W and color
+	- HP LaserJet P2035			B/W
+	- HP LaserJet M1319 MFP			B/W
 	- HP LaserJet 1022			B/W
 	- HP LaserJet 1020			B/W
 	- HP LaserJet 1018			B/W
@@ -49,6 +51,9 @@ GENERAL
 	- Konica Minolta magicolor 2490 MF	B/W and color
 	- Xerox Phaser 6115MFP			B/W and color
 	- Konica Minolta magicolor 2480 MF	B/W and color
+	- Konica Minolta magicolor 1690MF	B/W and color
+	- Konica Minolta magicolor 1680MF	B/W and color
+	- Konica Minolta magicolor 1600W	B/W and color
 
     FOO2OAK
     -------
@@ -60,11 +65,30 @@ GENERAL
     OAKT protocol printers, such as these:
 
 	- HP LaserJet 1500	B/W and color, but only 1-bit per pixel
+	- Kyocera KM-2035	B/W
+	- Kyocera KM-1635	B/W
+
+    FOO2QPDL
+    --------
+    foo2qpdl converts Ghostscript pbmraw, bitcmyk, or pksmraw output formats
+    to monochrome or color QPDL streams, for driving the Samsung CLP-300,
+    CLX-2160, CLP-600, CLX-3160, CLP-610 and the Xerox Phaser 6110
+    QPDL printers.
+
+	- Samsung CLP-300	B/W and color
+	- Samsung CLP-315	B/W and color
+	- Samsung CLP-600	B/W and color
+	- Samsung CLP-610	B/W and color
+	- Samsung CLP-2160	B/W and color
+	- Samsung CLP-3160	B/W and color
+	- Samsung CLP-3175	B/W and color
+	- Xerox Phaser 6110	B/W and color
+	- Xerox Phaser 6110MFP	B/W and color
 
     FOO2SLX
     -------
     foo2slx converts Ghostscript pbmraw, bitcmyk, or pksmraw output formats
-    to  monochrome  or color SLX streams, for driving the Lexmark C500 net-
+    to monochrome or color SLX streams, for driving the Lexmark C500 net-
     work color laser printer and other SLZ-based printers.  The SLX  stream
     is a variant of ZjStream produced by Software Imaging K.K
 
@@ -90,10 +114,10 @@ GENERAL
     mats  to monochrome or color HIPERC streams, for driving the Oki C3200,
     C3300n, C3400n, C5100n, and the C5500n HIPERC printers.
 
-	- Oki C3200n
+	- Oki C3100n/C3200n
 	- Oki C3300n/C3400n
 	- Oki C3530n MFP
-	- Oki C5100n/C5200n
+	- Oki C5100n/C5150n/C5200n
 	- Oki C5500n/C5600n/C5800n
 
 Please read the manual pages for more details on the program operation.

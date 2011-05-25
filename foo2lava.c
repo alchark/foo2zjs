@@ -15,6 +15,11 @@ such as these:
      - Konica Minolta magicolor 2480 MF		B/W and color
 						NOTE: Copies is unimplented!
 
+    Model 2:
+     - Konica Minolta magicolor 1600W		B/W and color
+     - Konica Minolta magicolor 1680MF		B/W and color
+     - Konica Minolta magicolor 1690MF		B/W and color
+
 AUTHORS
 It also uses Markus Kuhn's jbig-kit compression library (included, but
 also available at http://www.cl.cam.ac.uk/~mgk25/jbigkit/).
@@ -50,7 +55,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.33 2008/09/22 22:38:52 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.35 2009/03/25 14:25:54 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -101,7 +106,8 @@ int	Mode = 0;
 int	Model = 0;
 		#define MODEL_2530DL	0
 		#define MODEL_2480MF	1
-		#define MODEL_LAST	1
+		#define MODEL_1600W	2
+		#define MODEL_LAST	2
 
 int	Color2Mono = 0;
 int	BlackClears = 0;
@@ -212,7 +218,7 @@ usage(void)
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
-"-z model          Model: 0=2530DL (LAVAFLOW), 1=2480MF (OPL) [%d]\n"
+"-z model          Model: 0=2530DL, 2=1600W (LAVAFLOW), 1=2480MF (OPL) [%d]\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -440,17 +446,20 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     for (current = *root; current && current->len; current = current->next)
     {
+	int	rc;
+
 	if (current == *root)
 	{
 	    switch (Model)
 	    {
+	    case MODEL_1600W:
 	    case MODEL_2530DL:
 		fprintf(fp, "\033*b20V");
-		fwrite(current->data, 1, current->len, fp);
+		rc = fwrite(current->data, 1, current->len, fp);
 		break;
 	    case MODEL_2480MF:
 		fprintf(fp, "RasterObject.Data#%d=", (int) current->len);
-		fwrite(current->data, 1, current->len, fp);
+		rc = fwrite(current->data, 1, current->len, fp);
 		fprintf(fp, ";");
 		break;
 	    }
@@ -469,15 +478,16 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
                 pad = 0;
 	    switch (Model)
 	    {
+	    case MODEL_1600W:
 	    case MODEL_2530DL:
 		fprintf(fp, "\033*b%d%s", len + pad, next ? "V" : "W");
-		fwrite(current->data, 1, len, fp);
+		rc = fwrite(current->data, 1, len, fp);
 		for (i = 0; i < pad; i++)
 		    putc(0, fp);
 		break;
 	    case MODEL_2480MF:
 		fprintf(fp, "RasterObject.Data#%d=", len + pad);
-		fwrite(current->data, 1, len, fp);
+		rc = fwrite(current->data, 1, len, fp);
 		for (i = 0; i < pad; i++)
 		    putc(0, fp);
 		fprintf(fp, ";");
@@ -488,7 +498,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     free_chain(*root);
 
-    if (Model == MODEL_2530DL)
+    if (Model == MODEL_2530DL || Model == MODEL_1600W)
     {
 	switch (planeNum)
 	{
@@ -543,6 +553,7 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 
     switch (Model)
     {
+    case MODEL_1600W:
     case MODEL_2530DL:
 	fprintf(ofp, "\033&l%dO", 0);
 	fprintf(ofp, "\033*r%dU", Mode == MODE_COLOR ? -1004 : 1);
@@ -600,6 +611,7 @@ end_page(FILE *ofp)
 {
     switch (Model)
     {
+    case MODEL_1600W:
     case MODEL_2530DL:
 	fprintf(ofp, "\033*rC");
 	if (0)
@@ -623,6 +635,7 @@ write_page(BIE_CHAIN **root, BIE_CHAIN **root2,
 
     switch (Model)
     {
+    case MODEL_1600W:
     case MODEL_2530DL:
 	if (root3) write_plane(3, root3, ofp);
 	if (root2) write_plane(2, root2, ofp);
@@ -725,6 +738,7 @@ start_doc(FILE *fp)
 
     switch (Model)
     {
+    case MODEL_1600W:
     case MODEL_2530DL:
 	now = time(NULL);
 	tmp = localtime(&now);
@@ -772,6 +786,7 @@ end_doc(FILE *fp)
 {
     switch (Model)
     {
+    case MODEL_1600W:
     case MODEL_2530DL:
 	fprintf(fp, "\033E");
 	fprintf(fp, "\033%%-12345X");
@@ -913,11 +928,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
+	    int rc;
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
+		rc = fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1172,6 +1188,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1179,7 +1196,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1298,11 +1315,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1638,7 +1656,8 @@ main(int argc, char *argv[])
      */
     if (EvenPages)
     {
-int	media;
+	int	media;
+	int	rc;
 
 	// Handle odd page count
 	if ( (PageNum & 1) == 1)
@@ -1659,7 +1678,7 @@ int	media;
 
 	fseek(EvenPages, SeekMedia, 0L);
 	//media = be32(DMMEDIA_LETTERHEAD);
-	fwrite(&media, 1, sizeof(4), EvenPages);
+	rc = fwrite(&media, 1, sizeof(4), EvenPages);
 
 	// Write even pages in reverse order
 	for (i = SeekIndex-1; i >= 0; --i)

@@ -43,6 +43,7 @@ main (int argc, char *argv[])
     int			fd;
     unsigned char	argp[1024];
     int			length;
+    int			rc;
 
     --argc;
     ++argv;
@@ -59,7 +60,7 @@ main (int argc, char *argv[])
 
     length = (argp[0] << 8) + argp[1] - 2;
     printf("GET_DEVICE_ID string:\n");
-    fwrite(argp + 2, 1, length, stdout);
+    rc = fwrite(argp + 2, 1, length, stdout);
     printf("\n");
 
     #if 0

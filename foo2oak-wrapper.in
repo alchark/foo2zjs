@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2oak-wrapper.in,v 1.45 2009/01/11 12:21:46 rick Exp $'
+VERSION='$Id: foo2oak-wrapper.in,v 1.47 2009/05/11 17:35:55 rick Exp $'
 
 #
 # Printer Notes:
@@ -37,7 +37,7 @@ PATH=$PATH:/sw/bin:/opt/local/bin
 #
 #	Log the command line, for debugging and problem reports
 #
-if [ -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger -o -x /bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
 fi
 
@@ -533,8 +533,12 @@ create_crd() {
 	none | none.icm | */none.icm)
 	    ;;
 	*)
+	    if [ -x /usr/bin/logger ]; then
+		logger -t "$BASENAME" -p lpr.info -- \
+		"`basename $ICC2PS` -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps"
+	    fi
 	    $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
-	    || error "Problem converting .ICM file to Postscript"
+		|| error "Problem converting .ICM file to Postscript"
 	    ;;
 	esac
 

@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.63 2009/01/22 16:43:17 rick Exp $
+ * $Id: zjsdecode.c,v 1.67 2009/04/22 13:00:27 rick Exp $
  */
 
 /*b
@@ -163,6 +163,7 @@ decode(FILE *fp)
     int			imageCnt[5] = {0,0,0,0,0};
     int         	pn = 0;
     int         	incrY = 0;
+    int         	bpp = 1;
     int			totSize = 0;
 
     /*
@@ -388,6 +389,10 @@ decode(FILE *fp)
 		CODESTR(ZJI_MINOLTA_PAGE_NUMBER)	break;
 		CODESTR(ZJI_MINOLTA_FILENAME)		break;
 		CODESTR(ZJI_MINOLTA_USERNAME)		break;
+		CODESTR(ZJI_BITMAP_TYPE)		break;
+		CODESTR(ZJI_BITMAP_PIXELS)		break;
+		CODESTR(ZJI_BITMAP_BPP)			break;
+		CODESTR(ZJI_BITMAP_STRIDE)		break;
 		CODESTR(ZJI_INCRY)			break;
 		CODESTR(ZJI_JBIG_BIH)			break;
 		CODESTR(ZJI_ECONOMODE)			break;
@@ -411,7 +416,7 @@ decode(FILE *fp)
 	    {
 	    case ZJIT_UINT32:
 	    case ZJIT_INT32:
-		fread(&val, len = sizeof(val), 1, fp);
+		rc = fread(&val, len = sizeof(val), 1, fp);
 		curOff += len;
 		val = be32(val);
 		isize -= 4;
@@ -433,6 +438,8 @@ decode(FILE *fp)
 		}
 		else if (ihdr.item == ZJI_INCRY)
 		    incrY = val;
+		else if (ihdr.item == ZJI_VIDEO_BPP)
+		    bpp = val;
 		else if (ihdr.item == ZJI_ZX_COLOR_OPT)
 		{
 		    switch (val)
@@ -461,7 +468,7 @@ decode(FILE *fp)
 		break;
 	    default:
 	    case ZJIT_BYTELUT:
-		fread(&val, len = sizeof(val), 1, fp);
+		rc = fread(&val, len = sizeof(val), 1, fp);
 		curOff += len;
 		val = be32(val);
 		isize -= 4;
@@ -554,7 +561,7 @@ decode(FILE *fp)
 		    }
 		    ++planeNum;
 		    if (rfp)
-			fwrite(bih, bihlen, 1, rfp);
+			rc = fwrite(bih, bihlen, 1, rfp);
 		    if (DecFile)
 		    {
 			size_t	cnt;
@@ -583,6 +590,8 @@ decode(FILE *fp)
 			{
 			    int	h, w, len;
 			    unsigned char *image;
+			    int i, gray4;
+			    char gray[4];
 
 			    // debug(0, "JBG_EOK: %d\n", pn);
 			    h = jbg_dec_getheight(&s[pn]);
@@ -592,16 +601,38 @@ decode(FILE *fp)
 			    if (image)
 			    {
 				char	buf[512];
-				sprintf(buf, "%s-%02d-%d.pbm",
+				if (bpp == 1)
+				    sprintf(buf, "%s-%02d-%d.pbm",
+					DecFile, pageNum, planeNum-1);
+				else
+				    sprintf(buf, "%s-%02d-%d.pgm",
 					DecFile, pageNum, planeNum-1);
 				dfp = fopen(buf,
 					    imageCnt[planeNum-1] ? "a" : "w");
 				if (dfp)
 				{
-				    if (imageCnt[planeNum-1] == 0)
-					fprintf(dfp, "P4\n%8d %8d\n", w, h);
+				    if (bpp == 1)
+				    {
+					if (imageCnt[planeNum-1] == 0)
+					    fprintf(dfp, "P4\n%8d %8d\n", w, h);
+					rc = fwrite(image, 1, len, dfp);
+				    }
+				    else
+				    {
+					if (imageCnt[planeNum-1] == 0)
+					    fprintf(dfp, "P5\n%8d %8d 3\n",
+						w/2, h);
+					for (i = 0; i < len; ++i)
+					{
+					    gray4 = image[i];
+					    gray[0] = ~(gray4 >> 6) & 3;
+					    gray[1] = ~(gray4 >> 4) & 3;
+					    gray[2] = ~(gray4 >> 2) & 3;
+					    gray[3] = ~(gray4 >> 0) & 3;
+					    rc = fwrite(gray, 4, 1, dfp);
+					}
+				    }
 				    imageCnt[planeNum-1] += incrY;
-				    fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				}
 			    }
@@ -614,11 +645,15 @@ decode(FILE *fp)
 		if (hdr.type == ZJT_2600N && hdr.items == 3)
 		{
 		    char	buf[512];
-		    sprintf(buf, "%s-%02d-%d.pbm",
+		    if (bpp == 1)
+			sprintf(buf, "%s-%02d-%d.pbm",
+			    DecFile, pageNum, planeNum-1);
+		    else
+			sprintf(buf, "%s-%02d-%d.pgm",
 			    DecFile, pageNum, planeNum-1);
 		    dfp = fopen(buf, "r+");
 		    fseek(dfp, 12, 0);
-		    fprintf(dfp, "%8d\n", imageCnt[planeNum-1]);
+		    fprintf(dfp, "%8d", imageCnt[planeNum-1]);
 		    fclose(dfp);
 		}
 	    }

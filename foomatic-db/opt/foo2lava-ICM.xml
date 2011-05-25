@@ -18,7 +18,31 @@
     <constraints>
 	<constraint sense="true">
 	    <driver>foo2lava</driver>
-	    <arg_defval>ev/foo2lava-ICM-conner</arg_defval>
+	    <arg_defval>ev/foo2lava-ICM-default-z0</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1600W</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-ICM-default-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1680MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-ICM-default-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 1690MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-ICM-default-z2</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 4690MF</model>
+	    <driver>foo2lava</driver>
+	    <arg_defval>ev/foo2lava-ICM-default-z2</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>
@@ -28,6 +52,18 @@
 		 it should be treated as documentation for the user. -->
 	    <ev_shortname> <en>none</en> </ev_shortname>
 	    <ev_driverval>-Gnone.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2lava-ICM-default-z0">
+	    <ev_longname> <en>km2530 (default)</en> </ev_longname>
+	    <ev_shortname> <en>km2530-default</en> </ev_shortname>
+	    <ev_driverval>-Gkm2530-jconner-d50.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2lava-ICM-default-z2">
+	    <ev_longname> <en>km-16* (default)</en> </ev_longname>
+	    <ev_shortname> <en>km1600-default</en> </ev_shortname>
+	    <ev_driverval>-Gkm-1600-rgb-392-bpp1.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2lava-ICM-0">
@@ -49,9 +85,15 @@
 	</enum_val>
 
 	<enum_val id="ev/foo2lava-ICM-conner">
-	    <ev_longname> <en>km2530-jconner-d50.icm (default)</en> </ev_longname>
+	    <ev_longname> <en>km2530-jconner-d50.icm</en> </ev_longname>
 	    <ev_shortname> <en>km2530-jc</en> </ev_shortname>
 	    <ev_driverval>-Gkm2530-jconner-d50.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2lava-ICM-km-1600">
+	    <ev_longname> <en>km-1600-rgb-392-bpp1.icm</en> </ev_longname>
+	    <ev_shortname> <en>km1600</en> </ev_shortname>
+	    <ev_driverval>-Gkm-1600-rgb-392-bpp1.icm</ev_driverval>
 	</enum_val>
 
         <enum_val id="ev/foo2lava-ICM-testing">

@@ -381,7 +381,7 @@
 *DefaultICM: clp600
 *ICM clp300/CLP-300: "%% FoomaticRIPOptionSetting: ICM=clp300"
 *FoomaticRIPOptionSetting ICM=clp300: "-C10 -Gsamclp300-0.icm "
-*ICM clp315/CLP-315: "%% FoomaticRIPOptionSetting: ICM=clp315"
+*ICM clp315/CLP-310/315: "%% FoomaticRIPOptionSetting: ICM=clp315"
 *FoomaticRIPOptionSetting ICM=clp315: "-C10 -Gsamclp315-argyll-0.icm "
 *ICM clp600/CLP-600: "%% FoomaticRIPOptionSetting: ICM=clp600"
 *FoomaticRIPOptionSetting ICM=clp600: "-z1 "
@@ -401,6 +401,10 @@
 *FoomaticRIPOptionSetting ICM=ph6110: "-C10 -Gsamclp300-0.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
+*ICM testing2/File testing2.icm: "%% FoomaticRIPOptionSetting: ICM=testing2"
+*FoomaticRIPOptionSetting ICM=testing2: "-C10 -Gtesting2.icm "
+*ICM testing3/File testing3.icm: "%% FoomaticRIPOptionSetting: ICM=testing3"
+*FoomaticRIPOptionSetting ICM=testing3: "-C10 -Gtesting3.icm "
 *CloseUI: *ICM
 
 *CloseGroup: Adjustment

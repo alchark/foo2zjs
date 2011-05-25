@@ -200,14 +200,14 @@ LCMSBOOL _cmsValidateLUT(LPLUT NewLUT)
       oldCalc = calc;
       calc *= NewLUT -> cLutPoints;
 
-      if (calc < oldCalc || calc < NewLUT -> cLutPoints) {
+      if (calc / NewLUT -> cLutPoints != oldCalc) {
         return FALSE;
       }
     }
 
     oldCalc = calc;
     calc *= NewLUT -> OutputChan;
-    if (calc < oldCalc || calc < NewLUT -> OutputChan) {
+    if (NewLUT -> OutputChan && calc / NewLUT -> OutputChan != oldCalc) {
       return FALSE;
     }
 

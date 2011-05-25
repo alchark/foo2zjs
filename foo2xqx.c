@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2xqx.c,v 1.18 2007/12/09 06:57:03 rick Exp $";
+static char Version[] = "$Id: foo2xqx.c,v 1.19 2009/03/08 00:14:57 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -327,32 +327,35 @@ static void
 chunk_write(unsigned long type, unsigned long items, FILE *fp)
 {
     XQX_HEADER	chunk;
+    int		rc;
 
     chunk.type = be32(type);
     chunk.items = be32(items);
-    fwrite(&chunk, 1, sizeof(XQX_HEADER), fp);
+    rc = fwrite(&chunk, 1, sizeof(XQX_HEADER), fp);
 }
 
 static void
 item_uint32_write(unsigned long item, unsigned long value, FILE *fp)
 {
     XQX_ITEM_UINT32 item_uint32;
+    int		rc;
 
     item_uint32.header.type = be32(item);
     item_uint32.header.size = be32(sizeof(DWORD));
     item_uint32.value = be32(value);
-    fwrite(&item_uint32, 1, sizeof(XQX_ITEM_UINT32), fp);
+    rc = fwrite(&item_uint32, 1, sizeof(XQX_ITEM_UINT32), fp);
 }
 
 static void
 item_bytelut_write(unsigned long item, unsigned long len, BYTE *buf, FILE *fp)
 {
     XQX_ITEM_HEADER header;
+    int		rc;
 
     header.type = be32(item);
     header.size = be32(len);
-    fwrite(&header, 1, sizeof(XQX_ITEM_HEADER), fp);
-    fwrite(buf, 1, len, fp);
+    rc = fwrite(&header, 1, sizeof(XQX_ITEM_HEADER), fp);
+    rc = fwrite(buf, 1, len, fp);
 }
 
 /*
@@ -386,6 +389,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
     int		len;
     int		first;
     BYTE	*bih;
+    int		rc;
 
     debug(3, "Write Plane %d\n", planeNum); 
 
@@ -419,7 +423,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    item_uint32_write(XQXI_END, 0xdeadbeef, fp);
 
 	    chunk_write(XQX_JBIG, len, fp);
-	    fwrite(current->data, 1, len, fp);
+	    rc = fwrite(current->data, 1, len, fp);
 
 	    chunk_write(XQX_END_PLANE, 0, fp);
 	    first = 0;
@@ -596,6 +600,7 @@ start_doc(FILE *fp)
     time_t	now;
     struct tm	*tmp;
     char	datetime[14+1];
+    int		rc;
 
     now = time(NULL);
     tmp = localtime(&now);
@@ -614,7 +619,7 @@ start_doc(FILE *fp)
     fprintf(fp, "@PJL SET JOBATTR=\"JobAttr4=%s\"", datetime);
     fputc(0, fp);
     fprintf(fp, "\033%%-12345X");
-    fwrite(header, 1, sizeof(header), fp);
+    rc = fwrite(header, 1, sizeof(header), fp);
 
     nitems = 7;
 
@@ -751,11 +756,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
+	    int rc;
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		fwrite(plane[i], bpl*h, 1, dfp);
+		rc = fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1002,6 +1008,7 @@ getint(FILE *fp)
 {
     int c;
     unsigned long i;
+    int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
 	if (c == '#')
@@ -1009,7 +1016,7 @@ getint(FILE *fp)
     if (c != EOF)
     {
 	ungetc(c, fp);
-	fscanf(fp, "%lu", &i);
+	rc = fscanf(fp, "%lu", &i);
     }
     return i;
 }
@@ -1128,11 +1135,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
+		int rc;
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    fwrite(plane[i], bpl*h, 1, dfp);
+		    rc = fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1463,6 +1471,8 @@ main(int argc, char *argv[])
 	// Write even pages in reverse order
 	for (i = SeekIndex-1; i >= 0; --i)
 	{
+	    int	rc;
+
 	    debug(1, "EvenPage: %d	%ld	%ld	%ld\n",
 		i, SeekRec[i].b, SeekRec[i].e, SeekRec[i].pause);
 	    fseek(EvenPages, SeekRec[i].pause, 0L);
@@ -1470,7 +1480,7 @@ main(int argc, char *argv[])
 		pause = be32(2);
 	    else
 		pause = be32(3);
-	    fwrite(&pause, 1, sizeof(DWORD), EvenPages);
+	    rc = fwrite(&pause, 1, sizeof(DWORD), EvenPages);
 
 	    fseek(EvenPages, SeekRec[i].b, 0L);
 	    for (j = 0; j < (SeekRec[i].e - SeekRec[i].b); ++j)

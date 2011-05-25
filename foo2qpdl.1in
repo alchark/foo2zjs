@@ -134,7 +134,14 @@ AllIsBlack: convert C=1,M=1,Y=1 to just K=1.  Works with bitcmyk input only.
 BlackClears: K=1 forces C,M,Y to 0.  Works with bitcmyk input only.
 .TP
 .BI \-z\0 model
-Model: 0=CLP-300/CLX-2160/CLX-3160, 1=CLP-600, 2=CLP-315/CLP-610/CLX-3175
+Printer model. Model 0 is the default.
+.TS
+l l.
+model	Description
+0	CLP-300, CLX-2160, CLX-3160
+1	CLP-600
+2	CLP-310, CLP-315, CLP-610, CLX-3175
+.TE
 .SS Debugging Options
 These options are used for debugging \fBfoo2qpdl\fP.
 .TP
