@@ -83,6 +83,7 @@ trap "exit 1" ERR
 #       Process the options
 #
 ARGYLL_VER=1.3.2
+ARGYLL_VER=1.3.3
 ARGYLL_ROOT=$HOME/src/Argyll_V${ARGYLL_VER}
 ARGYLL_REF=$ARGYLL_ROOT/ref
 ARGYLL_BIN=$ARGYLL_ROOT/bin
