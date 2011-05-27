@@ -11,8 +11,8 @@ Vcs-Browser: http://svn.debian.org/viewsvn/foo2zjs/
 
 Package: foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc, cups, cups-client
-Recommends: foomatic-db-engine, wget, unzip
+Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
+Recommends: foomatic-db-engine, wget, unzip, cups, cups-client
 Suggests: psutils, hannah-foo2zjs, tk8.4, tix
 Breaks: udev (<< 136-1)
 Description: Support for printing to ZjStream-based printers
