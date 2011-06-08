@@ -1,6 +1,6 @@
 Don't delete printer-profile in clean target
 --- /dev/null
-+++ foo2zjs-20090908dfsg/printer-profile.in
++++ b/printer-profile.in
 @@ -0,0 +1,296 @@
 +#!/bin/sh
 +

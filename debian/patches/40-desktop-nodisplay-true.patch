@@ -1,6 +1,6 @@
 Do not display the icon by default (see #579154)
---- foo2zjs_20110210dfsg.orig/hplj1020.desktop
-+++ foo2zjs_20110210dfsg/hplj1020.desktop
+--- a/hplj1020.desktop
++++ b/hplj1020.desktop
 @@ -9,3 +9,4 @@
  StartupNotify=true
  Categories=System;

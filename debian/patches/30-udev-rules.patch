@@ -1,6 +1,6 @@
 Correct the udev rules
---- foo2zjs_20100728dfsg.orig/hplj10xx.rules
-+++ foo2zjs_20100728dfsg/hplj10xx.rules
+--- a/hplj10xx.rules
++++ b/hplj10xx.rules
 @@ -3,37 +3,41 @@
  #
  #Own udev rule for HP Laserjet 1000

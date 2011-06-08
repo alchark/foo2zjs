@@ -1,6 +1,6 @@
 Patch the Makefile
---- foo2zjs_20100728.orig/Makefile
-+++ foo2zjs_20100728/Makefile
+--- a/Makefile
++++ b/Makefile
 @@ -17,9 +17,7 @@
  VERSION=0.0
  
@@ -20,7 +20,7 @@ Patch the Makefile
  
  # User ID's
  LPuid=-oroot
-@@ -565,8 +563,6 @@
+@@ -587,8 +585,6 @@
  	#
      
  
@@ -29,7 +29,7 @@ Patch the Makefile
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -574,8 +570,7 @@
+@@ -596,8 +592,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -39,7 +39,7 @@ Patch the Makefile
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -745,9 +740,9 @@
+@@ -775,9 +770,9 @@
  	    fi; \
  	done
  
@@ -52,7 +52,7 @@ Patch the Makefile
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -793,9 +788,9 @@
+@@ -827,9 +822,9 @@
  	    done; \
  	fi
  

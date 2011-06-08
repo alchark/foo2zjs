@@ -1,7 +1,7 @@
 Fix bashism
---- foo2zjs_20100728dfsg.orig/getweb.in
-+++ foo2zjs_20100728dfsg/getweb.in
-@@ -448,7 +448,7 @@
+--- a/getweb.in
++++ b/getweb.in
+@@ -469,7 +469,7 @@
  	tar zxf $HERE/$file
  	cd $HERE
  	echo "The tarball is extracted and the current directory is up to date."

@@ -1,7 +1,7 @@
 Delay firmware transfer for UDEV automatic printer setup
---- foo2zjs_20100728dfsg.orig/hplj1000
-+++ foo2zjs_20100728dfsg/hplj1000
-@@ -26,6 +26,15 @@
+--- a/hplj1000
++++ b/hplj1000
+@@ -32,6 +32,15 @@
  PROGNAME="$0"
  
  #

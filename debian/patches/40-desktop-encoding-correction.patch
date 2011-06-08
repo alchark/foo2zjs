@@ -1,6 +1,6 @@
 Remove the now useless Encoding key
---- foo2zjs_20110210dfsg.orig/hplj1020.desktop
-+++ foo2zjs_20110210dfsg/hplj1020.desktop
+--- a/hplj1020.desktop
++++ b/hplj1020.desktop
 @@ -1,5 +1,4 @@
  [Desktop Entry]
 -Encoding=UTF-8

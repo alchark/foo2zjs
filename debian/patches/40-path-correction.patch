@@ -1,7 +1,7 @@
 Correct the path for the usb_printerid program
---- foo2zjs-20090908dfsg.orig/hplj1000
-+++ foo2zjs-20090908dfsg/hplj1000
-@@ -47,7 +47,7 @@
+--- a/hplj1000
++++ b/hplj1000
+@@ -53,7 +53,7 @@
  #    [snip]
  #    # Mount all other filesystems (except for NFS and /proc, which is already
  #

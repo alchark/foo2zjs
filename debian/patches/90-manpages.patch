@@ -1,6 +1,6 @@
 Fixes errors in manpages
---- foo2zjs_20100728working.orig/foo2hp.1in
-+++ foo2zjs_20100728working/foo2hp.1in
+--- a/foo2hp.1in
++++ b/foo2hp.1in
 @@ -198,7 +198,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -9,8 +9,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2qpdl-wrapper.1in
-+++ foo2zjs_20100728working/foo2qpdl-wrapper.1in
+--- a/foo2qpdl-wrapper.1in
++++ b/foo2qpdl-wrapper.1in
 @@ -225,7 +225,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -19,8 +19,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/arm2hpdl.1in
-+++ foo2zjs_20100728working/arm2hpdl.1in
+--- a/arm2hpdl.1in
++++ b/arm2hpdl.1in
 @@ -38,7 +38,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -29,8 +29,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2hp2600-wrapper.1in
-+++ foo2zjs_20100728working/foo2hp2600-wrapper.1in
+--- a/foo2hp2600-wrapper.1in
++++ b/foo2hp2600-wrapper.1in
 @@ -235,7 +235,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -39,9 +39,9 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/hipercdecode.1in
-+++ foo2zjs_20100728working/hipercdecode.1in
-@@ -162,7 +162,4 @@
+--- a/hipercdecode.1in
++++ b/hipercdecode.1in
+@@ -163,7 +163,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLHC}/
@@ -49,8 +49,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2hiperc-wrapper.1in
-+++ foo2zjs_20100728working/foo2hiperc-wrapper.1in
+--- a/foo2hiperc-wrapper.1in
++++ b/foo2hiperc-wrapper.1in
 @@ -205,7 +205,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -59,8 +59,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2xqx.1in
-+++ foo2zjs_20100728working/foo2xqx.1in
+--- a/foo2xqx.1in
++++ b/foo2xqx.1in
 @@ -161,7 +161,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -69,8 +69,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/qpdldecode.1in
-+++ foo2zjs_20100728working/qpdldecode.1in
+--- a/qpdldecode.1in
++++ b/qpdldecode.1in
 @@ -126,7 +126,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -79,8 +79,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/usb_printerid.1in
-+++ foo2zjs_20100728working/usb_printerid.1in
+--- a/usb_printerid.1in
++++ b/usb_printerid.1in
 @@ -44,7 +44,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -89,8 +89,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2hiperc.1in
-+++ foo2zjs_20100728working/foo2hiperc.1in
+--- a/foo2hiperc.1in
++++ b/foo2hiperc.1in
 @@ -173,7 +173,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -99,8 +99,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/oakdecode.1in
-+++ foo2zjs_20100728working/oakdecode.1in
+--- a/oakdecode.1in
++++ b/oakdecode.1in
 @@ -92,7 +92,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -109,8 +109,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2oak.1in
-+++ foo2zjs_20100728working/foo2oak.1in
+--- a/foo2oak.1in
++++ b/foo2oak.1in
 @@ -194,7 +194,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -119,8 +119,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/zjsdecode.1in
-+++ foo2zjs_20100728working/zjsdecode.1in
+--- a/zjsdecode.1in
++++ b/zjsdecode.1in
 @@ -99,7 +99,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -129,9 +129,9 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2zjs-pstops.1in
-+++ foo2zjs_20100728working/foo2zjs-pstops.1in
-@@ -45,7 +45,4 @@
+--- a/foo2zjs-pstops.1in
++++ b/foo2zjs-pstops.1in
+@@ -48,7 +48,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLZJS}/
@@ -139,9 +139,9 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2zjs.1in
-+++ foo2zjs_20100728working/foo2zjs.1in
-@@ -224,7 +224,4 @@
+--- a/foo2zjs.1in
++++ b/foo2zjs.1in
+@@ -228,7 +228,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLZJS}/
@@ -149,8 +149,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2qpdl.1in
-+++ foo2zjs_20100728working/foo2qpdl.1in
+--- a/foo2qpdl.1in
++++ b/foo2qpdl.1in
 @@ -192,7 +192,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -159,8 +159,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2oak-wrapper.1in
-+++ foo2zjs_20100728working/foo2oak-wrapper.1in
+--- a/foo2oak-wrapper.1in
++++ b/foo2oak-wrapper.1in
 @@ -221,7 +221,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -169,9 +169,9 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2zjs-wrapper.1in
-+++ foo2zjs_20100728working/foo2zjs-wrapper.1in
-@@ -262,7 +262,4 @@
+--- a/foo2zjs-wrapper.1in
++++ b/foo2zjs-wrapper.1in
+@@ -266,7 +266,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLZJS}/
@@ -179,8 +179,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/xqxdecode.1in
-+++ foo2zjs_20100728working/xqxdecode.1in
+--- a/xqxdecode.1in
++++ b/xqxdecode.1in
 @@ -105,7 +105,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -189,8 +189,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2slx-wrapper.1in
-+++ foo2zjs_20100728working/foo2slx-wrapper.1in
+--- a/foo2slx-wrapper.1in
++++ b/foo2slx-wrapper.1in
 @@ -190,7 +190,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -199,8 +199,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2xqx-wrapper.1in
-+++ foo2zjs_20100728working/foo2xqx-wrapper.1in
+--- a/foo2xqx-wrapper.1in
++++ b/foo2xqx-wrapper.1in
 @@ -162,7 +162,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -209,8 +209,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2lava-wrapper.1in
-+++ foo2zjs_20100728working/foo2lava-wrapper.1in
+--- a/foo2lava-wrapper.1in
++++ b/foo2lava-wrapper.1in
 @@ -229,7 +229,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -219,8 +219,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2slx.1in
-+++ foo2zjs_20100728working/foo2slx.1in
+--- a/foo2slx.1in
++++ b/foo2slx.1in
 @@ -157,7 +157,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -229,8 +229,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/foo2lava.1in
-+++ foo2zjs_20100728working/foo2lava.1in
+--- a/foo2lava.1in
++++ b/foo2lava.1in
 @@ -187,7 +187,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
@@ -239,8 +239,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/slxdecode.1in
-+++ foo2zjs_20100728working/slxdecode.1in
+--- a/slxdecode.1in
++++ b/slxdecode.1in
 @@ -103,7 +103,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -249,8 +249,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/lavadecode.1in
-+++ foo2zjs_20100728working/lavadecode.1in
+--- a/lavadecode.1in
++++ b/lavadecode.1in
 @@ -96,7 +96,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -259,8 +259,8 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/opldecode.1in
-+++ foo2zjs_20100728working/opldecode.1in
+--- a/opldecode.1in
++++ b/opldecode.1in
 @@ -115,7 +115,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
@@ -269,9 +269,9 @@ Fixes errors in manpages
 -'/"
 -'/"
  .em pdf_outline
---- foo2zjs_20100728working.orig/printer-profile.1in
-+++ foo2zjs_20100728working/printer-profile.1in
-@@ -55,7 +55,4 @@
+--- a/printer-profile.1in
++++ b/printer-profile.1in
+@@ -57,7 +57,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLZJS}/
