@@ -81,6 +81,9 @@ install: build
 	# to a patch this will automatically apply to every new wrapper script
 	# which gets added to this package in the future.
 	perl -p -i -e 's/^PAPER=(\d+)\s*$$/test -r \/etc\/papersize && PAPER=\x24\(cat \/etc\/papersize\)\ntest "\x24PAPER" || PAPER=\1\n/' $(CURDIR)/debian/foo2zjs/usr/bin/*-wrapper
+	# Add "-dNOINTERPOLATE" to the Ghostscript command lines to make
+	# Ghostscript rendering the pages significantly faster
+	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/foo2zjs/usr/bin/*-wrapper
 	# Install the apport hook on Ubuntu and derivatives
 ifeq ($(derives_from_ubuntu),yes)
 	install -D -m 644 debian/ubuntu/apport-hook.py $(CURDIR)/debian/foo2zjs/usr/share/apport/package-hooks/source_foo2zjs.py
