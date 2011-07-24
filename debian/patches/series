@@ -12,4 +12,5 @@
 80-getweb.in.patch
 90-manpages.patch
 92-udev-firmware-script-fixes.patch
+95-udev-firmware-script-no-hplip-rules-removal.patch
 96-udev-firmware-script-cups-libusb-support.patch

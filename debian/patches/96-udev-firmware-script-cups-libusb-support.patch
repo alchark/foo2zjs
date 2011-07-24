@@ -19,7 +19,7 @@ Last-Update: 2011-07-23
  # Directory to find downloadable HP firmware files sihpMMMM.dl
  #
  FWDIR=/lib/firmware/hp
-@@ -202,7 +208,7 @@
+@@ -195,7 +201,7 @@
  esac
   
  #
@@ -28,7 +28,7 @@ Last-Update: 2011-07-23
  #
  load1() {
      _dev="$1"
-@@ -225,6 +231,33 @@
+@@ -218,6 +224,33 @@
      return 0
  }
  
@@ -62,7 +62,7 @@ Last-Update: 2011-07-23
  #
  #	OK, now download firmware to any printers that need it
  #
-@@ -233,6 +266,13 @@
+@@ -226,6 +259,13 @@
      # force downloading to a specific device
      #
      load1 "$DEV"
@@ -76,7 +76,7 @@ Last-Update: 2011-07-23
  elif [ -x $PRINTERID ]; then
      #
      # Sniff around for printers that need a firmware download
-@@ -254,5 +294,5 @@
+@@ -247,5 +287,5 @@
      done
  else
      log "HP LaserJet $MODEL firmware was not downloaded..."

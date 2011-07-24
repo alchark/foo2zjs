@@ -1,0 +1,22 @@
+Description: Removed the lines in the UDEV script for the automatic firmware
+ upload into the printer which remove the UDEV rules files for HPLIP's
+ automatic firmware upload.
+Author: Till Kamppeter <till.kamppeter@gmail.com>
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/foo2zjs/+bug/783389
+Last-Update: 2011-07-23
+--- a/hplj1000
++++ b/hplj1000
+@@ -145,13 +145,6 @@
+ esac
+ 
+ #
+-#	Remove HPLIP proprietary rules!
+-#
+-model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
+-rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
+-rm -f /etc/udev/rules.d/*hpmud_support.rules
+-
+-#
+ #	The special command line argument "install-usermap" will install
+ #	the proper entry into the /etc/hotplug/usb.usermap file
+ #
