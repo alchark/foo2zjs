@@ -222,15 +222,16 @@ Improve getweb also for installing the firmware
  fi
  
 +OLDPWD=`pwd`
-+mkdir -p /tmp/foo2zjs
-+cd /tmp/foo2zjs
++NEWPWD=`mktemp --tmpdir --directory foo2zjs.XXXXXX`
++cd "$NEWPWD"
 +
  for i in $*
  do
      case "$1" in
-@@ -489,3 +534,5 @@
+@@ -489,3 +534,6 @@
  	;;
      esac
  done
 +
 +cd "$OLDPWD"
++rmdir "$NEWPWD"
