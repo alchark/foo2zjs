@@ -32,9 +32,9 @@
   </lang>
   <autodetect>
 	<parallel>
-	    <ieee1284>MFG:Hewlett-Packard;MDL:HP LaserJet Pro P1606dn;CMD:ACL;CLS:PRINTER;DES:HP LaserJet Pro P1606dn;</ieee1284>
+	    <ieee1284>MFG:Hewlett-Packard;MDL:HP LaserJet Professional P1606dn;CMD:ACL;CLS:PRINTER;DES:HP LaserJet Pro P1606dn;</ieee1284>
             <manufacturer>Hewlett-Packard</manufacturer>
-	    <model>HP LaserJet Pro P1606dn</model>
+	    <model>HP LaserJet Professional P1606dn</model>
 	    <commandset>ACL</commandset>
 	</parallel>
   </autodetect>

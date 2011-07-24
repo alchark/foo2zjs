@@ -26,6 +26,7 @@
 	    <ev_shortname> <en>Monochrome</en> </ev_shortname>
 	    <ev_driverval></ev_driverval>
 	</enum_val>
+<!--
 	<enum_val id="ev/foo2lava-ColorMode-color">
 	    <ev_longname> <en>Color - Best Compromise</en> </ev_longname>
 	    <comments><en>
@@ -34,7 +35,7 @@
 	    <ev_shortname> <en>Color</en> </ev_shortname>
 	    <ev_driverval>-c -C2</ev_driverval>
 	</enum_val>
-        <enum_val id="ev/foo2zjs-ColorMode-PhotoOnly">
+        <enum_val id="ev/foo2lava-ColorMode-PhotoOnly">
             <ev_longname> <en>Color - Photo Only</en> </ev_longname>
             <comments><en>
                 Prints with full usage of color.
@@ -44,7 +45,7 @@
             <ev_shortname> <en>PhotoOnly</en> </ev_shortname>
             <ev_driverval>-c -C1</ev_driverval>
 	</enum_val>
-        <enum_val id="ev/foo2zjs-ColorMode-PhotoAndText">
+        <enum_val id="ev/foo2lava-ColorMode-PhotoAndText">
             <ev_longname> <en>Color - Photos and Text</en> </ev_longname>
             <comments><en>
                 Prints without adding color to black.
@@ -53,7 +54,7 @@
             <ev_shortname> <en>PhotosAndText</en> </ev_shortname>
             <ev_driverval>-c -C2</ev_driverval>
 	</enum_val>
-        <enum_val id="ev/foo2zjs-ColorMode-GraphicAndText">
+        <enum_val id="ev/foo2lava-ColorMode-GraphicAndText">
             <ev_longname> <en>Color - Graphics and Text</en> </ev_longname>
             <comments><en>
                 Best mode for everyday printing.
@@ -64,7 +65,8 @@
             <ev_shortname> <en>GraphicsAndText</en> </ev_shortname>
             <ev_driverval>-c -C3</ev_driverval>
 	</enum_val>
-        <enum_val id="ev/foo2zjs-ColorMode-ICM">
+-->
+        <enum_val id="ev/foo2lava-ColorMode-ICM">
             <ev_longname> <en>Color - use ICM color profile</en> </ev_longname>
             <comments><en>
                 Uses the selected ICM color profile file and intent.

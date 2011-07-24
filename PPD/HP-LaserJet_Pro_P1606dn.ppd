@@ -29,7 +29,7 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2ZJS-.PPD"
 *Manufacturer:	"HP"
-*Product:	"(HP LaserJet Pro P1606dn)"
+*Product:	"(HP LaserJet Professional P1606dn)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet Pro P1606dn;CMD:ACL;DES:HP LaserJet Pro P1606dn;DRV:Dfoo2zjs-z2,R1,M0,TF;"
+*1284DeviceID: "MFG:Hewlett-Packard;MDL:HP LaserJet Professional P1606dn;CMD:ACL;DES:HP LaserJet Pro P1606dn;DRV:Dfoo2zjs-z2,R1,M0,TF;"
 
 *driverName foo2zjs-z2/foo2zjs-z2: ""
 *driverType F/Filter: ""
