@@ -21,7 +21,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */
 
-static char Version[] = "$Id: osx-hplj-hotplug.m,v 1.13 2011/01/22 17:42:08 rick Exp $";
+static char Version[] = "$Id: osx-hplj-hotplug.m,v 1.14 2011/07/22 18:56:58 rick Exp $";
 
 #import <Cocoa/Cocoa.h>
 #include <CoreFoundation/CoreFoundation.h>
@@ -118,8 +118,8 @@ MyCallBackFunction(void *dummy, IOReturn result, void *arg0)
 {
     //  UInt8       inPipeRef = (UInt32)dummy;
 
-    debug(1, "MyCallbackfunction: %d, %d, %d\n",
-	(int)dummy, (int)result, (int)arg0);
+    debug(1, "MyCallbackfunction: %ld, %d, %ld\n",
+	(long)dummy, (int)result, (long)arg0);
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
 
@@ -150,7 +150,7 @@ transferData(IOUSBInterfaceInterface **intf,
 	while ( (len = fread(buf, 1, sizeof(buf), fp)) != 0)
 	{
 	     err = (*intf)->WritePipeAsync(intf, outPipeRef, buf, len,
-		(IOAsyncCallback1)MyCallBackFunction, (void*)(UInt32)inPipeRef);
+		(IOAsyncCallback1)MyCallBackFunction, (void*)(long)inPipeRef);
 
 	    if (err)
 	    {
@@ -571,7 +571,7 @@ DeviceFound(void *refCon, io_iterator_t iterator)
 	   
 	    while ( (usbInterfaceRef = IOIteratorNext(iterator)) )
 	    {
-		debug(1, "found interface: %p\n", (void*)usbInterfaceRef);
+		debug(1, "found interface: %ld\n", (long)usbInterfaceRef);
 		dealWithInterface(usbInterfaceRef, privateDataRef);
 		IOObjectRelease(usbInterfaceRef);
 	    }

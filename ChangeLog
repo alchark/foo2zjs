@@ -1,3 +1,17 @@
+2011-07-22	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug/osx-hplj-hotplug.m: cleanup for xcode 4.x
+
+2011-07-17	Rick Richardson <rick.richardson@comcast.net>
+	* opt/foo2lava-ColorMode.xml, PPD's: Removed -C1 -C2 -C3 opts;
+	    they are for magicolor 2300 DL only.
+
+2011-06-09	Rick Richardson <rick.richardson@comcast.net>
+	* Cleanup: remove "unused-but-set-variable".
+
+2011-06-02	Rick Richardson <rick.richardson@comcast.net>
+	* New program: hbpldecode for decoding Fuji-Zerox cp105b
+	    and Dell 1250c.
+
 2011-05-25	Rick Richardson <rick.richardson@comcast.net>
 	* make install on Fedora 15:
 	    Use "rpm -e --nodeps system-config-printer-udev" instead of "yum".

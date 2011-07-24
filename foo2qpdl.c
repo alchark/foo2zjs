@@ -58,7 +58,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.46 2010/08/07 21:55:52 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.48 2011/06/09 13:39:21 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -628,6 +628,8 @@ start_page(BIE_CHAIN **root, int nbie, FILE *ofp)
 		| ((long) current->data[ 9] << 16)
 		| ((long) current->data[10] <<  8)
 		| (long) current->data[11]);
+	if (h == 0)
+	    error(1, "h == 0!\n");
 
 	// pn goes from 4, 1, 2, 3
 	for (pn = 4, i = 0; i < nbie; ++i)
@@ -737,6 +739,7 @@ write_page_banded(int nbie, unsigned char *bm[4], int w, int h, int pn,
 		/* RECTYPE: 0x14 - BIH */
 		fprintf(ofp, "%c", 0x14);
 		rc = fwrite(chain->data, 20, 1, ofp);
+		if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
 		fprintf(ofp, "%c%c%c", 0, 0, 1);
 		/* UNK:  maybe horiz. margin?
 		 * Values: 78 for 3in to 104 for 8.5in
@@ -1009,12 +1012,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1307,7 +1310,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1317,6 +1320,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!\n");
     }
     return i;
 }
@@ -1441,12 +1445,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

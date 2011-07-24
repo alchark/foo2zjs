@@ -4,12 +4,13 @@ MAC OSX INSTALLATION NOTES -
 HP LaserJet 1018/1020 and Color LaserJet 1600/2600n and Color LaserJet CP1215
 Using the "MacPorts" project
 ==============================================================================
-by Rick Richardson 01/20/11
+by Rick Richardson 07/17/11
 
 1) Browse to:
     http://developer.apple.com/tools/download/
 
-   Download and install "Xcode", the C compiler.
+    Download and install "Xcode 3", the C compiler.  It is in the lower right:
+	"Looking for Xcode 3? Download Now"
 
 2) Browse to:
     http://www.macports.org/install.php/
@@ -121,7 +122,8 @@ by Rick Richardson 04/21/07
 1) Browse to:
     http://developer.apple.com/tools/download/
 
-   Download and install "Xcode", the C compiler.
+    Download and install "Xcode 3", the C compiler.  It is in the lower right:
+	"Looking for Xcode 3? Download Now"
 
 2) Browse to:
     http://www.finkproject.org/download/

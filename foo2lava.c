@@ -57,7 +57,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.38 2010/10/16 15:00:40 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.39 2011/06/09 13:33:01 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -448,8 +448,6 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 
     for (current = *root; current && current->len; current = current->next)
     {
-	int	rc;
-
 	if (current == *root)
 	{
 	    switch (Model)
@@ -457,11 +455,11 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    case MODEL_1600W:
 	    case MODEL_2530DL:
 		fprintf(fp, "\033*b20V");
-		rc = fwrite(current->data, 1, current->len, fp);
+		fwrite(current->data, 1, current->len, fp);
 		break;
 	    case MODEL_2480MF:
 		fprintf(fp, "RasterObject.Data#%d=", (int) current->len);
-		rc = fwrite(current->data, 1, current->len, fp);
+		fwrite(current->data, 1, current->len, fp);
 		fprintf(fp, ";");
 		break;
 	    }
@@ -483,13 +481,13 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    case MODEL_1600W:
 	    case MODEL_2530DL:
 		fprintf(fp, "\033*b%d%s", len + pad, next ? "V" : "W");
-		rc = fwrite(current->data, 1, len, fp);
+		fwrite(current->data, 1, len, fp);
 		for (i = 0; i < pad; i++)
 		    putc(0, fp);
 		break;
 	    case MODEL_2480MF:
 		fprintf(fp, "RasterObject.Data#%d=", len + pad);
-		rc = fwrite(current->data, 1, len, fp);
+		fwrite(current->data, 1, len, fp);
 		for (i = 0; i < pad; i++)
 		    putc(0, fp);
 		fprintf(fp, ";");
@@ -804,9 +802,9 @@ end_doc(FILE *fp)
 void
 load_tray2(FILE *fp)
 {
-    int			nitems;
+    //int			nitems;
 
-    nitems = 0;
+    //nitems = 0;
     //chunk_write(ZJT_2600N_PAUSE, nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
 }
 
@@ -932,12 +930,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
-	    int rc;
+
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		rc = fwrite(plane[i], bpl*h, 1, dfp);
+		fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1191,7 +1189,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1201,6 +1199,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!\n");
     }
     return i;
 }
@@ -1319,12 +1318,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1683,6 +1682,7 @@ main(int argc, char *argv[])
 	fseek(EvenPages, SeekMedia, 0L);
 	//media = be32(DMMEDIA_LETTERHEAD);
 	rc = fwrite(&media, 1, sizeof(4), EvenPages);
+	if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
 
 	// Write even pages in reverse order
 	for (i = SeekIndex-1; i >= 0; --i)
