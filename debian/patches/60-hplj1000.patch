@@ -39,3 +39,46 @@ Use the same firmware folder for all HP LJ printers
      ;;
  *1000)
      MODEL=1000; FWMODEL=$MODEL
+--- a/hplj10xx.conf
++++ b/hplj10xx.conf
+@@ -4,35 +4,35 @@
+ attach 100 {
+     match "vendor" "0x03f0";
+     match "product" "0x3d17";
+-    action "cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/$device-name";
++    action "cat /usr/share/foo2zjs/firmware/sihpP1005.dl > /dev/$device-name";
+ };
+ 
+ # Firmware download HP LaserJet P1006 printer
+ attach 100 {
+     match "vendor" "0x03f0";
+     match "product" "0x3e17";
+-    action "cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/$device-name";
++    action "cat /usr/share/foo2zjs/firmware/sihpP1006.dl > /dev/$device-name";
+ };
+ 
+ # Firmware download HP LaserJet P1007 printer
+ attach 100 {
+     match "vendor" "0x03f0";
+     match "product" "0x4817";
+-    action "cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/$device-name";
++    action "cat /usr/share/foo2zjs/firmware/sihpP1005.dl > /dev/$device-name";
+ };
+ 
+ # Firmware download HP LaserJet P1008 printer
+ attach 100 {
+     match "vendor" "0x03f0";
+     match "product" "0x4917";
+-    action "cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/$device-name";
++    action "cat /usr/share/foo2zjs/firmware/sihpP1006.dl > /dev/$device-name";
+ };
+ 
+ # Firmware download HP LaserJet P1505 printer
+ attach 100 {
+     match "vendor" "0x03f0";
+     match "product" "0x3f17";
+-    action "cat /usr/share/foo2xqx/firmware/sihpP1505.dl > /dev/$device-name";
++    action "cat /usr/share/foo2zjs/firmware/sihpP1505.dl > /dev/$device-name";
+ };
+ 
+ # Firmware download HP LaserJet 1000 printer
