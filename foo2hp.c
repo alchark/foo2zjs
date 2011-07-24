@@ -42,7 +42,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hp.c,v 1.47 2009/10/26 01:39:44 rick Exp $";
+static char Version[] = "$Id: foo2hp.c,v 1.48 2011/06/09 13:58:50 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -361,6 +361,7 @@ chunk_write_rsvd(unsigned long type, unsigned int rsvd,
     chunk.reserved = be16(rsvd);
     chunk.signature = 0x5a5a;
     rc = fwrite(&chunk, 1, sizeof(ZJ_HEADER), fp);
+    if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
 }
 
 static void
@@ -382,6 +383,7 @@ item_uint32_write(unsigned short item, unsigned long value, FILE *fp)
     item_uint32.header.param = 0;
     item_uint32.value = be32(value);
     rc = fwrite(&item_uint32, 1, sizeof(ZJ_ITEM_UINT32), fp);
+    if (rc == 0) error(1, "fwrite(2): rc == 0!\n");
 }
 
 static int
@@ -400,7 +402,9 @@ item_str_write(unsigned short item, char *str, FILE *fp)
     if (fp)
     {
 	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	if (rc == 0) error(1, "fwrite(3): rc == 0!\n");
 	rc = fwrite(str, lenpadded, 1, fp);
+	if (rc == 0) error(1, "fwrite(4): rc == 0!\n");
     }
     return (sizeof(hdr) + lenpadded);
 }
@@ -423,8 +427,11 @@ item_bytelut_write(unsigned short item, int size, unsigned char *p, FILE *fp)
     {
 	val = be32(size);
 	rc = fwrite(&hdr, sizeof(hdr), 1, fp);
+	if (rc == 0) error(1, "fwrite(5): rc == 0!\n");
 	rc = fwrite(&val, 4, 1, fp);
+	if (rc == 0) error(1, "fwrite(6): rc == 0!\n");
 	rc = fwrite(p, lenpadded, 1, fp);
+	if (rc == 0) error(1, "fwrite(7): rc == 0!\n");
     }
     return (sizeof(hdr) + 4 + lenpadded);
 }
@@ -459,7 +466,6 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
     BIE_CHAIN	*next;
     int		i, len, pad_len;
     #define	PADTO		4
-    int		rc;
 
     debug(3, "Write Plane %d\n", planeNum); 
 
@@ -522,7 +528,7 @@ write_bitmap_plane(int planeNum, int eof, int incry, BIE_CHAIN **root, FILE *fp)
 	    else
 		pad_len = 0;
 	    //chunk_write(ZJT_JBIG_BID, 0, len + pad_len, fp);
-	    rc = fwrite(current->data, 1, len, fp);
+	    fwrite(current->data, 1, len, fp);
 	    for (i = 0; i < pad_len; i++ )
 		putc(0, fp);
 	}
@@ -753,6 +759,7 @@ start_doc(FILE *fp)
     int			rc;
 
     rc = fwrite(header, 1, sizeof(header), fp);
+    if (rc == 0) error(1, "fwrite(10): rc == 0!\n");
 
     nitems = 3;
     size = nitems * sizeof(ZJ_ITEM_UINT32);
@@ -904,12 +911,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
-	    int rc;
+
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		rc = fwrite(plane[i], bpl*h, 1, dfp);
+		fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1185,7 +1192,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1195,6 +1202,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!\n");
     }
     return i;
 }
@@ -1315,13 +1323,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
 
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

@@ -163,6 +163,8 @@ FILES	=	\
 		slxdecode.1in \
 		gipddecode.c \
 		gipddecode.1in \
+		hbpldecode.c \
+		hbpldecode.1in \
 		foo2zjs-wrapper.in \
 		foo2zjs-wrapper.1in \
 		foo2hp2600-wrapper.in \
@@ -248,6 +250,7 @@ PROGS+=		foo2oak oakdecode
 PROGS+=		foo2slx slxdecode
 PROGS+=		foo2hiperc hipercdecode
 PROGS+=		gipddecode
+PROGS+=		hbpldecode
 ifneq ($(CUPS_SERVERBIN),)
     ifneq ($(CUPS_DEVEL),)
 	PROGS+=	command2foo2lava-pjl
@@ -267,6 +270,7 @@ MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1 qpdldecode.1
 MANPAGES+=	foo2slx-wrapper.1 foo2slx.1 slxdecode.1
 MANPAGES+=	foo2hiperc-wrapper.1 foo2hiperc.1 hipercdecode.1
 MANPAGES+=	gipddecode.1
+MANPAGES+=	hbpldecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 MANPAGES+=	printer-profile.1
 LIBJBG	=	jbig.o jbig_ar.o
@@ -277,7 +281,8 @@ ifeq ($(UNAME),Linux)
 endif
 
 # Compiler flags
-CFLAGS +=	-O2 -Wall
+#CFLAGS +=	-O2 -Wall -Wno-unused-but-set-variable
+CFLAGS +=	-O2 -Wall 
 #CFLAGS +=	-g
 
 #
@@ -509,35 +514,38 @@ endif
 ok: ok.o $(LIBJBG)
 	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
 
-zjsdecode: zjsdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
+gipddecode: gipddecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
+
+hbpldecode: hbpldecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@
 
 hipercdecode: hipercdecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@
 
-splcdecode: splcdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@
-
-xqxdecode: xqxdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@
-
 lavadecode: lavadecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@
-
-qpdldecode: qpdldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@
-
-opldecode: opldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
 
 oakdecode: oakdecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@
 
+opldecode: opldecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
+
+qpdldecode: qpdldecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@
+
+splcdecode: splcdecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@
+
 slxdecode: slxdecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@
 
-gipddecode: gipddecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
+xqxdecode: xqxdecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@
+
+zjsdecode: zjsdecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
 
 command2foo2lava-pjl: command2foo2lava-pjl.o
 	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@
@@ -884,9 +892,13 @@ install-hotplug-test:
 	    echo "      *** Error: system-config-printer-udev is installed!"; \
 	    echo "      ***"; \
 	    echo "      *** Remove it with: (Fedora)"; \
+	    echo "      *** 	# yum remove system-config-printer-udev"; \
+	    echo "      *** OR"; \
 	    echo "      *** 	# rpm -e --nodeps system-config-printer-udev"; \
 	    echo "      *** OR (Ubuntu, Debian)"; \
 	    echo "      *** 	$$ sudo apt-get remove system-config-printer-udev"; \
+	    echo "      *** OR (generic linux)"; \
+	    echo "      ***	# rm -f $(LIBUDEVDIR)/*-printers.rules"; \
 	    echo "      ***"; \
 	    exit 1; \
 	fi
@@ -994,6 +1006,7 @@ uninstall:
 	-rm -f $(MANDIR)/man1/opldecode.1 $(MANDIR)/man1/rodecode.1
 	-rm -f $(MANDIR)/man1/foo2hiperc*.1 $(MANDIR)/man1/hipercdecode.1
 	-rm -f $(MANDIR)/man1/gipddecode.1
+	-rm -f $(MANDIR)/man1/hbpldecode.1
 	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
 	-rm -f $(MANDIR)/man1/foo2zjs-icc2ps.1
 	-rm -rf /usr/share/foo2zjs/
@@ -1015,6 +1028,7 @@ uninstall:
 	-rm -f /usr/bin/foo2hiperc-wrapper /usr/bin/foo2hiperc
 	-rm -f /usr/bin/hipercdecode
 	-rm -f /usr/bin/gipddecode
+	-rm -f /usr/bin/hbpldecode
 	-rm -f /usr/bin/opldecode
 	-rm -f /usr/bin/rodecode
 	-rm -f /usr/bin/foo2zjs-icc2ps
@@ -1045,7 +1059,7 @@ clean:
 	-rm -f foo2qpdl.o qpdldecode.o
 	-rm -f foo2slx.o slxdecode.o
 	-rm -f foo2hiperc.o hipercdecode.o
-	-rm -f opldecode.o gipddecode.o
+	-rm -f opldecode.o gipddecode.o hbpldecode.o
 	-rm -f command2foo2lava-pjl.o
 	-rm -f foo2oak.html foo2zjs.html foo2hp.html foo2xqx.html foo2lava.html
 	-rm -f foo2slx.html foo2qpdl.html foo2hiperc.html
@@ -1076,6 +1090,7 @@ foo2qpdl.o: jbig.h qpdl.h
 foo2slx.o: slx.h jbig.h
 foo2hiperc.o: jbig.h hiperc.h
 hipercdecode.o: hiperc.h jbig.h
+hbpldecode.o: jbig.h
 lavadecode.o: jbig.h
 qpdldecode.o: jbig.h
 opldecode.o: jbig.h
@@ -1356,6 +1371,7 @@ install-man: man
 	$(INSTALL) -c -m 644 foo2hiperc-wrapper.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 hipercdecode.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 gipddecode.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 hbpldecode.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/

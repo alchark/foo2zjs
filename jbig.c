@@ -3,7 +3,7 @@
  *
  *  Copyright 1995-2007 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
  *
- *  $Id: jbig.c,v 1.5 2008/09/05 15:05:54 rick Exp $
+ *  $Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $
  *
  *  This module implements a portable standard C encoder and decoder
  *  using the JBIG1 lossless bi-level image compression algorithm
@@ -82,7 +82,7 @@
 const char jbg_version[] = 
   "JBIG-KIT " JBG_VERSION " -- (c) 1995-2008 Markus Kuhn -- "
   "Licence: " JBG_LICENCE "\n"
-  "$Id: jbig.c,v 1.5 2008/09/05 15:05:54 rick Exp $ ";
+  "$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ ";
 
 /*
  * the following array specifies for each combination of the 3
@@ -3120,7 +3120,7 @@ void jbg_dec_merge_planes(const struct jbg_dec_state *s, int use_graycode,
 					   void *file), void *file)
 {
 #define BUFLEN 4096
-  int bpp;
+  // int bpp;
   unsigned long bpl, line, i;
   unsigned k = 8;
   int p;
@@ -3137,7 +3137,7 @@ void jbg_dec_merge_planes(const struct jbg_dec_state *s, int use_graycode,
   y = jbg_dec_getheight(s);
   if (x == 0 || y == 0)
     return;
-  bpp = (s->planes + 7) / 8;   /* bytes per pixel in dest image */
+  // bpp = (s->planes + 7) / 8;   /* bytes per pixel in dest image */
   bpl = jbg_ceil_half(x, 3);   /* bytes per line in src plane */
 
   if (iindex[s->order & 7][LAYER] == 0)

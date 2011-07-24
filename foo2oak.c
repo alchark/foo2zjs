@@ -65,7 +65,7 @@ Status: 0x18
  * TODO: Handle 2 bit mono and color output
  */
 
-static char Version[] = "$Id: foo2oak.c,v 1.66 2010/10/25 23:44:38 rick Exp $";
+static char Version[] = "$Id: foo2oak.c,v 1.68 2011/06/09 12:50:35 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -451,9 +451,17 @@ oak_record(FILE *fp, int type, void *payload, int paylen)
     hdr.len = (sizeof(hdr) + paylen + 15) & ~0x0f;
 
     rc = fwrite(&hdr, 1, sizeof(hdr), fp);
+    if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
     if (payload && paylen)
+    {
 	rc = fwrite(payload, 1, paylen, fp);
-    rc = fwrite(pad, 1, hdr.len - (sizeof(hdr) + paylen), fp);
+	if (rc == 0) error(1, "fwrite(2): rc == 0!\n");
+    }
+    if (hdr.len - (sizeof(hdr) + paylen))
+    {
+	rc = fwrite(pad, 1, hdr.len - (sizeof(hdr) + paylen), fp);
+	if (rc == 0) error(1, "fwrite(3): rc == 0!\n");
+    }
 
     if (type == OAK_TYPE_START_PAGE)
     {
@@ -926,9 +934,13 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	    oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	    for (current = chain->next; current; current = current->next)
+	    {
 		rc = fwrite(current->data, 1, current->len, ofp);
+		if (rc == 0) error(1, "fwrite(4): rc == 0!\n");
+	    }
 	    padlen = recdata.padlen - recdata.datalen;  
 	    rc = fwrite(pad, 1, padlen, ofp);
+	    if (rc == 0) error(1, "fwrite(5): rc == 0!\n");
 
 	    free_chain(chain);
 	}
@@ -1075,9 +1087,16 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	for (current = chain->next; current; current = current->next)
+	{
 	    rc = fwrite(current->data, 1, current->len, ofp);
+	    if (rc == 0) error(1, "fwrite(7): rc == 0!\n");
+	}
 	padlen = recdata.padlen - recdata.datalen;  
-	rc = fwrite(pad, 1, padlen, ofp);
+	if (padlen)
+	{
+	    rc = fwrite(pad, 1, padlen, ofp);
+	    if (rc == 0) error(1, "fwrite(8): rc == 0!\n");
+	}
 	free_chain(chain);
     }
  
@@ -1231,9 +1250,16 @@ pgm_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 	    oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 	    for (current = chain->next; current; current = current->next)
+	    {
 		rc = fwrite(current->data, 1, current->len, ofp);
+		if (rc == 0) error(1, "fwrite(9): rc == 0!\n");
+	    }
 	    padlen = recdata.padlen - recdata.datalen;  
-	    rc = fwrite(pad, 1, padlen, ofp);
+	    if (padlen)
+	    {
+		rc = fwrite(pad, 1, padlen, ofp);
+		if (rc == 0) error(1, "fwrite(10): rc == 0!\n");
+	    }
 
 	    free_chain(chain);
 	}
@@ -1423,9 +1449,13 @@ cups_page(unsigned char *raw, int w, int h, FILE *ofp)
 		recdata.padlen = (recdata.datalen + 15) & ~0x0f;
 		oak_record(ofp, OAK_TYPE_IMAGE_DATA, &recdata, sizeof(recdata));
 		for (current = chain->next; current; current = current->next)
+		{
 		    rc = fwrite(current->data, 1, current->len, ofp);
+		    if (rc == 0) error(1, "fwrite(11): rc == 0!\n");
+		}
 		padlen = recdata.padlen - recdata.datalen;  
 		rc = fwrite(pad, 1, padlen, ofp);
+		if (rc == 0) error(1, "fwrite(12): rc == 0!\n");
 
 		free_chain(chain);
 	    }
@@ -1590,7 +1620,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1600,6 +1630,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!\n");
     }
     return i;
 }
