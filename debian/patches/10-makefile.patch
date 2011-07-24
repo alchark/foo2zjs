@@ -65,3 +65,11 @@ Patch the Makefile
  
  install-desktop:
  	#
+@@ -960,6 +955,7 @@
+ 
+ install-filter:
+ 	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
++	    mkdir -p $(CUPS_SERVERBIN)/filter/; \
+ 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
+ 	fi
+ 

@@ -1,116 +1,51 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
 derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes") || echo "no")
 
-include /usr/share/quilt/quilt.make
+%:
+	dh $@ 
 
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
-endif
-
-MAKE = make
-QMAKE = qmake-qt4
-
-configure: configure-stamp
-configure-stamp: $(QUILT_STAMPFN)
-	dh_testdir
-	touch configure-stamp
-
-build: build-stamp
-
-build-stamp: configure-stamp 
-	dh_testdir
+override_dh_auto_build:
 	cp printer-profile.in printer-profile
-	$(MAKE) CFLAGS="$(CFLAGS)"
-	touch build-stamp
+	dh_auto_build
 
-clean: unpatch
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	rm -rf debian/patched
-	[ ! -f Makefile ] || $(MAKE) clean
-	-rm -f foo2hp
-	-rm -f foo2hp.o
-	-rm -f arm2hpdl
-	-rm -f usb_printerid
-	-rm -f foo2oak
-	-rm -f oakdecode
-	-rm -f oakdecode.o
-	-rm -f foo2hp2600-wrapper
-	-rm -f foo2oak-wrapper
-	-rm -f foo2zjs-wrapper
-	-rm -f okidecode
-	dh_clean
+override_dh_auto_install:
+	dh_auto_install -- PREFIX=$(CURDIR)/debian/tmp/usr MODEL=$(CURDIR)/debian/tmp/usr/share/cups/model FOODB=$(CURDIR)/debian/tmp/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/tmp/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/tmp/usr/lib/cups
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_installdirs
-	$(MAKE) install PREFIX=$(CURDIR)/debian/foo2zjs/usr MODEL=$(CURDIR)/debian/foo2zjs/usr/share/cups/model FOODB=$(CURDIR)/debian/foo2zjs/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/foo2zjs/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/foo2zjs/usr/lib/cups
-	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/COPYING
-	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL
-	rm -f $(CURDIR)/debian/foo2zjs/usr/share/doc/foo2zjs/INSTALL.osx
-	# Install some useful extra scripts which "make install" does not
-	# install
-	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/foo2zjs/lib/udev/rules.d/85-hplj10xx.rules
-	install -m 755 hplj1000 $(CURDIR)/debian/foo2zjs/usr/sbin/hplj1000
-	install -m 755 getweb $(CURDIR)/debian/foo2zjs/usr/bin/getweb
-	# Correct link
-	dh_link /usr/bin/command2foo2lava-pjl /usr/lib/cups/filter/command2foo2lava-pjl
-	### patches/20-PDF-input-data-in-PPDs.patch
-	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
-	( cd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs; \
-	  find -name '*.ppd.gz' | xargs gunzip; \
-	  find -name '*.ppd' | xargs perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",'; \
-	  find -name '*.ppd' | xargs gzip -9 \
-	)
+before-install-fixes:
 	### patches/20-honour-papersize.patch
 	# Add support for /etc/papersize to all wrapper scripts. In contrary
 	# to a patch this will automatically apply to every new wrapper script
 	# which gets added to this package in the future.
-	perl -p -i -e 's/^PAPER=(\d+)\s*$$/test -r \/etc\/papersize && PAPER=\x24\(cat \/etc\/papersize\)\ntest "\x24PAPER" || PAPER=\1\n/' $(CURDIR)/debian/foo2zjs/usr/bin/*-wrapper
+	perl -p -i -e 's/^PAPER=(\d+)\s*$$/test -r \/etc\/papersize && PAPER=\x24\(cat \/etc\/papersize\)\ntest "\x24PAPER" || PAPER=\1\n/' $(CURDIR)/debian/tmp/usr/bin/*-wrapper
 	# Add "-dNOINTERPOLATE" to the Ghostscript command lines to make
 	# Ghostscript rendering the pages significantly faster
-	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/foo2zjs/usr/bin/*-wrapper
+	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/tmp/usr/bin/*-wrapper
+	# Use a policy-numbered name for the rules file
+	cp -f hplj10xx.rules 85-hplj10xx.rules
+
+override_dh_install: before-install-fixes
 	# Install the apport hook on Ubuntu and derivatives
 ifeq ($(derives_from_ubuntu),yes)
 	install -D -m 644 debian/ubuntu/apport-hook.py $(CURDIR)/debian/foo2zjs/usr/share/apport/package-hooks/source_foo2zjs.py
 endif
+	dh_install
+	### patches/20-PDF-input-data-in-PPDs.patch
+	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
+	( cd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs; \
+	  find -name '*.ppd.gz' -exec gunzip {} \; ; \
+	  find -name '*.ppd' -exec perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",' {} \; ; \
+	  find -name '*.ppd' -exec gzip -9 {} \; ;\
+	)
 
-# Build architecture-independent files here.
-binary-indep: build install
-# We have nothing to do by default.
 
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs ChangeLog
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress -Xmanual.pdf
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+override_dh_auto_test:
+	# Run the tests in non-failing mode (they fail…)
+	- dh_auto_test
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_compress:
+	dh_compress -X.pdf
+
+override_dh_auto_clean:
+	dh_auto_clean
+	- rm -f 85-hplj10xx.rules
