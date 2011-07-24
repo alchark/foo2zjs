@@ -16,7 +16,10 @@ all:
 endif
 
 osx-hplj-hotplug: osx-hplj-hotplug.o
-	gcc osx-hplj-hotplug.o -o $@ -framework IOKit -framework CoreFoundation
+	gcc osx-hplj-hotplug.o -o $@ \
+	    -framework IOKit \
+	    -framework Foundation \
+	    -framework CoreFoundation
 
 man:	osx-hplj-hotplug.1
 

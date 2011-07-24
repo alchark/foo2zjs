@@ -99,14 +99,6 @@
 *FoomaticRIPOption ColorMode: enum CmdLine A
 *OrderDependency: 120 AnySetup *ColorMode
 *DefaultColorMode: Monochrome
-*ColorMode PhotoOnly/Color - Photo Only: "%% FoomaticRIPOptionSetting: ColorMode=PhotoOnly"
-*FoomaticRIPOptionSetting ColorMode=PhotoOnly: "-c -C1 "
-*ColorMode PhotosAndText/Color - Photos and Text: "%% FoomaticRIPOptionSetting: ColorMode=PhotosAndText"
-*FoomaticRIPOptionSetting ColorMode=PhotosAndText: "-c -C2 "
-*ColorMode Color/Color - Best Compromise: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c -C2 "
-*ColorMode GraphicsAndText/Color - Graphics and Text: "%% FoomaticRIPOptionSetting: ColorMode=GraphicsAndText"
-*FoomaticRIPOptionSetting ColorMode=GraphicsAndText: "-c -C3 "
 *ColorMode ICM/Color - use ICM color profile: "%% FoomaticRIPOptionSetting: ColorMode=ICM"
 *FoomaticRIPOptionSetting ColorMode=ICM: "-c -C10 "
 *ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"

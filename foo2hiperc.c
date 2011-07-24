@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.28 2011/01/31 12:23:43 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.32 2011/06/09 13:35:06 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -435,9 +435,11 @@ start_page_compressed(int nbie, int w, int h, int plane, unsigned char *bih,
 
     rec[7] = be32(20);			//block1: len=20
     rc = fwrite(rec, 32, 1, ofp);
+    if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
 
     ((DWORD *) bih)[2] = be32(h256);
     rc = fwrite(bih, 20, 1, ofp);
+    if (rc == 0) error(1, "fwrite(2): rc == 0!\n");
 }
 
 void
@@ -485,8 +487,12 @@ write_plane_compressed(int nbie, unsigned char *buf, int w, int h, int plane,
 
 	rec[4] = be32(chainlen);	//block1: len
 	rc = fwrite(rec, 20, 1, ofp);
+	if (rc == 0) error(1, "fwrite(3): rc == 0!\n");
 	for (current = chain->next; current; current = current->next)
+	{
 	    rc = fwrite(current->data, 1, current->len, ofp);
+	    if (rc == 0) error(1, "fwrite(4): rc == 0!\n");
+	}
     }
 }
 
@@ -494,8 +500,8 @@ int
 write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 {
     BIE_CHAIN	*current = *root;
-    BIE_CHAIN	*next;
-    int		len;
+    // BIE_CHAIN	*next;
+    // int		len;
     int		w, h;
     int		stripe = 0;
 
@@ -530,8 +536,8 @@ write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 	int y = 0;
 	int rc;
 
-	len = current->len;
-	next = current->next;
+	// len = current->len;
+	// next = current->next;
 	++stripe;
 
 	rec[0] = be32(blklen + 20);	//reclen
@@ -542,7 +548,9 @@ write_plane(int pn, BIE_CHAIN **root, FILE *ofp)
 
 	rec[4] = be32(blklen);	//block1: len
 	rc = fwrite(rec, 20, 1, ofp);
+	if (rc == 0) error(1, "fwrite(5): rc == 0!\n");
 	rc = fwrite(buf + y*(w/8), 1, blklen, ofp);
+	if (rc == 0) error(1, "fwrite(6): rc == 0!\n");
     }
     free_chain(*root);
 
@@ -559,6 +567,7 @@ end_page(FILE *ofp)
     rec[0] = be32(8);	//reclen=8
     rec[1] = be32(255);	//rectype=255
     rc = fwrite(rec, 8, 1, ofp);
+    if (rc == 0) error(1, "fwrite(7): rc == 0!\n");
 
     ++pageno;
     if (IsCUPS)
@@ -596,6 +605,7 @@ start_page_uncompressed(int nbie, int w, int h, int plane, FILE *ofp)
     rec[11] = be32(256);		//block1: rows
     rec[12] = be32(0);			//block1: data
     rc = fwrite(rec, 52, 1, ofp);
+    if (rc == 0) error(1, "fwrite(8): rc == 0!\n");
 }
 
 void
@@ -622,7 +632,9 @@ write_plane_uncompressed(unsigned char *buf, int w, int h, int plane, FILE *ofp)
 
 	rec[4] = be32(w256);		//block1: len
 	rc = fwrite(rec, 20, 1, ofp);
+	if (rc == 0) error(1, "fwrite(9): rc == 0!\n");
 	rc = fwrite(buf + y*(w/8), 1, blklen, ofp);
+	if (rc == 0) error(1, "fwrite(10): rc == 0!\n");
     }
 
     // Pad to 256 lines...
@@ -904,12 +916,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1224,7 +1236,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1234,6 +1246,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!");
     }
     return i;
 }
@@ -1356,12 +1369,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }

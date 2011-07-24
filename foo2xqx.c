@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2xqx.c,v 1.24 2010/06/19 21:40:00 rick Exp $";
+static char Version[] = "$Id: foo2xqx.c,v 1.25 2011/06/09 13:50:09 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -336,6 +336,7 @@ chunk_write(unsigned long type, unsigned long items, FILE *fp)
     chunk.type = be32(type);
     chunk.items = be32(items);
     rc = fwrite(&chunk, 1, sizeof(XQX_HEADER), fp);
+    if (rc == 0) error(1, "fwrite(1): rc == 0!\n");
 }
 
 static void
@@ -348,6 +349,7 @@ item_uint32_write(unsigned long item, unsigned long value, FILE *fp)
     item_uint32.header.size = be32(sizeof(DWORD));
     item_uint32.value = be32(value);
     rc = fwrite(&item_uint32, 1, sizeof(XQX_ITEM_UINT32), fp);
+    if (rc == 0) error(1, "fwrite(2): rc == 0!\n");
 }
 
 static void
@@ -359,7 +361,9 @@ item_bytelut_write(unsigned long item, unsigned long len, BYTE *buf, FILE *fp)
     header.type = be32(item);
     header.size = be32(len);
     rc = fwrite(&header, 1, sizeof(XQX_ITEM_HEADER), fp);
+    if (rc == 0) error(1, "fwrite(3): rc == 0!\n");
     rc = fwrite(buf, 1, len, fp);
+    if (rc == 0) error(1, "fwrite(4): rc == 0!\n");
 }
 
 /*
@@ -389,7 +393,7 @@ int
 write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 {
     BIE_CHAIN	*current = *root;
-    BIE_CHAIN	*next;
+    //BIE_CHAIN	*next;
     int		len;
     int		first;
     BYTE	*bih;
@@ -415,7 +419,7 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	else
 	{
 	    len = current->len;
-	    next = current->next;
+	    //next = current->next;
 
 	    chunk_write(XQX_START_PLANE, 4, fp);
 	    item_uint32_write(0x80000000, first ? 64 : 48, fp);
@@ -427,7 +431,11 @@ write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 	    item_uint32_write(XQXI_END, 0xdeadbeef, fp);
 
 	    chunk_write(XQX_JBIG, len, fp);
-	    rc = fwrite(current->data, 1, len, fp);
+	    if (len)
+	    {
+		rc = fwrite(current->data, 1, len, fp);
+		if (rc == 0) error(1, "fwrite(5): rc == 0!\n");
+	    }
 
 	    chunk_write(XQX_END_PLANE, 0, fp);
 	    first = 0;
@@ -604,7 +612,6 @@ start_doc(FILE *fp)
     time_t	now;
     struct tm	*tmp;
     char	datetime[14+1];
-    int		rc;
 
     now = time(NULL);
     tmp = localtime(&now);
@@ -623,7 +630,7 @@ start_doc(FILE *fp)
     fprintf(fp, "@PJL SET JOBATTR=\"JobAttr4=%s\"", datetime);
     fputc(0, fp);
     fprintf(fp, "\033%%-12345X");
-    rc = fwrite(header, 1, sizeof(header), fp);
+    fwrite(header, 1, sizeof(header), fp);
 
     nitems = 7;
 
@@ -760,12 +767,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	{
 	    FILE *dfp;
 	    char fname[256];
-	    int rc;
+
 	    sprintf(fname, "xxxplane%d", i);
 	    dfp = fopen(fname, "w");
 	    if (dfp)
 	    {
-		rc = fwrite(plane[i], bpl*h, 1, dfp);
+		fwrite(plane[i], bpl*h, 1, dfp);
 		fclose(dfp);
 	    }
 	}
@@ -1011,7 +1018,7 @@ static unsigned long
 getint(FILE *fp)
 {
     int c;
-    unsigned long i;
+    unsigned long i = 0;
     int rc;
 
     while ((c = getc(fp)) != EOF && !isdigit(c))
@@ -1021,6 +1028,7 @@ getint(FILE *fp)
     {
 	ungetc(c, fp);
 	rc = fscanf(fp, "%lu", &i);
+	if (rc != 1) error(1, "fscanf: rc == 0!\n");
     }
     return i;
 }
@@ -1139,12 +1147,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    {
 		FILE *dfp;
 		char fname[256];
-		int rc;
+
 		sprintf(fname, "xxxplane%d", i);
 		dfp = fopen(fname, "w");
 		if (dfp)
 		{
-		    rc = fwrite(plane[i], bpl*h, 1, dfp);
+		    fwrite(plane[i], bpl*h, 1, dfp);
 		    fclose(dfp);
 		}
 	    }
@@ -1490,6 +1498,7 @@ main(int argc, char *argv[])
 	    else
 		pause = be32(3);
 	    rc = fwrite(&pause, 1, sizeof(DWORD), EvenPages);
+	    if (rc == 0) error(1, "fwrite(10): rc == 0!\n");
 
 	    fseek(EvenPages, SeekRec[i].b, 0L);
 	    for (j = 0; j < (SeekRec[i].e - SeekRec[i].b); ++j)
