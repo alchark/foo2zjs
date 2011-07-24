@@ -12,3 +12,4 @@
 80-getweb.in.patch
 90-manpages.patch
 92-udev-firmware-script-fixes.patch
+96-udev-firmware-script-cups-libusb-support.patch

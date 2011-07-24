@@ -1,0 +1,85 @@
+Description: Added support for uploading firmwae into printers using the USB
+ backend of CUPS. This way the firmware upload also works without the usblp
+ kernel module.
+Bug-Debian: 630228
+Author: Till Kamppeeter <till.kamppeter@gmail.com>
+Last-Update: 2011-07-23
+--- a/hplj1000
++++ b/hplj1000
+@@ -48,6 +48,12 @@
+ DEV=""
+ 
+ #
++# Path to the USB CUPS backend. We use this backend to upload the firmware
++# into the printer when we are on a CUPS/libusb-based system.
++#
++USB_BACKEND=/usr/lib/cups/backend/usb
++
++#
+ # Directory to find downloadable HP firmware files sihpMMMM.dl
+ #
+ FWDIR=/lib/firmware/hp
+@@ -202,7 +208,7 @@
+ esac
+  
+ #
+-#	Procedure to load a single device with firmware
++#	Procedures to load a single device with firmware
+ #
+ load1() {
+     _dev="$1"
+@@ -225,6 +231,33 @@
+     return 0
+ }
+ 
++load2() {
++    fw="$FWDIR/sihp$FWMODEL.dl"
++    if [ ! -f "$fw" ]; then
++	log "Missing HP LaserJet $MODEL firmware file $fw"
++	log "...read foo2zjs installation instructions and run ./getweb $MODEL"
++	return 1
++    fi
++
++    log "loading HP LaserJet $MODEL firmware $fw to CUPS USB device ..."
++    # There is a timeout problem with udev and FC4, so spin it off.
++    (
++	device_found=0
++	for uri in `$USB_BACKEND 2> /dev/null | grep -i 'HP.*LaserJet.*'"$MODEL" | grep -v FWVER | cut -d ' ' -f 2`; do
++	    device_found=1
++	    if DEVICE_URI="$uri" $USB_BACKEND 1 1 1 1 '' $fw 2> /dev/null; then
++		log "$uri... download successful."
++	    else
++		log "$uri... download failed."
++	    fi
++	done
++	if [ $device_found = 0 ]; then
++	    log "... no devices which need firmware found."
++	fi
++    ) &
++    return 0
++}
++
+ #
+ #	OK, now download firmware to any printers that need it
+ #
+@@ -233,6 +266,13 @@
+     # force downloading to a specific device
+     #
+     load1 "$DEV"
++elif [ -x $USB_BACKEND ]; then
++    #
++    # If we have CUPS installed, use the CUPS "usb" backend, as then we do
++    # not need to care whether the system uses the usblp kernel module or
++    # libusb
++    #
++    load2
+ elif [ -x $PRINTERID ]; then
+     #
+     # Sniff around for printers that need a firmware download
+@@ -254,5 +294,5 @@
+     done
+ else
+     log "HP LaserJet $MODEL firmware was not downloaded..."
+-    log "...couldn't find $PRINTERID and DEV is not set"
++    log "...couldn't find $PRINTERID, DEV is not set, and CUPS not installed."
+ fi
