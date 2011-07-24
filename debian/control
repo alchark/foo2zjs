@@ -3,7 +3,7 @@ Section: text
 Priority: optional
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: Michael Koch <konqueror@gmx.de>, Luca Capello <luca@pca.it>, Didier Raboud <odyx@debian.org>
-Build-Depends: debhelper (>= 7), ghostscript, quilt (>= 0.40), foomatic-filters, libcups2-dev, dc
+Build-Depends: debhelper (>= 7.0.50~), ghostscript, quilt (>= 0.40), foomatic-filters, libcups2-dev, dc
 Standards-Version: 3.9.1
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Svn: svn://svn.debian.org/foo2zjs
@@ -12,8 +12,8 @@ Vcs-Browser: http://svn.debian.org/viewsvn/foo2zjs/
 Package: foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
-Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client
-Suggests: psutils, hannah-foo2zjs, tk8.4, tix
+Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client, tix
+Suggests: psutils, hannah-foo2zjs, tk8.4
 Breaks: udev (<< 136-1)
 Description: Support for printing to ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the
