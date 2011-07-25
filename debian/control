@@ -12,8 +12,8 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
 Package: foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
-Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client, tix
-Suggests: psutils, hannah-foo2zjs, tk8.4
+Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client
+Suggests: psutils, hannah-foo2zjs, tk8.4, tix
 Breaks: udev (<< 136-1)
 Description: Support for printing to ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the
