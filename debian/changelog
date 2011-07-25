@@ -1,3 +1,51 @@
+foo2zjs (20110722dfsg-1) unstable; urgency=low
+
+  New 20110525 upstream release.
+
+  [ Didier Raboud ]
+  * DFSG repack
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Uploaders:
+    - Add myself.
+    - Drop Steffen Joeris, with thanks for his past work.
+  * Package relationships:
+    - Demote cups and cups-client from Depends to Recommends (Closes: #622125).
+      This allows one to use foo2zjs with lprng.
+    - Add a Recommends on mscompress.
+  * Patches:
+    - Refresh all.
+    - Update 30-udev-rules patch to cope with cups' usblp blacklisting.
+    - Add 40-desktop-direct-launch.patch to remove the superfluous "wish"
+      launch (avoids a lintian warning).
+    - Update debian/patches/60-getweb.in.patch:
+      Fix CVE-2011-2684 "Insecure Temporary File" (CWE-277) in
+      /usr/bin/getweb by creating a safe temporary directory with mktemp.
+      (Closes: #633870, LP: #805370)
+    - Enhance 60-getweb.in.patch to forbid live update of /usr/bin/getweb as it
+      is packaged. Also correct the typo in getweb. (Closes: #632680)
+    - Update 60-hplj1000.patch to use the correct paths in kFreeBSD too.
+    - Update 90-manpages.patch to fix more hyphen-used-as-minus mistakes. 
+    - Add 91-spelling-fixes.patch to fix 'precission' spelling mistake.
+  * Convert to source format 3.0 (quilt)
+  * Convert packaging to "tiny" dh7 style.
+  * Migrate packaging to Git from Subversion, update Vcs-* fields.
+  * Bump Standards-Version to 3.9.2 without changes needed.
+
+  [ Till Kamppeter ]
+  * debian/rules: Added "-dNOINTERPOLATE" to the Ghostscript command lines to
+    make Ghostscript rendering the pages significantly faster.
+  * debian/patches/96-udev-firmware-script-cups-libusb-support.patch:
+    Added support for uploading firmwae into printers using the USB backend of
+    CUPS. This way the firmware upload also works without the usblp kernel
+    module. (Closes: #630227, #630228)
+  * debian/patches/95-udev-firmware-script-no-hplip-rules-removal.patch:
+    Removed the lines in the UDEV script for the automatic firmware upload
+    into the printer which remove the UDEV rules files for HPLIP's automatic
+    firmware upload. (LP: #783389)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 25 Jul 2011 17:53:17 +0200
+
 foo2zjs (20110210dfsg-2) unstable; urgency=low
 
   [ Luca Capello ]
