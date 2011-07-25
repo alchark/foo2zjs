@@ -1,0 +1,27 @@
+Description: Fix "precission" spelling error.
+Author: Didier Raboud <odyx@debian.org>
+Last-Update: 2011-07-25
+--- a/icc2ps/cmsio1.c
++++ b/icc2ps/cmsio1.c
+@@ -1161,7 +1161,7 @@
+          AdjustEndianessArray16(NewLUT ->T, NewLUT->Tsize / sizeof(WORD));
+     }
+     else {
+-        cmsSignalError(LCMS_ERRC_ABORTED, "Unknow precission of '%d'", CLUT.prec); 
++        cmsSignalError(LCMS_ERRC_ABORTED, "Unknow precision of '%d'", CLUT.prec); 
+         return FALSE;
+     }
+ 
+--- a/icc2ps/icc2ps.c
++++ b/icc2ps/icc2ps.c
+@@ -139,8 +139,8 @@
+           
+      fprintf(stderr, "%cb - Black point compensation (CRD only)\n", SW);    
+      fprintf(stderr, "%cu - Do NOT generate resource name on CRD\n", SW);    
+-     fprintf(stderr, "%cc<0,1,2> - Precission (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)\n", SW);     
+-     fprintf(stderr, "%cn<gridpoints> - Alternate way to set precission, number of CLUT points (CRD only)\n", SW);     
++     fprintf(stderr, "%cc<0,1,2> - Precision (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)\n", SW);     
++     fprintf(stderr, "%cn<gridpoints> - Alternate way to set precision, number of CLUT points (CRD only)\n", SW);     
+      
+ 	 fprintf(stderr, "\n");
+      fprintf(stderr, "This program is intended to be a demo of the little cms\n"
