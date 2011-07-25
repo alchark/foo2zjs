@@ -46,7 +46,7 @@ Use the same firmware folder for all HP LJ printers
      match "vendor" "0x03f0";
      match "product" "0x3d17";
 -    action "cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/$device-name";
-+    action "cat /usr/share/foo2zjs/firmware/sihpP1005.dl > /dev/$device-name";
++    action "cat /lib/firmware/hp/sihpP1005.dl > /dev/$device-name";
  };
  
  # Firmware download HP LaserJet P1006 printer
@@ -54,7 +54,7 @@ Use the same firmware folder for all HP LJ printers
      match "vendor" "0x03f0";
      match "product" "0x3e17";
 -    action "cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/$device-name";
-+    action "cat /usr/share/foo2zjs/firmware/sihpP1006.dl > /dev/$device-name";
++    action "cat /lib/firmware/hp/sihpP1006.dl > /dev/$device-name";
  };
  
  # Firmware download HP LaserJet P1007 printer
@@ -62,7 +62,7 @@ Use the same firmware folder for all HP LJ printers
      match "vendor" "0x03f0";
      match "product" "0x4817";
 -    action "cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/$device-name";
-+    action "cat /usr/share/foo2zjs/firmware/sihpP1005.dl > /dev/$device-name";
++    action "cat /lib/firmware/hp/sihpP1005.dl > /dev/$device-name";
  };
  
  # Firmware download HP LaserJet P1008 printer
@@ -70,7 +70,7 @@ Use the same firmware folder for all HP LJ printers
      match "vendor" "0x03f0";
      match "product" "0x4917";
 -    action "cat /usr/share/foo2xqx/firmware/sihpP1006.dl > /dev/$device-name";
-+    action "cat /usr/share/foo2zjs/firmware/sihpP1006.dl > /dev/$device-name";
++    action "cat /lib/firmware/hp/sihpP1006.dl > /dev/$device-name";
  };
  
  # Firmware download HP LaserJet P1505 printer
@@ -78,7 +78,7 @@ Use the same firmware folder for all HP LJ printers
      match "vendor" "0x03f0";
      match "product" "0x3f17";
 -    action "cat /usr/share/foo2xqx/firmware/sihpP1505.dl > /dev/$device-name";
-+    action "cat /usr/share/foo2zjs/firmware/sihpP1505.dl > /dev/$device-name";
++    action "cat /lib/firmware/hp/sihpP1505.dl > /dev/$device-name";
  };
  
  # Firmware download HP LaserJet 1000 printer
