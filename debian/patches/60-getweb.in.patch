@@ -24,6 +24,15 @@ Improve getweb also for installing the firmware
  
  usage() {
  cat <<EOF
+@@ -73,7 +80,7 @@
+ 
+     $ ./getweb 1000	# Get HP LJ 1000 firmware file
+     $ ./getweb 1005	# Get HP LJ 1005 firmware file
+-    $ ./getweb 1018	# Get HP LJ 1005 firmware file
++    $ ./getweb 1018	# Get HP LJ 1018 firmware file
+     $ ./getweb 1020	# Get HP LJ 1020 firmware file
+ 
+     $ ./getweb p1005	# Get HP LJ P1005 firmware file
 @@ -85,8 +92,6 @@
      $ ./getweb all	# Get everything above
  
