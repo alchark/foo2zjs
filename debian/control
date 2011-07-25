@@ -6,8 +6,8 @@ Uploaders: Michael Koch <konqueror@gmx.de>, Luca Capello <luca@pca.it>, Didier R
 Build-Depends: debhelper (>= 7.0.50~), ghostscript, quilt (>= 0.40), foomatic-filters, libcups2-dev, dc
 Standards-Version: 3.9.1
 Homepage: http://foo2zjs.rkkda.com/
-Vcs-Svn: svn://svn.debian.org/foo2zjs
-Vcs-Browser: http://svn.debian.org/viewsvn/foo2zjs/
+Vcs-Git: git://anonscm.debian.org/collab-maint/foo2zjs.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
 
 Package: foo2zjs
 Architecture: any
