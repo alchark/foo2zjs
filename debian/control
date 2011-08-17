@@ -14,7 +14,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
 Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client
 Suggests: psutils, hannah-foo2zjs, tk8.4, tix
-Breaks: udev (<< 136-1)
+Breaks: udev (<< 136-1), cups (<< 1.5.0-2~)
 Description: Support for printing to ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the
  Zenographics ZjStream wire protocol for their print data, such as the

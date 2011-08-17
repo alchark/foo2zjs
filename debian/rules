@@ -26,6 +26,7 @@ override_dh_install:
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/tmp/lib/udev/rules.d/85-hplj10xx.rules
 	# Legacy dh_install
 	dh_install
+	install -D -m 755 debian/foo2zjs.ppd-updater $(CURDIR)/debian/foo2zjs/usr/share/cups/ppd-updaters/foo2zjs
 	# usb_printerid is Linux-specific
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	install -D -m 644 usb_printerid $(CURDIR)/debian/foo2zjs/usr/bin/usb_printerid
