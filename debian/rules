@@ -37,8 +37,8 @@ endif
 	( cd $(CURDIR)/debian/foo2zjs/usr/share/ppd/foo2zjs; \
 	  find -name '*.ppd.gz' -exec gunzip {} \; ; \
 	  find -name '*.ppd' -exec perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",' {} \; ; \
-	  find -name '*.ppd' -exec gzip -9 {} \; ;\
 	)
+	dh_pyppd
 	# Install the apport hook on Ubuntu and derivatives
 ifeq ($(derives_from_ubuntu),yes)
 	install -D -m 644 debian/ubuntu/apport-hook.py $(CURDIR)/debian/foo2zjs/usr/share/apport/package-hooks/source_foo2zjs.py
