@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2oak-wrapper.in,v 1.59 2011/01/14 23:21:39 rick Exp $'
+VERSION='$Id: foo2oak-wrapper.in,v 1.60 2011/08/07 16:49:30 rick Exp $'
 
 #
 # Printer Notes:
@@ -623,7 +623,11 @@ fi
 
 PSTOPS_OPTS="-n"
 if [ $ROTATE90 = 1 ]; then
-    PSTOPS_OPTS="$PSTOPS_OPTS -h $YDIMpoints -r"
+    case $paper in
+    a3)		;;
+    ledger)	;;
+    *)		PSTOPS_OPTS="$PSTOPS_OPTS -h $YDIMpoints -r";;
+    esac
 fi
 
 case "$COLORMODE" in
