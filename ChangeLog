@@ -1,3 +1,16 @@
+2011-08-10	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db, PPDs: Bug with Samsung CLP-325, CLP-325W.
+	    PLEASE delete and recreate CLP-325 printers.
+
+2011-08-07	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak-wrapper: KM-1635/2035: don't rotate on A3 or ledger size paper
+
+2011-07-31	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: all-test checks for dc -V and gsed (OSX only).
+
+2011-07-30	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-pstops: Use gsed instead of sed on Mac OSX
+
 2011-07-22	Rick Richardson <rick.richardson@comcast.net>
 	* osx-hotplug/osx-hplj-hotplug.m: cleanup for xcode 4.x
 

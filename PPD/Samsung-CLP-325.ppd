@@ -93,7 +93,7 @@
 *CloseUI: *Quality
 
 *FoomaticRIPOption PrinterType: enum CmdLine A 110
-*FoomaticRIPOptionSetting PrinterType=z0: "-z0 "
+*FoomaticRIPOptionSetting PrinterType=z2: "-z2 "
 
 *OpenUI *ColorMode/Color Mode: PickOne
 *FoomaticRIPOption ColorMode: enum CmdLine A

@@ -406,6 +406,22 @@ all-test:
 	    echo "      ***"; \
 	    exit 1; \
 	fi
+	@if ! dc -V >/dev/null 2>&1; then \
+	    echo "      ***"; \
+	    echo "      *** Error: must install GNU dc with the -e option!"; \
+	    echo "      ***"; \
+	    exit 1; \
+	fi
+ifeq ($(UNAME),Darwin)
+	@if ! type gsed >/dev/null 2>&1; then \
+	    echo "      ***"; \
+	    echo "      *** Error: gsed is not installed!"; \
+	    echo "      ***"; \
+	    echo "      *** For OSX: sudo port install gsed"; \
+	    echo "      ***"; \
+	    exit 1; \
+	fi
+endif
 	# ... OK!
 	#
 
