@@ -1,5 +1,5 @@
 /*
- * $Id: oakdecode.c,v 1.40 2010/10/25 18:58:22 rick Exp $
+ * $Id: oakdecode.c,v 1.41 2011/08/07 20:06:44 rick Exp $
  *
  * Work in progress decoder for Oak Tech. JBIG streams (HP1500)
  *
@@ -306,6 +306,35 @@ decode(FILE *fp)
     struct jbg_dec_state	s[4][2];
     int		height[4][2];
     int		width[4][2];
+    char        *strpaper[300+1];
+    #define STRARY(X, A) \
+                            ((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
+                            ? A[X] : "UNK"
+
+    for (i = 0; i < sizeof(strpaper)/sizeof(strpaper[0]); ++i)
+        strpaper[i] = "unk";
+    strpaper[1] = "letter";
+    strpaper[3] = "ledger";
+    strpaper[5] = "legal";
+    strpaper[6] = "statement";
+    strpaper[7] = "executive";
+    strpaper[8] = "A3";
+    strpaper[9] = "A4";
+    strpaper[11] = "A5";
+    strpaper[12] = "B4";
+    strpaper[13] = "B5jis";
+    strpaper[14] = "folio";
+    strpaper[19] = "env#9";
+    strpaper[20] = "env#10";
+    strpaper[27] = "envDL";
+    strpaper[28] = "envC5";
+    strpaper[30] = "envC4";
+    strpaper[37] = "envMonarch";
+    strpaper[257] = "A6";
+    strpaper[258] = "B6";
+    strpaper[259] = "B5iso";
+    strpaper[260] = "env6";
+    strpaper[296] = "CUSTOM";
 
     for (;;)
     {
@@ -429,7 +458,8 @@ decode(FILE *fp)
 	    rc = fread(dwords, len = 5*4, 1, fp);
 	    if (rc != 1) goto out;
 	    curOff += len;
-	    printf("	papercode=%d(%x)", dwords[0], dwords[0]);
+	    printf("	papercode=%s(%d)",
+		STRARY(dwords[0], strpaper), dwords[0]);
 	    printf("	xwid=%d", dwords[1]);
 	    printf("	ywid=%d", dwords[2]);
 	    printf("	UNK=0x%x", dwords[3]);

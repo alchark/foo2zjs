@@ -4,7 +4,7 @@ MAC OSX INSTALLATION NOTES -
 HP LaserJet 1018/1020 and Color LaserJet 1600/2600n and Color LaserJet CP1215
 Using the "MacPorts" project
 ==============================================================================
-by Rick Richardson 07/17/11
+by Rick Richardson 07/31/11
 
 1) Browse to:
     http://developer.apple.com/tools/download/
@@ -27,6 +27,7 @@ by Rick Richardson 07/17/11
     $ export PATH=$PATH:/opt/local/bin
     $ sudo port selfupdate
     $ sudo port install coreutils
+    $ sudo port install gsed
     $ sudo port install wget
     $ sudo port install ghostscript
 
@@ -35,8 +36,9 @@ by Rick Richardson 07/17/11
 	Reference: http://bugs.ghostscript.com/show_bug.cgi?id=690287
 
     Ref:
-	$ sudo port list coreutils wget ghostscript
+	$ port list coreutils gsed wget ghostscript
 	coreutils                      @8.10           sysutils/coreutils
+	gsed                           @4.2.1          textproc/gsed
 	wget                           @1.12           net/wget
 	ghostscript                    @9.02           print/ghostscript
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.15 2011/01/13 17:48:29 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.16 2011/07/30 14:13:33 rick Exp $'
 
 PROGNAME="$0"
 
@@ -41,6 +41,14 @@ debug() {
 	    echo "`basename $PROGNAME`: $2" >&2
 	fi
 }
+
+#
+#	Use gsed instead of sed on Mac OSX
+#
+case `uname -s` in
+Darwin)	sed=gsed;;
+*)	sed=sed;;
+esac
 
 #
 #       Process the options
@@ -117,7 +125,7 @@ fi
 #
 #	Main Program
 #
-sed \
+$sed \
     -e "$w" \
     -e "$n" \
     -e "$r" \
