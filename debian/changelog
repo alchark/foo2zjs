@@ -1,3 +1,21 @@
+foo2zjs (20110811dfsg-1) unstable; urgency=low
+
+  * New 20110811 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Replace the PPD-updater postinst code by CUPS' trigger.
+    - Breaks against too old cups versions.
+    - Add a ppd-updater file, to trigger with parameters.
+  * Compress PPDs using {dh_,}pyppd.
+    - Add versioned pyppd Build-Depends.
+    - Call dh_pyppd after installing the PPDs, don't compress them individually.
+    - Update the ppd-updater file with the new regexp.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 18 Aug 2011 14:00:20 +0200
+
 foo2zjs (20110722dfsg-3) unstable; urgency=low
 
   * Update 60-getweb.in.patch to add set -e (Closes: #633870 again).
