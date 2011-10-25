@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.32 2009/03/08 00:27:02 rick Exp $
+ * $Id: lavadecode.c,v 1.34 2011/10/10 22:56:38 rick Exp $
  */
 
 /*b
@@ -227,7 +227,8 @@ decode(FILE *fp)
 	    fputs(buf, stdout);
 	curOff += strlen(buf);
 
-	if (strcmp(buf, "\033%-12345X@PJL ENTER LANGUAGE=LAVAFLOW\n") == 0)
+	if (strcmp(buf, "\033%-12345X@PJL ENTER LANGUAGE=LAVAFLOW\n") == 0
+	    || strcmp(buf, "@PJL ENTER LANGUAGE=LAVAFLOW\n") == 0)
 	{
 	    int		state = 0;
 	    char	intro = 0, groupc = 0;
@@ -352,7 +353,13 @@ decode(FILE *fp)
 			    print_config(config);
 			}
 			if (intro == '*' && groupc == 'b' && c == 'M')
+			{
 			    printf("\t\tCOMPRESSION: [%d]", val);
+			    if (val == 1234)
+				printf(" (JBIG)");
+			    else
+				printf(" (unknown compression scheme)");
+			}
 			if (intro == '*' && groupc == 'r' && c == 'C')
 			    printf("\t\tEND PAGE");
 			if (intro == '*' && groupc == 'p' && c == 'X')

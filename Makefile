@@ -511,6 +511,12 @@ foo2hiperc-wrapper: foo2hiperc-wrapper.in Makefile
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
 	chmod 555 $@
 
+foo2zjs-wrapper9: foo2zjs-wrapper9.in Makefile
+	[ ! -f $@ ] || chmod +w $@
+	sed < $@.in > $@ \
+	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
+	chmod 555 $@
+
 
 getweb: getweb.in Makefile
 	[ ! -f $@ ] || chmod +w $@
