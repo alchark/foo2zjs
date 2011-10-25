@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.148 2011/01/14 23:21:39 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.150 2011/10/23 19:35:05 rick Exp $'
 
 #
 # Printer Notes:
@@ -73,7 +73,8 @@ Normal Options:
 -c                Print in color (else monochrome)
 -C colormode      Colormode [$COLORMODE]
                     1=Photos, 2=Photo and text, 3=Graphics and text
-                    10=ICM color profile (using -G *.icm file)
+                    10=ICM RGB color profile (using -G *.icm file)
+                    gs9=New gs9+ ICM CMYK color profile (using -G *.icm file)
 -d duplex         Duplex code to send to printer [$DUPLEX]
                     1=off, 2=longedge, 3=shortedge
 -m media          Media code to send to printer [$MEDIA]
@@ -192,6 +193,7 @@ if eval gs.foo -v >/dev/null 2>&1; then
 else
         GSBIN=${GSBIN:-gs}
 fi
+GSVER=`$GSBIN --version`
 
 CMDLINE="$*"
 DEBUG=0
@@ -223,7 +225,7 @@ DENSITY=3       #Medium
 NUP_ORIENT=
 GSDEV=-sDEVICE=pbmraw
 # What mode to use if the user wants us to pick the "best" mode
-case `$GSBIN --version` in
+case "$GSVER" in
 7*)	DEFAULTCOLORMODE=10
 	DEFAULTCOLORMODE=2
 	;;
@@ -752,6 +754,19 @@ create_crd() {
     fi
 }
 
+#
+#	Print the color space from an ICC file using "dd"
+#
+colorspace() {
+    if [ -r "$1" ]; then
+	dd if=$1 bs=4c skip=4 count=1 2>/dev/null
+    elif [ -r "$SHARE/icm/$1" ]; then
+	dd if=$1 bs=4c skip=4 count=1 2>/dev/null
+    else
+	echo none
+    fi
+}
+
 if [ $DEBUG -gt 0 ]; then
     ICCTMP=/tmp/icc
 else
@@ -765,12 +780,23 @@ else
     case "$COLORMODE" in
     default)	COLORMODE=$DEFAULTCOLORMODE;;
     esac
+
     case "$GAMMAFILE" in
     default)
 	    case "$MODEL" in
 	    3)	GAMMAFILE=hp-cp1025-rgb-392-bpp1.icm;;
-	    *)	GAMMAFILE=DL2312.icm::
+	    *)	GAMMAFILE=DL2312.icm;;
 	    esac
+	    ;;
+    esac
+
+    case "$GSVER" in
+    9.*)
+	    cs=`colorspace $GAMMAFILE`
+	    if [ "$cs" = "CMYK" ]; then
+		COLORMODE=gs9
+		QUALITY=
+	    fi
 	    ;;
     esac
 fi
@@ -787,6 +813,16 @@ PSTOPS_OPTS="-n"
 case "$COLORMODE" in
 0|"")
     # Monochrome
+    ;;
+gs9)
+    # Use new icc method in gs 9.*
+    if [ -r "$GAMMAFILE" ]; then
+	GAMMAFILE="-sOutputICCProfile=$GAMMAFILE"
+    elif [ -r "$SHARE/icm/$GAMMAFILE" ]; then
+	GAMMAFILE="-sOutputICCProfile=$SHARE/icm/$GAMMAFILE"
+    else
+	GAMMAFILE=
+    fi
     ;;
 10|icm)
     # Use old ICM method
