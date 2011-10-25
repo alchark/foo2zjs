@@ -1,4 +1,2 @@
-#!/bin/sh
-set -e
-DRIVER_REGEXP='foo2zjs:'
+DRIVER_REGEXP='^foo2zjs:'
 GENNICKNAME_REGEXP='s/-z\d\b//'
