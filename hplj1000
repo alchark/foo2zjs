@@ -39,6 +39,12 @@ DEV=/dev/usb/lp0
 DEV=""
 
 #
+# Path to the USB CUPS backend. We use this backend to upload the firmware
+# into the printer when we are on a CUPS/libusb-based system.
+#
+USB_BACKEND=/usr/lib/cups/backend/usb
+
+#
 # Directory to find downloadable HP firmware files sihpMMMM.dl
 #
 FWDIR=/usr/share/foo2zjs/firmware
@@ -199,9 +205,9 @@ install-usblp)
 esac
  
 #
-#	Procedure to load a single device with firmware
+#	Procedures to load a single device with firmware
 #
-load1() {
+load_usblp() {
     _dev="$1"
     fw="$FWDIR/sihp$FWMODEL.dl"
     if [ ! -f "$fw" ]; then
@@ -222,6 +228,30 @@ load1() {
     return 0
 }
 
+load_cups() {
+    fw="$FWDIR/sihp$FWMODEL.dl"
+    if [ ! -f "$fw" ]; then
+	log "Missing HP LaserJet $MODEL firmware file $fw"
+	log "...read foo2zjs installation instructions and run ./getweb $MODEL"
+	return 1
+    fi
+
+    # There is a timeout problem with udev and FC4, so spin it off.
+    (
+	device_found=0
+	for uri in `$USB_BACKEND 2> /dev/null | grep -i 'HP.*LaserJet.*'"$MODEL" | grep -v FWVER | cut -d ' ' -f 2`; do
+	    log "loading HP LaserJet $MODEL firmware $fw to CUPS USB device ..."
+	    device_found=1
+	    if DEVICE_URI="$uri" $USB_BACKEND 1 1 1 1 '' $fw 2> /dev/null; then
+		log "$uri... download successful."
+	    else
+		log "$uri... download failed."
+	    fi
+	done
+    ) &
+    return 0
+}
+
 #
 #	OK, now download firmware to any printers that need it
 #
@@ -229,27 +259,38 @@ if [ "$DEV" != "" ]; then
     #
     # force downloading to a specific device
     #
-    load1 "$DEV"
-elif [ -x $PRINTERID ]; then
-    #
-    # Sniff around for printers that need a firmware download
-    #
-    usblps=`find /dev/usb -name 'lp*'`" "`find /dev -name 'usblp*'`
-    for dev in $usblps; do
-	status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
-	if [ "$status" != "" ]; then
-	    # This is a LaserJet 100x
-	    chmod 0666 $dev
-	    status=`$PRINTERID $dev | grep 'FWVER'`
-	    if [ "$status" = "" ]; then
-		# Firmware is not yet loaded
-		load1 "$dev"
-	    else
-		log "HP LaserJet $MODEL firmware already loaded into $dev"
+    load_usblp "$DEV"
+elif [ -x $PRINTERID -o -x $USB_BACKEND ]; then
+    if [ -x $PRINTERID ]; then
+	#
+	# Sniff around for printers that need a firmware download
+	#
+	usblps=`find /dev/usb -name 'lp*'`" "`find /dev -name 'usblp*'`
+	for dev in $usblps; do
+	    status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
+	    if [ "$status" != "" ]; then
+		# This is a LaserJet 100x
+		chmod 0666 $dev
+		status=`$PRINTERID $dev | grep 'FWVER'`
+		if [ "$status" = "" ]; then
+		    # Firmware is not yet loaded
+		    load_usblp "$dev"
+		else
+		    log "HP LaserJet $MODEL firmware already loaded into $dev"
+		fi
 	    fi
-	fi
-    done
+	done
+    fi
+
+    if [ -x $USB_BACKEND ]; then
+	#
+	# If we have CUPS installed, use the CUPS "usb" backend, as then we do
+	# not need to care whether the system uses the usblp kernel module or
+	# libusb
+	#
+	load_cups
+    fi
 else
     log "HP LaserJet $MODEL firmware was not downloaded..."
-    log "...couldn't find $PRINTERID and DEV is not set"
+    log "...couldn't find $PRINTERID, DEV is not set, and CUPS not installed."
 fi

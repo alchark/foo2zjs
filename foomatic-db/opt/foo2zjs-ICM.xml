@@ -31,6 +31,12 @@
 	    <arg_defval>ev/foo2zjs-ICM-DL2312</arg_defval>
 	</constraint>
 	<constraint sense="true">
+	    <make>KONICA MINOLTA</make>
+	    <model>magicolor 2430 DL</model>
+	    <driver>foo2zjs</driver>
+	    <arg_defval>ev/foo2zjs-ICM-DL2312</arg_defval>
+	</constraint>
+	<constraint sense="true">
 	    <make>Minolta</make>
 	    <model>magicolor 2300 DL</model>
 	    <driver>foo2zjs</driver>
@@ -100,6 +106,9 @@
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
 	        </constraint>
 	        <constraint sense="true">
+	    	    <printer>KONICA_MINOLTA-magicolor_2430_DL</printer>
+	        </constraint>
+	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2300_DL</printer>
 	        </constraint>
 	    </constraints>
@@ -119,6 +128,9 @@
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
 	        </constraint>
 	        <constraint sense="true">
+	    	    <printer>KONICA_MINOLTA-magicolor_2430_DL</printer>
+	        </constraint>
+	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2300_DL</printer>
 	        </constraint>
 	    </constraints>
@@ -136,6 +148,9 @@
 	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2430_DL</printer>
+	        </constraint>
+	        <constraint sense="true">
+	    	    <printer>KONICA_MINOLTA-magicolor_2430_DL</printer>
 	        </constraint>
 	        <constraint sense="true">
 	    	    <printer>Minolta-magicolor_2300_DL</printer>

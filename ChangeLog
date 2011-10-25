@@ -1,3 +1,25 @@
+2011-10-23	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-wrapper: put gs9 code in, but no CMYK color profiles (yet).
+
+2011-10-20	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000: Reverse the checks for Ubuntu 11.10.
+
+2011-10-14	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db, PPDs: New printer "KONICA_MINOLTA-magicolor_2430"
+		like Minolta-magicolor_2430 except for Manufacturer.
+
+2011-10-14	Till Kamppeeter <till.kamppeter@gmail.com>
+	* hplj1000: make it work with usblp and CUPS (libusb)
+
+2011-10-10	Rick Richardson <rick.richardson@comcast.net>
+	* lavadecode: print the compression (JBIG or unknown)
+
+2011-10-09	Rick Richardson <rick.richardson@comcast.net>
+	* lavadecode: adjust for magicolor 3730
+
+2011-09-01	Rick Richardson <rick.richardson@comcast.net>
+	* Updated: printer-profile script to Argyll_V1.3.4
+
 2011-08-10	Rick Richardson <rick.richardson@comcast.net>
 	* foomatic-db, PPDs: Bug with Samsung CLP-325, CLP-325W.
 	    PLEASE delete and recreate CLP-325 printers.

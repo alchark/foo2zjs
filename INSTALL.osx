@@ -7,10 +7,33 @@ Using the "MacPorts" project
 by Rick Richardson 07/31/11
 
 1) Browse to:
-    http://developer.apple.com/tools/download/
+    http://developer.apple.com/xcode/
 
     Download and install "Xcode 3", the C compiler.  It is in the lower right:
 	"Looking for Xcode 3? Download Now"
+
+    For OSX Lion (10.7) only read:
+	http://anatomicwax.tumblr.com/post/8064949186/installing-xcode-3-2-6-on-lion-redux
+
+	"Installing Xcode 3.2.6 On Lion Redux
+
+	In my last post I gave a set of simple steps that allowed one to
+	install Xcode 3.2.6 on Lion. In looking through the
+	isDevToolsCompatible function again, I noticed that it would return
+	true if the COMMAND_LINE_INSTALL environment variable was set no
+	matter what version Mac OS X you are running.
+
+	It’s now possible to greatly simplify the installation process:
+
+	    Mount the Xcode 3.2.6 DMG
+	    Open Terminal
+	    Enter the commands:
+
+	    export COMMAND_LINE_INSTALL=1
+	    open "/Volumes/Xcode and iOS SDK/Xcode and iOS SDK.mpkg"
+
+	The open command will launch the installer app and allow you to
+	install Xcode 3.2.6 on Lion with no package modifications."
 
 2) Browse to:
     http://www.macports.org/install.php/

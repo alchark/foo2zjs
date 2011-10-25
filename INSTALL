@@ -165,6 +165,8 @@ GHOSTSCRIPT BUGS
 
     * ghostscript 9.00 is broken w.r.t. fonts in landscape mode.
 
+    * ghostscript 9.+ is broken w.r.t. color. Don't use
+
     * Well Tempered Screening (WTS) works with ghostscript 8.54 thru 8.70+.
       So if you want BEST COLORS, you'll have to install gs 8.54 or better
       if you don't have it.
