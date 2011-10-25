@@ -9,13 +9,14 @@ Homepage: http://foo2zjs.rkkda.com/
 Vcs-Git: git://anonscm.debian.org/collab-maint/foo2zjs.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
 
-Package: foo2zjs
+Package: printer-driver-foo2zjs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
 Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client
 Suggests: psutils, hannah-foo2zjs, tk8.4, tix
-Breaks: udev (<< 136-1), cups (<< 1.5.0-3~)
-Description: Support for printing to ZjStream-based printers
+Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~)
+Replaces: foo2zjs (<< 20111023dfsg0-1~)
+Description: printer driver for ZjStream-based printers
  foo2zjs is an open source printer driver for printers that use the
  Zenographics ZjStream wire protocol for their print data, such as the
  Minolta magicolor 2200/2300/2430 DL, Minolta Color PageWorks/Pro L and
@@ -28,3 +29,12 @@ Description: Support for printing to ZjStream-based printers
  The foomatic-db-engine package is recommended to simplify configuring
  this printer driver.  The psutils package is needed to enable n-up
  printing support.
+
+Package: foo2zjs
+Depends: printer-driver-foo2zjs, ${misc:Depends}
+Architecture: all
+Section: oldlibs
+Priority: extra
+Description: transitional dummy package for foo2zjs printer driver
+ This is a transitional dummy package to transition to uniformly named
+ printer-driver-foo2zjs.

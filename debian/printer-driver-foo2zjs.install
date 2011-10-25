@@ -120,3 +120,4 @@ xqxdecode usr/bin/
 zjsdecode usr/bin/
 hplj1000 usr/sbin/
 hplj10xx_gui.tcl usr/share/foo2zjs/
+debian/printer-driver-foo2zjs.ppd-updater /usr/share/cups/ppd-updaters/

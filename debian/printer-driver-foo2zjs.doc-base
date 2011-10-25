@@ -8,4 +8,4 @@ Abstract: foo2zjs is an open source printer driver for printers that
 Section: System/Hardware
 
 Format: PDF
-Files: /usr/share/doc/foo2zjs/manual.pdf
+Files: /usr/share/doc/printer-driver-foo2zjs/manual.pdf
