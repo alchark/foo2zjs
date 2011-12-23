@@ -90,7 +90,7 @@ it will not pass since different versions of Ghostscript generate different
 raster images:
     # make test
 
-Create printers (Fedora 6/7/8/.../15 and Ubuntu 7.10/8.x/9.x/10.x/11.x):
+Create printers (Fedora 6/7/8/.../16 and Ubuntu 7.10/8.x/9.x/10.x/11.x):
     # system-config-printer
 
 Create printers (Redhat 7.2/7.3/8.0/9.0, Fedora Core 1-5):
@@ -160,6 +160,11 @@ GHOSTSCRIPT BUGS
 	$ gs.foo --version
 	8.71
 
+      If that doesn't compile (e.g. Ubuntu 11.10+), try this:
+	$ cd ghostscript-8.71
+	$ ./configure  --without-jbig2dec
+	$ make CFLAGS+="-DHAVE_SYS_TIME_H=1"
+
     * Halftoning Bug:
         "The problems with WTS are primarily that it seems to fall down
 	on the halftone generation for some angles when the lpi is high for
@@ -173,8 +178,8 @@ GHOSTSCRIPT BUGS
 
 FEDORA NOTES 
 ------------
-    Install tix, foomatic\* FIRST:
-	# yum install tix foomatic\*
+    Install tix, foomatic\*, and system-config-printer FIRST:
+	# yum install tix foomatic\* system-config-printer
 
     If you are using a USB printer AND Fedora 12+, do this:
 
@@ -228,7 +233,10 @@ DEBIAN NOTES
 ------------
     Install build-essential, tix, foomatic-filters, groff, cupsys, dc FIRST:
 	$ su
-	# apt-get install build-essential tix foomatic-filters groff cupsys dc
+	# apt-get install build-essential tix foomatic-filters groff dc
+	# apt-get install cups		# For all others
+	    OR
+	# apt-get install cupsys	# For lenny and earlier
 
 	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
         $ tar zxf foo2zjs.tar.gz
@@ -455,8 +463,8 @@ MINOLTA-QMS 2200/2300 DL NOTES
 CUPS USB NOTES
 --------------
     If you are using the USB port, then the URI should be:
-	usb:/dev/usb/lp0
-	usb:/dev/usb/lp1
+	file:/dev/usb/lp0	OR	usb:/dev/usb/lp0
+	file:/dev/usb/lp1	OR	usb:/dev/usb/lp1
     OR
 	usb://Samsung/CLP-310%20Series
 	usb://Samsung/CLP-310%20Series
@@ -476,6 +484,7 @@ CUPS USB NOTES
     Don't use hp://<whatever> because that is for hplip (a closed source,
     proprietary driver).
 
+    Do a "make cups" as root if you haven't done it before.
 
 HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 --------------------------------------------------------------------

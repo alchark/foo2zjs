@@ -40,13 +40,13 @@
 	<!--no pjl--><!--No "text"?-->
     </lang>
     <autodetect>
-	<!--
 	<parallel>
-	    <ieee1284>MFG:KONICA MINOLTA;CMD:ZJS,PJL,LAVAFLOW;MDL:mc1600W;CLS:PRINTER;DES:KONICA MINOLTA mc1600W;</ieee1284>
-	    <manufacturer>KONICA MINOLTA</manufacturer>
-	    <model>mc1600W</model>
-	    <commandset>ZJS,PJL,LAVAFLOW</commandset>
+	    <ieee1284>MFG:OKI DATA CORP;CMD:GDI;MDL:C110;CLS:PRINTER;DES:OKI C110;</ieee1284>
+	    <manufacturer>OKI DATA CORP</manufacturer>
+	    <model>C110</model>
+	    <commandset>GDI;MDL</commandset>
 	</parallel>
+	<!--
 	<snmp>
 	    <description>KONICA MINOLTA magicolor 1600W</description>
 	</snmp>

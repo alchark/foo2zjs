@@ -67,7 +67,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2zjs.c,v 1.108 2011/06/09 14:06:24 rick Exp $";
+static char Version[] = "$Id: foo2zjs.c,v 1.109 2011/11/12 16:39:53 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1204,7 +1204,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	bpl = (w + 7) / 8;
 	bpl16 = (bpl + 15) & ~15;
 
-	if (1)
+	if (0)
 	    for (y = 0; y < 150; ++y)
 		memset(buf + y*bpl16, 0, bpl16);
 
@@ -1869,6 +1869,9 @@ main(int argc, char *argv[])
 	    EconoMode = 1;
 	}
     }
+
+    if (Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
+	JbgOptions[3] = 0;	/* MX = 0 */
 
     switch (Duplex)
     {

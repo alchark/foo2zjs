@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.16 2011/07/30 14:13:33 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.17 2011/11/23 22:07:33 rick Exp $'
 
 PROGNAME="$0"
 
@@ -95,7 +95,7 @@ else
 fi
 
 if [ $WTS = 1 ]; then
-    w='/%%Page:.*[ 	]1[ 	]*$/ i\
+    w='/%%Page:[ 	]*[ 	(]1[ 	)].*$/ i\
 	<< /UseWTS true >> setuserparams \
 	<<\
 	    /AccurateScreens true\
@@ -107,7 +107,7 @@ if [ $WTS = 1 ]; then
 	>> sethalftone
         '
 elif [ $ACCURATE = 1 ]; then
-    w='/%%Page:.*[      ]1[     ]*$/ i\
+    w='/%%Page:[ 	]*[ 	(]1[ 	)].*$/ i\
 	<< /UseWTS false >> setuserparams \
 	<<\
 	    /AccurateScreens true\

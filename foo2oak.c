@@ -65,7 +65,7 @@ Status: 0x18
  * TODO: Handle 2 bit mono and color output
  */
 
-static char Version[] = "$Id: foo2oak.c,v 1.68 2011/06/09 12:50:35 rick Exp $";
+static char Version[] = "$Id: foo2oak.c,v 1.69 2011/11/08 20:25:27 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -939,8 +939,12 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 		if (rc == 0) error(1, "fwrite(4): rc == 0!\n");
 	    }
 	    padlen = recdata.padlen - recdata.datalen;  
-	    rc = fwrite(pad, 1, padlen, ofp);
-	    if (rc == 0) error(1, "fwrite(5): rc == 0!\n");
+	    if (padlen)
+	    {
+		rc = fwrite(pad, 1, padlen, ofp);
+		if (rc == 0)
+		    error(1, "fwrite(5): padlen=%d rc == 0!\n", padlen);
+	    }
 
 	    free_chain(chain);
 	}
