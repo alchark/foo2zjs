@@ -24,6 +24,7 @@ DESCRIPTION
 
 OPTIONS
     -b 1|2        Bits per pixel ($BPP)
+    -g gs-bin     Set ghostscript to "gs-bin", (gs)
     -r XRESxYRES  Resolution. Default=''. ($RES)
     -P rem-print  Remote print (64-bit) machine, or none ($REMPRINT)
     -S rem-scan   Remote scan (ColorMunki) machine, or none ($REMSCAN)
@@ -85,6 +86,7 @@ trap "exit 1" ERR
 ARGYLL_VER=1.3.2
 ARGYLL_VER=1.3.3
 ARGYLL_VER=1.3.4
+ARGYLL_VER=1.3.5
 ARGYLL_ROOT=$HOME/src/Argyll_V${ARGYLL_VER}
 ARGYLL_REF=$ARGYLL_ROOT/ref
 ARGYLL_BIN=$ARGYLL_ROOT/bin
@@ -99,10 +101,11 @@ PATCHES=196	#Per page!
 BPP=1
 RES=
 DEBUG=0
-while getopts "b:r:P:S:D:h?" opt
+while getopts "b:g:r:P:S:D:h?" opt
 do
 	case $opt in
 	b)	BPP="$OPTARG";;
+	g)	export GSBIN="$OPTARG";;
 	r)	RES="$OPTARG";;
 	P)	REMPRINT="$OPTARG";;
 	S)	REMSCAN="$OPTARG";;
@@ -137,9 +140,18 @@ if [ $# -ge 3 ]; then
     RGB="$3"
 fi
 if [ $# -ge 4 ]; then
-    PATCHES="$4"
+    if [ "$4" -lt 10 ]; then
+	PATCHES=`expr $4 \* 196`
+    else
+	PATCHES="$4"
+    fi
 fi
-INK="$5"
+
+if [ $# -ge 5 ]; then
+    INK="$5"
+else
+    INK=250
+fi
 
 BPP_b="-b$BPP"
 RES_r=

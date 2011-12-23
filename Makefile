@@ -81,8 +81,6 @@ ifeq ($(UNAME),SunOS)
     MODTIME= `ls -e $$1 | cut -c42-61`
 endif
 
-CUPS_SERVERBIN := $(shell cups-config --serverbin 2>/dev/null)
-
 #
 # Files for tarball
 #
@@ -237,11 +235,14 @@ FILES	=	\
 		command2foo2lava-pjl.c \
 		$(NULL)
 
+# CUPS vars
+CUPS_SERVERBIN := $(shell cups-config --serverbin 2>/dev/null)
+CUPS_DEVEL := $(shell grep cupsSideChannelDoRequest /usr/include/cups/sidechannel.h 2>/dev/null)
+CUPS_GOODAPI := $(shell cups-config --api-version 2>/dev/null | sed "s/1\.[0123].*//")
+
 # hpclj2600n-0.icm km2430_0.icm km2430_1.icm km2430_2.icm samclp300-0.icm
 # sihp1000.img sihp1005.img sihp1020.img sihp1018.img
 # sihpP1005.img sihpP1006.img sihpP1505.img
-
-CUPS_DEVEL := $(shell ls /usr/include/cups/sidechannel.h 2>/dev/null)
 
 # Programs and libraries
 PROGS=		foo2zjs zjsdecode arm2hpdl foo2hp foo2xqx xqxdecode
@@ -253,7 +254,9 @@ PROGS+=		gipddecode
 PROGS+=		hbpldecode
 ifneq ($(CUPS_SERVERBIN),)
     ifneq ($(CUPS_DEVEL),)
-	PROGS+=	command2foo2lava-pjl
+	ifneq ($(CUPS_GOODAPI),)
+	    PROGS+=	command2foo2lava-pjl
+	endif
     endif
 endif
 SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
@@ -985,7 +988,19 @@ install-filter:
 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
 	fi
 
+CUPSDCONF=/etc/cups/cupsd.conf
+
 cups:	FRC
+	if [ -r $(CUPSDCONF) ]; then \
+	    (	echo "g/^FileDev/d"; \
+		echo "g/ foo2zjs.../d"; \
+		echo '$$a'; \
+		echo "# 'FileDev Yes' line installed by foo2zjs..."; \
+		echo "FileDev Yes"; \
+		echo "."; \
+		echo "w"; \
+	    ) | ex $(CUPSDCONF); \
+	fi
 	if [ -x /etc/init.d/cups ]; then \
 	    /etc/init.d/cups restart; \
 	elif [ -x /etc/rc.d/rc.cups ]; then \
@@ -999,6 +1014,8 @@ cups:	FRC
 	elif [ -x /usr/local/etc/rc.d/cups.sh.sample ]; then \
 	    cp /usr/local/etc/rc.d/cups.sh.sample /usr/local/etc/rc.d/cups.sh; \
 	    /usr/local/etc/rc.d/cups.sh restart; \
+	elif [ -x /bin/systemctl ]; then \
+	    systemctl restart cups.service; \
 	fi
 
 #
@@ -1735,4 +1752,4 @@ phorum-logo.gif: archhp.fig
 	fig2dev -L gif -m.25 archhp.fig | giftrans -t "#ffffff" -o $@
 
 w:	all
-	$(ROOT) $(MAKE) install install-hotplug
+	$(ROOT) $(MAKE) install install-hotplug cups

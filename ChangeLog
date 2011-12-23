@@ -1,3 +1,27 @@
+2011-12-02	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: ignore warning from missing cups-config
+	* Makefile: "make cups" for Fedora 16
+
+2011-11-23	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: command2foo2lava-pjl won't work with cups < 1.4
+	* foo2zjs-pstops.sh: also do %%Page: (1) 1
+
+2011-11-12	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs: there is a bug in HP printers p1102 (-z2) and
+	    cp1025 (-z3).  Workaround is to set MX=0.
+	* foo2zjs-wrapper: fix initial offset for -z2 and -z3 printers.
+
+2011-11-08	Rick Richardson <rick.richardson@comcast.net>
+	* foo2oak: don't error out if padlen == 0
+
+2011-11-05	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: change "make cups" target to also add a "FileDev Yes" line
+	    to /etc/cups/cupsd.conf.  Because cups 1.4.6+ does not like
+	    the usb:/dev/usb/lp0 syntax, but file:/dev/usb/lp0 works.
+
+2011-10-23	Rick Richardson <rick.richardson@comcast.net>
+	* updated the C110 ieee1284 string.
+
 2011-10-23	Rick Richardson <rick.richardson@comcast.net>
 	* foo2zjs-wrapper: put gs9 code in, but no CMYK color profiles (yet).
 

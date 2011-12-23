@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "DRV:Dfoo2lava,R1,M0,TF;"
+*1284DeviceID: "MFG:OKI DATA CORP;MDL:C110;CMD:GDI;DES:OKI C110;DRV:Dfoo2lava,R1,M0,TF;"
 
 *driverName foo2lava/foo2lava: ""
 *driverType F/Filter: ""
