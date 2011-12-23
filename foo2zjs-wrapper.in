@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.150 2011/10/23 19:35:05 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.152 2011/11/23 15:03:16 rick Exp $'
 
 #
 # Printer Notes:
@@ -288,6 +288,12 @@ do
 done
 shift `expr $OPTIND - 1`
 
+# Testing for gs9...
+if [ `uname -n` = dual.rkkda.org -a $MODEL = 3 ]; then
+    GSBIN=gs904
+    GSBIN=gsgit	# gs 9.04+
+fi
+
 #
 # If there is an argument left, take it as the file to print.
 # Else, the input comes from stdin.
@@ -491,8 +497,8 @@ Custom*)
 		case "$MODEL" in
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		# 1)	set_clipping 96 96	288 96;;
 		esac
 		;;
@@ -500,16 +506,16 @@ Custom*)
 		case "$MODEL" in
 		0)	set_clipping 204 102	204 106;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		esac
 		;;
 7|executive)	PAPER=7;	paper=executive; XDIM="8700";  YDIM="6300"
 		case "$MODEL" in
 		0)	set_clipping 206 102	206 102;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		esac
 		;;
 9|a4|A4)	PAPER=9;	paper=a4;        XDIM="9920";  YDIM="7016"
@@ -524,24 +530,24 @@ Custom*)
 		    fi
 		    ;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		esac
 		;;
 11|a5|A5)	PAPER=11;	paper=a5;        XDIM="6992";  YDIM="4960"
 		case "$MODEL" in
 		0)	set_clipping 200 100	200 100;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		esac
 		;;
 13|b5|B5)	PAPER=13;	paper=b5;        XDIM="8598";  YDIM="6070"
 		case "$MODEL" in
 		0)	set_clipping 207 107	207 107;;
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		esac
 		;;
 259|b5iso|B5ISO) PAPER=259;	paper=b5;        XDIM="8316";  YDIM="5904"
@@ -554,77 +560,77 @@ Custom*)
 		case "$MODEL" in
 		0)	set_clipping 171 78	171 78;;
 		1)	set_clipping 171 78	171 78;;
-		2)	set_clipping 171 2	171 78;;
-		3)	set_clipping 171 2	171 78;;
+		2)	set_clipping 171 78	171 78;;
+		3)	set_clipping 171 78	171 78;;
 		esac
 		;;
 27|envDL)	PAPER=27;	paper=envDL;     XDIM="5200";  YDIM="5200"
 		case "$MODEL" in
 		0)	set_clipping 176 84	176 84;;
 		1)	set_clipping 176 84	176 84;;
-		2)	set_clipping 176 2	176 84;;
-		3)	set_clipping 176 2	176 84;;
+		2)	set_clipping 176 84	176 84;;
+		3)	set_clipping 176 84	176 84;;
 		esac
 		;;
 28|envC5)	PAPER=28;	paper=envC5;     XDIM="7650";  YDIM="5408"
 		case "$MODEL" in
 		0)	set_clipping 170 80	169 80;;
 		1)	set_clipping 170 80	169 80;;
-		2)	set_clipping 170 2	169 80;;
-		3)	set_clipping 170 2	169 80;;
+		2)	set_clipping 170 80	169 80;;
+		3)	set_clipping 170 80	169 80;;
 		esac
 		;;
 34|envB5)	PAPER=34;	paper=envB5;     XDIM="8316";  YDIM="5892"
 		case "$MODEL" in
 		0)	set_clipping 174 74	174 74;;
 		1)	set_clipping 174 74	174 74;;
-		2)	set_clipping 174 2	174 74;;
-		3)	set_clipping 174 2	174 74;;
+		2)	set_clipping 174 74	174 74;;
+		3)	set_clipping 174 74	174 74;;
 		esac
 		;;
 37|envMonarch)	PAPER=37;	paper=envMonarch;XDIM="4650";  YDIM="4500"
 		case "$MODEL" in
 		0)	set_clipping 174 78	173 78;;
 		1)	set_clipping 174 78	173 78;;
-		2)	set_clipping 174 2	173 78;;
-		3)	set_clipping 174 2	173 78;;
+		2)	set_clipping 174 78	173 78;;
+		3)	set_clipping 174 78	173 78;;
 		esac
 		;;
 70|262|A6)			paper=A6;	XDIM="4956";  YDIM="3498"
 		case "$MODEL" in
 		1)	PAPER=262; set_clipping 174 78	173 78;;
-		2)	PAPER=70; set_clipping 174 2	173 78;;
-		3)	PAPER=70; set_clipping 174 2	173 78;;
+		2)	PAPER=70; set_clipping 174 78	173 78;;
+		3)	PAPER=70; set_clipping 174 78	173 78;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
 		;;
 257|16k197x273) PAPER=257;      paper=executive;XDIM="9306";  YDIM="6448"
 		case "$MODEL" in
 		1)	set_clipping 173 84	173 84;;
-		2)	set_clipping 173 2	173 84;;
-		3)	set_clipping 173 2	173 84;;
+		2)	set_clipping 173 84	173 84;;
+		3)	set_clipping 173 84	173 84;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 263|16k184x260) PAPER=263;      paper=executive;XDIM="8692";  YDIM="6142"
 		case "$MODEL" in
-		2)	set_clipping 122 2	122 87;;
-		3)	set_clipping 122 2	122 87;;
+		2)	set_clipping 122 87	122 87;;
+		3)	set_clipping 122 87	122 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 264|16k195x270) PAPER=264;      paper=executive;XDIM="9212";  YDIM="6378"
 		case "$MODEL" in
-		2)	set_clipping 126 2	126 87;;
-		3)	set_clipping 126 2	126 87;;
+		2)	set_clipping 126 87	126 87;;
+		3)	set_clipping 126 87	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 43|260|postcard)		paper=executive;XDIM="4728";  YDIM="3498"
 		case "$MODEL" in
 		1)	PAPER=260; set_clipping 126 87	126 87;;
-		2)	PAPER=43; set_clipping 126 2	126 87;;
-		3)	PAPER=43; set_clipping 126 2	126 87;;
+		2)	PAPER=43; set_clipping 126 87	126 87;;
+		3)	PAPER=43; set_clipping 126 87	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -632,8 +638,8 @@ Custom*)
 				paper=executive;XDIM="6996";  YDIM="4722"
 		case "$MODEL" in
 		1)	PAPER=261; set_clipping 126 87	126 87;;
-		2)	PAPER=82; set_clipping 126 2	126 87;;
-		3)	PAPER=82; set_clipping 126 2	126 87;;
+		2)	PAPER=82; set_clipping 126 87	126 87;;
+		3)	PAPER=82; set_clipping 126 87	126 87;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
@@ -641,29 +647,29 @@ Custom*)
 		PAPER=258;      paper=legal;	XDIM="10200";  YDIM="7800"
 		case "$MODEL" in
 		1)	set_clipping 192 96	192 96;;
-		2)	set_clipping 192 2	192 96;;
-		3)	set_clipping 192 2	192 96;;
+		2)	set_clipping 192 96	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 268|photo4x6)
 		PAPER=268;      paper=a6;	XDIM="4800";  YDIM="3600"
 		case "$MODEL" in
-		3)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 269|photo5x8)
 		PAPER=269;      paper=statement; XDIM="6000";  YDIM="4800"
 		case "$MODEL" in
-		3)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
 270|photo10x15)
 		PAPER=270;      paper=postcard; XDIM="4818";  YDIM="3590"
 		case "$MODEL" in
-		3)	set_clipping 192 2	192 96;;
+		3)	set_clipping 192 96	192 96;;
 		*)	error "Unimplemented paper code $PAPER";;
 		esac
                 ;;
