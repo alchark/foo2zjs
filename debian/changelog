@@ -1,3 +1,17 @@
+foo2zjs (20111202dfsg0-1) unstable; urgency=low
+
+  * New 20111202 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Refresh patches.
+  * Bump Build-Depends on pyppd to 0.4.9-6~ to make sure the compressed
+    PPD archive is named correctly.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 23 Dec 2011 10:10:24 +0100
+
 foo2zjs (20111023dfsg0-1) unstable; urgency=low
 
   * New 20111023 upstream release.
