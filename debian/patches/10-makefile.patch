@@ -20,7 +20,7 @@ Patch the Makefile
  
  # User ID's
  LPuid=-oroot
-@@ -617,8 +615,6 @@
+@@ -620,8 +618,6 @@
  	#
      
  
@@ -29,7 +29,7 @@ Patch the Makefile
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -626,8 +622,7 @@
+@@ -629,8 +625,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -39,7 +39,7 @@ Patch the Makefile
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -805,9 +800,9 @@
+@@ -808,9 +803,9 @@
  	    fi; \
  	done
  
@@ -52,7 +52,7 @@ Patch the Makefile
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -857,9 +852,9 @@
+@@ -860,9 +855,9 @@
  	    done; \
  	fi
  
@@ -65,7 +65,7 @@ Patch the Makefile
  
  install-desktop:
  	#
-@@ -982,6 +977,7 @@
+@@ -985,6 +980,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
