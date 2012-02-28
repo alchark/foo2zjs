@@ -810,6 +810,7 @@ install-extra:
 
 MODEL=$(DESTDIR)/usr/share/cups/model
 LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
+MACMODEL=/Library/Printers/PPDs/Contents/Resources
 PPD=$(DESTDIR)/usr/share/ppd
 VARPPD=/var/lp/ppd
 install-ppd:
@@ -835,7 +836,7 @@ install-ppd:
 	    find $(PPD) -name '*foo2qpdl*' | xargs rm -rf; \
 	    find $(PPD) -name '*foo2slx*' | xargs rm -rf; \
 	    find $(PPD) -name '*foo2hiperc*' | xargs rm -rf; \
-            [ -d $(PPD)/foo2zjs ] || mkdir $(PPD)/foo2zjs; \
+	    [ -d $(PPD)/foo2zjs ] || mkdir $(PPD)/foo2zjs; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
 		modify-ppd <$$ppd | gzip > $(PPD)/foo2zjs/$$ppd.gz; \
@@ -857,6 +858,13 @@ install-ppd:
 	    for ppd in *.ppd; do \
 		modify-ppd <$$ppd | gzip > $(LOCALMODEL)/$$ppd.gz; \
 		chmod 664 $(LOCALMODEL)/$$ppd.gz; \
+	    done; \
+	elif [ -d $(MACMODEL) ]; then \
+	    rm -f $(MACMODEL)/KonicaMinolta*; \
+	    cd PPD; \
+	    for ppd in *.ppd; do \
+		modify-ppd <$$ppd | gzip > $(MACMODEL)/$$ppd.gz; \
+		chmod 664 $(MACMODEL)/$$ppd.gz; \
 	    done; \
 	fi
 
@@ -989,14 +997,15 @@ install-filter:
 	fi
 
 CUPSDCONF=/etc/cups/cupsd.conf
+MACLOAD=/System/Library/LaunchDaemons/org.cups.cupsd.plist
 
 cups:	FRC
 	if [ -r $(CUPSDCONF) ]; then \
 	    (	echo "g/^FileDev/d"; \
 		echo "g/ foo2zjs.../d"; \
 		echo '$$a'; \
-		echo "# 'FileDev Yes' line installed by foo2zjs..."; \
-		echo "FileDev Yes"; \
+		echo "# 'FileDevice Yes' line installed by foo2zjs..."; \
+		echo "FileDevice Yes"; \
 		echo "."; \
 		echo "w"; \
 	    ) | ex $(CUPSDCONF); \
@@ -1016,6 +1025,9 @@ cups:	FRC
 	    /usr/local/etc/rc.d/cups.sh restart; \
 	elif [ -x /bin/systemctl ]; then \
 	    systemctl restart cups.service; \
+	elif [ -x /bin/launchctl ]; then \
+	    /bin/launchctl unload $(MACLOAD); \
+	    /bin/launchctl load $(MACLOAD); \
 	fi
 
 #

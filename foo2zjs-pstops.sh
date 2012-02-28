@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.17 2011/11/23 22:07:33 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.20 2012/02/23 21:19:46 rick Exp $'
 
 PROGNAME="$0"
 
@@ -16,6 +16,7 @@ DESCRIPTION
     Add PS code for foo2zjs-wrapper.
 
 OPTIONS
+    -9		Use new gs (ver >= 9.00)
     -h ydimpts	For rotate -r, y dimension points
     -r		Rotate 90 clockwise
     -a		Accurate Screens code
@@ -59,9 +60,11 @@ ACCURATE=0
 CIECOLOR=0
 NIXCUPS=0
 WTS=0
-while getopts "ach:nwrD:Vh?" opt
+GSVER=old
+while getopts "9ach:nwrD:Vh?" opt
 do
 	case $opt in
+	9)	GSVER=gs9;;
 	a)	ACCURATE=1;;
 	c)	CIECOLOR=1;;
 	h)	YDIMpoints="$OPTARG";;
@@ -94,30 +97,71 @@ else
     r=
 fi
 
+if [ "$GSVER" = "old" ]; then
+    ht='\
+        <<\
+            /AccurateScreens true\
+            /HalftoneType 1\
+            /HalftoneName (Round Dot Screen) cvn\
+            /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}\
+            /Frequency 137\
+            /Angle 37\
+        >> sethalftone
+    '
+else
+    ht='\
+	/SpotDot { 180 mul cos exch 180 mul cos add 2 div } def\
+	<<\
+	    /HalftoneType 5\
+	    /Cyan <<\
+		/HalftoneType 1\
+		/AccurateScreens true\
+		/Frequency 150\
+		/Angle 105\
+		/SpotFunction /SpotDot load\
+	    >>\
+	    /Magenta <<\
+		/HalftoneType 1\
+		/AccurateScreens true\
+		/Frequency 150\
+		/Angle 165\
+		/SpotFunction /SpotDot load\
+	    >>\
+	    /Yellow <<\
+		/HalftoneType 1\
+		/AccurateScreens true\
+		/Frequency 150\
+		/Angle 30\
+		/SpotFunction /SpotDot load\
+	    >>\
+	    /Black <<\
+		/HalftoneType 1\
+		/AccurateScreens true\
+		/Frequency 150\
+		/Angle 45\
+		/SpotFunction /SpotDot load\
+	    >>\
+	    /Default <<\
+		/HalftoneType 1\
+		/AccurateScreens true\
+		/Frequency 150\
+		/Angle 37\
+		/SpotFunction /SpotDot load\
+	    >>\
+	>> /Default exch /Halftone defineresource sethalftone
+    '
+fi
+
 if [ $WTS = 1 ]; then
-    w='/%%Page:[ 	]*[ 	(]1[ 	)].*$/ i\
+    w="/%%Page:[        ]*[     (]1[    )].*\$/ i\
 	<< /UseWTS true >> setuserparams \
-	<<\
-	    /AccurateScreens true\
-	    /HalftoneType 1\
-	    /HalftoneName (Round Dot Screen) cvn\
-	    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}\
-	    /Frequency 137\
-	    /Angle 37\
-	>> sethalftone
-        '
+	$ht
+	"
 elif [ $ACCURATE = 1 ]; then
-    w='/%%Page:[ 	]*[ 	(]1[ 	)].*$/ i\
+    w="/%%Page:[        ]*[     (]1[    )].*\$/ i\
 	<< /UseWTS false >> setuserparams \
-	<<\
-	    /AccurateScreens true\
-	    /HalftoneType 1\
-	    /HalftoneName (Round Dot Screen) cvn\
-	    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}\
-	    /Frequency 137\
-	    /Angle 37\
-	>> sethalftone
-	'
+	$ht
+	"
 else
     w=
 fi
