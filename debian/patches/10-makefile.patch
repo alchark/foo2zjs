@@ -39,20 +39,21 @@ Patch the Makefile
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -808,9 +803,9 @@
+@@ -808,10 +803,10 @@
  	    fi; \
  	done
  
 -MODEL=$(DESTDIR)/usr/share/cups/model
 -LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
--PPD=$(DESTDIR)/usr/share/ppd
 +MODEL=$(PREFIX)/share/cups/model
 +LOCALMODEL=$(PREFIX)/local/share/cups/model
+ MACMODEL=/Library/Printers/PPDs/Contents/Resources
+-PPD=$(DESTDIR)/usr/share/ppd
 +PPD=$(PREFIX)/share/ppd
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -860,9 +855,9 @@
+@@ -868,9 +863,9 @@
  	    done; \
  	fi
  
@@ -65,7 +66,7 @@ Patch the Makefile
  
  install-desktop:
  	#
-@@ -985,6 +980,7 @@
+@@ -993,6 +988,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
