@@ -1,3 +1,12 @@
+2012-02-23	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-pstops: put gs9 code in, but no CMYK color profiles (yet).
+
+2011-12-27	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: install-ppd for Mac
+
+2011-12-26	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: make cups FileDevice Yes
+
 2011-12-02	Rick Richardson <rick.richardson@comcast.net>
 	* Makefile: ignore warning from missing cups-config
 	* Makefile: "make cups" for Fedora 16
