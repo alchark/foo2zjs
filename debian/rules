@@ -26,10 +26,14 @@ override_dh_install:
 	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/tmp/lib/udev/rules.d/85-hplj10xx.rules
 	# Legacy dh_install
 	dh_install
-	# usb_printerid is Linux-specific
 ifeq ($(DEB_HOST_ARCH_OS),linux)
+	# usb_printerid is Linux-specific
 	install -D -m 644 usb_printerid $(CURDIR)/debian/printer-driver-foo2zjs/usr/bin/usb_printerid
 	install -D -m 644 usb_printerid.1 $(CURDIR)/debian/printer-driver-foo2zjs/usr/share/man/man1/usb_printerid.1
+endif
+ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
+	# /etc/devd/hplj10xx.conf is kFreeBSD-specific
+	install -D -m 644 hplj10xx.conf $(CURDIR)/debian/printer-driver-foo2zjs/etc/devd/hplj10xx.conf
 endif
 	### patches/20-PDF-input-data-in-PPDs.patch
 	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
