@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2zjs-wrapper.in,v 1.152 2011/11/23 15:03:16 rick Exp $'
+VERSION='$Id: foo2zjs-wrapper.in,v 1.154 2012/02/24 01:25:15 rick Exp $'
 
 #
 # Printer Notes:
@@ -291,7 +291,7 @@ shift `expr $OPTIND - 1`
 # Testing for gs9...
 if [ `uname -n` = dual.rkkda.org -a $MODEL = 3 ]; then
     GSBIN=gs904
-    GSBIN=gsgit	# gs 9.04+
+    GSBIN=gsgit	# gs 9.05+
 fi
 
 #
@@ -779,6 +779,8 @@ else
     ICCTMP=/tmp/icc$$
 fi
 
+PSTOPS_OPTS="-n"
+
 if [ "" = "$COLOR" ]; then
     COLORMODE=
     GAMMAFILE=
@@ -802,6 +804,7 @@ else
 	    if [ "$cs" = "CMYK" ]; then
 		COLORMODE=gs9
 		QUALITY=
+		PSTOPS_OPTS="$PSTOPS_OPTS -9 -a"
 	    fi
 	    ;;
     esac
@@ -814,14 +817,14 @@ case "$RES" in
     2400x600)	SCREEN=screen2400.ps;;
 esac
 
-PSTOPS_OPTS="-n"
-
 case "$COLORMODE" in
 0|"")
     # Monochrome
     ;;
 gs9)
     # Use new icc method in gs 9.*
+    AIB=
+    BC=
     if [ -r "$GAMMAFILE" ]; then
 	GAMMAFILE="-sOutputICCProfile=$GAMMAFILE"
     elif [ -r "$SHARE/icm/$GAMMAFILE" ]; then
