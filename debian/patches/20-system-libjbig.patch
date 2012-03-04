@@ -1,0 +1,26 @@
+Description: Use the Debian-provided libjbig.
+Author: Didier Raboud <odyx@debian.org>
+Last-Update: 2012-04-26
+
+--- a/Makefile
++++ b/Makefile
+@@ -124,10 +124,6 @@
+ 		Makefile \
+ 		foo2zjs.c \
+ 		foo2zjs.1in \
+-		jbig.c \
+-		jbig.h \
+-		jbig_ar.c \
+-		jbig_ar.h \
+ 		zjsdecode.c \
+ 		zjsdecode.1in \
+ 		zjs.h \
+@@ -274,7 +270,7 @@
+ MANPAGES+=	hbpldecode.1
+ MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
+ MANPAGES+=	printer-profile.1
+-LIBJBG	=	jbig.o jbig_ar.o
++LIBJBG =       -ljbig
+ BINPROGS=
+ 
+ ifeq ($(UNAME),Linux)
