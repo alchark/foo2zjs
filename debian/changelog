@@ -1,3 +1,18 @@
+foo2zjs (20120223dfsg0-1) unstable; urgency=low
+
+  * New 20120223 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Refresh patches.
+  * Remove Michael Koch from the Uploaders field (Closes: #654017)
+  * Ship the devd hplj10xx.conf on kFreeBSD. (Closes: #662146)
+  * Ship the udev rules file on Linux only.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 04 Mar 2012 21:22:28 +0100
+
 foo2zjs (20111202dfsg0-1) unstable; urgency=low
 
   * New 20111202 upstream release.
