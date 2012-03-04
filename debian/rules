@@ -22,14 +22,14 @@ override_dh_install:
 	# Add "-dNOINTERPOLATE" to the Ghostscript command lines to make
 	# Ghostscript rendering the pages significantly faster
 	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/tmp/usr/bin/*-wrapper
-	# Use a policy-numbered name for the rules file
-	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/tmp/lib/udev/rules.d/85-hplj10xx.rules
 	# Legacy dh_install
 	dh_install
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# usb_printerid is Linux-specific
 	install -D -m 644 usb_printerid $(CURDIR)/debian/printer-driver-foo2zjs/usr/bin/usb_printerid
 	install -D -m 644 usb_printerid.1 $(CURDIR)/debian/printer-driver-foo2zjs/usr/share/man/man1/usb_printerid.1
+	# Use a policy-numbered name for the Linux-specific udev rules file
+	install -D -m 644 hplj10xx.rules $(CURDIR)/debian/printer-driver-foo2zjs/lib/udev/rules.d/85-hplj10xx.rules
 endif
 ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 	# /etc/devd/hplj10xx.conf is kFreeBSD-specific
