@@ -1,3 +1,13 @@
+foo2zjs (20120223dfsg0-2) unstable; urgency=low
+
+  * Use the Debian-provided libjbig:
+    - Add libjbig-dev to Build-Depends;
+    - Add 20-system-libjbig.patch.
+  * Bump Standards-Version to 3.9.3 without changes needed.
+  * Bump debhelper Build-Dependency to 9.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 26 Apr 2012 10:22:26 +0200
+
 foo2zjs (20120223dfsg0-1) unstable; urgency=low
 
   * New 20120223 upstream release.
