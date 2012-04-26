@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: Luca Capello <luca@pca.it>, Didier Raboud <odyx@debian.org>
 Build-Depends: debhelper (>= 8.9.0~), ghostscript, foomatic-filters, libcups2-dev, dc, pyppd (>= 0.4.9-6~), libjbig-dev
-Standards-Version: 3.9.2
+Standards-Version: 3.9.3
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Git: git://anonscm.debian.org/collab-maint/foo2zjs.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
