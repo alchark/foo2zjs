@@ -1,3 +1,17 @@
+foo2zjs (20120510dfsg0-1) unstable; urgency=low
+
+  * New 20120510 upstream release.
+    - Acknowledge the expiration of the JBIG-KIT patent.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Refresh patches.
+  * Drop the source lintian override for debhelper 9.
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 23 May 2012 17:59:07 +0200
+
 foo2zjs (20120223dfsg0-2) unstable; urgency=low
 
   * Use the Debian-provided libjbig:
