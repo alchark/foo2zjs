@@ -265,7 +265,7 @@ elif [ -x $PRINTERID -o -x $USB_BACKEND ]; then
 	#
 	# Sniff around for printers that need a firmware download
 	#
-	usblps=`find /dev/usb -name 'lp*'`" "`find /dev -name 'usblp*'`
+	usblps=`find /dev/usb -type c -name 'lp*'`" "`find /dev -type c -name 'usblp*'`
 	for dev in $usblps; do
 	    status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
 	    if [ "$status" != "" ]; then
@@ -280,6 +280,10 @@ elif [ -x $PRINTERID -o -x $USB_BACKEND ]; then
 		fi
 	    fi
 	done
+	if [ "$usblps" != " " ]; then
+	    # All done!
+	    exit
+	fi
     fi
 
     if [ -x $USB_BACKEND ]; then
