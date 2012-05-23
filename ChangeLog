@@ -1,3 +1,9 @@
+2012-05-10	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: gratiutous movement of udevd in F17
+
+2012-05-04	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000: put an "exit" in
+
 2012-02-23	Rick Richardson <rick.richardson@comcast.net>
 	* foo2zjs-pstops: put gs9 code in, but no CMYK color profiles (yet).
 
