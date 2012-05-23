@@ -52,20 +52,17 @@ Copyright Samsung...
     CLP-600*cms* (2006)
 
 PATENTS
-    It is possible that certain products which can be built using the jbig
-    software module might form inventions protected by patent rights in
-    some countries (e.g., by patents about arithmetic coding algorithms
-    owned by IBM and AT&T in the USA). Provision of this software by the
-    author does NOT include any licences for any patents. In those
-    countries where a patent licence is required for certain applications
-    of this software module, you will have to obtain such a licence
-    yourself.
+    Markus Kuhn writes:
 
-    "So, as far as I understand currently (IANAPL):
-	* JBIG1 will be free of known patents in the United States				from 2012-04-04 onwards,
-	* has already been free of known patents in all other countries
-	    since 2011-02-26." - Markus Kuhn
+    "JBIG1 NOW PATENT FREE
 
+    United States Patent 5,404,140, the last of the JBIG1 patents, expired
+    today (04/04/2012). Therefore, from today, using JBIG-KIT no longer
+    requires any patent licence anywhere on the planet.
+
+    See http://www.lightbluetouchpaper.org/2012/04/04/one-line-software-patent/
+    for a few thoughts on this curious patent, which covers only a single,
+    simple "if" statement in the encoder and decoder."
 
 Everything else is...
 -----------------------------------------------------------------------------

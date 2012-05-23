@@ -898,7 +898,7 @@ USBDIR=/etc/hotplug/usb
 UDEVDIR=/etc/udev/rules.d
 LIBUDEVDIR=/lib/udev/rules.d
 RULES=hplj10xx.rules
-UDEVD=/sbin/udevd
+#UDEVD=/sbin/udevd
 # For FreeBSD 8.0
 DEVDDIR=/etc/devd
 
@@ -953,8 +953,13 @@ install-hotplug-prog:
 	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1008*; \
 	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1505*; \
 	    rm -f $(UDEVDIR)/*hpmud_support.rules; \
+	    rm -f $(LIBUDEVDIR)/*hpmud_support.rules; \
 	    rm -f $(LIBUDEVDIR)/*-hplj10xx.rules; \
-	    version=`$(UDEVD) --version 2>/dev/null`; \
+	    if [ -x /sbin/udevd ]; then \
+		version=`/sbin/udevd --version 2>/dev/null`; \
+	    elif [ -x /usr/lib/udev/udevd ]; then \
+		version=`/usr/lib/udev/udevd --version 2>/dev/null`; \
+	    fi; \
 	    if [ "$$version" = "" ]; then version=0; fi; \
 	    echo "*** udev version $$version"; \
 	    if [ "$$version" -lt 148 ]; then \
@@ -1012,6 +1017,9 @@ cups:	FRC
 	fi
 	if [ -x /etc/init.d/cups ]; then \
 	    /etc/init.d/cups restart; \
+	    if [ $$? != 0 ]; then \
+		service cups restart; \
+	    fi \
 	elif [ -x /etc/rc.d/rc.cups ]; then \
 	    /etc/rc.d/rc.cups restart; \
 	elif [ -x /etc/init.d/cupsys ]; then \
