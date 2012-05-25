@@ -15,3 +15,4 @@
 91-spelling-fixes.patch
 92-udev-firmware-script-fixes.patch
 95-udev-firmware-script-no-hplip-rules-removal.patch
+96-hplj1000-fix-cups-usb-backend-firmware-upload.patch
