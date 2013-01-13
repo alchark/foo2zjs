@@ -6,7 +6,7 @@ Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/foo2zjs/+bug/783389
 Last-Update: 2011-07-23
 --- a/hplj1000
 +++ b/hplj1000
-@@ -151,13 +151,6 @@
+@@ -151,16 +151,6 @@
  esac
  
  #
@@ -15,6 +15,9 @@ Last-Update: 2011-07-23
 -model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
 -rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
 -rm -f /etc/udev/rules.d/*hpmud_support.rules
+-rm -f /etc/udev/rules.d/*hpmud_plugin.rules
+-rm -f /lib/udev/rules.d/*hpmud_support.rules
+-rm -f /lib/udev/rules.d/*hpmud_plugin.rules
 -
 -#
  #	The special command line argument "install-usermap" will install
