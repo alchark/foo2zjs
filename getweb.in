@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.103 2011/05/17 09:44:16 rick Exp $'
+VERSION='$Id: getweb.in,v 1.108 2013/01/05 04:47:57 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -48,6 +48,7 @@ Usage:
     $ ./getweb 310	# Get Samsung CLP-310 .ICM files
     $ ./getweb 315	# Get Samsung CLP-315 .ICM files
     $ ./getweb 325	# Get Samsung CLP-325 .ICM files
+    $ ./getweb 365	# Get Samsung CLP-365 .ICM files
     $ ./getweb 600	# Get Samsung CLP-600 .ICM files
     $ ./getweb 610	# Get Samsung CLP-610 .ICM files
     $ ./getweb 2160	# Get Samsung CLX-2160 .ICM files
@@ -57,6 +58,7 @@ Usage:
 
     $ ./getweb 500	# Get Lexmark C500 .ICM files
 
+    $ ./getweb 301	# Get Oki C301dn .ICM files
     $ ./getweb c310	# Get Oki C310dn .ICM files
     $ ./getweb 3100	# Get Oki C3100 .ICM files
     $ ./getweb 3200	# Get Oki C3200 .ICM files
@@ -180,6 +182,7 @@ getone() {
 	copyright "(c) Copyright Hewlett-Packard 2005"
 	;;
     lj1020|1020)
+	# http://ftp.hp.com/pub/softlib/software8/COL14041/lj-39322-2/hp_LJ_1020-1022_Full_Solution.exe
 	gettgz \
 	    http://foo2zjs.rkkda.com/firmware sihp1020.tar.gz \
 	    ""
@@ -306,7 +309,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
 	;;
-    300|310|315|325|2160|3160|3175|6110)
+    300|310|315|325|365|2160|3160|3175|6110)
 	gettgz \
 	    http://foo2qpdl.rkkda.com/icm samclp300.tar.gz \
 	    ""
@@ -339,6 +342,12 @@ getone() {
 	    mv "$base.ICM" "$base.icm"
 	done
 	copyright "(c) Copyright Okidata 2005, 2006"
+	;;
+    301)
+	gettgz \
+	    http://foo2hiperc.rkkda.com/icm okic301.tar.gz \
+	    ""
+	copyright "(c) Copyright Okidata 2012"
 	;;
     c310)
 	gettgz \
@@ -479,6 +488,7 @@ do
 
 	getone 500
 
+	getone 301
 	getone c310
 	getone 3200
 	getone 3400

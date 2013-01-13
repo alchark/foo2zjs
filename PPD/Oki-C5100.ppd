@@ -62,7 +62,7 @@
 
 
 
-*HWMargins: 9 12.00 9 +12.00
+*HWMargins: 9 12.00 9 12
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -401,6 +401,12 @@
 *FoomaticRIPOptionSetting ICM=OK5600L2: "-C10 -GOK5600L2.icm "
 *ICM OK5600L3/OK5600L3.icm - 600dpi C5500/C5600/C5800: "%% FoomaticRIPOptionSetting: ICM=OK5600L3"
 *FoomaticRIPOptionSetting ICM=OK5600L3: "-C10 -GOK5600L3.icm "
+*ICM OKC301H1/OKC301H1.icm - 600dpi Multi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H1"
+*FoomaticRIPOptionSetting ICM=OKC301H1: "-C10 -GOKC301H1.icm "
+*ICM OKC301H2/OKC301H2.icm - 1200dpi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H2"
+*FoomaticRIPOptionSetting ICM=OKC301H2: "-C10 -GOKC301H2.icm "
+*ICM OKC301H3/OKC301H3.icm - 600dpi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H3"
+*FoomaticRIPOptionSetting ICM=OKC301H3: "-C10 -GOKC301H3.icm "
 *ICM OKC310H1/OKC310H1.icm - 600dpi Multi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H1"
 *FoomaticRIPOptionSetting ICM=OKC310H1: "-C10 -GOKC310H1.icm "
 *ICM OKC310H2/OKC310H2.icm - 1200dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H2"

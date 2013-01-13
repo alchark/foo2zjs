@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.51 2011/04/15 19:07:00 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.52 2013/01/02 11:17:04 rick Exp $'
 
 #
 # Printer Notes:
@@ -27,6 +27,7 @@ VERSION='$Id: foo2qpdl-wrapper.in,v 1.51 2011/04/15 19:07:00 rick Exp $'
 # Samsung CLP-310: -z2, ICM
 # Samsung CLP-315: -z2, ICM
 # Samsung CLP-325: -z2, ICM alpha
+# Samsung CLP-365: -z3, ICM alpha
 # Samsung CLP-600: -z1, CRD, need ICM for black text
 # Samsung CLP-610: -z2, CRD, need ICM for black text
 # Samsung CLP-620: -z3, CRD, need ICM for black text

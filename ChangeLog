@@ -1,3 +1,19 @@
+2013-01-13	Rick Richardson <rick.richardson@comcast.net>
+	* hplj1000: add a sleep 3
+
+2013-01-04	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Okidata C301dn
+
+2013-01-02	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Samsung CLP-365W
+
+2012-09-09	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: Add DESTDIR to CUPS_SERVERBIN
+
+2012-06-01	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile, hplj1000: remove /lib/udev/rules.d/86-hpmud_plugin.rules
+	    Same thing as 2010-12-10, different path!
+
 2012-05-10	Rick Richardson <rick.richardson@comcast.net>
 	* Makefile: gratiutous movement of udevd in F17
 

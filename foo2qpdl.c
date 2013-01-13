@@ -58,7 +58,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.48 2011/06/09 13:39:21 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.50 2013/01/10 19:58:51 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -206,8 +206,8 @@ usage(void)
 "-z model          Model [%d]\n"
 "                    0=CLP-300, CLX-2160, CLX-3160\n"
 "                    1=CLP-600\n"
-"                    2=CLP-310, CLP-315, CLP-610, CLX-3175\n"
-"                    3=CLP-620\n"
+"                    2=CLP-310/315, CLP-320/325, CLP-610, CLX-3175\n"
+"                    3=CLP-360/365, CLP-620\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -685,7 +685,8 @@ width2unk(int w)
 {
     int u;
 
-    u = (26.0/6655.0) * w + 65;
+    /* u = (26.0/6655.0) * w + 65; */
+    u = (w >> 8) + 65;
     return u;
 }
 
