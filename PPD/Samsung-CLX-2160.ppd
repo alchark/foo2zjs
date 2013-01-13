@@ -62,7 +62,7 @@
 
 
 
-*HWMargins: 9 12.00 9 +12.00
+*HWMargins: 9 12.00 9 12
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -399,6 +399,8 @@
 *FoomaticRIPOptionSetting ICM=clp315: "-C10 -Gsamclp315-argyll-0.icm "
 *ICM clp325/CLP-320/325: "%% FoomaticRIPOptionSetting: ICM=clp325"
 *FoomaticRIPOptionSetting ICM=clp325: "-C10 -Gsamclp315-argyll-0.icm "
+*ICM clp365/CLP-360/365: "%% FoomaticRIPOptionSetting: ICM=clp365"
+*FoomaticRIPOptionSetting ICM=clp365: "-C10 -Gsamclp315-argyll-0.icm "
 *ICM clp600/CLP-600: "%% FoomaticRIPOptionSetting: ICM=clp600"
 *FoomaticRIPOptionSetting ICM=clp600: "-z1 "
 *ICM clp610/CLP-610: "%% FoomaticRIPOptionSetting: ICM=clp610"

@@ -153,6 +153,9 @@ esac
 model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
 rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
 rm -f /etc/udev/rules.d/*hpmud_support.rules
+rm -f /etc/udev/rules.d/*hpmud_plugin.rules
+rm -f /lib/udev/rules.d/*hpmud_support.rules
+rm -f /lib/udev/rules.d/*hpmud_plugin.rules
 
 #
 #	The special command line argument "install-usermap" will install
@@ -251,6 +254,11 @@ load_cups() {
     ) &
     return 0
 }
+
+#
+#	Add a sleep
+#
+sleep 3
 
 #
 #	OK, now download firmware to any printers that need it

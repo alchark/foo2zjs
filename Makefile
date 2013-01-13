@@ -45,7 +45,7 @@ LPgid=-glp
 ifeq ($(UNAME),Darwin)
     LPuid=-oroot
     LPgid=-gwheel
-    ROOT=sudo
+    #ROOT=sudo
 endif
 ifeq ($(UNAME),FreeBSD)
     LPuid=-oroot
@@ -236,7 +236,7 @@ FILES	=	\
 		$(NULL)
 
 # CUPS vars
-CUPS_SERVERBIN := $(shell cups-config --serverbin 2>/dev/null)
+CUPS_SERVERBIN := $(DESTDIR)$(shell cups-config --serverbin 2>/dev/null)
 CUPS_DEVEL := $(shell grep cupsSideChannelDoRequest /usr/include/cups/sidechannel.h 2>/dev/null)
 CUPS_GOODAPI := $(shell cups-config --api-version 2>/dev/null | sed "s/1\.[0123].*//")
 
@@ -953,7 +953,9 @@ install-hotplug-prog:
 	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1008*; \
 	    rm -f $(UDEVDIR)/*hpmud*laserjet_p1505*; \
 	    rm -f $(UDEVDIR)/*hpmud_support.rules; \
+	    rm -f $(UDEVDIR)/*hpmud_plugin.rules; \
 	    rm -f $(LIBUDEVDIR)/*hpmud_support.rules; \
+	    rm -f $(LIBUDEVDIR)/*hpmud_plugin.rules; \
 	    rm -f $(LIBUDEVDIR)/*-hplj10xx.rules; \
 	    if [ -x /sbin/udevd ]; then \
 		version=`/sbin/udevd --version 2>/dev/null`; \
@@ -1347,7 +1349,7 @@ ppd:
 	    *1600*|*2600*)      driver=foo2hp;; \
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
-	    *C310*)             driver=foo2hiperc;; \
+	    *C301*|*C310*)      driver=foo2hiperc;; \
 	    *C3[1234]00*)       driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
 	    *C5[12568][05]0*)   driver=foo2hiperc;; \
@@ -1683,6 +1685,7 @@ webicm: \
 	icm/km-1600.tar.gz \
 	icm/samclp300.tar.gz icm/samclp315.tar.gz \
 	icm/lexc500.tar.gz \
+	icm/okic301.tar.gz \
 	icm/okic310.tar.gz \
 	icm/okic3200.tar.gz \
 	icm/okic3400.tar.gz icm/okic5600.tar.gz
@@ -1697,6 +1700,7 @@ webicm: \
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp315.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic301.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic310.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
@@ -1724,6 +1728,8 @@ icm/samclp315.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ samclp315*.icm
 icm/lexc500.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ lexR*.icm
+icm/okic301.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ OKC301*.icm
 icm/okic310.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OKC310*.icm
 icm/okic3200.tar.gz: FRC

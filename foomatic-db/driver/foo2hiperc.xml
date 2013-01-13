@@ -8,12 +8,13 @@
     <comments> <en>
 
 	This is a driver developed for the Oki Data Color Laser Printers
-	C3200, C3400, C5100, and C5500.
+	C301dn, C310dn, C3200, C3300, C3400, C5100, C5200, C56xx and C5800.
 
 	&lt;p&gt;
 
     </en> </comments>
     <printers>
+	<printer><id>printer/Oki-C301dn</id></printer>
 	<printer><id>printer/Oki-C310dn</id></printer>
 	<printer><id>printer/Oki-C3100</id></printer>
 	<printer><id>printer/Oki-C3200</id></printer>

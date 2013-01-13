@@ -38,6 +38,24 @@
 	    <ev_driverval>-C10 -Gnone.icm</ev_driverval>
 	</enum_val>
 
+	<enum_val id="ev/foo2hiperc-ICM-301-600M">
+	    <ev_longname> <en>OKC301H1.icm - 600dpi Multi C301dn</en> </ev_longname>
+	    <ev_shortname> <en>OKC301H1</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC301H1.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hiperc-ICM-301-1200">
+	    <ev_longname> <en>OKC301H2.icm - 1200dpi C301dn</en> </ev_longname>
+	    <ev_shortname> <en>OKC301H2</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC301H2.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hiperc-ICM-301-600">
+	    <ev_longname> <en>OKC301H3.icm - 600dpi C301dn</en> </ev_longname>
+	    <ev_shortname> <en>OKC301H3</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC301H3.icm</ev_driverval>
+	</enum_val>
+
 	<enum_val id="ev/foo2hiperc-ICM-310-600M">
 	    <ev_longname> <en>OKC310H1.icm - 600dpi Multi C310dn</en> </ev_longname>
 	    <ev_shortname> <en>OKC310H1</en> </ev_shortname>
