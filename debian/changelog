@@ -1,3 +1,15 @@
+foo2zjs (20130113dfsg0-1) experimental; urgency=low
+
+  * New 20130113 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Refresh all patches.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 13 Jan 2013 17:01:27 +0100
+
 foo2zjs (20120510dfsg0-1) unstable; urgency=low
 
   * New 20120510 upstream release.
