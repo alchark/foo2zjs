@@ -20,24 +20,24 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Oki-C3100-foo2hiperc.ppd'
+*% You may save this file as 'Samsung-CLP-365-foo2qpdl.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
 *FileVersion:	"1.1"
 *LanguageVersion: English 
 *LanguageEncoding: ISOLatin1
-*PCFileName:	"FOO2HIPE.PPD"
-*Manufacturer:	"Oki"
-*Product:	"(C3100)"
+*PCFileName:	"FOO2QPDL.PPD"
+*Manufacturer:	"Samsung"
+*Product:	"(CLP-360 Series)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Oki C3100"
-*ShortNickName: "Oki C3100 foo2hiperc"
-*NickName:      "Oki C3100 Foomatic/foo2hiperc (recommended)"
+*ModelName:     "Samsung CLP-365"
+*ShortNickName: "Samsung CLP-365 foo2qpdl"
+*NickName:      "Samsung CLP-365 Foomatic/foo2qpdl (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,11 +52,11 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "DRV:Dfoo2hiperc,R1,M0,TF;"
+*1284DeviceID: "MFG:Samsung;MDL:CLP-360 Series;CMD:SPLC;DRV:Dfoo2qpdl,R1,M0,TF;"
 
-*driverName foo2hiperc/foo2hiperc: ""
+*driverName foo2qpdl/foo2qpdl: ""
 *driverType F/Filter: ""
-*driverUrl: "http://foo2hiperc.rkkda.com/"
+*driverUrl: "http://foo2qpdl.rkkda.com/"
 *driverObsolete: False
 
 
@@ -77,8 +77,8 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Oki-C3100 foo2hiperc
-*FoomaticRIPCommandLine: "foo2hiperc-wrapper %A"
+*FoomaticIDs: Samsung-CLP-365 foo2qpdl
+*FoomaticRIPCommandLine: "foo2qpdl-wrapper %A"
 
 *OpenGroup: General/General
 
@@ -91,6 +91,9 @@
 *Quality normal/Normal: "%% FoomaticRIPOptionSetting: Quality=normal"
 *FoomaticRIPOptionSetting Quality=normal: "  "
 *CloseUI: *Quality
+
+*FoomaticRIPOption PrinterType: enum CmdLine A 110
+*FoomaticRIPOptionSetting PrinterType=z3: "-z3 "
 
 *OpenUI *ColorMode/Color Mode: PickOne
 *FoomaticRIPOption ColorMode: enum CmdLine A
@@ -105,13 +108,13 @@
 *OpenUI *Resolution/Resolution: PickOne
 *FoomaticRIPOption Resolution: enum CmdLine A
 *OrderDependency: 130 AnySetup *Resolution
-*DefaultResolution: 600x600dpi
-*Resolution 300x300dpi/300x300 dpi: "%% FoomaticRIPOptionSetting: Resolution=300x300dpi"
-*FoomaticRIPOptionSetting Resolution=300x300dpi: "-r300x300 "
+*DefaultResolution: 1200x600dpi
 *Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
 *FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
-*Resolution 600x1200dpi/600x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x1200dpi"
-*FoomaticRIPOptionSetting Resolution=600x1200dpi: "-r600x1200 "
+*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*Resolution 1200x1200dpi/1200x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x1200dpi"
+*FoomaticRIPOptionSetting Resolution=1200x1200dpi: "-r1200x1200 "
 *CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
@@ -119,31 +122,33 @@
 *OrderDependency: 135 AnySetup *PageSize
 *DefaultPageSize: Letter
 *PageSize Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
-*FoomaticRIPOptionSetting PageSize=Letter: "-p2 "
+*FoomaticRIPOptionSetting PageSize=Letter: "-p0 "
 *PageSize A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
-*FoomaticRIPOptionSetting PageSize=A4: "-p1 "
+*FoomaticRIPOptionSetting PageSize=A4: "-p2 "
 *PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
-*FoomaticRIPOptionSetting PageSize=A5: "-p5 "
+*FoomaticRIPOptionSetting PageSize=A5: "-p16 "
 *PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
-*FoomaticRIPOptionSetting PageSize=A6: "-p7 "
+*FoomaticRIPOptionSetting PageSize=A6: "-p17 "
+*PageSize B5iso/B5 (ISO): "%% FoomaticRIPOptionSetting: PageSize=B5iso"
+*FoomaticRIPOptionSetting PageSize=B5iso: "-p12 "
 *PageSize B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
-*FoomaticRIPOptionSetting PageSize=B5jis: "-p6 "
+*FoomaticRIPOptionSetting PageSize=B5jis: "-p11 "
 *PageSize Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
-*FoomaticRIPOptionSetting PageSize=Env10: "-p11 "
+*FoomaticRIPOptionSetting PageSize=Env10: "-p6 "
 *PageSize EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
-*FoomaticRIPOptionSetting PageSize=EnvC5: "-p10 "
+*FoomaticRIPOptionSetting PageSize=EnvC5: "-p8 "
+*PageSize EnvC6/Env C6: "%% FoomaticRIPOptionSetting: PageSize=EnvC6"
+*FoomaticRIPOptionSetting PageSize=EnvC6: "-p23 "
 *PageSize EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
 *FoomaticRIPOptionSetting PageSize=EnvDL: "-p9 "
 *PageSize EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
-*FoomaticRIPOptionSetting PageSize=EnvMonarch: "-p8 "
+*FoomaticRIPOptionSetting PageSize=EnvMonarch: "-p7 "
 *PageSize Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
-*FoomaticRIPOptionSetting PageSize=Executive: "-p12 "
+*FoomaticRIPOptionSetting PageSize=Executive: "-p3 "
+*PageSize Folio/Folio: "%% FoomaticRIPOptionSetting: PageSize=Folio"
+*FoomaticRIPOptionSetting PageSize=Folio: "-p24 "
 *PageSize Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
-*FoomaticRIPOptionSetting PageSize=Legal: "-p3 "
-*PageSize Legal13/Legal 13: "%% FoomaticRIPOptionSetting: PageSize=Legal13"
-*FoomaticRIPOptionSetting PageSize=Legal13: "-p4 "
-*PageSize Legal135/Legal 135: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
-*FoomaticRIPOptionSetting PageSize=Legal135: "-p14 "
+*FoomaticRIPOptionSetting PageSize=Legal: "-p1 "
 *CloseUI: *PageSize
 
 *OpenUI *PageRegion: PickOne
@@ -153,15 +158,16 @@
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
+*PageRegion B5iso/B5 (ISO): "%% FoomaticRIPOptionSetting: PageSize=B5iso"
 *PageRegion B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
 *PageRegion Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageRegion EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
+*PageRegion EnvC6/Env C6: "%% FoomaticRIPOptionSetting: PageSize=EnvC6"
 *PageRegion EnvDL/Env DL: "%% FoomaticRIPOptionSetting: PageSize=EnvDL"
 *PageRegion EnvMonarch/Env Monarch: "%% FoomaticRIPOptionSetting: PageSize=EnvMonarch"
 *PageRegion Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
+*PageRegion Folio/Folio: "%% FoomaticRIPOptionSetting: PageSize=Folio"
 *PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
-*PageRegion Legal13/Legal 13: "%% FoomaticRIPOptionSetting: PageSize=Legal13"
-*PageRegion Legal135/Legal 135: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
@@ -169,44 +175,46 @@
 *ImageableArea A4/A4: "9 12.00 586 830.00"
 *ImageableArea A5/A5: "9 12.00 411 583.00"
 *ImageableArea A6/A6: "9 12.00 288 408.00"
+*ImageableArea B5iso/B5 (ISO): "9 12.00 489 696.00"
 *ImageableArea B5jis/B5 (JIS): "9 12.00 509 715.00"
 *ImageableArea Env10/Env #10: "9 12.00 288 672.00"
 *ImageableArea EnvC5/Env C5: "9 12.00 450 637.00"
+*ImageableArea EnvC6/Env C6: "9 12.00 314 447.00"
 *ImageableArea EnvDL/Env DL: "9 12.00 302 611.00"
 *ImageableArea EnvMonarch/Env Monarch: "9 12.00 270 528.00"
 *ImageableArea Executive/Executive: "9 12.00 513 744.00"
+*ImageableArea Folio/Folio: "9 12.00 603 924.00"
 *ImageableArea Legal/Legal: "9 12.00 603 996.00"
-*ImageableArea Legal13/Legal 13: "9 12.00 603 996.00"
-*ImageableArea Legal135/Legal 135: "9 12.00 603 996.00"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
 *PaperDimension A5/A5: "420 595"
 *PaperDimension A6/A6: "297 420"
+*PaperDimension B5iso/B5 (ISO): "498 708"
 *PaperDimension B5jis/B5 (JIS): "518 727"
 *PaperDimension Env10/Env #10: "297 684"
 *PaperDimension EnvC5/Env C5: "459 649"
+*PaperDimension EnvC6/Env C6: "323 459"
 *PaperDimension EnvDL/Env DL: "311 623"
 *PaperDimension EnvMonarch/Env Monarch: "279 540"
 *PaperDimension Executive/Executive: "522 756"
+*PaperDimension Folio/Folio: "612 936"
 *PaperDimension Legal/Legal: "612 1008"
-*PaperDimension Legal13/Legal 13: "612 1008"
-*PaperDimension Legal135/Legal 135: "612 1008"
 
 *OpenUI *InputSlot/Media Source: PickOne
 *FoomaticRIPOption InputSlot: enum CmdLine A
 *OrderDependency: 150 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Tray1/Tray 1: "%% FoomaticRIPOptionSetting: InputSlot=Tray1"
-*FoomaticRIPOptionSetting InputSlot=Tray1: "-s1 "
-*InputSlot Tray2/Tray 2: "%% FoomaticRIPOptionSetting: InputSlot=Tray2"
-*FoomaticRIPOptionSetting InputSlot=Tray2: "-s2 "
+*InputSlot Tray1/Upper / Tray 1: "%% FoomaticRIPOptionSetting: InputSlot=Tray1"
+*FoomaticRIPOptionSetting InputSlot=Tray1: "-s4 "
+*InputSlot Tray2/Lower / Tray 2: "%% FoomaticRIPOptionSetting: InputSlot=Tray2"
+*FoomaticRIPOptionSetting InputSlot=Tray2: "-s5 "
 *InputSlot Auto/Auto Select: "%% FoomaticRIPOptionSetting: InputSlot=Auto"
-*FoomaticRIPOptionSetting InputSlot=Auto: "-s0 "
-*InputSlot Manual/Manual Feed: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
-*FoomaticRIPOptionSetting InputSlot=Manual: "-s4 "
-*InputSlot Multi/MultiPurpose: "%% FoomaticRIPOptionSetting: InputSlot=Multi"
+*FoomaticRIPOptionSetting InputSlot=Auto: "-s1 "
+*InputSlot Manual/Manual Select: "%% FoomaticRIPOptionSetting: InputSlot=Manual"
+*FoomaticRIPOptionSetting InputSlot=Manual: "-s2 "
+*InputSlot Multi/Multipurpose: "%% FoomaticRIPOptionSetting: InputSlot=Multi"
 *FoomaticRIPOptionSetting InputSlot=Multi: "-s3 "
 *CloseUI: *InputSlot
 
@@ -216,23 +224,31 @@
 *DefaultMediaType: plain
 *MediaType plain/Plain Paper: "%% FoomaticRIPOptionSetting: MediaType=plain"
 *FoomaticRIPOptionSetting MediaType=plain: "-m0 "
+*MediaType archive/Archive Paper: "%% FoomaticRIPOptionSetting: MediaType=archive"
+*FoomaticRIPOptionSetting MediaType=archive: "-m12 "
+*MediaType bond/Bond: "%% FoomaticRIPOptionSetting: MediaType=bond"
+*FoomaticRIPOptionSetting MediaType=bond: "-m3 "
+*MediaType card/Card Stock: "%% FoomaticRIPOptionSetting: MediaType=card"
+*FoomaticRIPOptionSetting MediaType=card: "-m5 "
+*MediaType color/Color Paper: "%% FoomaticRIPOptionSetting: MediaType=color"
+*FoomaticRIPOptionSetting MediaType=color: "-m4 "
+*MediaType cotton/Cotton: "%% FoomaticRIPOptionSetting: MediaType=cotton"
+*FoomaticRIPOptionSetting MediaType=cotton: "-m9 "
+*MediaType envelope/Envelope: "%% FoomaticRIPOptionSetting: MediaType=envelope"
+*FoomaticRIPOptionSetting MediaType=envelope: "-m7 "
 *MediaType labels/Labels: "%% FoomaticRIPOptionSetting: MediaType=labels"
-*FoomaticRIPOptionSetting MediaType=labels: "-m1 "
+*FoomaticRIPOptionSetting MediaType=labels: "-m6 "
+*MediaType preprinted/Preprinted: "%% FoomaticRIPOptionSetting: MediaType=preprinted"
+*FoomaticRIPOptionSetting MediaType=preprinted: "-m8 "
+*MediaType recycled/Recycled Paper: "%% FoomaticRIPOptionSetting: MediaType=recycled"
+*FoomaticRIPOptionSetting MediaType=recycled: "-m10 "
+*MediaType thick/Thick Stock: "%% FoomaticRIPOptionSetting: MediaType=thick"
+*FoomaticRIPOptionSetting MediaType=thick: "-m1 "
+*MediaType thin/Thin Stock: "%% FoomaticRIPOptionSetting: MediaType=thin"
+*FoomaticRIPOptionSetting MediaType=thin: "-m2 "
 *MediaType transparency/Transparency: "%% FoomaticRIPOptionSetting: MediaType=transparency"
-*FoomaticRIPOptionSetting MediaType=transparency: "-m2 "
+*FoomaticRIPOptionSetting MediaType=transparency: "-m11 "
 *CloseUI: *MediaType
-
-*OpenUI *Duplex/Duplex Printing: PickOne
-*FoomaticRIPOption Duplex: enum CmdLine A
-*OrderDependency: 210 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex DuplexNoTumble/Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=DuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexNoTumble: "-d2 "
-*Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexTumble: "-d3 "
-*Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
-*FoomaticRIPOptionSetting Duplex=None: "-d1 "
-*CloseUI: *Duplex
 
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
@@ -361,60 +377,42 @@
 *FoomaticRIPOptionSetting halftone=wts: " -qwts  "
 *CloseUI: *halftone
 
-*OpenUI *Compression/Compression Mode: PickOne
-*FoomaticRIPOption Compression: enum CmdLine A
-*OrderDependency: 120 AnySetup *Compression
-*DefaultCompression: uncompressed
-*Compression compressed/Compressed: "%% FoomaticRIPOptionSetting: Compression=compressed"
-*FoomaticRIPOptionSetting Compression=compressed: "-Z1  "
-*Compression uncompressed/Uncompressed: "%% FoomaticRIPOptionSetting: Compression=uncompressed"
-*FoomaticRIPOptionSetting Compression=uncompressed: "-Z0  "
-*CloseUI: *Compression
-
 *OpenUI *ICM/ICM Color Profile: PickOne
 *FoomaticRIPOption ICM: enum CmdLine A
 *OrderDependency: 300 AnySetup *ICM
-*DefaultICM: OK3200L2
-*ICM C3400-L1/C3400-L1.icm - 1200dpi C3300/C3400/C3530 MFP: "%% FoomaticRIPOptionSetting: ICM=C3400-L1"
-*FoomaticRIPOptionSetting ICM=C3400-L1: "-C10 -GC3400-L1-BIN-ICC_06031&&
-50.icm "
-*End
-*ICM C3400-L2/C3400-L2.icm - 600dpi C3300/C3400/C3530 MFP: "%% FoomaticRIPOptionSetting: ICM=C3400-L2"
-*FoomaticRIPOptionSetting ICM=C3400-L2: "-C10 -GC3400-L2-BIN-ICC_06041&&
-10.icm "
+*DefaultICM: clp365
+*ICM clp300/CLP-300: "%% FoomaticRIPOptionSetting: ICM=clp300"
+*FoomaticRIPOptionSetting ICM=clp300: "-C10 -Gsamclp300-0.icm "
+*ICM clp315/CLP-310/315: "%% FoomaticRIPOptionSetting: ICM=clp315"
+*FoomaticRIPOptionSetting ICM=clp315: "-C10 -Gsamclp315-argyll-0.icm "
+*ICM clp325/CLP-320/325: "%% FoomaticRIPOptionSetting: ICM=clp325"
+*FoomaticRIPOptionSetting ICM=clp325: "-C10 -Gsamclp315-argyll-0.icm "
+*ICM clp365/CLP-360/365: "%% FoomaticRIPOptionSetting: ICM=clp365"
+*FoomaticRIPOptionSetting ICM=clp365: "-C10 -Gsamclp315-argyll-0.icm "
+*ICM clp600/CLP-600: "%% FoomaticRIPOptionSetting: ICM=clp600"
+*FoomaticRIPOptionSetting ICM=clp600: "-z1 "
+*ICM clp610/CLP-610: "%% FoomaticRIPOptionSetting: ICM=clp610"
+*FoomaticRIPOptionSetting ICM=clp610: "-z2 "
+*ICM clp620/CLP-620: "%% FoomaticRIPOptionSetting: ICM=clp620"
+*FoomaticRIPOptionSetting ICM=clp620: "-z3 "
+*ICM clx2160/CLX-2160: "%% FoomaticRIPOptionSetting: ICM=clx2160"
+*FoomaticRIPOptionSetting ICM=clx2160: "-C10 -Gsamclp300-0.icm "
+*ICM clx3160/CLX-3160: "%% FoomaticRIPOptionSetting: ICM=clx3160"
+*FoomaticRIPOptionSetting ICM=clx3160: "-C10 -Gsamclp300-0.icm "
+*ICM clx3175/CLX-3175: "%% FoomaticRIPOptionSetting: ICM=clx3175"
+*FoomaticRIPOptionSetting ICM=clx3175: "-C10 -Gsamclp315-argyll-0.icm &&
+"
 *End
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
-*ICM OK160L1/OK160L1.icm - 600dpi Multi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L1"
-*FoomaticRIPOptionSetting ICM=OK160L1: "-C10 -GOK5600L1.icm "
-*ICM OK160L2/OK160L2.icm - 1200dpi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L2"
-*FoomaticRIPOptionSetting ICM=OK160L2: "-C10 -GOK5600L2.icm "
-*ICM OK160L3/OK160L3.icm - 600dpi d-Color P160W: "%% FoomaticRIPOptionSetting: ICM=OK160L3"
-*FoomaticRIPOptionSetting ICM=OK160L3: "-C10 -GOK5600L3.icm "
-*ICM OK3200L1/OK3200L1.icm - 1200dpi C3100/C3200/C5100/C5200: "%% FoomaticRIPOptionSetting: ICM=OK3200L1"
-*FoomaticRIPOptionSetting ICM=OK3200L1: "-C10 -GOK3200L1.icm "
-*ICM OK3200L2/OK3200L2.icm - 600dpi C3100/C3200/C5100/C5200: "%% FoomaticRIPOptionSetting: ICM=OK3200L2"
-*FoomaticRIPOptionSetting ICM=OK3200L2: "-C10 -GOK3200L2.icm "
-*ICM OK5600L1/OK5600L1.icm - 600dpi Multi C5500/C5600/C5800: "%% FoomaticRIPOptionSetting: ICM=OK5600L1"
-*FoomaticRIPOptionSetting ICM=OK5600L1: "-C10 -GOK5600L1.icm "
-*ICM OK5600L2/OK5600L2.icm - 1200dpi C5500/C5600/C5800: "%% FoomaticRIPOptionSetting: ICM=OK5600L2"
-*FoomaticRIPOptionSetting ICM=OK5600L2: "-C10 -GOK5600L2.icm "
-*ICM OK5600L3/OK5600L3.icm - 600dpi C5500/C5600/C5800: "%% FoomaticRIPOptionSetting: ICM=OK5600L3"
-*FoomaticRIPOptionSetting ICM=OK5600L3: "-C10 -GOK5600L3.icm "
-*ICM OKC301H1/OKC301H1.icm - 600dpi Multi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H1"
-*FoomaticRIPOptionSetting ICM=OKC301H1: "-C10 -GOKC301H1.icm "
-*ICM OKC301H2/OKC301H2.icm - 1200dpi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H2"
-*FoomaticRIPOptionSetting ICM=OKC301H2: "-C10 -GOKC301H2.icm "
-*ICM OKC301H3/OKC301H3.icm - 600dpi C301dn: "%% FoomaticRIPOptionSetting: ICM=OKC301H3"
-*FoomaticRIPOptionSetting ICM=OKC301H3: "-C10 -GOKC301H3.icm "
-*ICM OKC310H1/OKC310H1.icm - 600dpi Multi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H1"
-*FoomaticRIPOptionSetting ICM=OKC310H1: "-C10 -GOKC310H1.icm "
-*ICM OKC310H2/OKC310H2.icm - 1200dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H2"
-*FoomaticRIPOptionSetting ICM=OKC310H2: "-C10 -GOKC310H2.icm "
-*ICM OKC310H3/OKC310H3.icm - 600dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H3"
-*FoomaticRIPOptionSetting ICM=OKC310H3: "-C10 -GOKC310H3.icm "
+*ICM ph6110/Phaser 6110: "%% FoomaticRIPOptionSetting: ICM=ph6110"
+*FoomaticRIPOptionSetting ICM=ph6110: "-C10 -Gsamclp300-0.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
+*ICM testing2/File testing2.icm: "%% FoomaticRIPOptionSetting: ICM=testing2"
+*FoomaticRIPOptionSetting ICM=testing2: "-C10 -Gtesting2.icm "
+*ICM testing3/File testing3.icm: "%% FoomaticRIPOptionSetting: ICM=testing3"
+*FoomaticRIPOptionSetting ICM=testing3: "-C10 -Gtesting3.icm "
 *CloseUI: *ICM
 
 *CloseGroup: Adjustment

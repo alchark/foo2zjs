@@ -7,8 +7,9 @@
     </execution>
     <comments> <en>
 
-	This is a driver developed for the Samsung CLP-300, CLP-600,
-	CLP-610, CLX-2160 (printer only), CLX-3160 (printer only).
+	This is a driver developed for the Samsung
+	CLP-300/310/315/320/325/360, CLP-600, CLP-610, CLP-620,
+	CLX-2160 (printer only), CLX-3160 (printer only).
 
 	And the Xerox Phaser 6110 or Phaser 6110MFP (printer only).
 
@@ -18,6 +19,7 @@
 	<printer><id>printer/Samsung-CLP-310</id></printer>
 	<printer><id>printer/Samsung-CLP-315</id></printer>
 	<printer><id>printer/Samsung-CLP-325</id></printer>
+	<printer><id>printer/Samsung-CLP-365</id></printer>
 	<printer><id>printer/Samsung-CLP-600</id></printer>
 	<printer><id>printer/Samsung-CLP-610</id></printer>
 	<printer><id>printer/Samsung-CLP-620</id></printer>

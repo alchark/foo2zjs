@@ -67,6 +67,7 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 300      # Get Samsung CLP-300 .ICM files
     $ ./getweb 315      # Get Samsung CLP-315 .ICM files
     $ ./getweb 325      # Get Samsung CLP-325 .ICM files
+    $ ./getweb 365      # Get Samsung CLP-365 .ICM files
     $ ./getweb 600      # Get Samsung CLP-600 .ICM files
     $ ./getweb 610      # Get Samsung CLP-610 .ICM files
     $ ./getweb 2160     # Get Samsung CLX-2160 .ICM files
@@ -75,6 +76,7 @@ and firmware.  Select the model number for your printer:
 
     $ ./getweb 500      # Get Lexmark C500 .ICM files
 
+    $ ./getweb 301      # Get Oki C301dn .ICM files
     $ ./getweb c310     # Get Oki C310dn .ICM files
     $ ./getweb 3200     # Get Oki C3200 .ICM files
     $ ./getweb 3300     # Get Oki C3300 .ICM files
@@ -648,14 +650,24 @@ MANUAL DUPLEX
 	    $ make
 	    $ su
 	    # make install      -OR-    $ sudo make install
+	    [logout]
+	    [login]
 
-	Then using the GUI:
-	    1)  System -> Gnome Manual Duplex
-		-OR-
-	    2)  Add to Panel -> Gnome Manual Duplex applet -> Add
-		    ...Do it at least once, then...
-		Print -> GnomeManualDuplex (Virtual Printer) -> Print
+	Then:
+	    Using the Gnome 2 or Gnome-3 Classic (fallback) GUI:
+	    1a)     System Tools -> Gnome Manual Duplex
+		    - OR -
+	    1b)     Add to Panel -> Gnome Manual Duplex applet -> Add
+	    2)      Print -> GnomeManualDuplex (Virtual Printer) -> Print
+
+	    Using the Gnome 3 Shell GUI:
+	    1)      $ gnome-session-properties
+		    Startup Programs -> GnomeManualDuplex -> Enable
+		    [logout][login]
+	    2)      Print -> GnomeManualDuplex (Virtual Printer) -> Print
+
 	    Works with *.ps and *.pdf files.
+	    Works with Gnome-2 or Gnome-3.
 
 	- Print odd pages
 	- Wait for confimation message
@@ -770,6 +782,7 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
     I need:
 	Samsung CLP-315			default resolution
 	Samsung CLP-325			default resolution
+	Samsung CLP-365			default resolution
 	Samsung CLP-600			default resolution
 	Samsung CLP-610			default resolution
 	Samsung CLP-620			default resolution

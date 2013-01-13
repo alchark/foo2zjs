@@ -1,5 +1,5 @@
 /*
- * $Id: qpdldecode.c,v 1.38 2010/05/06 21:25:34 rick Exp $
+ * $Id: qpdldecode.c,v 1.40 2013/01/10 20:01:44 rick Exp $
  */
 
 /*b
@@ -203,7 +203,8 @@ decode(FILE *fp)
 	    else
 		fputs(buf, stdout);
 	    curOff += strlen(buf);
-	    if (strcmp(buf, "@PJL ENTER LANGUAGE = QPDL\r\n") == 0)
+	    if ((strcmp(buf, "@PJL ENTER LANGUAGE = QPDL\r\n") == 0)
+		|| (strcmp(buf, "@PJL ENTER LANGUAGE = QPDL\n") == 0))
 		break;
 	}
     }
@@ -528,7 +529,7 @@ if (0) printf("OK\n");
 				    // if (imageCnt[pn] == 0)
 				    fprintf(dfp, "P4\n%8d %8d\n", w, h*stripe);
 				    imageCnt[pn] += 1;
-				    fseek(dfp, stripe * h * wb, SEEK_SET);
+				    fseek(dfp, stripe * h * wb, SEEK_CUR);
 				    rc = fwrite(image, 1, len, dfp);
 				    fclose(dfp);
 				    dfp = NULL;
