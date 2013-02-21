@@ -1,3 +1,16 @@
+foo2zjs (20130220dfsg0-1) experimental; urgency=low
+
+  * New 20130220 upstream release. (LP: #1130918)
+    - Install new printer's PPDs
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Refresh all patches.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 21 Feb 2013 08:29:02 +0100
+
 foo2zjs (20130113dfsg0-1) experimental; urgency=low
 
   * New 20130113 upstream release.
