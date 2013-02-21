@@ -18,8 +18,8 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
 
 Package: printer-driver-foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, foomatic-filters, dc
-Recommends: foomatic-db-engine, wget, unzip, mscompress, cups, cups-client
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${ubuntu:mscompress}, foomatic-filters, dc
+Recommends: foomatic-db-engine, wget, unzip, ${debian:mscompress}, cups, cups-client
 Suggests: psutils, hannah-foo2zjs, tk8.4, tix
 Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~)
 Replaces: foo2zjs (<< 20111023dfsg0-1~)

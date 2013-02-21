@@ -54,6 +54,16 @@ override_dh_auto_test:
 override_dh_compress:
 	dh_compress -X.pdf
 
+override_dh_gencontrol:
+ifeq ($(derives_from_ubuntu),yes)
+	# Ubuntu considers mscompress to be a Depends of printer-driver-foo2zjs
+	echo "ubuntu:mscompress=mscompress" > debian/printer-driver-foo2zjs.substvars
+else
+	# Debian considers mscompress to be a Recommends of printer-driver-foo2zjs
+	echo "debian:mscompress=mscompress" > debian/printer-driver-foo2zjs.substvars
+endif
+	dh_gencontrol
+
 override_dh_auto_clean:
 	dh_auto_clean
 	- rm -f 85-hplj10xx.rules
