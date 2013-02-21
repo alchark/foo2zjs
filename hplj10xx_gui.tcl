@@ -190,7 +190,7 @@ proc main {w} {
 		incr n
 	    }
 
-	    do_one $w.frame $n $file "" ""
+	    do_one $w.frame $n $file "" "" 1
 	    incr n
 	}
     }

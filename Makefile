@@ -961,6 +961,8 @@ install-hotplug-prog:
 		version=`/sbin/udevd --version 2>/dev/null`; \
 	    elif [ -x /usr/lib/udev/udevd ]; then \
 		version=`/usr/lib/udev/udevd --version 2>/dev/null`; \
+	    elif [ -x /usr/lib/systemd/systemd-udevd ]; then \
+		version=`/usr/lib/systemd/systemd-udevd --version 2>/dev/null`; \
 	    fi; \
 	    if [ "$$version" = "" ]; then version=0; fi; \
 	    echo "*** udev version $$version"; \
