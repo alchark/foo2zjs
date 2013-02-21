@@ -47,6 +47,7 @@ PPD/HP-LaserJet_Pro_P1606dn.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_1600W.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_1680MF.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_1690MF.ppd usr/share/ppd/foo2zjs
+PPD/KONICA_MINOLTA-magicolor_2430_DL.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_2480_MF.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_2490_MF.ppd usr/share/ppd/foo2zjs
 PPD/KONICA_MINOLTA-magicolor_2530_DL.ppd usr/share/ppd/foo2zjs
@@ -59,6 +60,7 @@ PPD/Minolta-magicolor_2200_DL.ppd usr/share/ppd/foo2zjs
 PPD/Minolta-magicolor_2300_DL.ppd usr/share/ppd/foo2zjs
 PPD/Minolta-magicolor_2430_DL.ppd usr/share/ppd/foo2zjs
 PPD/Oki-C110.ppd usr/share/ppd/foo2zjs
+PPD/Oki-C301dn.ppd usr/share/ppd/foo2zjs
 PPD/Oki-C3100.ppd usr/share/ppd/foo2zjs
 PPD/Oki-C310dn.ppd usr/share/ppd/foo2zjs
 PPD/Oki-C3200.ppd usr/share/ppd/foo2zjs
@@ -76,12 +78,14 @@ PPD/Samsung-CLP-300.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-310.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-315.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-325.ppd usr/share/ppd/foo2zjs
+PPD/Samsung-CLP-365.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-600.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-610.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLP-620.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLX-2160.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLX-3160.ppd usr/share/ppd/foo2zjs
 PPD/Samsung-CLX-3175.ppd usr/share/ppd/foo2zjs
+PPD/Samsung-CLX-3185.ppd usr/share/ppd/foo2zjs
 PPD/Xerox-Phaser_6110.ppd usr/share/ppd/foo2zjs
 PPD/Xerox-Phaser_6115MFP.ppd usr/share/ppd/foo2zjs
 PPD/Xerox-Phaser_6121MFP.ppd usr/share/ppd/foo2zjs
