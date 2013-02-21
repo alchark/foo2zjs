@@ -8,6 +8,7 @@ Build-Depends: debhelper (>= 9),
  foomatic-filters,
  libcups2-dev,
  dc,
+ time,
  pyppd (>= 0.4.9-6~),
  libjbig-dev
 Standards-Version: 3.9.3
