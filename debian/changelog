@@ -1,3 +1,20 @@
+foo2zjs (20130220dfsg0-2) experimental; urgency=low
+
+  [ Didier Raboud ]
+  * Add time to Build-Depends, helps getting the tests run further.
+  * Update 10-makefile.patch to enforce LDFLAGS usage and another case
+    of CFLAGS overriding; also add DEP-3 headers.
+  * Put mscompress to Depends on Debian and to Recommends on Ubuntu and
+    derivatives, drops the need of a hand-merge by Ubuntu.
+
+  [ Till Kamppeter ]
+  * Add 96-hplj1000-fix-cups-usb-backend-firmware-upload.patch.
+    The firmware upload script tried to upload the firmware via the usblp
+    kernel module and with the CUPS USB backend (using libusb) in parallel,
+    making the printer crash. (LP: #1003843)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 21 Feb 2013 18:32:51 +0100
+
 foo2zjs (20130220dfsg0-1) experimental; urgency=low
 
   * New 20130220 upstream release. (LP: #1130918)
