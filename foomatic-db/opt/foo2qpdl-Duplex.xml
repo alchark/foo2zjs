@@ -32,6 +32,18 @@
 	    <make>Samsung</make> <model>CLP-365</model>
 	</constraint>
 	<constraint sense="false">
+	    <make>Samsung</make> <model>CLX-2160</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>Samsung</make> <model>CLX-3160</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>Samsung</make> <model>CLX-3175</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>Samsung</make> <model>CLX-3185</model>
+	</constraint>
+	<constraint sense="false">
 	    <make>Xerox</make> <model>Phaser 6110</model>
 	</constraint>
     </constraints>

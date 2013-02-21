@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.108 2013/01/05 04:47:57 rick Exp $'
+VERSION='$Id: getweb.in,v 1.109 2013/01/22 21:34:31 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -54,6 +54,7 @@ Usage:
     $ ./getweb 2160	# Get Samsung CLX-2160 .ICM files
     $ ./getweb 3160	# Get Samsung CLX-3160 .ICM files
     $ ./getweb 3175	# Get Samsung CLX-3175 .ICM files
+    $ ./getweb 3185	# Get Samsung CLX-3185 .ICM files
     $ ./getweb 6110	# Get Xerox Phaser 6110 and 6110MFP .ICM files
 
     $ ./getweb 500	# Get Lexmark C500 .ICM files
@@ -309,7 +310,7 @@ getone() {
 	    ""
 	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
 	;;
-    300|310|315|325|365|2160|3160|3175|6110)
+    300|310|315|325|365|2160|3160|3175|3185|6110)
 	gettgz \
 	    http://foo2qpdl.rkkda.com/icm samclp300.tar.gz \
 	    ""

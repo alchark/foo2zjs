@@ -1,3 +1,17 @@
+2013-02-20	Rick Richardson <rick.richardson@comcast.net>
+	* install-hotplug: Fedora 18 changed "/usr/lib/udev/udevd"
+	    to "/usr/lib/systemd/systemd-udevd".
+
+2013-02-19	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: Handle \r\n in the PCL stream.
+	* hbpldecode: Update for HBPL version 2
+
+2013-01-22	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Samsung CLX-3185, CLX-3185FW
+
+2013-01-14	Rick Richardson <rick.richardson@comcast.net>
+	* hplj10xx_gui.tcl: Bug: add "replace" parm in "old"
+
 2013-01-13	Rick Richardson <rick.richardson@comcast.net>
 	* hplj1000: add a sleep 3
 

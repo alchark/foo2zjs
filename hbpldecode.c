@@ -1,5 +1,5 @@
 /*
- * $Id: hbpldecode.c,v 1.13 2011/06/02 20:57:24 rick Exp $
+ * $Id: hbpldecode.c,v 1.31 2013/02/19 12:55:37 rick Exp $
  */
 
 /*b
@@ -29,8 +29,7 @@ b*/
 #include <unistd.h>
 #include <errno.h>
 
-// #include "hiperc.h"
-// #include <zlib.h>
+#include "jbig.h"
 
 /*
  * Global option flags
@@ -79,12 +78,18 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"	splcdecode [options] < oki-file\n"
+"	hbpldecode [options] < hbpl-file\n"
 "\n"
-"	Decode a SPL-C into human readable form.\n"
+"	Decode a HBPL stream into human readable form.\n"
 "\n"
-"	A SPL-C is the printer langauge used by some Samsung\n"
-"	printers, such as the CLT-510n.\n"
+"	There are two versions of HBPL in existence.  One is an HBPL\n"
+"	stream with Huffman RLE data. This data is used by the Dell 1250c,\n"
+"	Epson AcuLaser C1700, Fuji-Xerox cp105b, and similiar printers.\n"
+"\n"
+"	Version two is an HBPL stream with JBIG encoded data. This data\n"
+"	is used by the Xerox WorkCentre 6015 and the Dell 1355c.\n"
+"\n"
+"	Both versions can be decoded by hbpldecode.\n"
 "\n"
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"
@@ -96,6 +101,53 @@ usage(void)
     );
 
     exit(1);
+}
+
+/*
+ * Hexdump stream data
+ */
+void
+hexdump(FILE *fp, char *lbl1, char *lbln, const void *vdata, int length)
+{
+	int			s;
+	int			i;
+	int			n;
+	unsigned char		c;
+	unsigned char		buf[16];
+	const unsigned char	*data = vdata;
+
+	if (length == 0)
+	{
+		fprintf(fp, "%s [length 0]\n", lbl1);
+		return;
+	}
+	for (s = 0; s < length; s += 16)
+	{
+		fprintf(fp, "%s", s ? lbln : lbl1);
+		fprintf(fp, "%08x:", s);
+		n = length - s; if (n > 16) n = 16;
+		for (i = 0; i < 16; ++i)
+		{
+			if (i == 8)
+				fprintf(fp, " ");
+			if (i < n)
+				fprintf(fp, " %02x", buf[i] = data[s+i]);
+			else
+				fprintf(fp, "   ");
+		}
+		fprintf(fp, "  ");
+		for (i = 0; i < n; ++i)
+		{
+			if (i == 8)
+				fprintf(fp, " ");
+			c = buf[i];
+			if (c >= ' ' && c < 0x7f)
+				fprintf(fp, "%c", c);
+			else
+				fprintf(fp, ".");
+		}
+		fprintf(fp, "\n");
+	}
 }
 
 static int
@@ -110,7 +162,6 @@ getLEword(unsigned char buf[2])
     return (buf[1] << 8) | (buf[0] << 0);
 }
 
-#if 0
 void
 print_bih(unsigned char bih[20])
 {
@@ -146,7 +197,6 @@ print_bih(unsigned char bih[20])
 	((yd >> bih[1]) +  ((((1UL << bih[1]) - 1) & xd) != 0) + l0 - 1) / l0,
 	bih[1] - bih[0], bih[2]);
 }
-#endif
 
 void
 proff(int curOff)
@@ -232,7 +282,8 @@ again:
 			    *vp == 9 ? "Mono" : "Color");
 	break;
     case 0xa2:
-	printf("	%x %x: %dx%d [WxH]\n", type, subtype, *vp, val2);
+	printf("	%x %x: %dx%d (0x%x x 0x%x) [WxH]\n",
+	    type, subtype, *vp, val2, *vp, val2);
 	break;
     case 0xa4:
 	printf("	%x %x: %d (0x%x) bytes of data...\n",
@@ -248,13 +299,143 @@ again:
 }
 
 void
+decode2(FILE *fp, int curOff)
+{
+    // int		c;
+    int		rc;
+    // FILE	*dfp = NULL;
+    // int		pageNum = 1;
+    int		len;
+    // int		curOff = 0;
+    //struct jbg_dec_state	s[5];
+    // unsigned char	bih[4][20];
+    // int			imageCnt[4] = {0,0,0,0};
+    // int         	pn = 0;
+    unsigned char	buf[1024*1024*2];
+    int		w, h, res, color, mediatype, papersize;
+    int		p, offbih[4];
+    #define STRARY(X, A) \
+	((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
+	? A[X] : "UNK"
+    char *strsize[] = {
+	/*00*/	"unk", "A4", "B5", "unk", "Letter",
+	/*05*/	"Executive", "FanFoldGermanLegal", "Legal", "unk", "unk",
+	};
+
+    char *strtype[] = {
+	/*00*/	"unk", "Plain", "Bond", "LwCard", "LwGCard",
+	/*05*/	"Labels", "Envelope", "Recycled", "Plain-side2", "Bond-side2",
+	/*10*/	"LwCard-side2", "LwGCard-side2", "Recycled-side2",
+	};
+
+    for (;;)
+    {
+	len = 64;
+	rc = fread(buf, 1, len, fp);
+	if (rc != len)
+	{
+	    proff(curOff);
+	    if (buf[0] == '\033')
+	    {
+		printf("\\033");
+		fputs((char *) buf+1, stdout);
+	    }
+	    else
+		fputs((char *) buf, stdout);
+	    printf("\n");
+	    return;
+	}
+	proff(curOff);
+	printf("RECTYPE %c%c ", buf[1], buf[2]);
+	curOff += len;
+	if (0) {}
+	else if (buf[1] == 'J' && buf[2] == 'P')
+	{
+	    printf("[Job Parameters]\n");
+	    hexdump(stdout, "", "", buf, len);
+	}
+	else if (buf[1] == 'P' && buf[2] == 'S')
+	{
+	    printf("[Page Start]\n");
+	    hexdump(stdout, "", "", buf, len);
+	    w = getLEdword(&buf[4]);
+	    h = getLEdword(&buf[8]);
+	    res = getLEword(&buf[24]);
+	    papersize = buf[20];
+	    mediatype = buf[21];
+	    color = buf[22];
+	    printf("\t\tw,h=%dx%d res=%d color=%d\n",
+		w, h, res, color);
+	    printf("\t\tmediatype=%s(%d) papersize=%s(%d)\n",
+		STRARY(mediatype, strtype), mediatype,
+		STRARY(papersize, strsize), papersize);
+
+	    for (p = 0; p < 4; ++p)
+	    {
+		// offsets at 26, 30, 34, 38
+		offbih[p] = getLEdword(&buf[26 + p*4]);
+	    }
+
+	    len = getLEdword(&buf[16]);
+	    rc = fread(buf, 1, len, fp);
+	    if (rc != len)
+	    {
+		error(1, "len=%d, but EOF on file\n");
+	    }
+	    if (Debug > 2) hexdump(stdout, "", "", buf, len);
+	    if (color == 1)
+	    {
+		proff(curOff);
+		printf("Cyan BIH:\n");
+		print_bih(buf);
+		printf("\t\t...cyan data skipped...\n");
+
+		proff(curOff + offbih[0]);
+		printf("Magenta BIH:\n");
+		print_bih(buf + offbih[0]);
+		printf("\t\t...magenta data skipped...\n");
+
+		proff(curOff + offbih[0] + offbih[1]);
+		printf("Yellow BIH:\n");
+		print_bih(buf + offbih[0] + offbih[1]);
+		printf("\t\t...yellow data skipped...\n");
+
+		proff(curOff + offbih[0] + offbih[1] + offbih[2]);
+		printf("Black BIH:\n");
+		print_bih(buf + offbih[0] + offbih[1] + offbih[2]);
+		printf("\t\t...black data skipped...\n");
+	    }
+	    else
+	    {
+		proff(curOff);
+		printf("Black BIH:\n");
+		// hexdump(stdout, "", "", &bih[0], 20);
+		print_bih(buf);
+		printf("\t\t...black data skipped...\n");
+	    }
+	    curOff += len;
+	}
+	else if (buf[1] == 'P' && buf[2] == 'E')
+	{
+	    printf("[Page End]\n");
+	    hexdump(stdout, "", "", buf, len);
+	}
+	else
+	{
+	    printf("[Unknown]\n");
+	    hexdump(stdout, "", "", buf, len);
+	}
+    }
+}
+
+void
 decode(FILE *fp)
 {
     int		c;
     // int		rc;
     // FILE	*dfp = NULL;
     // int		pageNum = 1;
-    // int		len;
+    int		len;
     int		curOff = 0;
     //struct jbg_dec_state	s[5];
     // unsigned char	bih[4][20];
@@ -282,9 +463,19 @@ decode(FILE *fp)
             else
 		fputs(buf, stdout);
 	    curOff += strlen(buf);
-	    if (strcmp(buf, "@PJL ENTER LANGUAGE=HBPL\n") == 0)
+	    if ((strcmp(buf, "@PJL ENTER LANGUAGE=HBPL\r\n") == 0)
+		|| (strcmp(buf, "@PJL ENTER LANGUAGE=HBPL\n") == 0))
 		break;
 	}
+    }
+
+    c = getc(fp);
+    ungetc(c, fp);
+    if (c == 0x1b)
+    {
+	// Decode version 2, ESC based
+	decode2(fp, curOff);
+	goto done;
     }
 
 /*
@@ -386,8 +577,15 @@ decode(FILE *fp)
 	case 0x44:
 	    break;
 	default:
-	    error(1, "Unknown rectype 0x%x at 0x%x(%d)\n",
-			rectype, curOff, curOff);
+	    {
+		printf("Unknown rectype 0x%x at 0x%x(%d)\n",
+			    rectype, curOff, curOff);
+		printf("Continuing with hexdump...\n");
+		ungetc(rectype, fp);
+		if ( (len = fread(buf, 1, sizeof(buf), fp)) )
+		hexdump(stdout, "", "", buf, len);
+		exit(1);
+	    }
 	    break;
 	}
 

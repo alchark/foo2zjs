@@ -72,6 +72,8 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 610      # Get Samsung CLP-610 .ICM files
     $ ./getweb 2160     # Get Samsung CLX-2160 .ICM files
     $ ./getweb 3160     # Get Samsung CLX-3160 .ICM files
+    $ ./getweb 3175     # Get Samsung CLX-3175 .ICM files
+    $ ./getweb 3185     # Get Samsung CLX-3185 .ICM files
     $ ./getweb 6110     # Get Xerox Phaser 6110 and 6110MFP .ICM files
 
     $ ./getweb 500      # Get Lexmark C500 .ICM files
@@ -148,6 +150,14 @@ Create printers (Debian)
 
 Create printers (Solaris 11+)
     # printmgr
+
+Create printers (command line using CUPS)
+    # lpadmin -p NAME -v URI -E -P file.ppd
+    i.e.
+	# lpadmin -p hp1020 -v usb://HP/LaserJet%201020 -E \
+	    -P /usr/share/cups/model/HP-LaserJet_1020.ppd.gz
+    Set the default:
+	# ldadmin -p NAME -d
 
 Create at least one queue for monochrome, and another queue
 for color printing.  Create the queues, then edit them and

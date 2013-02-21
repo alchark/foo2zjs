@@ -250,18 +250,6 @@
 *FoomaticRIPOptionSetting MediaType=transparency: "-m11 "
 *CloseUI: *MediaType
 
-*OpenUI *Duplex/Duplex Printing: PickOne
-*FoomaticRIPOption Duplex: enum CmdLine A
-*OrderDependency: 210 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex DuplexNoTumble/Long Edge (Standard): "%% FoomaticRIPOptionSetting: Duplex=DuplexNoTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexNoTumble: "-d2 "
-*Duplex DuplexTumble/Short Edge (Flip): "%% FoomaticRIPOptionSetting: Duplex=DuplexTumble"
-*FoomaticRIPOptionSetting Duplex=DuplexTumble: "-d3 "
-*Duplex None/Off: "%% FoomaticRIPOptionSetting: Duplex=None"
-*FoomaticRIPOptionSetting Duplex=None: "-d1 "
-*CloseUI: *Duplex
-
 *OpenUI *Copies/Copies: PickOne
 *FoomaticRIPOption Copies: int CmdLine A
 *FoomaticRIPOptionPrototype Copies: "-n%s "
@@ -413,6 +401,10 @@
 *FoomaticRIPOptionSetting ICM=clx3160: "-C10 -Gsamclp300-0.icm "
 *ICM clx3175/CLX-3175: "%% FoomaticRIPOptionSetting: ICM=clx3175"
 *FoomaticRIPOptionSetting ICM=clx3175: "-C10 -Gsamclp315-argyll-0.icm &&
+"
+*End
+*ICM clx3185/CLX-3185: "%% FoomaticRIPOptionSetting: ICM=clx3185"
+*FoomaticRIPOptionSetting ICM=clx3185: "-C10 -Gsamclp315-argyll-0.icm &&
 "
 *End
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
