@@ -64,6 +64,12 @@
 	    <driver>foo2qpdl</driver>
 	    <arg_defval>ev/foo2qpdl-PrinterType-z2</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <make>Samsung</make>
+	    <model>CLX-3185</model>
+	    <driver>foo2qpdl</driver>
+	    <arg_defval>ev/foo2qpdl-PrinterType-z2</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2qpdl-PrinterType-z0">
@@ -115,6 +121,11 @@
 		    <driver>foo2qpdl</driver>
 		    <make>Samsung</make>
 		    <model>CLX-3175</model>
+	        </constraint>
+	        <constraint sense="false">
+		    <driver>foo2qpdl</driver>
+		    <make>Samsung</make>
+		    <model>CLX-3185</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>
@@ -169,6 +180,11 @@
 		    <driver>foo2qpdl</driver>
 		    <make>Samsung</make>
 		    <model>CLX-3175</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <driver>foo2qpdl</driver>
+		    <make>Samsung</make>
+		    <model>CLX-3185</model>
 	        </constraint>
 	    </constraints>
 	</enum_val>

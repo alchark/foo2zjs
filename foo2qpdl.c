@@ -10,6 +10,8 @@ With this utility, you can print to some HP printers, such as these:
     - Samsung CLP-600	-z1
     - Samsung CLP-310	-z2
     - Samsung CLP-315	-z2
+    - Samsung CLP-325	-z2
+    - Samsung CLP-365	-z3
     - Samsung CLP-610	-z2
     - Samsung CLP-620	-z3
     - Samsung CLX-2160 (printer only)		(like CLP-300)
@@ -58,7 +60,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.50 2013/01/10 19:58:51 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.51 2013/02/16 17:54:22 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -701,6 +703,13 @@ write_page_banded(int nbie, unsigned char *bm[4], int w, int h, int pn,
     #define NBAND	128
 
     start_page_init(ofp);
+
+    switch (Model)
+    {
+    case MODEL_CLP620:
+	h -= NBAND * 0;	// Test for clp-360
+	break;
+    }
 
     for (pn = 0; pn < nbie; ++pn)
     {

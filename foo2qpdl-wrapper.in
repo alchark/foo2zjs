@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.52 2013/01/02 11:17:04 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.53 2013/01/22 21:28:33 rick Exp $'
 
 #
 # Printer Notes:
@@ -34,6 +34,7 @@ VERSION='$Id: foo2qpdl-wrapper.in,v 1.52 2013/01/02 11:17:04 rick Exp $'
 # Samsung CLX-2160: -z0, ICM
 # Samsung CLX-3160: -z0, ICM
 # Samsung CLX-3175: -z2, ICM
+# Samsung CLX-3185: -z2, ICM alpha
 # Xerox Phaser 6110: -z0, ICM
 # Xerox Phaser 6110MFP: -z0, ICM
 #

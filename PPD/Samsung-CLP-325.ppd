@@ -403,6 +403,10 @@
 *FoomaticRIPOptionSetting ICM=clx3175: "-C10 -Gsamclp315-argyll-0.icm &&
 "
 *End
+*ICM clx3185/CLX-3185: "%% FoomaticRIPOptionSetting: ICM=clx3185"
+*FoomaticRIPOptionSetting ICM=clx3185: "-C10 -Gsamclp315-argyll-0.icm &&
+"
+*End
 *ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
 *FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
 *ICM ph6110/Phaser 6110: "%% FoomaticRIPOptionSetting: ICM=ph6110"
