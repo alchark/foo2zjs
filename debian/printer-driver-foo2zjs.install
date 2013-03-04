@@ -83,6 +83,8 @@ usr/bin/arm2hpdl
 usr/bin/command2foo2lava-pjl
 usr/bin/foo2hiperc
 usr/bin/foo2hiperc-wrapper
+usr/bin/foo2hbpl2
+usr/bin/foo2hbpl2-wrapper
 usr/bin/foo2hp
 usr/bin/foo2hp2600-wrapper
 usr/bin/foo2lava
@@ -129,6 +131,8 @@ usr/share/foo2zjs/gamma.ps
 usr/share/foo2zjs/hplj1020_icon.gif
 usr/share/foo2zjs/hplj10xx_gui.tcl
 usr/share/man/man1/arm2hpdl.1
+usr/share/man/man1/foo2hbpl2.1
+usr/share/man/man1/foo2hbpl2-wrapper.1
 usr/share/man/man1/foo2hiperc.1
 usr/share/man/man1/foo2hiperc-wrapper.1
 usr/share/man/man1/foo2hp.1
