@@ -63,6 +63,10 @@
 	    <driver>foo2hiperc</driver>
 	    <arg_defval>ev/foo2xxx-Halftone-Default</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <driver>foo2hbpl2</driver>
+	    <arg_defval>ev/foo2xxx-Halftone-Default</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2xxx-Halftone-Default">

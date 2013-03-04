@@ -1,3 +1,20 @@
+2013-03-03	Rick Richardson <rick.richardson@comcast.net>
+	* printer-profile: add dell 1355.
+	* foo2hbpl2: merge in changes from Peter Korf <peter@niendo.de>
+	* hbpldecode: swap yellow and cyan
+	* New Printers: Fuji Xerox DocuPrint CP205
+	* hbpldecode: implement -d option
+
+2013-03-02	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hbpl2 et al: Added manual pages.
+	* foo2hbpl2 et al: added new page sizes for envelopes
+
+2013-03-01	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hbpl2, foo2hbpl2-wrapper, foomatic and PPD stuff: Added
+	* New Printers: Dell 1355 and Xerox WorkCentre 6015 
+	    - pre-alpha quality !!!!!!
+	* merge in changes from Peter Korf <peter@niendo.de>
+
 2013-02-20	Rick Richardson <rick.richardson@comcast.net>
 	* install-hotplug: Fedora 18 changed "/usr/lib/udev/udevd"
 	    to "/usr/lib/systemd/systemd-udevd".

@@ -129,7 +129,7 @@ Create printers (command line using CUPS)
 	# lpadmin -p hp1020 -v usb://HP/LaserJet%201020 -E \
 	    -P /usr/share/cups/model/HP-LaserJet_1020.ppd.gz
     Set the default:
-	# ldadmin -p NAME -d
+	# lpadmin -d NAME
 
 Create at least one queue for monochrome, and another queue
 for color printing.  Create the queues, then edit them and
