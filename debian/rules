@@ -11,7 +11,7 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_auto_install:
-	dh_auto_install -- PREFIX=$(CURDIR)/debian/tmp/usr MODEL=$(CURDIR)/debian/tmp/usr/share/cups/model FOODB=$(CURDIR)/debian/tmp/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/tmp/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/tmp/usr/lib/cups
+	dh_auto_install -- PREFIX=$(CURDIR)/debian/tmp/usr MODEL=$(CURDIR)/debian/tmp/usr/share/cups/model FOODB=$(CURDIR)/debian/tmp/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/tmp/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/tmp/usr/lib/cups DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc/printer-driver-foo2zjs
 
 override_dh_install:
 	### patches/20-honour-papersize.patch
@@ -23,7 +23,7 @@ override_dh_install:
 	# Ghostscript rendering the pages significantly faster
 	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/tmp/usr/bin/*-wrapper
 	# Legacy dh_install
-	dh_install
+	dh_install --fail-missing -Xusb_printerid -Xhplj10xx.rules -XINSTALL -XINSTALL.OSX -XCOPYING
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# usb_printerid is Linux-specific
 	install -D -m 644 usb_printerid $(CURDIR)/debian/printer-driver-foo2zjs/usr/bin/usb_printerid
