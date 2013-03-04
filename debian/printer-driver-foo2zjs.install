@@ -1,21 +1,8 @@
+debian/printer-driver-foo2zjs.ppd-updater /usr/share/cups/ppd-updaters/
+getweb usr/bin
+hplj1000 usr/sbin/
 hplj1020.desktop usr/share/applications/
-usr/share/foo2qpdl/crd/black-text.ps
-usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,0-per.crd
-usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,50-per.crd
-usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,75-per.crd
-usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr125,75-per.crd
-usr/share/foo2zjs/crd/kh.crd
-usr/share/foo2zjs/crd/kx.crd
-usr/share/foo2zjs/crd/prolog.ps
-usr/share/foo2zjs/crd/screen1200.ps
-usr/share/foo2zjs/crd/screen2400.ps
-usr/share/foo2zjs/gamma-lookup.ps
-usr/share/foo2zjs/gamma.ps
-usr/share/doc/printer-driver-foo2zjs/ChangeLog
-usr/share/doc/printer-driver-foo2zjs/README
-usr/share/doc/printer-driver-foo2zjs/manual.pdf
 hplj1020_icon.png usr/share/pixmaps
-usr/share/foo2zjs/hplj1020_icon.gif
 PPD/Generic-OAKT_Printer.ppd usr/share/ppd/foo2zjs
 PPD/Generic-ZjStream_Printer.ppd usr/share/ppd/foo2zjs
 PPD/HP-Color_LaserJet_1500.ppd usr/share/ppd/foo2zjs
@@ -26,9 +13,9 @@ PPD/HP-LaserJet_1000.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_1005.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_1018.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_1020.ppd usr/share/ppd/foo2zjs
-PPD/HP-LaserJet_1022.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_1022n.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_1022nw.ppd usr/share/ppd/foo2zjs
+PPD/HP-LaserJet_1022.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_M1005_MFP.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_M1120_MFP.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_M1319_MFP.ppd usr/share/ppd/foo2zjs
@@ -36,12 +23,12 @@ PPD/HP-LaserJet_P1005.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P1006.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P1007.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P1008.ppd usr/share/ppd/foo2zjs
-PPD/HP-LaserJet_P1505.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P1505n.ppd usr/share/ppd/foo2zjs
-PPD/HP-LaserJet_P2014.ppd usr/share/ppd/foo2zjs
+PPD/HP-LaserJet_P1505.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P2014n.ppd usr/share/ppd/foo2zjs
-PPD/HP-LaserJet_P2035.ppd usr/share/ppd/foo2zjs
+PPD/HP-LaserJet_P2014.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_P2035n.ppd usr/share/ppd/foo2zjs
+PPD/HP-LaserJet_P2035.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_Pro_CP1025nw.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_Pro_P1102.ppd usr/share/ppd/foo2zjs
 PPD/HP-LaserJet_Pro_P1102w.ppd usr/share/ppd/foo2zjs
@@ -123,28 +110,43 @@ usr/bin/qpdldecode
 usr/bin/slxdecode
 usr/bin/xqxdecode
 usr/bin/zjsdecode
-getweb usr/bin
-hplj1000 usr/sbin/
 usr/lib/cups/filter/command2foo2lava-pjl
+usr/share/doc/printer-driver-foo2zjs/ChangeLog
+usr/share/doc/printer-driver-foo2zjs/manual.pdf
+usr/share/doc/printer-driver-foo2zjs/README
+usr/share/foo2qpdl/crd/black-text.ps
+usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,0-per.crd
+usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,50-per.crd
+usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr100,75-per.crd
+usr/share/foo2zjs/crd/2300w-1200@150-l250-kx,ucr125,75-per.crd
+usr/share/foo2zjs/crd/kh.crd
+usr/share/foo2zjs/crd/kx.crd
+usr/share/foo2zjs/crd/prolog.ps
+usr/share/foo2zjs/crd/screen1200.ps
+usr/share/foo2zjs/crd/screen2400.ps
+usr/share/foo2zjs/gamma-lookup.ps
+usr/share/foo2zjs/gamma.ps
+usr/share/foo2zjs/hplj1020_icon.gif
+usr/share/foo2zjs/hplj10xx_gui.tcl
 usr/share/man/man1/arm2hpdl.1
-usr/share/man/man1/foo2hiperc-wrapper.1
 usr/share/man/man1/foo2hiperc.1
+usr/share/man/man1/foo2hiperc-wrapper.1
 usr/share/man/man1/foo2hp.1
 usr/share/man/man1/foo2hp2600-wrapper.1
-usr/share/man/man1/foo2lava-wrapper.1
 usr/share/man/man1/foo2lava.1
-usr/share/man/man1/foo2oak-wrapper.1
+usr/share/man/man1/foo2lava-wrapper.1
 usr/share/man/man1/foo2oak.1
-usr/share/man/man1/foo2qpdl-wrapper.1
+usr/share/man/man1/foo2oak-wrapper.1
 usr/share/man/man1/foo2qpdl.1
-usr/share/man/man1/foo2slx-wrapper.1
+usr/share/man/man1/foo2qpdl-wrapper.1
 usr/share/man/man1/foo2slx.1
-usr/share/man/man1/foo2xqx-wrapper.1
+usr/share/man/man1/foo2slx-wrapper.1
 usr/share/man/man1/foo2xqx.1
+usr/share/man/man1/foo2xqx-wrapper.1
+usr/share/man/man1/foo2zjs.1
 usr/share/man/man1/foo2zjs-icc2ps.1
 usr/share/man/man1/foo2zjs-pstops.1
 usr/share/man/man1/foo2zjs-wrapper.1
-usr/share/man/man1/foo2zjs.1
 usr/share/man/man1/gipddecode.1
 usr/share/man/man1/hbpldecode.1
 usr/share/man/man1/hipercdecode.1
@@ -156,5 +158,3 @@ usr/share/man/man1/qpdldecode.1
 usr/share/man/man1/slxdecode.1
 usr/share/man/man1/xqxdecode.1
 usr/share/man/man1/zjsdecode.1
-usr/share/foo2zjs/hplj10xx_gui.tcl
-debian/printer-driver-foo2zjs.ppd-updater /usr/share/cups/ppd-updaters/
