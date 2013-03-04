@@ -17,6 +17,7 @@ DESCRIPTION
     Manuf is "sam".  Model is "clp-300" or "clp-315".
     Manuf is "hp".  Model is "2600" or "cp1215" or "cp1025".
     Manuf is "km".  Model is "1600" or "2300" or "2530".
+    Manuf is "dell". Model is "1355".
 
     "rgb" is the usual setting.  "patches" is a multiple 196 per page.
 
@@ -222,6 +223,19 @@ hp*)
     *)
 	usage
 	;;
+    esac
+    ;;
+dell*)
+    MANUF=dell
+    case "$MODEL" in
+    *1355*)
+        FOO=foo2hbpl2
+        WRAPPER="foo2hbpl2-wrapper $RES_r -c -C10 -Gnone.icm"
+        OUT="nc 192.168.178.41 9100 < xxx.prn"
+        ;;
+    *)
+        usage
+        ;;
     esac
     ;;
 *)

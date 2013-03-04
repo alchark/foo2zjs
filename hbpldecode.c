@@ -1,9 +1,9 @@
 /*
- * $Id: hbpldecode.c,v 1.31 2013/02/19 12:55:37 rick Exp $
+ * $Id: hbpldecode.c,v 1.46 2013/03/03 23:00:19 rick Exp $
  */
 
 /*b
- * Copyright (C) 2003-2006  Rick Richardson
+ * Copyright (C) 2011-2012  Rick Richardson, peter
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * Author: Rick Richardson <rick.richardson@comcast.net>
+ * Authors: Rick Richardson <rick.richardson@comcast.net>
+ * 	    Peter Korf <peter@niendo.de>
 b*/
 
 #include <stdio.h>
@@ -87,7 +88,8 @@ usage(void)
 "	Epson AcuLaser C1700, Fuji-Xerox cp105b, and similiar printers.\n"
 "\n"
 "	Version two is an HBPL stream with JBIG encoded data. This data\n"
-"	is used by the Xerox WorkCentre 6015 and the Dell 1355c.\n"
+"	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"
+"	and the Dell 1355c.\n"
 "\n"
 "	Both versions can be decoded by hbpldecode.\n"
 "\n"
@@ -107,7 +109,8 @@ usage(void)
  * Hexdump stream data
  */
 void
-hexdump(FILE *fp, char *lbl1, char *lbln, const void *vdata, int length)
+hexdump(FILE *fp, int decmode, char *lbl1, char *lbln, \
+	    const void *vdata, int length)
 {
 	int			s;
 	int			i;
@@ -124,27 +127,31 @@ hexdump(FILE *fp, char *lbl1, char *lbln, const void *vdata, int length)
 	for (s = 0; s < length; s += 16)
 	{
 		fprintf(fp, "%s", s ? lbln : lbl1);
-		fprintf(fp, "%08x:", s);
+		fprintf(fp, decmode ? "%8d:" : "%08x:", s);
 		n = length - s; if (n > 16) n = 16;
 		for (i = 0; i < 16; ++i)
 		{
 			if (i == 8)
 				fprintf(fp, " ");
 			if (i < n)
-				fprintf(fp, " %02x", buf[i] = data[s+i]);
+				fprintf(fp, decmode ? " %3d" : " %02x",
+				    buf[i] = data[s+i]);
 			else
 				fprintf(fp, "   ");
 		}
-		fprintf(fp, "  ");
-		for (i = 0; i < n; ++i)
+		if (!decmode)
 		{
-			if (i == 8)
-				fprintf(fp, " ");
-			c = buf[i];
-			if (c >= ' ' && c < 0x7f)
-				fprintf(fp, "%c", c);
-			else
-				fprintf(fp, ".");
+		    fprintf(fp, "  ");
+		    for (i = 0; i < n; ++i)
+		    {
+			    if (i == 8)
+				    fprintf(fp, " ");
+			    c = buf[i];
+			    if (c >= ' ' && c < 0x7f)
+				    fprintf(fp, "%c", c);
+			    else
+				    fprintf(fp, ".");
+		    }
 		}
 		fprintf(fp, "\n");
 	}
@@ -207,6 +214,231 @@ proff(int curOff)
         printf("%6x:    ", curOff);
 }
 
+/*
+ * Version 2 stuff
+ */
+void
+decode_image(char *filename, int pagenum, int planenum,
+		unsigned char *bih, unsigned char *jbig, int jbiglen)
+{
+    FILE			*dfp;
+    struct jbg_dec_state        s;
+    size_t			cnt;
+    unsigned char		*image;
+    char			buf[512];
+    int				rc;
+
+    jbg_dec_init(&s);
+    rc = jbg_dec_in(&s, bih, 20, &cnt);
+    if (rc == JBG_EIMPL)
+	error(1, "JBIG uses unimplemented feature\n");
+    rc = jbg_dec_in(&s, jbig, jbiglen, &cnt);
+    if (rc == JBG_EOK)
+    {
+	int	h, w, len;
+	h = jbg_dec_getheight(&s);
+	w = jbg_dec_getwidth(&s);
+	image = jbg_dec_getimage(&s, 0);
+	len = jbg_dec_getsize(&s);
+	if (image)
+	{
+	    sprintf(buf, "%s-%02d-%d.pbm",
+		    filename, pagenum, planenum);
+	    dfp = fopen(buf, "w");
+	    if (dfp)
+	    {
+		fprintf(dfp, "P4\n%8d %8d\n", w, h);
+		rc = fwrite(image, 1, len, dfp);
+		fclose(dfp);
+		dfp = NULL;
+	    }
+	}
+	else
+	    debug(0, "Missing image %dx%d!\n", h, w);
+    }
+    jbg_dec_free(&s);
+}
+
+void
+decode2(FILE *fp, int curOff)
+{
+    // int		c;
+    int		rc;
+    // FILE	*dfp = NULL;
+    int		pageNum = 1;
+    int		len;
+    // int		curOff = 0;
+    // struct jbg_dec_state	s[5];
+    // unsigned char	bih[4][20];
+    // int			imageCnt[4] = {0,0,0,0};
+    // int         	pn = 0;
+    unsigned char	header[4];
+    unsigned char	buf[512];
+    int		w, h, wh_total, res, color, mediatype, papersize;
+    int		p, offbih[4];
+    #define STRARY(X, A) \
+	((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
+	? A[X] : "UNK"
+    char *strsize[] = {
+	/*00*/	"unk", "A4", "B5", "unk", "Letter",
+	/*05*/	"Executive", "FanFoldGermanLegal", "Legal", "unk", "env#10",
+	/*10*/	"envMonarch", "envC5", "envDL", "unk", "unk",
+	};
+
+    char *strtype[] = {
+	/*00*/	"unk", "Plain", "Bond", "LwCard", "LwGCard",
+	/*05*/	"Labels", "Envelope", "Recycled", "Plain-side2", "Bond-side2",
+	/*10*/	"LwCard-side2", "LwGCard-side2", "Recycled-side2",
+	};
+
+    for (;;)
+    {
+	len = 4;
+	rc = fread(header, 1, len, fp);
+	if (rc != len)
+	{
+	    error(1, "len=%d, but EOF on file\n", len);
+	    return;
+	}
+
+	proff(curOff);
+	
+	if (header[1] == '%' && header[2] == '-') //end of file
+	  len = 15;
+	else
+	{
+	    if (header[1] == 'J' && header[2] == 'P')
+		len = 60;	// JP doesn't have len
+	    else 
+		len = header[3];
+	    printf("RECTYPE %c%c - size=%d ", header[1], header[2], len);
+	}
+	
+	curOff += len+4;
+	rc = fread(buf, 1, len, fp);
+	if (rc != len)
+	{
+	    error(1, "len=%d, but EOF on file\n", len);
+	    return;
+	}
+
+	if (0) {}
+	else if (header[1] == '%' && header[2] == '-')
+	{ 
+	    buf[len] = 0x00;
+	    printf("\\033%%-%c%s", header[3], buf);
+	    return;
+	} 
+	else if (header[1] == 'J' && header[2] == 'P')
+	{
+	    printf("[Job Parameters]\n");
+
+	    hexdump(stdout, 0, "", "", buf, len);
+	    hexdump(stdout, 1, "", "", buf, len);
+	    printf("\t\tsize/source(?) = %d(0x%02x)\n", buf[11], buf[11]);
+	}
+	else if (header[1] == 'D' && header[2] == 'M')
+	{
+	    printf("[DM]\n");
+	    hexdump(stdout, 0, "", "", buf, len);
+	}
+	
+	else if (header[1] == 'P' && header[2] == 'S')
+	{
+	    unsigned char	*mbuf;
+
+	    printf("[Page Start]\n");
+	    if (Debug)
+		hexdump(stdout, 0, "", "", buf, len);
+	    w = getLEdword(&buf[0]);
+	    h = getLEdword(&buf[4]);
+	    wh_total = getLEdword(&buf[8]);
+	    res = getLEword(&buf[20]);
+	    papersize = buf[16];
+	    mediatype = buf[17];
+	    color = buf[18];
+	    printf("\t\tw,h = %dx%d, wh_total = %d, res = %d, color = %d\n",
+		w, h, wh_total, res, color);
+	    printf("\t\tmediatype = %s(%d), papersize = %s(%d)\n",
+		STRARY(mediatype, strtype), mediatype,
+		STRARY(papersize, strsize), papersize);
+
+	    for (p = 0; p < 4; ++p)
+	    {
+		// offsets at 26, 30, 34, 38
+		offbih[p] = getLEdword(&buf[22 + p*4]);
+		printf("\t\toffbih[%d] = %d (0x%x)\n", p, offbih[p], offbih[p]);
+	    }
+
+	    len = getLEdword(&buf[12]);
+	    mbuf = malloc(len);
+	    if (!mbuf)
+		error(1, "malloc on mbuf, size=%d failed\n", len);
+	    rc = fread(mbuf, 1, len, fp);
+	    if (rc != len)
+	    {
+		error(1, "len=%d, but EOF on file\n");
+	    }
+	    if (Debug > 2) hexdump(stdout, 0, "", "", mbuf, len);
+	    if (color == 1)
+	    {
+		proff(curOff);
+		printf("Yellow BIH:\n");
+		print_bih(mbuf);
+		printf("\t\t...yellow data skipped...\n");
+		decode_image(DecFile, pageNum, 3,
+		    mbuf, mbuf+20, offbih[0]-20);
+
+		proff(curOff + offbih[0]);
+		printf("Magenta BIH:\n");
+		print_bih(mbuf + offbih[0]);
+		printf("\t\t...magenta data skipped...\n");
+		decode_image(DecFile, pageNum, 2,
+		    mbuf, mbuf+20+offbih[0], offbih[1]-20);
+
+		proff(curOff + offbih[0] + offbih[1]);
+		printf("Cyan BIH:\n");
+		print_bih(mbuf + offbih[0] + offbih[1]);
+		printf("\t\t...cyan data skipped...\n");
+		decode_image(DecFile, pageNum, 1,
+		    mbuf, mbuf+20+offbih[0]+offbih[1], offbih[2]-20);
+
+		proff(curOff + offbih[0] + offbih[1] + offbih[2]);
+		printf("Black BIH:\n");
+		print_bih(mbuf + offbih[0] + offbih[1] + offbih[2]);
+		printf("\t\t...black data skipped...\n");
+		decode_image(DecFile, pageNum, 4,
+		    mbuf, mbuf+20+offbih[0]+offbih[1]+offbih[2], offbih[3]-20);
+	    }
+	    else
+	    {
+		proff(curOff);
+		printf("Black BIH:\n");
+		// hexdump(stdout, 0, "", "", &bih[0], 20);
+		print_bih(mbuf);
+		printf("\t\t...black data skipped...\n");
+		decode_image(DecFile, pageNum, 0, mbuf, mbuf+20, offbih[3]-20);
+	    }
+	    free(mbuf);
+	    curOff += len;
+	    ++pageNum;
+	}
+	else if (header[1] == 'P' && header[2] == 'E')
+	{
+	    printf("[Page End]\n");
+	    hexdump(stdout, 0, "", "", buf, len);
+	}
+	else
+	{
+	    printf("[Unknown]\n");
+	    hexdump(stdout, 0, "", "", buf, len);
+	}
+    }
+}
+
+/*
+ * Version 1 stuff
+ */
 int
 payload(FILE *fp, int *curoffp, unsigned char *data, int *vp)
 {
@@ -296,136 +528,6 @@ again:
     *curoffp += len;
 
     return type;
-}
-
-void
-decode2(FILE *fp, int curOff)
-{
-    // int		c;
-    int		rc;
-    // FILE	*dfp = NULL;
-    // int		pageNum = 1;
-    int		len;
-    // int		curOff = 0;
-    //struct jbg_dec_state	s[5];
-    // unsigned char	bih[4][20];
-    // int			imageCnt[4] = {0,0,0,0};
-    // int         	pn = 0;
-    unsigned char	buf[1024*1024*2];
-    int		w, h, res, color, mediatype, papersize;
-    int		p, offbih[4];
-    #define STRARY(X, A) \
-	((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
-	? A[X] : "UNK"
-    char *strsize[] = {
-	/*00*/	"unk", "A4", "B5", "unk", "Letter",
-	/*05*/	"Executive", "FanFoldGermanLegal", "Legal", "unk", "unk",
-	};
-
-    char *strtype[] = {
-	/*00*/	"unk", "Plain", "Bond", "LwCard", "LwGCard",
-	/*05*/	"Labels", "Envelope", "Recycled", "Plain-side2", "Bond-side2",
-	/*10*/	"LwCard-side2", "LwGCard-side2", "Recycled-side2",
-	};
-
-    for (;;)
-    {
-	len = 64;
-	rc = fread(buf, 1, len, fp);
-	if (rc != len)
-	{
-	    proff(curOff);
-	    if (buf[0] == '\033')
-	    {
-		printf("\\033");
-		fputs((char *) buf+1, stdout);
-	    }
-	    else
-		fputs((char *) buf, stdout);
-	    printf("\n");
-	    return;
-	}
-	proff(curOff);
-	printf("RECTYPE %c%c ", buf[1], buf[2]);
-	curOff += len;
-	if (0) {}
-	else if (buf[1] == 'J' && buf[2] == 'P')
-	{
-	    printf("[Job Parameters]\n");
-	    hexdump(stdout, "", "", buf, len);
-	}
-	else if (buf[1] == 'P' && buf[2] == 'S')
-	{
-	    printf("[Page Start]\n");
-	    hexdump(stdout, "", "", buf, len);
-	    w = getLEdword(&buf[4]);
-	    h = getLEdword(&buf[8]);
-	    res = getLEword(&buf[24]);
-	    papersize = buf[20];
-	    mediatype = buf[21];
-	    color = buf[22];
-	    printf("\t\tw,h=%dx%d res=%d color=%d\n",
-		w, h, res, color);
-	    printf("\t\tmediatype=%s(%d) papersize=%s(%d)\n",
-		STRARY(mediatype, strtype), mediatype,
-		STRARY(papersize, strsize), papersize);
-
-	    for (p = 0; p < 4; ++p)
-	    {
-		// offsets at 26, 30, 34, 38
-		offbih[p] = getLEdword(&buf[26 + p*4]);
-	    }
-
-	    len = getLEdword(&buf[16]);
-	    rc = fread(buf, 1, len, fp);
-	    if (rc != len)
-	    {
-		error(1, "len=%d, but EOF on file\n");
-	    }
-	    if (Debug > 2) hexdump(stdout, "", "", buf, len);
-	    if (color == 1)
-	    {
-		proff(curOff);
-		printf("Cyan BIH:\n");
-		print_bih(buf);
-		printf("\t\t...cyan data skipped...\n");
-
-		proff(curOff + offbih[0]);
-		printf("Magenta BIH:\n");
-		print_bih(buf + offbih[0]);
-		printf("\t\t...magenta data skipped...\n");
-
-		proff(curOff + offbih[0] + offbih[1]);
-		printf("Yellow BIH:\n");
-		print_bih(buf + offbih[0] + offbih[1]);
-		printf("\t\t...yellow data skipped...\n");
-
-		proff(curOff + offbih[0] + offbih[1] + offbih[2]);
-		printf("Black BIH:\n");
-		print_bih(buf + offbih[0] + offbih[1] + offbih[2]);
-		printf("\t\t...black data skipped...\n");
-	    }
-	    else
-	    {
-		proff(curOff);
-		printf("Black BIH:\n");
-		// hexdump(stdout, "", "", &bih[0], 20);
-		print_bih(buf);
-		printf("\t\t...black data skipped...\n");
-	    }
-	    curOff += len;
-	}
-	else if (buf[1] == 'P' && buf[2] == 'E')
-	{
-	    printf("[Page End]\n");
-	    hexdump(stdout, "", "", buf, len);
-	}
-	else
-	{
-	    printf("[Unknown]\n");
-	    hexdump(stdout, "", "", buf, len);
-	}
-    }
 }
 
 void
@@ -583,7 +685,7 @@ decode(FILE *fp)
 		printf("Continuing with hexdump...\n");
 		ungetc(rectype, fp);
 		if ( (len = fread(buf, 1, sizeof(buf), fp)) )
-		hexdump(stdout, "", "", buf, len);
+		hexdump(stdout, 0, "", "", buf, len);
 		exit(1);
 	    }
 	    break;
