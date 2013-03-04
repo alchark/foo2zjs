@@ -17,7 +17,7 @@ Last-Update: 2013-02-21
  
  # Pathnames for this package...
  BIN=$(PREFIX)/bin
-@@ -37,7 +35,7 @@
+@@ -38,7 +36,7 @@
  ROOT=root
  
  # Pathnames for referenced packages...
@@ -26,7 +26,7 @@ Last-Update: 2013-02-21
  
  # User ID's
  LPuid=-oroot
-@@ -441,29 +439,29 @@
+@@ -450,29 +448,29 @@
  
  
  foo2zjs: foo2zjs.o $(LIBJBG)
@@ -62,9 +62,9 @@ Last-Update: 2013-02-21
 -	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
 +	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG) $(LDFLAGS)
  
- 
- foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
-@@ -537,43 +535,43 @@
+ foo2hbpl2: foo2hbpl2.o $(LIBJBG)
+ 	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG)
+@@ -555,43 +553,43 @@
  endif
  
  ok: ok.o $(LIBJBG)
@@ -121,7 +121,7 @@ Last-Update: 2013-02-21
  
  command2foo2lava-pjl.o: command2foo2lava-pjl.c
  	$(CC) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
-@@ -620,8 +618,6 @@
+@@ -638,8 +636,6 @@
  	#
      
  
@@ -130,7 +130,7 @@ Last-Update: 2013-02-21
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -629,8 +625,7 @@
+@@ -647,8 +643,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -140,7 +140,7 @@ Last-Update: 2013-02-21
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -808,10 +803,10 @@
+@@ -833,10 +828,10 @@
  	    fi; \
  	done
  
@@ -154,7 +154,7 @@ Last-Update: 2013-02-21
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -868,9 +863,9 @@
+@@ -894,9 +889,9 @@
  	    done; \
  	fi
  
@@ -167,7 +167,7 @@ Last-Update: 2013-02-21
  
  install-desktop:
  	#
-@@ -1002,6 +997,7 @@
+@@ -1028,6 +1023,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -175,7 +175,7 @@ Last-Update: 2013-02-21
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1774,7 +1770,7 @@
+@@ -1818,7 +1814,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c
