@@ -6,6 +6,7 @@ Uploaders: Luca Capello <luca@pca.it>, Didier Raboud <odyx@debian.org>
 Build-Depends: debhelper (>= 9),
  ghostscript,
  foomatic-filters,
+ foomatic-db-engine,
  libcups2-dev,
  dc,
  time,

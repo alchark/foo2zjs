@@ -175,7 +175,19 @@ Last-Update: 2013-02-21
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1818,7 +1814,7 @@
+@@ -1391,10 +1387,9 @@
+ 	    *)                  driver=foo2zjs;; \
+ 	    esac; \
+ 	    echo $$driver - $$printer; \
+-	    ENGINE=../foomatic/foomatic-db-engine; \
+ 	    PERL5LIB=$$ENGINE/lib \
+ 		FOOMATICDB=foomatic-db \
+-		$$ENGINE/foomatic-ppdfile \
++		/usr/bin/foomatic-ppdfile \
+ 		-d $$driver -p $$printer \
+ 		> PPD/$$printer.ppd; \
+ 	done
+@@ -1818,7 +1813,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

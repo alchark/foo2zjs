@@ -8,7 +8,7 @@ DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
 override_dh_auto_build:
 	cp printer-profile.in printer-profile
-	dh_auto_build
+	dh_auto_build -- all ppd
 
 override_dh_auto_install:
 	dh_auto_install -- PREFIX=$(CURDIR)/debian/tmp/usr MODEL=$(CURDIR)/debian/tmp/usr/share/cups/model FOODB=$(CURDIR)/debian/tmp/usr/share/foomatic/db/source PPD=$(CURDIR)/debian/tmp/usr/share/ppd CUPS_SERVERBIN=$(CURDIR)/debian/tmp/usr/lib/cups DOCDIR=$(CURDIR)/debian/tmp/usr/share/doc/printer-driver-foo2zjs
