@@ -1,3 +1,29 @@
+foo2zjs (20130303dfsg0-1) experimental; urgency=low
+
+  * New 20130303 upstream release. (LP: #984424)
+    - Experimental support for three new printers:
+      - Fuji Xerox DocuPrint CP205
+      - Dell 1355
+      - Xerox WorkCentre 6015
+    - Refresh all patches
+    - Add foo2hbpl2 binary, wrapper and manpages
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Rewrite the package content installation to allow the use of
+    --fail-missing in dh_install.
+  * Install all available PPDs before the pyppd run, to make sure we
+    don't forget one.
+  * Rewrite debian/copyright with Copyright-Format 1.0 style.
+  * Rebuild PPDs because we can.
+    - Add foomatic-db-engine to Build-Depends;
+    - Update 10-makefile.patch to use system-provided foomatic-ppdfile;
+    - Run 'all' and 'ppd' Makefile targets.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 05 Mar 2013 10:37:06 +0100
+
 foo2zjs (20130220dfsg0-2) experimental; urgency=low
 
   [ Didier Raboud ]
