@@ -50,7 +50,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.23 2013/03/03 17:05:03 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.26 2013/03/07 14:05:34 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,11 +88,8 @@ char	*Filename = NULL;
 int	Mode = 1;
 		#define MODE_MONO	1
 		#define MODE_COLOR	2
-int	Model = 1;
-		#define MODEL_2300DL    0
-		#define MODEL_HP1020    1
-		#define MODEL_HP_PRO    2
-		#define MODEL_HP_PRO_CP 3
+int	Model = 0;
+		#define MODEL_6015	0
 		#define MODEL_LAST	0
 
 int	Color2Mono = 0;
@@ -150,7 +147,7 @@ usage(void)
 "   foo2hbpl2 [options] <pbmraw-file >hbpl-file\n"
 "\n"
 "	Convert Ghostscript pbmraw format to a monochrome ZJS stream,\n"
-"	for driving the Dell 1153 and Xerox WorkCentre 6015 MFP printers.\n"
+"	for driving the Dell 1355 and Xerox WorkCentre 6015 MFP printers.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"
 "		-sPAPERSIZE=letter -r1200x600 -sDEVICE=pbmraw \\ \n"
@@ -161,7 +158,7 @@ usage(void)
 "   foo2hbpl2 [options] <pksmraw-file >hbpl-file\n"
 "\n"
 "	Convert Ghostscript bitcmyk or pksmraw format to a color ZJS stream,\n"
-"	for driving Dell 1153 and Xerox WorkCentre 6015 MFP printers.\n"
+"	for driving Dell 1355 and Xerox WorkCentre 6015 MFP printers.\n"
 "	N.B. Color correction is expected to be performed by ghostscript.\n"
 "\n"
 "	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \\ \n"
@@ -683,6 +680,7 @@ load_tray2(FILE *fp)
 int
 compute_image_dots(int w, int h, unsigned char *bitmap)
 {
+#if 0
     int dots = 0;
     int x, y, bpl;
 
@@ -697,6 +695,9 @@ compute_image_dots(int w, int h, unsigned char *bitmap)
     default:
 	return 0;
     }
+#else
+    return 0;
+#endif
 }
 
 static int AnyColor;
@@ -713,8 +714,7 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     int			aib = AllIsBlack;
     int			bc = BlackClears;
 
-    if (Model != MODEL_2300DL)
-	bpl = (bpl + 15) & ~15;
+    bpl = (bpl + 15) & ~15;
     debug(1, "w=%d, bpl=%d, rawbpl=%d\n", w, bpl, rawbpl);
 
     AnyColor = 0;
@@ -798,18 +798,9 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     struct jbg_enc_state se[4]; 
 
     RealWidth = w;
-    if (1 || Model == MODEL_HP1020
-	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-    {
-	w = (w + 127) & ~127;
-	bpl = (w + 7) / 8;
-	bpl16 = (bpl + 15) & ~15;
-    }
-    else
-    {
-	bpl = (w + 7) / 8;
-	bpl16 = bpl;
-    }
+    w = (w + 127) & ~127;
+    bpl = (w + 7) / 8;
+    bpl16 = (bpl + 15) & ~15;
     debug(1, "w = %d, bpl = %d, bpl16 = %d\n", w, bpl, bpl16);
 
     for (i = 0; i < 4; ++i)
@@ -869,9 +860,7 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
     struct jbg_enc_state se[4]; 
 
     RealWidth = w;
-    if (1 || Model == MODEL_HP1020
-	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-	w = (w + 127) & ~127;
+    w = (w + 127) & ~127;
 
     for (i = 0; i < 4; ++i)
 	chain[i] = NULL;
@@ -908,9 +897,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
     struct jbg_enc_state se; 
 
     RealWidth = w;
-    if (1 || Model == MODEL_HP1020
-	|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-	w = (w + 127) & ~127;
+    w = (w + 127) & ~127;
 
     if (SaveToner)
     {
@@ -918,10 +905,7 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	int	bpl, bpl16;
 
 	bpl = (w + 7) / 8;
-	if (Model == MODEL_2300DL)
-	    bpl16 = bpl;
-	else
-	    bpl16 = (bpl + 15) & ~15;
+	bpl16 = (bpl + 15) & ~15;
 
 	for (y = 0; y < h; y += 2)
 	    for (x = 0; x < bpl16; ++x)
@@ -929,34 +913,6 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	for (y = 1; y < h; y += 2)
 	    for (x = 0; x < bpl16; ++x)
 		buf[y*bpl16 + x] &= 0xaa;
-    }
-
-    if (Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-    {
-	int	x, y;
-	int	bpl, bpl16;
-
-	/*
-	 * Blank initial lines for .25"
-	 */
-	bpl = (w + 7) / 8;
-	bpl16 = (bpl + 15) & ~15;
-
-	if (0)
-	    for (y = 0; y < 150; ++y)
-		memset(buf + y*bpl16, 0, bpl16);
-
-	if (0)
-	    for (y = 0; y < h; y += 1)
-	    {
-		for (x = 0; x < 32; ++x)
-		    buf[y*bpl16 + x] = 0;
-		for (x = bpl16 - 32; x < bpl16; ++x)
-		    buf[y*bpl16 + x] = 0;
-	    }
-	if (0)
-	    for (y = h - 200; y < h; y += 1)
-		memset(buf + y*bpl16, 0, bpl16);
     }
 
     Dots[3] = compute_image_dots(w, h, buf);
@@ -1239,11 +1195,7 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    bpl = (w + 7) / 8;
 	    rightBpl = (rawW - UpperLeftX + 7) / 8;
 
-	    if (Model == MODEL_HP1020
-		|| Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-		bpl16 = (bpl + 15) & ~15;
-	    else
-		bpl16 = bpl;
+	    bpl16 = (bpl + 15) & ~15;
 	    debug(1, "bpl=%d bpl16=%d\n", bpl, bpl16);
 
 	    plane[i] = malloc(bpl16 * h);
@@ -1322,14 +1274,7 @@ blank_page(FILE *ofp)
     w = PageWidth - UpperLeftX - LowerRightX;
     h = PageHeight - UpperLeftY - LowerRightY;
     bpl = (w + 7) / 8;
-    switch (Model)
-    {
-    case MODEL_2300DL:		bpl16 = bpl; break;
-    case MODEL_HP1020:		bpl16 = (bpl + 15) & ~15; break;
-    case MODEL_HP_PRO:		bpl16 = (bpl + 15) & ~15; break;
-    case MODEL_HP_PRO_CP:	bpl16 = (bpl + 15) & ~15; break;
-    default:			error(1, "Bad model %d\n", Model); break;
-    }
+    bpl16 = (bpl + 15) & ~15;
 
     plane = malloc(bpl16 * h);
     if (!plane)
@@ -1351,8 +1296,8 @@ pbm_pages(FILE *ifp, FILE *ofp)
     int			bpl16 = 0;
     int			rc;
     int			p4eaten = 1;
-    FILE		*tfp = NULL;
-    long		tpos = 0;
+    //FILE		*tfp = NULL;
+    //long		tpos = 0;
 
     //
     // Save the original Upper Right clip values as the logical offset,
@@ -1381,14 +1326,7 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	bpl = (w + 7) / 8;
 	rightBpl = (rawW - UpperLeftX + 7) / 8;
 
-	switch (Model)
-	{
-	case MODEL_2300DL:	bpl16 = bpl; break;
-	case MODEL_HP1020:	bpl16 = (bpl + 15) & ~15; break;
-	case MODEL_HP_PRO:	bpl16 = (bpl + 15) & ~15; break;
-	case MODEL_HP_PRO_CP:	bpl16 = (bpl + 15) & ~15; break;
-	default:		error(1, "Bad model %d\n", Model); break;
-	}
+	bpl16 = (bpl + 15) & ~15;
 
 	buf = malloc(bpl16 * h);
 	if (!buf)
@@ -1413,6 +1351,7 @@ pbm_pages(FILE *ifp, FILE *ofp)
 		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
 	}
+#if 0
 	else if (Model == MODEL_HP_PRO
 	    && (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE) )
 	{
@@ -1436,12 +1375,14 @@ pbm_pages(FILE *ifp, FILE *ofp)
 		fclose(tfp);
 	    }
 	}
+#endif
 	else
 	    pbm_page(buf, w, h, ofp);
 
 	free(buf);
     }
 
+#if 0
     if (Model == MODEL_HP_PRO
 	&& (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE)
 	&& odd_page(PageNum) )
@@ -1455,6 +1396,7 @@ pbm_pages(FILE *ifp, FILE *ofp)
 	    putc(getc(tfp), ofp);
 	fclose(tfp);
     }
+#endif
 
     return (0);
 }
@@ -1595,25 +1537,13 @@ main(int argc, char *argv[])
     if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
-    // Model temporary set HP...
-    Model = 1;
     Bpp = ResX / 600;
-
-    if (Model == MODEL_HP1020
-	|| Model == MODEL_HP_PRO
-	|| Model == MODEL_HP_PRO_CP)
+    // ResX = 600;
+    if (SaveToner)
     {
-	Bpp = ResX / 600;
-	// ResX = 600;
-	if (SaveToner)
-	{
-	    SaveToner = 0;
-	    EconoMode = 1;
-	}
+	SaveToner = 0;
+	EconoMode = 1;
     }
-
-    if (Model == MODEL_HP_PRO || Model == MODEL_HP_PRO_CP)
-	JbgOptions[3] = 0;	/* MX = 0 */
 
     switch (Duplex)
     {
@@ -1665,10 +1595,7 @@ main(int argc, char *argv[])
 	/*
 	 *  Manual Pause
 	 */
-	if (Model == MODEL_HP1020
-		|| Model == MODEL_HP_PRO
-		|| Model == MODEL_HP_PRO_CP)
-	    load_tray2(stdout);
+	load_tray2(stdout);
 
 	fseek(EvenPages, SeekMedia, 0L);
 	media = be32(DMMEDIA_LETTERHEAD);
