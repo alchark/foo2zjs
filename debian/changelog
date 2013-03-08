@@ -1,3 +1,21 @@
+foo2zjs (20130306dfsg0-1) experimental; urgency=low
+
+  * New 20130306 upstream release.
+    - Cleanup on foo2hblp2.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Amend 20130220dfsg0-2 changelog entry to revert the
+    Depends/Recommends explanation between Ubuntu and Debian back to
+    what was implemented.
+  * Add get-orig-source target to facilitate new upstream version
+    import.
+  * Add foo2hblp2 in Description.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 08 Mar 2013 15:13:33 +0100
+
 foo2zjs (20130303dfsg0-1) experimental; urgency=low
 
   * New 20130303 upstream release. (LP: #984424)
