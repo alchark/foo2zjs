@@ -30,7 +30,7 @@ foo2zjs (20130220dfsg0-2) experimental; urgency=low
   * Add time to Build-Depends, helps getting the tests run further.
   * Update 10-makefile.patch to enforce LDFLAGS usage and another case
     of CFLAGS overriding; also add DEP-3 headers.
-  * Put mscompress to Depends on Debian and to Recommends on Ubuntu and
+  * Put mscompress to Recommends on Debian and to Depends on Ubuntu and
     derivatives, drops the need of a hand-merge by Ubuntu.
 
   [ Till Kamppeter ]
