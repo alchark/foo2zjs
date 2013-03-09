@@ -1,3 +1,10 @@
+foo2zjs (20130306dfsg0-2) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * Removed "Recommends: foomatic-db-engine" (LP: #1152831)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 09 Mar 2013 12:43:40 +0100
+
 foo2zjs (20130306dfsg0-1) experimental; urgency=low
 
   * New 20130306 upstream release.
