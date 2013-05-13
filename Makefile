@@ -1032,10 +1032,25 @@ install-filter:
 	fi
 
 CUPSDCONF=/etc/cups/cupsd.conf
+CUPSFILESCONF=/etc/cups/cups-files.conf
 MACLOAD=/System/Library/LaunchDaemons/org.cups.cupsd.plist
 
 cups:	FRC
-	if [ -r $(CUPSDCONF) ]; then \
+	# C
+	if [ -r $(CUPSFILESCONF) ]; then \
+	    (	echo "g/^FileDev/d"; \
+		echo "g/ foo2zjs.../d"; \
+		echo '$$a'; \
+		echo "# 'FileDevice Yes' line installed by foo2zjs..."; \
+		echo "FileDevice Yes"; \
+		echo "."; \
+		echo "w"; \
+	    ) | ex $(CUPSFILESCONF); \
+	    (	echo "g/^FileDev/d"; \
+		echo "g/ foo2zjs.../d"; \
+		echo "w"; \
+	    ) | ex $(CUPSDCONF); \
+	elif [ -r $(CUPSDCONF) ]; then \
 	    (	echo "g/^FileDev/d"; \
 		echo "g/ foo2zjs.../d"; \
 		echo '$$a'; \

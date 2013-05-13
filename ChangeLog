@@ -1,3 +1,9 @@
+2013-03-21	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: change cups target /etc/cups/cups-files.conf if it exists.
+	    "Please move "FileDevice Yes" on line 139 of /etc/cups/cupsd.conf
+	    to the /etc/cups/cups-files.conf file; this will become an error
+	    in a future release."
+
 2013-03-06	Rick Richardson <rick.richardson@comcast.net>
 	* cleanup on foo2hblp2.
 

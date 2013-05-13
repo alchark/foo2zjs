@@ -124,12 +124,12 @@ Create printers (Solaris 11+)
     # printmgr
 
 Create printers (command line using CUPS)
-    # lpadmin -p NAME -v URI -E -P file.ppd
+    # lpadmin -p "NAME" -v "URI" -E -P file.ppd.gz
     i.e.
-	# lpadmin -p hp1020 -v usb://HP/LaserJet%201020 -E \
+	# lpadmin -p hp1020 -v "usb://HP/LaserJet%201020" -E \
 	    -P /usr/share/cups/model/HP-LaserJet_1020.ppd.gz
     Set the default:
-	# lpadmin -d NAME
+	# lpadmin -d "NAME"
 
 Create at least one queue for monochrome, and another queue
 for color printing.  Create the queues, then edit them and
@@ -590,6 +590,37 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 	$ usb_printerid /dev/usb/lp0
 
     or, you can open the print cartridge door and then close it.
+
+HP SMART INSTALL NOTES
+----------------------
+    The printers HP LaserJet Pro P1102, HP LaserJet Pro CP1025, and simliar
+    models have a virtual CD-ROM (a fake USB CD drive) in USB mode.  You can
+    disable this three ways:
+
+    Method 1:
+	NOTE: this is a non-open-source method!
+	- Connect the printer to a Windows PC and turn it on.
+	  The fake CD-ROM appears on Windows.
+	- Insert the original Driver CD that ships with the printer
+	- Run SIUtility.exe or SIUtility64.exe from the UTIL folder and
+	  COMPLETELY DISABLE THIS "HP SMART INSTALL" FEATURE. 
+
+    Method 2:
+	- Install usb_modeswitch and usb_modeswitch-data from your distro's
+	  repository. I.E.:
+	    # yum install usb_modeswitch usb_modeswitch-data
+	  OR
+	    $ sudo apt-get install usb-modeswitch-data
+	  OR
+	    Surf to: http://www.draisberghof.de/usb_modeswitch/
+	- Power cycle the printer.
+
+    Method 3:
+	NOTE: this is a non-open-source method!
+	- Execute:
+	    $ wget http://hplipopensource.com/hplip-web/smartinstall/\
+		SmartInstallDisable-Tool.run
+	    $ sh SmartInstallDisable-Tool.run
 
 PSUTILS AND 2/4-UP CAPABILITY
 -----------------------------
