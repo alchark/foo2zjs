@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.53 2013/01/22 21:28:33 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.55 2013/04/08 20:12:02 rick Exp $'
 
 #
 # Printer Notes:
@@ -59,7 +59,7 @@ Usage:
 
 	Foomatic printer wrapper for the foo2qpdl printer driver.
 	This script reads a Postscript ps-file or standard input
-	and converts it to a Samsung QPDL stream (CLP-600).
+	and converts it to a Samsung QPDL stream (CLP-300, etc.).
 
 Normal Options:
 -c                Print in color (else monochrome)
@@ -99,7 +99,7 @@ Printer Tweaking Options:
                          0=CLP-300, CLX-2160, CLX-3160
                          1=CLP-600
                          2=CLP-310, CLP-315, CLP-610, CLX-3175
-                         3=CLP-620
+                         3=CLP-620, CLP-360, CLP-365
 
 Color Tweaking Options:
 -g gsopts         Additional options to pass to Ghostscript, such as
