@@ -1,4 +1,4 @@
-foo2zjs (20130513-1) unstable; urgency=low
+foo2zjs (20130513dfsg0-1) unstable; urgency=low
 
   * New 20130513 upstream release.
 
@@ -6,7 +6,7 @@ foo2zjs (20130513-1) unstable; urgency=low
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
 
- -- Didier Raboud <odyx@debian.org>  Fri, 17 May 2013 11:14:23 +0200
+ -- Didier Raboud <odyx@debian.org>  Fri, 17 May 2013 11:21:27 +0200
 
 foo2zjs (20130306dfsg0-2) experimental; urgency=low
 
