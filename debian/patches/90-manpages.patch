@@ -11,7 +11,7 @@ Fixes errors in manpages
  .em pdf_outline
 --- a/foo2qpdl-wrapper.1in
 +++ b/foo2qpdl-wrapper.1in
-@@ -225,7 +225,4 @@
+@@ -226,7 +226,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLQPDL}/
@@ -168,7 +168,7 @@ Fixes errors in manpages
  .em pdf_outline
 --- a/foo2qpdl.1in
 +++ b/foo2qpdl.1in
-@@ -192,7 +192,4 @@
+@@ -193,7 +193,4 @@
  Rick Richardson <rick.richardson@comcast.com>
  .br
  ${URLQPDL}/
@@ -288,7 +288,7 @@ Fixes errors in manpages
  .em pdf_outline
 --- a/printer-profile.1in
 +++ b/printer-profile.1in
-@@ -57,7 +57,4 @@
+@@ -58,7 +58,4 @@
  Rick Richardson <rick.richardson@comcast.net>
  .br
  ${URLZJS}/
