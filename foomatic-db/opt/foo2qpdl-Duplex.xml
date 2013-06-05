@@ -17,9 +17,6 @@
 	    <arg_defval>ev/foo2qpdl-Duplex-1</arg_defval>
 	</constraint>
 	<constraint sense="false">
-	    <make>Samsung</make> <model>CLP-300</model>
-	</constraint>
-	<constraint sense="false">
 	    <make>Samsung</make> <model>CLP-310</model>
 	</constraint>
 	<constraint sense="false">
@@ -57,11 +54,31 @@
 	    <ev_longname> <en>Long Edge (Standard)</en> </ev_longname>
 	    <ev_shortname> <en>DuplexNoTumble</en> </ev_shortname>
 	    <ev_driverval>2</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+		    <make>Samsung</make> <model>CLP-300</model>
+		</constraint>
+	    </constraint>
 	</enum_val>
 	<enum_val id="ev/foo2qpdl-Duplex-3">
 	    <ev_longname> <en>Short Edge (Flip)</en> </ev_longname>
 	    <ev_shortname> <en>DuplexTumble</en> </ev_shortname>
 	    <ev_driverval>3</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+		    <make>Samsung</make> <model>CLP-300</model>
+		</constraint>
+	    </constraint>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-Duplex-4">
+	    <ev_longname> <en>Manual Long Edge (Standard)</en> </ev_longname>
+	    <ev_shortname> <en>ManualDuplexNoTumble</en> </ev_shortname>
+	    <ev_driverval>4</ev_driverval>
+	</enum_val>
+	<enum_val id="ev/foo2qpdl-Duplex-5">
+	    <ev_longname> <en>Manual Short Edge (Flip)</en> </ev_longname>
+	    <ev_shortname> <en>ManualDuplexTumble</en> </ev_shortname>
+	    <ev_driverval>5</ev_driverval>
 	</enum_val>
     </enum_vals>
 </option>
