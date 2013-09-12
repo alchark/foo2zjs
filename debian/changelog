@@ -1,3 +1,17 @@
+foo2zjs (20130813dfsg0-1) unstable; urgency=low
+
+  * New 20130813 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Don't block the get-orig-source if no patches are applied
+  * Rebuild against pyppd >= 1.0.1
+  * Refresh patches for new upstream release
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 12 Sep 2013 20:31:55 +0200
+
 foo2zjs (20130513dfsg0-1) unstable; urgency=low
 
   * New 20130513 upstream release.
