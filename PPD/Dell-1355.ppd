@@ -102,6 +102,9 @@
 *FoomaticRIPOptionSetting ColorMode=Monochrome: " "
 *CloseUI: *ColorMode
 
+*FoomaticRIPOption Resolution: enum CmdLine A 130
+*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
 *OrderDependency: 135 AnySetup *PageSize

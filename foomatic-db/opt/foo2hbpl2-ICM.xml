@@ -38,6 +38,9 @@
 	    <driver>foo2hbpl2</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
 	</constraint>
+	<constraint sense="false">
+	    <make>Fuji Xerox</make> <model>DocuPrint P205</model>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2hbpl2-ICM-none">
