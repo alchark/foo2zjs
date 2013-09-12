@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 9),
  libcups2-dev,
  dc,
  time,
- pyppd (>= 0.4.9-6~),
+ pyppd (>= 1.0.1),
  libjbig-dev
 Standards-Version: 3.9.3
 Homepage: http://foo2zjs.rkkda.com/
