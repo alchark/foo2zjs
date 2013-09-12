@@ -71,8 +71,7 @@ override_dh_auto_clean:
 UPSTREAM_VERSION ?= `date +%Y%m%d`
 
 get-orig-source:
-	quilt pop -a
-	rm -Rf .pc
+	- quilt pop -af ; rm -Rf .pc
 	git checkout -f upstream
 	wget -O ../foo2zjs_$(UPSTREAM_VERSION).orig.tar.gz 'http://foo2zjs.rkkda.com/foo2zjs.tar.gz'
 	git import-orig --no-pristine-tar --upstream-version=$(UPSTREAM_VERSION) --no-merge --upstream-branch=upstream-nodfsg ../foo2zjs_$(UPSTREAM_VERSION).orig.tar.gz
