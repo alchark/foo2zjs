@@ -15,14 +15,18 @@ printer-profile \- Profile using X-Rite ColorMunki and Argyll CMS
 prints a test chart, uses the ColorMunki instrument to scan it in, then
 computes an ICM profile using the Argyll Color Management System.
 
-    Manuf is "sam".  Model is "clp-300" or "clp-315".
-    Manuf is "hp".  Model is "2600" or "cp1215".
-    Manuf is "km".  Model is "2300" or "2530".
-    Manuf is "dell". Model is "1355".
+Manuf is "sam".  Model is "clp-300", "clp-315", "clp-325" or "clp-365".
+.br
+Manuf is "hp".  Model is "2600" or "cp1215".
+.br
+Manuf is "km".  Model is "2300" or "2530".
+.br
+Manuf is "dell". Model is "1355".
+.br
 
-    "rgb" is the usual setting.  "patches" is a multiple 196 per page.
+"rgb" is the usual setting.  "patches" is a multiple 196 per page.
 
-    Edit the script for additional models.
+Edit the script for additional models.
 
 .SH OPTIONS
     -b 1|2        Bits per pixel (1)
@@ -44,7 +48,7 @@ $ printer-profile sam 315 rgb 196
 gs 8.64 and before has problems with 32-bit machines and color profile
 data.  Don't use!
 
-You need Argyll_V1.2.0 or later.
+You need Argyll_V1.5.1 or later.
 .SH FILES
 .BR /usr/bin/printer-profile,
 .BR /usr/share/foo2*/icm/testing.icm
@@ -53,12 +57,12 @@ firefox http://www.xritephoto.com/html/colormunkisplash.htm
 .br
 firefox http://www.argyllcms.com/
 .br
-firefox http://www.argyllcms.com/Argyll_V1.5.0_src.zip
+firefox http://www.argyllcms.com/Argyll_V1.5.1_src.zip
 .SH "AUTHOR"
 Rick Richardson <rick.richardson@comcast.net>
 .br
 ${URLZJS}/
-'/"
-'/"
-'/"
+'\"
+'\"
+'\"
 .em pdf_outline

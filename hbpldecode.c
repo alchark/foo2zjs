@@ -1,5 +1,5 @@
 /*
- * $Id: hbpldecode.c,v 1.46 2013/03/03 23:00:19 rick Exp $
+ * $Id: hbpldecode.c,v 1.47 2013/06/26 21:01:29 rick Exp $
  */
 
 /*b
@@ -81,15 +81,19 @@ usage(void)
 "Usage:\n"
 "	hbpldecode [options] < hbpl-file\n"
 "\n"
-"	Decode a HBPL stream into human readable form.\n"
+"	Decode a HBPL stream into human readable form.  HBPL is\n"
+"	Host Based Printer Language.\n"
 "\n"
-"	There are two versions of HBPL in existence.  One is an HBPL\n"
-"	stream with Huffman RLE data. This data is used by the Dell 1250c,\n"
-"	Epson AcuLaser C1700, Fuji-Xerox cp105b, and similiar printers.\n"
+"	There are two versions of HBPL in existence.\n"
+"\n"
+"	Version one is an HBPL stream with Huffman RLE data. This data is\n"
+"	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
+"	cp105b, and similiar printers. These printers are unsupported.\n"
 "\n"
 "	Version two is an HBPL stream with JBIG encoded data. This data\n"
 "	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"
-"	and the Dell 1355c.\n"
+"	and the Dell 1355c. These printers are supported by foo2hbpl2-wrapper\n"
+"	et al.\n"
 "\n"
 "	Both versions can be decoded by hbpldecode.\n"
 "\n"

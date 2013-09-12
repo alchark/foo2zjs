@@ -50,7 +50,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.26 2013/03/07 14:05:34 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.27 2013/08/07 00:37:12 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1537,7 +1537,7 @@ main(int argc, char *argv[])
     if (getenv("DEVICE_URI"))
 	IsCUPS = 1;
 
-    Bpp = ResX / 600;
+    Bpp = ResX / ResY;
     // ResX = 600;
     if (SaveToner)
     {

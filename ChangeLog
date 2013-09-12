@@ -1,3 +1,20 @@
+2013-08-13	Rick Richardson <rick.richardson@comcast.net>
+	* printer-profile: add Samsung clp-365.
+
+2013-08-06	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Fuji Xerox DocuPrint P205
+	* foo2hbpl2: Bpp = ResX / ResY
+
+2013-07-31	Rick Richardson <rick.richardson@comcast.net>
+	* foo2zjs-pstops: Fix for FreeBSD
+
+2013-06-18	Rick Richardson <rick.richardson@comcast.net>
+	* Fix typo's in manual pages.
+
+2013-05-27	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db/printer/Samsung-CLX-3185.xml: fix typo
+
+	    "Please move "FileDevice Yes" on line 139 of /etc/cups/cupsd.conf
 2013-03-21	Rick Richardson <rick.richardson@comcast.net>
 	* Makefile: change cups target /etc/cups/cups-files.conf if it exists.
 	    "Please move "FileDevice Yes" on line 139 of /etc/cups/cupsd.conf
@@ -11,7 +28,7 @@
 	* printer-profile: add dell 1355.
 	* foo2hbpl2: merge in changes from Peter Korf <peter@niendo.de>
 	* hbpldecode: swap yellow and cyan
-	* New Printers: Fuji Xerox DocuPrint CP205
+	* New Printers: Fuji Xerox DocuPrint CM205
 	* hbpldecode: implement -d option
 
 2013-03-02	Rick Richardson <rick.richardson@comcast.net>

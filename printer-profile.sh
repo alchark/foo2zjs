@@ -14,7 +14,7 @@ DESCRIPTION
     Prints a test chart, uses the ColorMunki instrument to scan it in, then
     computes an ICM profile using the Argyll Color Management System.
 
-    Manuf is "sam".  Model is "clp-300" or "clp-315".
+    Manuf is "sam".  Model is "clp-300", "clp-315", "clp-325" or "clp-365".
     Manuf is "hp".  Model is "2600" or "cp1215" or "cp1025".
     Manuf is "km".  Model is "1600" or "2300" or "2530".
     Manuf is "dell". Model is "1355".
@@ -38,7 +38,7 @@ BUGS
     gs 8.64 and before has problems with 32-bit machines and color profile
     data.  Don't use!
 
-    You need Argyll_V1.3.2 or later in $ARGYLL_BIN.
+    You need Argyll_V1.5.1 or later in $ARGYLL_BIN.
 
 SEE ALSO
     http://www.xritephoto.com/html/colormunkisplash.htm
@@ -89,6 +89,7 @@ ARGYLL_VER=1.3.3
 ARGYLL_VER=1.3.4
 ARGYLL_VER=1.3.5
 ARGYLL_VER=1.5.0
+ARGYLL_VER=1.5.1
 ARGYLL_ROOT=$HOME/src/Argyll_V${ARGYLL_VER}
 ARGYLL_REF=$ARGYLL_ROOT/ref
 ARGYLL_BIN=$ARGYLL_ROOT/bin
@@ -193,8 +194,12 @@ sam*)
 	WRAPPER="foo2qpdl-wrapper $RES_r -z0 -c -C10 -Gnone.icm"
 	OUT="nc 192.168.1.11 9100 < xxx.prn"
 	;;
-    *315*)
+    *315*|*325*)
 	WRAPPER="foo2qpdl-wrapper $RES_r -z2 -c -C10 -Gnone.icm"
+	OUT="root cp xxx.prn /dev/usb/lp1"
+	;;
+    *365*)
+	WRAPPER="foo2qpdl-wrapper $RES_r -z3 -c -C10 -Gnone.icm"
 	OUT="root cp xxx.prn /dev/usb/lp1"
 	;;
     *)

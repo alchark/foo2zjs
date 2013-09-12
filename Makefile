@@ -1403,6 +1403,7 @@ ppd:
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
 	    *6015*|*1355*)	driver=foo2hbpl2;; \
 	    *CM205*)		driver=foo2hbpl2;; \
+	    *P205*)		driver=foo2hbpl2;; \
 	    *)                  driver=foo2zjs;; \
 	    esac; \
 	    echo $$driver - $$printer; \
@@ -1446,6 +1447,7 @@ man-osx-hotplug:
 	    -e "s@\$${URLQPDL}@$(URLQPDL)@" \
 	    -e "s@\$${URLSLX}@$(URLSLX)@" \
 	    -e "s@\$${URLHC}@$(URLHC)@" \
+	    -e "s@\$${URLHBPL}@$(URLHBPL)@" \
 	    -e "s/\$${MODpage}/$$MODpage/" \
 	    -e "s/\$${MODver}/$$MODver/"
 	chmod -w $*.1
