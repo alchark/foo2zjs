@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='$Id: foo2zjs-pstops.sh,v 1.20 2012/02/23 21:19:46 rick Exp $'
+VERSION='$Id: foo2zjs-pstops.sh,v 1.21 2013/07/31 17:41:47 rick Exp $'
 
 PROGNAME="$0"
 
@@ -47,8 +47,9 @@ debug() {
 #	Use gsed instead of sed on Mac OSX
 #
 case `uname -s` in
-Darwin)	sed=gsed;;
-*)	sed=sed;;
+Darwin)		sed=gsed;;
+FreeBSD)	sed=gsed;;
+*)		sed=sed;;
 esac
 
 #

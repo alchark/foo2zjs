@@ -7,13 +7,15 @@
     </execution>
     <comments> <en>
 
-	This is a driver developed for the Dell 1355 and the
-	Xerox WorkCentre 6015 Multifunction Printer (printer only).
+	This is a driver developed for the Dell 1355, Xerox WorkCentre
+	6015 Multifunction Printer (printer only), Fuji Xerox Docuprint
+	CM205 (printer only), and the Fuji Xerox DocuPrint P205.
 
     </en> </comments>
     <printers>
 	<printer><id>printer/Dell-1355</id></printer>
 	<printer><id>printer/Xerox-WorkCentre_6015</id></printer>
 	<printer><id>printer/Fuji_Xerox-DocuPrint_CM205</id></printer>
+	<printer><id>printer/Fuji_Xerox-DocuPrint_P205</id></printer>
     </printers>
 </driver>

@@ -71,9 +71,9 @@ by Rick Richardson 07/31/11
     and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper):
 
     $ wget http://www.openprinting.org/download/foomatic/foomatic-filters-4.0.12.tar.gz
-    $ tar zxvf foomatic-filters-4.0.5.tar.gz
+    $ tar zxvf foomatic-filters-4.0.12.tar.gz
     $ cd foomatic-filters-4.0.5
-    $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr
+    $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr --disable-dbus
     $ make
     $ sudo make install
 

@@ -33,6 +33,11 @@
 	    </en></comments>
 	    <ev_shortname> <en>Color</en> </ev_shortname>
 	    <ev_driverval>-c</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+		    <make>Fuji Xerox</make> <model>DocuPrint P205</model>
+		</constraint>
+	    </constraints>
 	</enum_val>
     </enum_vals>
 </option>

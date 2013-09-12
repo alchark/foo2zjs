@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hbpl2-wrapper.in,v 1.3 2013/03/03 17:05:03 rick Exp $'
+VERSION='$Id: foo2hbpl2-wrapper.in,v 1.4 2013/08/06 23:22:25 rick Exp $'
 
 #
 # Printer Notes:
@@ -327,9 +327,9 @@ esac
 #	Validate Resolution
 #
 case "$RES" in
-#600x600)	;;
+600x600)	;;
 1200x600)	;;
-#1200x1200)	;;
+1200x1200)	;;
 #2400x600)	;;
 *)		error "Illegal resolution $RES";;
 esac

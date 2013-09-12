@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Xerox-WorkCentre_6015-foo2hbpl2.ppd'
+*% You may save this file as 'Fuji_Xerox-DocuPrint_P205-foo2hbpl2.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -28,16 +28,16 @@
 *LanguageVersion: English 
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2HBPL.PPD"
-*Manufacturer:	"Xerox"
-*Product:	"(WorkCentre 6015)"
+*Manufacturer:	"Fuji Xerox"
+*Product:	"(DocuPrint P205)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Xerox WorkCentre 6015"
-*ShortNickName: "Xerox WorkCentre 6015 foo2hbpl2"
-*NickName:      "Xerox WorkCentre 6015 Foomatic/foo2hbpl2 (recommended)"
+*ModelName:     "Fuji Xerox DocuPrint P205"
+*ShortNickName: "Fuji Xerox D.Pr. P205 foo2hbpl2"
+*NickName:      "Fuji Xerox DocuPrint P205 Foomatic/foo2hbpl2 (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -77,7 +77,7 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Xerox-WorkCentre_6015 foo2hbpl2
+*FoomaticIDs: Fuji_Xerox-DocuPrint_P205 foo2hbpl2
 *FoomaticRIPCommandLine: "foo2hbpl2-wrapper %A"
 
 *OpenGroup: General/General
@@ -92,18 +92,18 @@
 *FoomaticRIPOptionSetting Quality=normal: "  "
 *CloseUI: *Quality
 
-*OpenUI *ColorMode/Color Mode: PickOne
-*FoomaticRIPOption ColorMode: enum CmdLine A
-*OrderDependency: 120 AnySetup *ColorMode
-*DefaultColorMode: Monochrome
-*ColorMode Color/Color: "%% FoomaticRIPOptionSetting: ColorMode=Color"
-*FoomaticRIPOptionSetting ColorMode=Color: "-c "
-*ColorMode Monochrome/Monochrome: "%% FoomaticRIPOptionSetting: ColorMode=Monochrome"
+*FoomaticRIPOption ColorMode: enum CmdLine A 120
 *FoomaticRIPOptionSetting ColorMode=Monochrome: " "
-*CloseUI: *ColorMode
 
-*FoomaticRIPOption Resolution: enum CmdLine A 130
-*FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*OpenUI *Resolution/Resolution: PickOne
+*FoomaticRIPOption Resolution: enum CmdLine A
+*OrderDependency: 130 AnySetup *Resolution
+*DefaultResolution: 600x600dpi
+*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
+*Resolution 1200x1200dpi/1200x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x1200dpi"
+*FoomaticRIPOptionSetting Resolution=1200x1200dpi: "-r1200x1200 "
+*CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -331,20 +331,6 @@
 *halftone wts/Well Tempered Screens (best): "%% FoomaticRIPOptionSetting: halftone=wts"
 *FoomaticRIPOptionSetting halftone=wts: " -qwts  "
 *CloseUI: *halftone
-
-*OpenUI *ICM/ICM Color Profile: PickOne
-*FoomaticRIPOption ICM: enum CmdLine A
-*OrderDependency: 300 AnySetup *ICM
-*DefaultICM: none
-*ICM none/No ICM color correction: "%% FoomaticRIPOptionSetting: ICM=none"
-*FoomaticRIPOptionSetting ICM=none: "-C10 -Gnone.icm "
-*ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
-*FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
-*ICM testing2/File testing2.icm: "%% FoomaticRIPOptionSetting: ICM=testing2"
-*FoomaticRIPOptionSetting ICM=testing2: "-C10 -Gtesting2.icm "
-*ICM testing3/File testing3.icm: "%% FoomaticRIPOptionSetting: ICM=testing3"
-*FoomaticRIPOptionSetting ICM=testing3: "-C10 -Gtesting3.icm "
-*CloseUI: *ICM
 
 *CloseGroup: Adjustment
 
