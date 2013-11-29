@@ -2,7 +2,7 @@
     <comments>
 	<en>
 	This option controls which .ICM file to use for color correction.
-	ICM files are stored in directory /usr/share/foo2qpdl/icm/.
+	ICM files are stored in directory /usr/share/foo2hbpl/icm/.
 	</en>
     </comments>
     <arg_longname> <en>ICM Color Profile</en> </arg_longname>
@@ -29,6 +29,18 @@
 	<constraint sense="true">
 	    <make>Dell</make>
 	    <model>1355</model>
+	    <driver>foo2hbpl2</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Dell</make>
+	    <model>C1760</model>
+	    <driver>foo2hbpl2</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Dell</make>
+	    <model>C1765</model>
 	    <driver>foo2hbpl2</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
 	</constraint>
