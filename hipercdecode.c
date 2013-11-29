@@ -1,5 +1,5 @@
 /*
- * $Id: hipercdecode.c,v 1.6 2011/01/31 22:33:55 rick Exp $
+ * $Id: hipercdecode.c,v 1.7 2013/11/18 15:09:04 rick Exp $
  */
 
 /*b
@@ -81,16 +81,14 @@ usage(void)
 {
     fprintf(stderr,
 "Usage:\n"
-"	okidecode [options] < oki-file\n"
+"	hipercdecode [options] < oki-file\n"
 "\n"
-"	Decode a ZjStream into human readable form.\n"
+"	Decode a HIPERC into human readable form.  Uncompressed and JBIG\n"
+"	are handled.\n"
 "\n"
-"	A ZjStream is the printer langauge used by some Minolta/QMS and\n"
-"	HP printers, such as the 2300DL and LJ-1000.\n"
-"\n"
-"	More information on Zenographics ZjStream can be found at:\n"
-"\n"
-"		http://ddk.zeno.com\n"
+"	A HIPERC stream is the printer langauge used by the Oki Data C310dn,\n"
+"	C3100, C3200n, C3250n, C3300n, C3400n, C5100n, C5250n, C5500n, C5600,\n"
+"	and the C5800n printers.\n"
 "\n"
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"

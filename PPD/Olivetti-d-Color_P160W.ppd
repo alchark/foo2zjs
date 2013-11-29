@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Olivetti-d-Color_160W-foo2hiperc.ppd'
+*% You may save this file as 'Olivetti-d-Color_P160W-foo2hiperc.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -29,15 +29,15 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2HIPE.PPD"
 *Manufacturer:	"Olivetti"
-*Product:	"(d-Color 160W)"
+*Product:	"(d-Color P160W)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Olivetti d-Color 160W"
-*ShortNickName: "Olivetti d-Col. 160W foo2hiperc"
-*NickName:      "Olivetti d-Color 160W Foomatic/foo2hiperc (recommended)"
+*ModelName:     "Olivetti d-Color P160W"
+*ShortNickName: "Olivetti d-Co. P160W foo2hiperc"
+*NickName:      "Olivetti d-Color P160W Foomatic/foo2hiperc (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -142,7 +142,7 @@
 *FoomaticRIPOptionSetting PageSize=Legal: "-p3 "
 *PageSize Legal13/Legal 13: "%% FoomaticRIPOptionSetting: PageSize=Legal13"
 *FoomaticRIPOptionSetting PageSize=Legal13: "-p4 "
-*PageSize Legal135/Legal 135: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
+*PageSize Legal135/Legal 13.5: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
 *FoomaticRIPOptionSetting PageSize=Legal135: "-p14 "
 *CloseUI: *PageSize
 
@@ -161,7 +161,7 @@
 *PageRegion Executive/Executive: "%% FoomaticRIPOptionSetting: PageSize=Executive"
 *PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
 *PageRegion Legal13/Legal 13: "%% FoomaticRIPOptionSetting: PageSize=Legal13"
-*PageRegion Legal135/Legal 135: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
+*PageRegion Legal135/Legal 13.5: "%% FoomaticRIPOptionSetting: PageSize=Legal135"
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
@@ -177,7 +177,7 @@
 *ImageableArea Executive/Executive: "9 12.00 513 744.00"
 *ImageableArea Legal/Legal: "9 12.00 603 996.00"
 *ImageableArea Legal13/Legal 13: "9 12.00 603 996.00"
-*ImageableArea Legal135/Legal 135: "9 12.00 603 996.00"
+*ImageableArea Legal135/Legal 13.5: "9 12.00 603 996.00"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
@@ -192,7 +192,7 @@
 *PaperDimension Executive/Executive: "522 756"
 *PaperDimension Legal/Legal: "612 1008"
 *PaperDimension Legal13/Legal 13: "612 1008"
-*PaperDimension Legal135/Legal 135: "612 1008"
+*PaperDimension Legal135/Legal 13.5: "612 1008"
 
 *OpenUI *InputSlot/Media Source: PickOne
 *FoomaticRIPOption InputSlot: enum CmdLine A
@@ -413,6 +413,12 @@
 *FoomaticRIPOptionSetting ICM=OKC310H2: "-C10 -GOKC310H2.icm "
 *ICM OKC310H3/OKC310H3.icm - 600dpi C310dn: "%% FoomaticRIPOptionSetting: ICM=OKC310H3"
 *FoomaticRIPOptionSetting ICM=OKC310H3: "-C10 -GOKC310H3.icm "
+*ICM OKC810H1/OKC810H1.icm - 600dpi Multi C810: "%% FoomaticRIPOptionSetting: ICM=OKC810H1"
+*FoomaticRIPOptionSetting ICM=OKC810H1: "-C10 -GOKC810H1.icm "
+*ICM OKC810H2/OKC810H2.icm - 1200dpi C810: "%% FoomaticRIPOptionSetting: ICM=OKC810H2"
+*FoomaticRIPOptionSetting ICM=OKC810H2: "-C10 -GOKC810H2.icm "
+*ICM OKC810H3/OKC810H3.icm - 600dpi C810: "%% FoomaticRIPOptionSetting: ICM=OKC810H3"
+*FoomaticRIPOptionSetting ICM=OKC810H3: "-C10 -GOKC810H3.icm "
 *ICM testing/File testing.icm: "%% FoomaticRIPOptionSetting: ICM=testing"
 *FoomaticRIPOptionSetting ICM=testing: "-C10 -Gtesting.icm "
 *CloseUI: *ICM

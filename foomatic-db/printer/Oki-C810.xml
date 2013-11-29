@@ -1,6 +1,6 @@
-<printer id="printer/Olivetti-d-Color_P160W">
-    <make>Olivetti</make>
-    <model>d-Color P160W</model>
+<printer id="printer/Oki-C810">
+    <make>Oki</make>
+    <model>C810</model>
     <mechanism>
 	<laser/>
 	<color/>
@@ -33,7 +33,7 @@
 	    <partno>43034804</partno>
 	</consumables>
     </mechanism>
-    <url>http://my.okidata.com/pp-C5800n.nsf</url>
+    <url>http://www.oki.com.au/printers/colour-printers/a3-printers/detail.aspx?prodid=tcm:132-3855-16</url>
     <lang>
 	<proprietary/>
 	<!--no pjl--><!--No "text"?-->
@@ -45,9 +45,9 @@
     <!--not "unverified"--><!--no "contrib_url"-->
     <comments> <en>
 
-	The Oki C5800 / Olivetti d-Color P160W is a networked color laser
-	printer with a 2006 street price of $399 USD.  This printer is
-	supported by the foo2hiperc open software printer driver.
+	The Oki C810 is a networked color laser printer with a
+	2013 street price of $870 USD.  This printer is supported
+	by the foo2hiperc open software printer driver.
 
     </en> </comments>
 </printer>

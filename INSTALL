@@ -81,6 +81,7 @@ and firmware.  Select the model number for your printer:
 
     $ ./getweb 301      # Get Oki C301dn .ICM files
     $ ./getweb c310     # Get Oki C310dn .ICM files
+    $ ./getweb c810     # Get Oki C810 .ICM files
     $ ./getweb 3200     # Get Oki C3200 .ICM files
     $ ./getweb 3300     # Get Oki C3300 .ICM files
     $ ./getweb 3400     # Get Oki C3400 .ICM files
@@ -239,7 +240,7 @@ FEDORA NOTES
 
 UBUNTU NOTES
 ------------
-    Install build-essential, tix, foomatic-filters, groff FIRST:
+    Install build-essential, tix, foomatic-filters, groff, dc FIRST:
 	$ sudo apt-get install build-essential tix foomatic-filters groff dc
 
 	$ wget -O foo2zjs.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz

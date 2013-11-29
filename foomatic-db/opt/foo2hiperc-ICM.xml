@@ -20,14 +20,6 @@
 	    <driver>foo2hiperc</driver>
 	    <arg_defval>ev/foo2hiperc-ICM-3200-600</arg_defval>
 	</constraint>
-<!--
-	<constraint sense="true">
-	    <make>Samsung</make>
-	    <model>CLP-300</model>
-	    <driver>foo2hiperc</driver>
-	    <arg_defval>ev/foo2hiperc-ICM-300</arg_defval>
-	</constraint>
--->
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2hiperc-ICM-none">
@@ -72,6 +64,24 @@
 	    <ev_longname> <en>OKC310H3.icm - 600dpi C310dn</en> </ev_longname>
 	    <ev_shortname> <en>OKC310H3</en> </ev_shortname>
 	    <ev_driverval>-C10 -GOKC310H3.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hiperc-ICM-810-600M">
+	    <ev_longname> <en>OKC810H1.icm - 600dpi Multi C810</en> </ev_longname>
+	    <ev_shortname> <en>OKC810H1</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC810H1.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hiperc-ICM-810-1200">
+	    <ev_longname> <en>OKC810H2.icm - 1200dpi C810</en> </ev_longname>
+	    <ev_shortname> <en>OKC810H2</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC810H2.icm</ev_driverval>
+	</enum_val>
+
+	<enum_val id="ev/foo2hiperc-ICM-810-600">
+	    <ev_longname> <en>OKC810H3.icm - 600dpi C810</en> </ev_longname>
+	    <ev_shortname> <en>OKC810H3</en> </ev_shortname>
+	    <ev_driverval>-C10 -GOKC810H3.icm</ev_driverval>
 	</enum_val>
 
 	<enum_val id="ev/foo2hiperc-ICM-3200-600">

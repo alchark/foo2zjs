@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.32 2011/06/09 13:35:06 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.33 2013/11/21 22:44:05 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -164,8 +164,9 @@ usage(void)
 "-m media          Media code to send to printer [%d]\n"
 "                    0=plain 1=labels 2=transparency\n"
 "-p paper          Paper code to send to printer [%d]\n"
-"                    1=A4, 2=letter, 3=legal, 5=A5, 6=B5, 7=A6, 8=envMonarch\n"
-"                    9=envDL, 10=envC5, 11=env#10, 12=executive, 13=env#9\n"
+"                    1=A4, 2=letter, 3=legal, 5=A5, 6=B5, 7=A6, 8=envMonarch,\n"
+"                    9=envDL, 10=envC5, 11=env#10, 12=executive, 13=env#9,\n"
+"                    14=legal135, 15=A3\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
