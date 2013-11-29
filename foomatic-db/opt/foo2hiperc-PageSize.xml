@@ -84,9 +84,61 @@
 	</enum_val>
 -->
 	<enum_val id="ev/foo2hiperc-PageSize-14">
-	    <ev_longname> <en>Legal 135</en> </ev_longname>
+	    <ev_longname> <en>Legal 13.5</en> </ev_longname>
 	    <ev_shortname> <en>Legal135</en> </ev_shortname>
 	    <ev_driverval>14</ev_driverval>
+	</enum_val>
+	<enum_val id="ev/foo2hiperc-PageSize-15">
+	    <ev_longname> <en>A3</en> </ev_longname>
+	    <ev_shortname> <en>A3</en> </ev_shortname>
+	    <ev_driverval>15</ev_driverval>
+	    <constraints>
+		<constraint sense="false">
+		    <make>Oki</make><model>C301dn</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C310dn</model>
+		</constraint>
+		<constraint sense="true">
+		    <make>Oki</make><model>C810</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C3100</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C3200</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C3300</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C3400</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C3530 MFP</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5100</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5200</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5500</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5600</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5650</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C5800</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Olivetti</make><model>d-Color P160W</model>
+		</constraint>
+	    </constraints>
 	</enum_val>
 	<enum_val id="ev/foo2hiperc-PageSize-Custom">
 	    <ev_longname> <en>Custom</en> </ev_longname>

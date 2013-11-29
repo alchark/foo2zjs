@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Oki-C5650-foo2hiperc.ppd'
+*% You may save this file as 'Oki-C810-foo2hiperc.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -29,15 +29,15 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2HIPE.PPD"
 *Manufacturer:	"Oki"
-*Product:	"(C5650)"
+*Product:	"(C810)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Oki C5650"
-*ShortNickName: "Oki C5650 foo2hiperc"
-*NickName:      "Oki C5650 Foomatic/foo2hiperc (recommended)"
+*ModelName:     "Oki C810"
+*ShortNickName: "Oki C810 foo2hiperc"
+*NickName:      "Oki C810 Foomatic/foo2hiperc (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -77,7 +77,7 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Oki-C5650 foo2hiperc
+*FoomaticIDs: Oki-C810 foo2hiperc
 *FoomaticRIPCommandLine: "foo2hiperc-wrapper %A"
 
 *OpenGroup: General/General
@@ -122,6 +122,8 @@
 *FoomaticRIPOptionSetting PageSize=Letter: "-p2 "
 *PageSize A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *FoomaticRIPOptionSetting PageSize=A4: "-p1 "
+*PageSize A3/A3: "%% FoomaticRIPOptionSetting: PageSize=A3"
+*FoomaticRIPOptionSetting PageSize=A3: "-p15 "
 *PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *FoomaticRIPOptionSetting PageSize=A5: "-p5 "
 *PageSize A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
@@ -151,6 +153,7 @@
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
+*PageRegion A3/A3: "%% FoomaticRIPOptionSetting: PageSize=A3"
 *PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion A6/A6: "%% FoomaticRIPOptionSetting: PageSize=A6"
 *PageRegion B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
@@ -167,6 +170,7 @@
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "9 12.00 603 780.00"
 *ImageableArea A4/A4: "9 12.00 586 830.00"
+*ImageableArea A3/A3: "9 12.00 833 1179.00"
 *ImageableArea A5/A5: "9 12.00 411 583.00"
 *ImageableArea A6/A6: "9 12.00 288 408.00"
 *ImageableArea B5jis/B5 (JIS): "9 12.00 509 715.00"
@@ -182,6 +186,7 @@
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
+*PaperDimension A3/A3: "842 1191"
 *PaperDimension A5/A5: "420 595"
 *PaperDimension A6/A6: "297 420"
 *PaperDimension B5jis/B5 (JIS): "518 727"

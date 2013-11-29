@@ -1397,6 +1397,7 @@ ppd:
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
 	    *C301*|*C310*)      driver=foo2hiperc;; \
+	    *C810*)             driver=foo2hiperc;; \
 	    *C3[1234]00*)       driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
 	    *C5[12568][05]0*)   driver=foo2hiperc;; \
@@ -1751,7 +1752,8 @@ webicm: \
 	icm/okic301.tar.gz \
 	icm/okic310.tar.gz \
 	icm/okic3200.tar.gz \
-	icm/okic3400.tar.gz icm/okic5600.tar.gz
+	icm/okic3400.tar.gz icm/okic5600.tar.gz \
+	icm/okic810.tar.gz
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/dl2300.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/km2430.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/hp-cp1025.tar.gz;
@@ -1768,6 +1770,7 @@ webicm: \
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic810.tar.gz;
 
 icm/dl2300.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ CP*.icm DL*.icm
@@ -1801,6 +1804,8 @@ icm/okic3400.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ C3400*.icm
 icm/okic5600.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OK56*.icm
+icm/okic810.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ OKC810*.icm
 
 webfw:	firmware/sihp1000.tar.gz \
 	firmware/sihp1005.tar.gz \

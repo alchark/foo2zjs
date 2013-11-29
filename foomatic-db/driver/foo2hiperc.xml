@@ -16,6 +16,7 @@
     <printers>
 	<printer><id>printer/Oki-C301dn</id></printer>
 	<printer><id>printer/Oki-C310dn</id></printer>
+	<printer><id>printer/Oki-C810</id></printer>
 	<printer><id>printer/Oki-C3100</id></printer>
 	<printer><id>printer/Oki-C3200</id></printer>
 	<printer><id>printer/Oki-C3300</id></printer>
