@@ -35,12 +35,3 @@ Description: printer driver for ZjStream-based printers
  foo2hp, foo2lava, foo2oak, foo2qpdl, foo2slx, foo2xqx, foo2zjs.
  .
  The psutils package is needed to enable n-up printing support.
-
-Package: foo2zjs
-Depends: printer-driver-foo2zjs, ${misc:Depends}
-Architecture: all
-Section: oldlibs
-Priority: extra
-Description: transitional dummy package for foo2zjs printer driver
- This is a transitional dummy package to transition to uniformly named
- printer-driver-foo2zjs.
