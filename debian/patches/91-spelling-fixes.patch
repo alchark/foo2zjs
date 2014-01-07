@@ -2,6 +2,7 @@ Description: Fix various spelling errors:
  precission
  langauge
  similiar
+ supress
 Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2014-01-07
 --- a/icc2ps/cmsio1.c
@@ -107,7 +108,7 @@ Last-Update: 2014-01-07
  .SH COMMAND LINE OPTIONS
 --- a/oakdecode.c
 +++ b/oakdecode.c
-@@ -96,7 +96,7 @@
+@@ -96,12 +96,12 @@
  "\n"
  "	Decode an Oak Tech. OAKT printer stream into human readable form.\n"
  "\n"
@@ -116,6 +117,12 @@ Last-Update: 2014-01-07
  "\n"
  "Options:\n"
  "       -d basename Basename of .pbm file for saving decompressed planes\n"
+ "       -r basename Basename of .jbg file for saving raw planes\n"
+-"       -i          Supress display of image records\n"
++"       -i          Suppress display of image records\n"
+ "       -o          Print file offsets\n"
+ "       -D lvl      Set Debug level [%d]\n"
+     , Debug
 --- a/opldecode.1in
 +++ b/opldecode.1in
 @@ -14,7 +14,7 @@
