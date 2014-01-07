@@ -1,3 +1,11 @@
+foo2zjs (20131225dfsg0-2) unstable; urgency=low
+
+  * Split printer-driver-foo2zjs into -common to let all
+    arch-independent files be shared across architectures
+  * Fix leftover 'supress' typo in oakdecode
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 07 Jan 2014 17:44:09 +0100
+
 foo2zjs (20131225dfsg0-1) unstable; urgency=low
 
   * New 20131325 upstream release.
