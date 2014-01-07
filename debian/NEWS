@@ -4,7 +4,7 @@ foo2zjs (20090908dfsg-2) unstable; urgency=low
   /lib/firmware/hp/ instead of upstream /usr/share/foo2zjs/firmware/
   (thus solving bug #517957).
 
-  The upstream /usr/bin/getweb and /usr/sbin/hplj1000 scripts have
+  The upstream /usr/bin/getweb and /lib/udev/hplj1000 scripts have
   been patched to use this new location.  foo2zjs postinst should
   automatically handle the migration of every firmware present in
   the old location to the new one.
