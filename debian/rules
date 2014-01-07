@@ -23,7 +23,7 @@ override_dh_install:
 	# Ghostscript rendering the pages significantly faster
 	perl -p -i -e 's/dNOPAUSE/dNOPAUSE -dNOINTERPOLATE/g' $(CURDIR)/debian/tmp/usr/bin/*-wrapper
 	# Legacy dh_install
-	dh_install --fail-missing -Xusb_printerid -Xhplj10xx.rules -XINSTALL -XINSTALL.OSX -XCOPYING
+	dh_install --fail-missing -Xusb_printerid -Xhplj10xx.rules -XINSTALL -XINSTALL.OSX -XCOPYING -XChangeLog
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# usb_printerid is Linux-specific
 	install -D -m 644 usb_printerid $(CURDIR)/debian/printer-driver-foo2zjs/usr/bin/usb_printerid

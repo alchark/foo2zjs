@@ -38,7 +38,6 @@ usr/bin/slxdecode
 usr/bin/xqxdecode
 usr/bin/zjsdecode
 usr/lib/cups/filter/command2foo2lava-pjl
-usr/share/doc/printer-driver-foo2zjs/ChangeLog
 usr/share/doc/printer-driver-foo2zjs/manual.pdf
 usr/share/doc/printer-driver-foo2zjs/README
 usr/share/foo2qpdl/crd/black-text.ps
