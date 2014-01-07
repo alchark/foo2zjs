@@ -5,7 +5,6 @@ hplj1020.desktop usr/share/applications/
 hplj1020_icon.png usr/share/pixmaps
 PPD/* usr/share/ppd/foo2zjs/
 usr/bin/arm2hpdl
-usr/bin/command2foo2lava-pjl
 usr/bin/foo2hiperc
 usr/bin/foo2hiperc-wrapper
 usr/bin/foo2hbpl2
@@ -37,7 +36,7 @@ usr/bin/qpdldecode
 usr/bin/slxdecode
 usr/bin/xqxdecode
 usr/bin/zjsdecode
-usr/lib/cups/filter/command2foo2lava-pjl
+usr/bin/command2foo2lava-pjl usr/lib/cups/filter/
 usr/share/doc/printer-driver-foo2zjs/manual.pdf
 usr/share/doc/printer-driver-foo2zjs/README
 usr/share/foo2qpdl/crd/black-text.ps
