@@ -19,9 +19,9 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
 
 Package: printer-driver-foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${ubuntu:mscompress}, foomatic-filters, dc
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${ubuntu:mscompress}, foomatic-filters, dc, printer-driver-foo2zjs-common (>= ${source:Version})
 Recommends: wget, unzip, ${debian:mscompress}, cups, cups-client
-Suggests: psutils, hannah-foo2zjs, tk8.4, tix
+Suggests: psutils, hannah-foo2zjs
 Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~)
 Replaces: foo2zjs (<< 20111023dfsg0-1~)
 Description: printer driver for ZjStream-based printers
@@ -35,3 +35,20 @@ Description: printer driver for ZjStream-based printers
  foo2hp, foo2lava, foo2oak, foo2qpdl, foo2slx, foo2xqx, foo2zjs.
  .
  The psutils package is needed to enable n-up printing support.
+
+Package: printer-driver-foo2zjs-common
+Architecture: all
+Depends: ${misc:Depends}
+Recommends: tix, tk
+Enhances: printer-driver-foo2zjs (>= ${source:Version})
+Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~), printer-driver-foo2zjs (<< 20131225dfsg0-2~)
+Replaces: foo2zjs (<< 20111023dfsg0-1~), printer-driver-foo2zjs (<< 20131225dfsg0-2~)
+Description: printer driver for ZjStream-based printers - common files
+ foo2zjs is an open source printer driver for printers that use the
+ Zenographics ZjStream wire protocol for their print data, such as the
+ Minolta magicolor 2200/2300/2430 DL, Minolta Color PageWorks/Pro L and
+ HP LaserJet 1000/1005/1018/1020/1022. These printers are often
+ erroneously referred to as "winprinters" or "GDI printers".
+ .
+ This package contains the architecture-independent files for
+ printer-driver-foo2zjs.
