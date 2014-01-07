@@ -72,7 +72,7 @@ box;
 9	env DL	10	env C5
 11	env #10	12	executive
 13	env #9	14	legal 13.5"
-15	A3	-	-
+15	A3	16	tabloid/ledger
 .TE
 .TP
 .BI \-n\0 copies
@@ -132,6 +132,11 @@ l l.
 2	only send X clipping amount
 3	send both X and Y clipping amounts
 .TE
+.TP
+.BI \-z\0 model
+Model is 0 for non-A3 sized printers,
+and 1 for A3/Tabloid/Ledger sized printers (i.e. C810, etc.).
+The default is 0.
 .TP
 .BI \-Z\0 compressed
 Use uncompressed (0) or compressed (1) JBIG data.
