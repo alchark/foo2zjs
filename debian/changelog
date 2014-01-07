@@ -1,3 +1,29 @@
+foo2zjs (20131225dfsg0-1) unstable; urgency=low
+
+  * New 20131325 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  
+  * Refresh all patches
+  * Add patch to avoid the implicit declaration of swab() in cmsio1.c
+  * Update Makefile patch to push CPPFLAGS and LDFLAGS to all needed
+    places
+  * Move getweb from usr/bin/ to usr/sbin/ as it needs to be run by root
+    (as patched by Debian)
+  * Stop installing the upstream changelog twice
+  * Update 90-manpages patch to fix more errors and all hyphen-as-minus-
+    sign occurences
+  * Update 91-spelling-fixes to fix more occurences of 'langauge' or
+    'similiar'
+  * Move hplj1000 and all linked scripts from /usr/sbin/ to /lib/udev as
+    they are called by the package udev rules-file
+  * Add lintian override for /lib/firmware/hp empty directory
+  * Only ship command2foo2lava-pjl in cups filters
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 07 Jan 2014 15:43:17 +0100
+
 foo2zjs (20131118dfsg0-1) unstable; urgency=low
 
   * New 20131118 upstream release.
