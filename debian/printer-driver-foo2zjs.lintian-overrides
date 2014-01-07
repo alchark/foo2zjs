@@ -1,0 +1,2 @@
+# That's on purpose, getweb can go fetch these from the web
+package-contains-empty-directory lib/firmware/hp/
