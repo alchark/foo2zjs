@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2xqx-wrapper.in,v 1.40 2011/01/14 23:21:39 rick Exp $'
+VERSION='$Id: foo2xqx-wrapper.in,v 1.41 2013/12/25 21:00:11 rick Exp $'
 
 #
 # Printer Notes:
@@ -33,6 +33,7 @@ VERSION='$Id: foo2xqx-wrapper.in,v 1.40 2011/01/14 23:21:39 rick Exp $'
 # HP LaserJet P2014n	- 
 # HP LaserJet M1005 MFP	- 
 # HP LaserJet M1120 MFP	- 
+# HP LaserJet Pro M1212nf MFP	- 
 #
 
 PROGNAME="$0"

@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.111 2013/11/20 00:31:19 rick Exp $'
+VERSION='$Id: getweb.in,v 1.112 2013/12/25 21:00:11 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -415,6 +415,7 @@ getone() {
 	    *M1005*|*M1120*)	driver=foo2xqx;;
 	    *P1[05]0[56]*)	driver=foo2xqx;;
 	    *P2014*)		driver=foo2xqx;;
+	    *M1212*)		driver=foo2xqx;;
 	    *1500*|*OAKT*)	driver=foo2oak;;
 	    *1600*|*2600*)	driver=foo2hp;;
 	    *1215*)		driver=foo2hp;;

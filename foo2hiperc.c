@@ -48,7 +48,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hiperc.c,v 1.33 2013/11/21 22:44:05 rick Exp $";
+static char Version[] = "$Id: foo2hiperc.c,v 1.35 2013/12/01 20:13:58 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -166,7 +166,7 @@ usage(void)
 "-p paper          Paper code to send to printer [%d]\n"
 "                    1=A4, 2=letter, 3=legal, 5=A5, 6=B5, 7=A6, 8=envMonarch,\n"
 "                    9=envDL, 10=envC5, 11=env#10, 12=executive, 13=env#9,\n"
-"                    14=legal135, 15=A3\n"
+"                    14=legal135, 15=A3, 16=tabloid/ledger\n"
 "-n copies         Number of copies [%d]\n"
 "-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]\n"
 "-s source         Source code to send to printer [%d]\n"
@@ -683,10 +683,10 @@ start_doc(FILE *ofp)
 		};
     char	*strpaper[] =
 		{
-		    "CUSTOM", "A4", "LETTER", "LEGAL", "LEGAL13",
-		    "A5", "B5", "A6", "MONARCH", "DL",
-		    "C5", "COM10", "EXECUTIVE", "COM9",
-		    "LEGAL135"
+		    /*0*/	"CUSTOM", "A4", "LETTER", "LEGAL", "LEGAL13",
+		    /*5*/	"A5", "B5", "A6", "MONARCH", "DL",
+		    /*10*/	"C5", "COM10", "EXECUTIVE", "COM9", "LEGAL135",
+		    /*15*/	"A3", "TABLOID"
 		};
     #define STRARY(X, A) \
             ((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \

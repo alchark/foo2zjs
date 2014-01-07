@@ -16,6 +16,10 @@
 	    <driver>foo2hiperc</driver>
 	    <arg_defval>ev/foo2hiperc-Duplex-1</arg_defval>
 	</constraint>
+	<constraint sense="true">
+	    <driver>foo2hiperc-z1</driver>
+	    <arg_defval>ev/foo2hiperc-Duplex-1</arg_defval>
+	</constraint>
     </constraints>
     <enum_vals>
 	<enum_val id="ev/foo2hiperc-Duplex-1">
