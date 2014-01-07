@@ -1,5 +1,5 @@
 debian/printer-driver-foo2zjs.ppd-updater /usr/share/cups/ppd-updaters/
-getweb usr/bin
+getweb usr/sbin
 hplj1000 usr/sbin/
 hplj1020.desktop usr/share/applications/
 hplj1020_icon.png usr/share/pixmaps
