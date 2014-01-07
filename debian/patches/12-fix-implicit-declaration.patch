@@ -1,0 +1,13 @@
+Description: Include unistd.h to make sure the swab function is not implicitely declared.
+Author: Didier Raboud <odyx@debian.org>
+Last-Update: 2014-01-07
+--- a/icc2ps/cmsio1.c
++++ b/icc2ps/cmsio1.c
+@@ -71,6 +71,7 @@
+ #undef STEP
+ }
+ #else
++#include <unistd.h>
+ #define xswab swab
+ #endif
+ 
