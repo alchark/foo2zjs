@@ -18,23 +18,24 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hiperc-wrapper.in,v 1.31 2013/11/21 22:44:04 rick Exp $'
+VERSION='$Id: foo2hiperc-wrapper.in,v 1.34 2013/12/01 20:25:17 rick Exp $'
 
 #
 # Printer Notes:
 #
-# Oki Data C301dn
-# Oki Data C310dn
-# Oki Data C3100
-# Oki Data C3200
-# Oki Data C3300
-# Oki Data C3400
-# Oki Data C5100
-# Oki Data C5250
-# Oki Data C5500
-# Oki Data C5600
-# Oki Data C5800
-# Olivetti d-Color P160W
+# Oki Data C301dn		-z0
+# Oki Data C310dn		-z0
+# Oki Data C3100		-z0
+# Oki Data C3200		-z0
+# Oki Data C3300		-z0
+# Oki Data C3400		-z0
+# Oki Data C5100		-z0
+# Oki Data C5250		-z0
+# Oki Data C5500		-z0
+# Oki Data C5600		-z0
+# Oki Data C5800		-z0
+# Olivetti d-Color P160W	-z0
+# Oki C810			-z1	uses A3/tabloid paper!
 #
 
 PROGNAME="$0"
@@ -73,7 +74,7 @@ Normal Options:
 -p paper          Paper code [$PAPER]
                     1=A4, 2=letter, 3=legal, 5=A5, 6=B5, 7=A6, 8=envMonarch,
                     9=envDL, 10=envC5, 11=env#10, 12=executive, 13=env#9,
-                    14=legal135, 15=A3
+                    14=legal135, 15=A3, 16=tabloid/ledger
 -n copies         Number of copies [$COPIES]
 -r <xres>x<yres>  Set device resolution in pixels/inch [$RES]
 -s source         Source code to send to printer [$SOURCE]
@@ -92,6 +93,7 @@ Printer Tweaking Options:
 -P                Do not output START_PLANE codes.  May be needed by some
                   monochrome-only printers.
 -X padlen         Add extra zero padding to the end of BID segments [16]
+-z model          Model: 0=no A3 (usual), 1=A3 (C810 etc.) [$MODEL]
 -Z compressed     Use uncompressed (0) or compressed (1) data [0]
 
 Color Tweaking Options:
@@ -468,6 +470,10 @@ Custom*)
 15|a3|A3)	PAPER=15;	paper=a3;        XDIM="19842"; YDIM="7016"
 		set_clipping 150 100	150 100
 		;;
+16|ledger|tabloid)
+		PAPER=16;	paper=tabloid;   XDIM="20400"; YDIM="6600"
+		set_clipping 150 100	150 100
+		;;
 *)		error "Unimplemented paper code $PAPER";;
 esac
 # e.g. /usr/share/ghostscript/7.07/lib/gs_statd.ps
@@ -480,6 +486,29 @@ case "$RES" in
 1200x1200)	YDIM=`expr $YDIM \* 2`;;
 600x1200)	XDIM=`expr $XDIM / 2`; YDIM=`expr $YDIM \* 2`;;
 esac
+
+ROTATE90=0
+case "$MODEL" in
+1)	# A3 or 11x17 printer
+    case "$paper" in
+    a3)			# A3, do not rotate
+	;;
+    ledger|tabloid)	# ledger, do not rotate
+	;;
+    *)	# Rotate all others
+	ROTATE90=1
+        tmp=$XDIM
+	XDIM=$YDIM
+	YDIM=$tmp
+	case "$RES" in
+	600x600)        YDIMpoints=`dc -e "6k $YDIM 600 / 72 *p"`;;
+	1200x600)       YDIMpoints=`dc -e "6k $YDIM 1200 / 72 *p"`;;
+	2400x600)       YDIMpoints=`dc -e "6k $YDIM 2400 / 72 *p"`;;
+	esac
+    esac
+    ;;
+esac
+
 DIM="${XDIM}x${YDIM}"
 
 #
@@ -576,17 +605,27 @@ else
 fi
 
 CRDBASE="$PREFIX/share/foo2hiperc/crd"
-case "$MODEL" in
-    0)	model=CLP-300;;
-    1)	model=CLP-600;;
-esac
-case "$RES" in
-    600x600)	SCREEN=$model-600x600cms2;;
-    1200x600)	SCREEN=$model-1200x600cms2;;
-    1200x1200)	SCREEN=$model-1200x1200cms2;;
-esac
+if false; then
+    case "$MODEL" in
+	0)	model=CLP-300;;
+	1)	model=CLP-600;;
+    esac
+    case "$RES" in
+	600x600)	SCREEN=$model-600x600cms2;;
+	1200x600)	SCREEN=$model-1200x600cms2;;
+	1200x1200)	SCREEN=$model-1200x1200cms2;;
+    esac
+fi
 
 PSTOPS_OPTS="-n"
+if [ $ROTATE90 = 1 ]; then
+    case $paper in
+    a3)		;;
+    ledger)	;;
+    tabloid)	;;
+    *)		PSTOPS_OPTS="$PSTOPS_OPTS -h $YDIMpoints -r";;
+    esac
+fi
 
 case "$COLORMODE" in
 0|"")

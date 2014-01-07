@@ -13,8 +13,12 @@
     </arg_execution>
     <constraints>
 	<constraint sense="true">
-	<driver>foo2hiperc</driver>
-	<arg_defval>ev/foo2hiperc-InputSlot-0</arg_defval>
+	    <driver>foo2hiperc</driver>
+	    <arg_defval>ev/foo2hiperc-InputSlot-0</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <driver>foo2hiperc-z1</driver>
+	    <arg_defval>ev/foo2hiperc-InputSlot-0</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>

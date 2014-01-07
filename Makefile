@@ -1378,6 +1378,7 @@ ppd:
 	    *M1005*|*M1120*)    driver=foo2xqx;; \
 	    *P1[05]0[5678]*)    driver=foo2xqx;; \
 	    *P2014*)            driver=foo2xqx;; \
+	    *M1212*)            driver=foo2xqx;; \
 	    *1500*|*OAKT*)      driver=foo2oak;; \
 	    *1018*|*102[02]*)	driver=foo2zjs-z1;; \
 	    *P2035*)		driver=foo2zjs-z1;; \
@@ -1397,7 +1398,7 @@ ppd:
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
 	    *C301*|*C310*)      driver=foo2hiperc;; \
-	    *C810*)             driver=foo2hiperc;; \
+	    *C810*)             driver=foo2hiperc-z1;; \
 	    *C3[1234]00*)       driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
 	    *C5[12568][05]0*)   driver=foo2hiperc;; \

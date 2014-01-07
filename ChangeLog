@@ -1,3 +1,14 @@
+2013-12-25	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: HP LaserJet Pro M1212nf MFP using the foo2xqx driver.
+
+2013-12-01	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hiperc: clean up man pages
+
+2013-11-29	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hiperc-wrapper, foomatic and PPD stuff:
+	    add -z1 for Oki C810 so everything will be
+	    rotated 90 degrees EXCEPT paper==a3 OR paper==ledger/tabloid
+
 2013-11-18	Rick Richardson <rick.richardson@comcast.net>
 	* New Printer: Oki C810 with A3 size paper.
 

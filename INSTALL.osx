@@ -66,13 +66,13 @@ by Rick Richardson 07/31/11
 	ghostscript                    @9.02           print/ghostscript
 
 4) Browse to:
-    http://www.openprinting.org/download/foomatic/foomatic-filters-4.0.12.tar.gz
+    http://www.openprinting.org/download/foomatic/foomatic-filters-4.0.17.tar.gz
 
     and install the Foomatic-RIP (foomatic-RIP and foomatic-gswrapper):
 
-    $ wget http://www.openprinting.org/download/foomatic/foomatic-filters-4.0.12.tar.gz
-    $ tar zxvf foomatic-filters-4.0.12.tar.gz
-    $ cd foomatic-filters-4.0.5
+    $ wget http://www.openprinting.org/download/foomatic/foomatic-filters-4.0.17.tar.gz
+    $ tar zxvf foomatic-filters-4.0.17.tar.gz
+    $ cd foomatic-filters-4.0.17
     $ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" ./configure --prefix=/usr --disable-dbus
     $ make
     $ sudo make install
