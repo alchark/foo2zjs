@@ -14,7 +14,7 @@ Improve getweb also for installing the firmware
  #
  # PLEASE don't remove the copyright statements.  They should 
 @@ -12,6 +14,13 @@
- VERSION='$Id: getweb.in,v 1.111 2013/11/20 00:31:19 rick Exp $'
+ VERSION='$Id: getweb.in,v 1.112 2013/12/25 21:00:11 rick Exp $'
  
  WGETOPTS="--passive-ftp -q"
 +ARM2HPDL="/usr/bin/arm2hpdl"
@@ -253,7 +253,7 @@ Improve getweb also for installing the firmware
  	;;
  
      xPPD)
-@@ -434,23 +477,6 @@
+@@ -435,23 +478,6 @@
  		# | sed -e 's/\(^\*NickName.*\)"/\1 (foo2zjs recommended)"/'
  	done
  	;;
@@ -277,7 +277,7 @@ Improve getweb also for installing the firmware
      "")
  	usage
  	;;
-@@ -465,6 +491,10 @@
+@@ -466,6 +492,10 @@
      usage
  fi
  
@@ -288,7 +288,7 @@ Improve getweb also for installing the firmware
  for i in $*
  do
      case "$1" in
-@@ -508,3 +538,6 @@
+@@ -509,3 +539,6 @@
  	;;
      esac
  done
