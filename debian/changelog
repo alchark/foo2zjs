@@ -1,3 +1,10 @@
+foo2zjs (20131225dfsg0-3) unstable; urgency=low
+
+  * Fix the patch to avoid the implicit declaration of swab() in
+    cmsio1.c
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 08 Jan 2014 12:52:44 +0100
+
 foo2zjs (20131225dfsg0-2) unstable; urgency=low
 
   * Split printer-driver-foo2zjs into -common to let all
