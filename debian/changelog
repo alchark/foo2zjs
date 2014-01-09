@@ -1,3 +1,11 @@
+foo2zjs (20131225dfsg0-4) unstable; urgency=low
+
+  * Correct the name of the pyppd-compressed PPD set to correspond to
+    the earlier ppd-updater driver name, thanks to Till Kamppeter
+  * Let printer-driver-foo2zjs-common Recommend printer-driver-foo2zjs
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 09 Jan 2014 22:32:17 +0100
+
 foo2zjs (20131225dfsg0-3) unstable; urgency=low
 
   * Fix the patch to avoid the implicit declaration of swab() in
