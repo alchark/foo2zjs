@@ -39,7 +39,7 @@ Description: printer driver for ZjStream-based printers
 Package: printer-driver-foo2zjs-common
 Architecture: all
 Depends: ${misc:Depends}
-Recommends: tix, tk
+Recommends: tix, tk, printer-driver-foo2zjs (>= ${source:Version})
 Enhances: printer-driver-foo2zjs (>= ${source:Version})
 Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~), printer-driver-foo2zjs (<< 20131225dfsg0-2~)
 Replaces: foo2zjs (<< 20111023dfsg0-1~), printer-driver-foo2zjs (<< 20131225dfsg0-2~)
