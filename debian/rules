@@ -31,6 +31,8 @@ override_dh_install:
 		-XCOPYING \
 		-XChangeLog \
 		-Xcups/filter/command2foo2lava-pjl 
+
+ifneq (,$(filter printer-driver-foo2zjs, $(shell dh_listpackages)))
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	# usb_printerid is Linux-specific
 	install -D -m 644 usb_printerid $(CURDIR)/debian/printer-driver-foo2zjs/usr/bin/usb_printerid
@@ -42,6 +44,9 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
 	# /etc/devd/hplj10xx.conf is kFreeBSD-specific
 	install -D -m 644 hplj10xx.conf $(CURDIR)/debian/printer-driver-foo2zjs/etc/devd/hplj10xx.conf
 endif
+endif
+
+ifneq (,$(filter printer-driver-foo2zjs-common, $(shell dh_listpackages)))
 	### patches/20-PDF-input-data-in-PPDs.patch
 	# Add "*cupsFilter" line to accept PDF input data to the PPDs and compress them
 	( cd $(CURDIR)/debian/printer-driver-foo2zjs-common/usr/share/ppd/foo2zjs; \
@@ -52,7 +57,7 @@ endif
 	# Correct the name of the pyppd-compressed PPD set to correspond to the earlier ppd-updater driver name
 	mv $(CURDIR)/debian/printer-driver-foo2zjs-common/usr/lib/cups/driver/foo2zjs-common \
 	   $(CURDIR)/debian/printer-driver-foo2zjs-common/usr/lib/cups/driver/foo2zjs
-
+endif
 	# Install the apport hook on Ubuntu and derivatives
 ifeq ($(derives_from_ubuntu),yes)
 	install -D -m 644 debian/ubuntu/apport-hook.py $(CURDIR)/debian/printer-driver-foo2zjs/usr/share/apport/package-hooks/source_foo2zjs.py
