@@ -1,3 +1,11 @@
+foo2zjs (20131225dfsg0-5) unstable; urgency=low
+
+  * Add dh_listpackage package conditionals to fix arch-only FTBFS
+  * Add lintian override for manpages not shipped in the same binary
+    package
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 10 Jan 2014 10:12:49 +0100
+
 foo2zjs (20131225dfsg0-4) unstable; urgency=low
 
   * Correct the name of the pyppd-compressed PPD set to correspond to
