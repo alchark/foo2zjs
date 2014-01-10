@@ -1,3 +1,4 @@
+debian/printer-driver-foo2zjs-common.ppd-updater /usr/share/cups/ppd-updaters/
 getweb usr/sbin
 hplj1000 lib/udev
 hplj1020.desktop usr/share/applications/

@@ -1,4 +1,3 @@
-debian/printer-driver-foo2zjs.ppd-updater /usr/share/cups/ppd-updaters/
 usr/bin/arm2hpdl
 usr/bin/foo2hiperc
 usr/bin/foo2hbpl2
