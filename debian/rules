@@ -53,10 +53,8 @@ ifneq (,$(filter printer-driver-foo2zjs-common, $(shell dh_listpackages)))
 	  find -name '*.ppd.gz' -exec gunzip {} \; ; \
 	  find -name '*.ppd' -exec perl -p -i -e 's,^\*cupsFilter:\s*\"application/vnd.cups-postscript\s+0\s+foomatic-rip\",*cupsFilter: "application/vnd.cups-postscript 100 foomatic-rip"\n*cupsFilter: "application/vnd.cups-pdf 0 foomatic-rip",' {} \; ; \
 	)
-	dh_pyppd
 	# Correct the name of the pyppd-compressed PPD set to correspond to the earlier ppd-updater driver name
-	mv $(CURDIR)/debian/printer-driver-foo2zjs-common/usr/lib/cups/driver/foo2zjs-common \
-	   $(CURDIR)/debian/printer-driver-foo2zjs-common/usr/lib/cups/driver/foo2zjs
+	dh_pyppd --archive-filename=foo2zjs
 endif
 	# Install the apport hook on Ubuntu and derivatives
 ifeq ($(derives_from_ubuntu),yes)
