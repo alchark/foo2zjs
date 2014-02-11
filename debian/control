@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 9),
  time,
  pyppd (>= 1.0.2-1~),
  libjbig-dev
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Git: git://anonscm.debian.org/collab-maint/foo2zjs.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
