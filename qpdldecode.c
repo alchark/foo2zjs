@@ -1,5 +1,5 @@
 /*
- * $Id: qpdldecode.c,v 1.40 2013/01/10 20:01:44 rick Exp $
+ * $Id: qpdldecode.c,v 1.41 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -82,7 +82,7 @@ usage(void)
 "\n"
 "	Decode a QPDL stream into human readable form.\n"
 "\n"
-"	A Quick Page Description Langauge (QPDL) is the printer langauge"
+"	A Quick Page Description Langauge (QPDL) is the printer language"
 "	used by some Samsung printers, such as the CLP-600n.\n"
 "\n"
 "	Also known as SPLC."

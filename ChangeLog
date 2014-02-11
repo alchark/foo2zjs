@@ -1,3 +1,21 @@
+2014-02-09	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Xerox WorkCentre 3045 MFP using the foo2hbpl2 driver.
+
+2014-01-26	Rick Richardson <rick.richardson@comcast.net>
+	* foo2qpdl et al: with -z3 (e.g. CLP-365) you can adjust
+	    Brightness and Contrast for monochrome prints, and you can adjust
+	    Saturation, Cyan-Red, Magenta-Green, Yellow-Blue Balances.
+	* foo2hp: somewhere a bug in foomatic (probably 4.x) crept in
+	    so foo2hp-AlignCMYK.xml was only processing one option instead
+	    of three options!  Split the file into foo2hp-AlignC.xml,
+	    foo2hp-AlignM.xml, and foo2hp-AlignY.xml.
+
+2014-01-24	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Dell C1765nf/nfw using the foo2hbpl2 driver.
+
+2014-01-08	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Epson AcuLaser M1400 using the foo2hbpl2 driver.
+
 2013-12-25	Rick Richardson <rick.richardson@comcast.net>
 	* New Printer: HP LaserJet Pro M1212nf MFP using the foo2xqx driver.
 

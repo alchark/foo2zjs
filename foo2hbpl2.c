@@ -6,9 +6,13 @@ This program converts pbm (B/W) images and 1-bit-per-pixel cmyk images
 is some information about the ZJS format at http://ddk.zeno.com.
 
 With this utility, you can print to some Xerox and Dell, such as these:
-    - Xerox WorkCentre 6015		B/W and color
     - Dell 1355cnw			B/W and color
+    - Dell C1765nf/nfw MFP		B/W and color
+    - Epson AcuLaser_M1400		B/W
     - Fuji Xerox DocuPrint CM205	B/W and color
+    - Fuji Xerox DocuPrint P205		B/W
+    - Xerox WorkCentre 3045		B/W
+    - Xerox WorkCentre 6015		B/W and color
 
 AUTHORS
 This program began life as Robert Szalai's 'pbmtozjs' program.  It
@@ -50,7 +54,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.27 2013/08/07 00:37:12 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.29 2014/02/09 18:32:40 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -110,6 +110,12 @@ Username string to send to printer.
 These are the options used to customize the operation of \fBfoo2qpdl\fP
 for a particular printer.
 .TP
+.BI \-a\0 b,c,s,cr,mg,yb
+Color Adjust: brightness, contrast, saturation, cyan-red balance,
+magenta-green balance, and yellow-blue balance from 0 to 100.
+The default is 50,50,50,50,50,50.
+This only works when the -z3 (e.g. CLP-365) model is set!
+.TP
 .BI \-u\0 xoff x yoff
 Set the offset of the start of the printable region from the
 upper left corner, in pixels [0x0].

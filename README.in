@@ -128,6 +128,19 @@ GENERAL
 	- Oki C5100n/C5150n/C5200n
 	- Oki C5500n/C5600n/C5800n
 
+    FOO2HBPL2
+    ---------
+    foo2hbpl2 converts Ghostscript pbmraw, bitcmyk, or pksmraw output  for‐
+    mats  to  monochrome  or  color HBPL version 2 streams.
+
+	- Dell 1355 Multifunction Color Printer
+	- Dell C1765 Multifunction Color Printer 
+	- Epson AcuLaser M1400
+	- Fuji Xerox DocuPrint CM205 Multifunction Color Printer
+	- Fuji Xerox DocuPrint P205 
+	- Xerox WorkCentre 3045 Multifunction Monochrome Printer 
+	- Xerox WorkCentre 6015 Multifunction Color Printer 
+
 Please read the manual pages for more details on the program operation.
 
     $ acroread manual.pdf

@@ -1,5 +1,5 @@
 /*
- * $Id: zjsdecode.c,v 1.83 2010/12/09 19:29:01 rick Exp $
+ * $Id: zjsdecode.c,v 1.84 2014/01/24 19:25:48 rick Exp $
  */
 
 /*b
@@ -84,7 +84,7 @@ usage(void)
 "\n"
 "	Decode a ZjStream into human readable form.\n"
 "\n"
-"	A ZjStream is the printer langauge used by some Minolta/QMS and\n"
+"	A ZjStream is the printer language used by some Minolta/QMS and\n"
 "	HP printers, such as the 2300DL and LJ-1000.\n"
 "\n"
 "	More information on Zenographics ZjStream can be found at:\n"

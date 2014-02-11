@@ -1,5 +1,5 @@
 /*
- * $Id: oakdecode.c,v 1.41 2011/08/07 20:06:44 rick Exp $
+ * $Id: oakdecode.c,v 1.42 2014/01/24 19:25:47 rick Exp $
  *
  * Work in progress decoder for Oak Tech. JBIG streams (HP1500)
  *
@@ -96,7 +96,7 @@ usage(void)
 "\n"
 "	Decode an Oak Tech. OAKT printer stream into human readable form.\n"
 "\n"
-"	OAKT is the printer langauge used by the HP 1500 printers.\n"
+"	OAKT is the printer language used by the HP 1500 printers.\n"
 "\n"
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"
