@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.34 2011/10/10 22:56:38 rick Exp $
+ * $Id: lavadecode.c,v 1.35 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -81,7 +81,7 @@ usage(void)
 "\n"
 "	Decode a LAVAFLOW stream into human readable form.\n"
 "\n"
-"	A LAVAFLOW stream is the printer langauge used by some Konica\n"
+"	A LAVAFLOW stream is the printer language used by some Konica\n"
 "	Minolta printers, such as the magicolor 2530 DL and 2490 MF.\n"
 "\n"
 "\n"

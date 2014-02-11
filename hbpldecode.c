@@ -1,5 +1,5 @@
 /*
- * $Id: hbpldecode.c,v 1.47 2013/06/26 21:01:29 rick Exp $
+ * $Id: hbpldecode.c,v 1.48 2014/01/24 19:36:32 rick Exp $
  */
 
 /*b
@@ -88,7 +88,7 @@ usage(void)
 "\n"
 "	Version one is an HBPL stream with Huffman RLE data. This data is\n"
 "	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
-"	cp105b, and similiar printers. These printers are unsupported.\n"
+"	cp105b, and similar printers. These printers are unsupported.\n"
 "\n"
 "	Version two is an HBPL stream with JBIG encoded data. This data\n"
 "	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"

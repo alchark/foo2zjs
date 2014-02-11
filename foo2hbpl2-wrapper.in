@@ -18,14 +18,18 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hbpl2-wrapper.in,v 1.4 2013/08/06 23:22:25 rick Exp $'
+VERSION='$Id: foo2hbpl2-wrapper.in,v 1.6 2014/02/09 18:32:40 rick Exp $'
 
 #
 # Printer Notes:
 #
-# Dell 1355 Multifunction Color Printer 
-# Xerox WorkCentre 6015 Multifunction Color Printer 
+# Dell 1355 Multifunction Color Printer
+# Dell C1765 Multifunction Color Printer 
+# Epson AcuLaser M1400
 # Fuji Xerox DocuPrint CM205 Multifunction Color Printer
+# Fuji Xerox DocuPrint P205 
+# Xerox WorkCentre 3045 Multifunction Monochrome Printer 
+# Xerox WorkCentre 6015 Multifunction Color Printer 
 #
 
 PROGNAME="$0"

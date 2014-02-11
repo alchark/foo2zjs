@@ -676,6 +676,7 @@ install-foo:
 	rm -f $(FOODB)/opt/foo2zjs-Nup.xml
 	rm -f $(FOODB)/opt/foo2zjs-NupOrient.xml
 	rm -f $(FOODB)/opt/foo2*-Quality.xml
+	rm -f $(FOODB)/opt/foo2hp-AlignCMYK.xml
 	rm -f $(FOODB)/printer/KonicaMinolta*.xml
 	#
 	# Install current database files
@@ -1404,8 +1405,10 @@ ppd:
 	    *C5[12568][05]0*)   driver=foo2hiperc;; \
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
 	    *6015*|*1355*)	driver=foo2hbpl2;; \
+	    *C1765*)		driver=foo2hbpl2;; \
 	    *CM205*)		driver=foo2hbpl2;; \
-	    *P205*)		driver=foo2hbpl2;; \
+	    *P205*|*3045*)	driver=foo2hbpl2;; \
+	    *M1400*)		driver=foo2hbpl2;; \
 	    *)                  driver=foo2zjs;; \
 	    esac; \
 	    echo $$driver - $$printer; \

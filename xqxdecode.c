@@ -1,5 +1,5 @@
 /*
- * $Id: xqxdecode.c,v 1.18 2010/04/30 17:33:03 rick Exp $
+ * $Id: xqxdecode.c,v 1.19 2014/01/24 19:25:48 rick Exp $
  */
 
 /*b
@@ -82,7 +82,7 @@ usage(void)
 "\n"
 "	Decode a XQX stream into human readable form.\n"
 "\n"
-"	A XQX stream is the printer langauge used by some HP LaserJet\n"
+"	A XQX stream is the printer language used by some HP LaserJet\n"
 "	printers, such as the HP LaserJet M1005 (MFP).\n"
 "\n"
 "\n"

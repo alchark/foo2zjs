@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2qpdl-wrapper.in,v 1.55 2013/04/08 20:12:02 rick Exp $'
+VERSION='$Id: foo2qpdl-wrapper.in,v 1.57 2014/01/27 02:34:29 rick Exp $'
 
 #
 # Printer Notes:
@@ -102,6 +102,7 @@ Printer Tweaking Options:
                          3=CLP-620, CLP-360, CLP-365
 
 Color Tweaking Options:
+-a parm=val       Color Adjust. "parm" is b,c,s,cr,mg,yb. "val" is 0-100
 -g gsopts         Additional options to pass to Ghostscript, such as
                   -dDITHERPPI=nnn, etc.  May appear more than once. []
 -G profile.icm    Convert profile.icm to a Postscript CRD using icc2ps and
@@ -196,6 +197,12 @@ GSOPTS=
 EXTRAPAD=
 SAVETONER=
 NUP_ORIENT=
+CA_B=50		#Color Adjust Brightness
+CA_C=50		#Color Adjust Contrast
+CA_S=50		#Color Adjust Saturation
+CA_CR=50	#Color Adjust Cyan-Red Balance
+CA_MG=50	#Color Adjust Magenta-Green Balance
+CA_YB=50	#Color Adjust Yellow-Blue Balance
 GSDEV=-sDEVICE=pbmraw
 # What mode to use if the user wants us to pick the "best" mode
 case `$GSBIN --version` in
@@ -209,9 +216,19 @@ case `$GSBIN --version` in
 *)	DEFAULTCOLORMODE=1
 	;;
 esac
-while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
+while getopts "1:23456789o:a:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Vh?" opt
 do
 	case $opt in
+	a)	case "$OPTARG" in
+		b=*|B=*)	CA_B=`echo "$OPTARG" | sed "s/^..//"`;;
+		c=*|C=*)	CA_C=`echo "$OPTARG" | sed "s/^..//"`;;
+		s=*|S=*)	CA_S=`echo "$OPTARG" | sed "s/^..//"`;;
+		cr=*|CR=*)	CA_CR=`echo "$OPTARG" | sed "s/^...//"`;;
+		mg=*|MG=*)	CA_MG=`echo "$OPTARG" | sed "s/^...//"`;;
+		yb=*|YB=*)	CA_YB=`echo "$OPTARG" | sed "s/^...//"`;;
+		*)		error "-a is not (b, c, s, cr, mg, yb)=NUM!";;
+		esac
+		;;
 	b)	GSBIN="$OPTARG";;
 	c)	COLOR=-c;;
 	d)	DUPLEX="$OPTARG";;
@@ -706,6 +723,7 @@ $PREFILTER \
     -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null) 3>&1 \
 | foo2qpdl -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
 	    -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
+	    -a$CA_B,$CA_C,$CA_S,$CA_CR,$CA_MG,$CA_YB \
 	    -J "$LPJOB" -U "$USER" \
 	    $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD -D$DEBUG
 
@@ -718,7 +736,8 @@ if [ -x /usr/bin/logger ]; then
     logger -t "$BASENAME" -p lpr.info -- \
 	"foo2qpdl -r$RES -g$DIM -p$PAPER -m$MEDIA \
 -n$COPIES -d$DUPLEX -s$SOURCE -z$MODEL $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG \
-$SAVETONER $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
+$SAVETONER -a$CA_B,$CA_C,$CA_S,$CA_CR,$CA_MG,$CA_YB \
+$BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD"
 fi
 
 #

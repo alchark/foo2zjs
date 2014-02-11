@@ -1,5 +1,5 @@
 /*
- * $Id: gipddecode.c,v 1.28 2010/06/19 13:21:26 rick Exp $
+ * $Id: gipddecode.c,v 1.29 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -92,7 +92,7 @@ usage(void)
 "	Decode Granite Image Printer Driver (GIPD) stream into human readable\n"
 "	form. Granite Systems was acquired by Monotype Imaging.\n"
 "\n"
-"	A GIPD stream is the printer langauge used by some Lexmark\n"
+"	A GIPD stream is the printer language used by some Lexmark\n"
 "	printers, such as the X500 and Dell printers, such as the 1125 MFP.\n"
 "\n"
 "Options:\n"

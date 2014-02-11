@@ -51,7 +51,13 @@
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
 	</constraint>
 	<constraint sense="false">
+	    <make>Epson</make> <model>AcuLaser M1400</model>
+	</constraint>
+	<constraint sense="false">
 	    <make>Fuji Xerox</make> <model>DocuPrint P205</model>
+	</constraint>
+	<constraint sense="false">
+	    <make>Xerox</make> <model>WorkCentre 3045</model>
 	</constraint>
     </constraints>
     <enum_vals>

@@ -1,5 +1,5 @@
 /*
- * $Id: opldecode.c,v 1.10 2010/01/30 14:04:44 rick Exp $
+ * $Id: opldecode.c,v 1.11 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -81,7 +81,7 @@ usage(void)
 "\n"
 "	Decode a Raster Object (opl) stream into human readable form.\n"
 "\n"
-"	A Raster Object stream is the printer langauge used by some Konica\n"
+"	A Raster Object stream is the printer language used by some Konica\n"
 "	Minolta printers, such as the magicolor 2480 MF.\n"
 "\n"
 "\n"
