@@ -380,7 +380,7 @@ Last-Update: 2014-01-07
  
 --- a/foo2hbpl2-wrapper.1in
 +++ b/foo2hbpl2-wrapper.1in
-@@ -36,7 +36,7 @@
+@@ -40,7 +40,7 @@
  Color correction mode [0].
  .TS
  n l .
@@ -389,7 +389,7 @@ Last-Update: 2014-01-07
  .TE
  .TP
  .BI \-d\0 duplex
-@@ -114,9 +114,9 @@
+@@ -118,9 +118,9 @@
  Orientation used for N-up.
  .TS
  l l l.
@@ -402,7 +402,7 @@ Last-Update: 2014-01-07
  .TE
  .SS Printer Tweaking Options
  These are the options used to customize the operation of \fBfoo2hbpl2\fP
-@@ -135,13 +135,13 @@
+@@ -139,13 +139,13 @@
  been tested on any other printers.
  .TP
  .BI \-L\0 mask
@@ -418,7 +418,7 @@ Last-Update: 2014-01-07
  good in most cases.
  .TS
  l l.
-@@ -167,7 +167,7 @@
+@@ -171,7 +171,7 @@
  Color correction is currently a WORK IN PROGRESS.
  .TP
  .BI \-g\0 gsopts
@@ -427,7 +427,7 @@ Last-Update: 2014-01-07
  etc.  This option may appear more than once.
  .TP
  .BI \-G\0 profile.icm
-@@ -212,7 +212,7 @@
+@@ -216,7 +216,7 @@
  .nf
  foo2hbpl2-wrapper testpage.ps > testpage.prn
  hbpl2decode < testpage.prn
@@ -436,7 +436,7 @@ Last-Update: 2014-01-07
  .fi
  .RE
  .P
-@@ -220,7 +220,7 @@
+@@ -224,7 +224,7 @@
  
  .RS
  .nf
@@ -447,7 +447,7 @@ Last-Update: 2014-01-07
  
 --- a/foo2hbpl2.1in
 +++ b/foo2hbpl2.1in
-@@ -120,7 +120,7 @@
+@@ -124,7 +124,7 @@
  lower right corner, in pixels [0x0].
  .TP
  .BI \-L\0 mask
@@ -456,7 +456,7 @@ Last-Update: 2014-01-07
  .TS
  l l.
  0	don't send any logical clipping amounts
-@@ -168,10 +168,10 @@
+@@ -172,10 +172,10 @@
  
  .RS
  .nf
@@ -471,7 +471,7 @@ Last-Update: 2014-01-07
  .fi
  .RE
  .P
-@@ -179,10 +179,10 @@
+@@ -183,10 +183,10 @@
  
  .RS
  .nf
@@ -917,8 +917,8 @@ Last-Update: 2014-01-07
  good in most cases.
  .TS
  l l.
-@@ -160,7 +160,7 @@
- Color correction is currently a WORK IN PROGRESS.
+@@ -168,7 +168,7 @@
+ This only works when the -z3 (e.g. CLP-365) model is set!
  .TP
  .BI \-g\0 gsopts
 -Additional options to pass to Ghostscript, such as -g\(lq-dDITHERPPI=nnn\(rq,
@@ -926,7 +926,7 @@ Last-Update: 2014-01-07
  etc.  This option may appear more than once.
  .TP
  .BI \-G\0 profile.icm
-@@ -205,7 +205,7 @@
+@@ -213,7 +213,7 @@
  .nf
  foo2qpdl-wrapper testpage.ps > testpage.zm
  qpdldecode < testpage.zm
@@ -935,7 +935,7 @@ Last-Update: 2014-01-07
  .fi
  .RE
  .P
-@@ -213,7 +213,7 @@
+@@ -221,7 +221,7 @@
  
  .RS
  .nf
@@ -946,7 +946,7 @@ Last-Update: 2014-01-07
  
 --- a/foo2qpdl.1in
 +++ b/foo2qpdl.1in
-@@ -119,7 +119,7 @@
+@@ -125,7 +125,7 @@
  lower right corner, in pixels [0x0].
  .TP
  .BI \-L\0 mask
@@ -955,7 +955,7 @@ Last-Update: 2014-01-07
  .TS
  l l.
  0	don't send any logical clipping amounts
-@@ -166,10 +166,10 @@
+@@ -172,10 +172,10 @@
  
  .RS
  .nf
@@ -970,7 +970,7 @@ Last-Update: 2014-01-07
  .fi
  .RE
  .P
-@@ -177,10 +177,10 @@
+@@ -183,10 +183,10 @@
  
  .RS
  .nf

@@ -149,7 +149,7 @@ Last-Update: 2014-01-07
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -833,10 +828,10 @@
+@@ -834,10 +829,10 @@
  	    fi; \
  	done
  
@@ -163,7 +163,7 @@ Last-Update: 2014-01-07
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -894,9 +889,9 @@
+@@ -895,9 +890,9 @@
  	    done; \
  	fi
  
@@ -176,7 +176,7 @@ Last-Update: 2014-01-07
  
  install-desktop:
  	#
-@@ -1028,6 +1023,7 @@
+@@ -1029,6 +1024,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -184,7 +184,7 @@ Last-Update: 2014-01-07
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1409,10 +1405,9 @@
+@@ -1412,10 +1408,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +196,7 @@ Last-Update: 2014-01-07
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1841,7 +1836,7 @@
+@@ -1844,7 +1839,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

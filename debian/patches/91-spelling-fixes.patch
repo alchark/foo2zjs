@@ -1,10 +1,8 @@
 Description: Fix various spelling errors:
  precission
- langauge
- similiar
  supress
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2014-01-07
+Last-Update: 2014-02-11
 --- a/icc2ps/cmsio1.c
 +++ b/icc2ps/cmsio1.c
 @@ -1162,7 +1162,7 @@
@@ -29,229 +27,54 @@ Last-Update: 2014-01-07
       
  	 fprintf(stderr, "\n");
       fprintf(stderr, "This program is intended to be a demo of the little cms\n"
---- a/gipddecode.1in
-+++ b/gipddecode.1in
-@@ -15,7 +15,7 @@
- decodes a Granite Image Printer Driver (GIPD) stream into human readable form.
- Granite Systems was acquired by Monotype Imaging.
- .P
--A GIPD stream is the printer langauge used by the
-+A GIPD stream is the printer language used by the
- Lexmark X500 and the Dell 1125 MFP
- printers.
+--- a/icc2ps/cmscgats.c
++++ b/icc2ps/cmscgats.c
+@@ -620,7 +620,7 @@
+         if (it8->ch == '.') {        // Decimal point
  
---- a/gipddecode.c
-+++ b/gipddecode.c
-@@ -92,7 +92,7 @@
- "	Decode Granite Image Printer Driver (GIPD) stream into human readable\n"
- "	form. Granite Systems was acquired by Monotype Imaging.\n"
- "\n"
--"	A GIPD stream is the printer langauge used by some Lexmark\n"
-+"	A GIPD stream is the printer language used by some Lexmark\n"
- "	printers, such as the X500 and Dell printers, such as the 1125 MFP.\n"
- "\n"
- "Options:\n"
---- a/hipercdecode.1in
-+++ b/hipercdecode.1in
-@@ -15,7 +15,7 @@
- decodes a HIPERC stream into human readable form.
- Uncompressed and JBIG formats are handled.
- .P
--An HIPERC stream is the printer langauge used by the
-+An HIPERC stream is the printer language used by the
- Oki Data C310dn, C3100, C3200n, C3250n, C3300n, C3400n, C5100n, C5250n, C5500n,
- C5600, and the C5800n
- printers.
---- a/hipercdecode.c
-+++ b/hipercdecode.c
-@@ -86,7 +86,7 @@
- "	Decode a HIPERC into human readable form.  Uncompressed and JBIG\n"
- "	are handled.\n"
- "\n"
--"	A HIPERC stream is the printer langauge used by the Oki Data C310dn,\n"
-+"	A HIPERC stream is the printer language used by the Oki Data C310dn,\n"
- "	C3100, C3200n, C3250n, C3300n, C3400n, C5100n, C5250n, C5500n, C5600,\n"
- "	and the C5800n printers.\n"
- "\n"
---- a/lavadecode.1in
-+++ b/lavadecode.1in
-@@ -14,7 +14,7 @@
- .B lavadecode
- decodes a LAVAFLOW stream into human readable form.
- .P
--A LAVAFLOW stream is the printer langauge used by some Konica Minolta
-+A LAVAFLOW stream is the printer language used by some Konica Minolta
- printers, such as the KM magicolor 2530 DL.
+                 double frac = 0.0;      // fraction
+-                int prec = 0;           // precission
++                int prec = 0;           // precision
  
- .SH COMMAND LINE OPTIONS
---- a/lavadecode.c
-+++ b/lavadecode.c
-@@ -81,7 +81,7 @@
- "\n"
- "	Decode a LAVAFLOW stream into human readable form.\n"
- "\n"
--"	A LAVAFLOW stream is the printer langauge used by some Konica\n"
-+"	A LAVAFLOW stream is the printer language used by some Konica\n"
- "	Minolta printers, such as the magicolor 2530 DL and 2490 MF.\n"
- "\n"
- "\n"
---- a/oakdecode.1in
-+++ b/oakdecode.1in
-@@ -14,7 +14,7 @@
- .B oakdecode
- decodes an OAKT printer stream into human readable form.
- .P
--An OAKT printer stream is the printer langauge used by the HP Color LaserJet
-+An OAKT printer stream is the printer language used by the HP Color LaserJet
- 1500 and other printers.
+                 NextCh(it8);               // Eats dec. point
  
- .SH COMMAND LINE OPTIONS
---- a/oakdecode.c
-+++ b/oakdecode.c
-@@ -96,12 +96,12 @@
- "\n"
- "	Decode an Oak Tech. OAKT printer stream into human readable form.\n"
- "\n"
--"	OAKT is the printer langauge used by the HP 1500 printers.\n"
-+"	OAKT is the printer language used by the HP 1500 printers.\n"
- "\n"
- "Options:\n"
- "       -d basename Basename of .pbm file for saving decompressed planes\n"
- "       -r basename Basename of .jbg file for saving raw planes\n"
--"       -i          Supress display of image records\n"
-+"       -i          Suppress display of image records\n"
- "       -o          Print file offsets\n"
- "       -D lvl      Set Debug level [%d]\n"
-     , Debug
---- a/opldecode.1in
-+++ b/opldecode.1in
-@@ -14,7 +14,7 @@
- .B opldecode
- decodes a Raster Object (opl) stream into human readable form.
- .P
--A Raster Object stream is the printer langauge used by some Konica Minolta
-+A Raster Object stream is the printer language used by some Konica Minolta
- printers, such as the KM magicolor 2480 MF.
+--- a/icc2ps/cmsps2.c
++++ b/icc2ps/cmsps2.c
+@@ -54,7 +54,7 @@
+   Color Space Arrays (CSA) 
+   ==================================================================================
  
- .SH COMMAND LINE OPTIONS
---- a/opldecode.c
-+++ b/opldecode.c
-@@ -81,7 +81,7 @@
- "\n"
- "	Decode a Raster Object (opl) stream into human readable form.\n"
- "\n"
--"	A Raster Object stream is the printer langauge used by some Konica\n"
-+"	A Raster Object stream is the printer language used by some Konica\n"
- "	Minolta printers, such as the magicolor 2480 MF.\n"
- "\n"
- "\n"
---- a/qpdldecode.1in
-+++ b/qpdldecode.1in
-@@ -15,7 +15,7 @@
- decodes a QPDL stream into human readable form.
- Only the JBIG compression format (0x13) is handled.
- .P
--An QPDL stream is the printer langauge used by the
-+An QPDL stream is the printer language used by the
- Samsung CLP-300, CLP-600, CLX-3160 and the
- Xerox Phaser 6110
- printers.
---- a/qpdldecode.c
-+++ b/qpdldecode.c
-@@ -82,7 +82,7 @@
- "\n"
- "	Decode a QPDL stream into human readable form.\n"
- "\n"
--"	A Quick Page Description Langauge (QPDL) is the printer langauge"
-+"	A Quick Page Description Language (QPDL) is the printer language"
- "	used by some Samsung printers, such as the CLP-600n.\n"
- "\n"
- "	Also known as SPLC."
---- a/slxdecode.1in
-+++ b/slxdecode.1in
-@@ -14,7 +14,7 @@
- .B slxdecode
- decodes a SLX stream into human readable form.
- .P
--A SLX stream is the printer langauge used by some Lexmark
-+A SLX stream is the printer language used by some Lexmark
- printers, such as the C500.
- .P
- More information on the Software Imaging K.K. SLX stream can be found at:
---- a/slxdecode.c
-+++ b/slxdecode.c
-@@ -83,7 +83,7 @@
- "\n"
- "	Decode a SLX stream into human readable form.\n"
- "\n"
--"	A SLX stream is the printer langauge used by some Lexmark\n"
-+"	A SLX stream is the printer language used by some Lexmark\n"
- "	printers, such as the C500n.\n"
- "\n"
- "	More information on SLX Stream can be found at:\n"
---- a/xqxdecode.1in
-+++ b/xqxdecode.1in
-@@ -14,7 +14,7 @@
- .B xqxdecode
- decodes a XQX stream into human readable form.
- .P
--An XQX stream is the printer langauge used by some HP LaserJet
-+An XQX stream is the printer language used by some HP LaserJet
- printers, such as the HP LaserJet M1005 (MFP).
+-  In order to obtain precission, code chooses between three ways to implement
++  In order to obtain precision, code chooses between three ways to implement
+   the device -> XYZ transform. These cases identifies monochrome profiles (often
+   implemented as a set of curves), matrix-shaper and LUT-based.
  
- .SH COMMAND LINE OPTIONS
---- a/xqxdecode.c
-+++ b/xqxdecode.c
-@@ -82,7 +82,7 @@
- "\n"
- "	Decode a XQX stream into human readable form.\n"
- "\n"
--"	A XQX stream is the printer langauge used by some HP LaserJet\n"
-+"	A XQX stream is the printer language used by some HP LaserJet\n"
- "	printers, such as the HP LaserJet M1005 (MFP).\n"
- "\n"
- "\n"
---- a/zjsdecode.1in
-+++ b/zjsdecode.1in
-@@ -14,7 +14,7 @@
- .B zjsdecode
- decodes a ZjStream into human readable form.
- .P
--A ZjStream is the printer langauge used by some Minolta/QMS and
-+A ZjStream is the printer language used by some Minolta/QMS and
- HP printers, such as the 2300DL and LJ-1000.
- .P
- More information on Zenographics ZjStream can be found at:
---- a/zjsdecode.c
-+++ b/zjsdecode.c
-@@ -84,7 +84,7 @@
- "\n"
- "	Decode a ZjStream into human readable form.\n"
- "\n"
--"	A ZjStream is the printer langauge used by some Minolta/QMS and\n"
-+"	A ZjStream is the printer language used by some Minolta/QMS and\n"
- "	HP printers, such as the 2300DL and LJ-1000.\n"
- "\n"
- "	More information on Zenographics ZjStream can be found at:\n"
---- a/hbpldecode.1in
-+++ b/hbpldecode.1in
-@@ -19,7 +19,7 @@
- .P
- Version one is an HBPL stream with Huffman RLE data.
- This data is used by the Dell 1250c,
--Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox cp105b, and similiar printers.
-+Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox cp105b, and similar printers.
- These printers are unsupported.
- .P
- Version two is an HBPL stream with JBIG encoded data. This data
---- a/hbpldecode.c
-+++ b/hbpldecode.c
-@@ -88,7 +88,7 @@
- "\n"
- "	Version one is an HBPL stream with Huffman RLE data. This data is\n"
- "	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
--"	cp105b, and similiar printers. These printers are unsupported.\n"
-+"	cp105b, and similar printers. These printers are unsupported.\n"
- "\n"
- "	Version two is an HBPL stream with JBIG encoded data. This data\n"
- "	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"
+@@ -1456,7 +1456,7 @@
+     OutputFormat = CHANNELS_SH(nChannels) | BYTES_SH(2);
+     
+     // For absolute colorimetric, the LUT is encoded as relative 
+-    // in order to preserve precission.
++    // in order to preserve precision.
+ 
+     RelativeEncodingIntent = Intent;
+     if (RelativeEncodingIntent == INTENT_ABSOLUTE_COLORIMETRIC)
+--- a/icc2ps/cmsmatsh.c
++++ b/icc2ps/cmsmatsh.c
+@@ -75,7 +75,7 @@
+         AllLinear   += cmsIsLinear(PtrW, p16 -> nSamples);
+        }
+ 
+-       // If is all linear, then supress table interpolation (this
++       // If is all linear, then suppress table interpolation (this
+        // will speed greately some trivial operations. 
+        // Return 1 if present, 0 if all linear
+        
+@@ -192,7 +192,7 @@
+         AllLinear   += cmsIsLinear(PtrW, NewMatShaper -> p16.nSamples);
+        }
+ 
+-       // If is all linear, then supress table interpolation (this
++       // If is all linear, then suppress table interpolation (this
+        // will speed greately some trivial operations
+ 
+        if (AllLinear != 3)
