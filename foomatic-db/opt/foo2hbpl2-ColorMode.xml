@@ -35,7 +35,13 @@
 	    <ev_driverval>-c</ev_driverval>
 	    <constraints>
 		<constraint sense="false">
+		    <make>Epson</make> <model>AcuLaser M1400</model>
+		</constraint>
+		<constraint sense="false">
 		    <make>Fuji Xerox</make> <model>DocuPrint P205</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Xerox</make> <model>WorkCentre 3045</model>
 		</constraint>
 	    </constraints>
 	</enum_val>

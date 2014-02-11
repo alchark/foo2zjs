@@ -60,7 +60,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2qpdl.c,v 1.51 2013/02/16 17:54:22 rick Exp $";
+static char Version[] = "$Id: foo2qpdl.c,v 1.54 2014/01/27 02:23:29 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -119,6 +119,14 @@ int	SaveToner = 0;
 int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
+int	ColorAdjust[6] = {
+	50,		/* Brightness 0..100 */
+	50,		/* Contrast 0..100 */
+	50,		/* Saturation 0..100 */
+	50,		/* Cyan-Red Balance 0..100 */
+	50,		/* Magenta-Green Balance 0..100 */
+	50		/* Yellow-Blue Balance 0..100 */
+};
 
 int	IsCUPS = 0;
 
@@ -195,6 +203,7 @@ usage(void)
 "-U username       Username string to send to printer [%s]\n"
 "\n"
 "Printer Tweaking Options:\n"
+"-a b,c,s,cr,mg,yb Color Adjust from 0 to 100 [50,50,50,50,50,50]\n"
 "-u <xoff>x<yoff>  Set offset of upper left printable in pixels [%dx%d]\n"
 "-l <xoff>x<yoff>  Set offset of lower right printable in pixels [%dx%d]\n"
 "-L mask           Send logical clipping values from -u/-l in ZjStream [%d]\n"
@@ -816,6 +825,26 @@ write_page(BIE_CHAIN **root, BIE_CHAIN **root2,
 }
 
 void
+color_adjust(FILE *ofp)
+{
+    int	i;
+
+    for (i = 0; i < 6; ++i)
+	if (ColorAdjust[i] != 50)
+	{
+	    fprintf(ofp, "@PJL SET ESCMSDOCTYPE=STANDARD\r\n");
+	    fprintf(ofp, "@PJL SET ESCMSCOLORADJUSTMENT=ON\r\n");
+	    fprintf(ofp, "@PJL SET ESCMSBRIGHTNESS=%d\r\n", ColorAdjust[0]);
+	    fprintf(ofp, "@PJL SET ESCMSCONTRAST=%d\r\n", ColorAdjust[1]);
+	    fprintf(ofp, "@PJL SET ESCMSSATURATION=%d\r\n", ColorAdjust[2]);
+	    fprintf(ofp, "@PJL SET ESCMSCRBALANCE=%d\r\n", ColorAdjust[3]);
+	    fprintf(ofp, "@PJL SET ESCMSMGBALANCE=%d\r\n", ColorAdjust[4]);
+	    fprintf(ofp, "@PJL SET ESCMSYBBALANCE=%d\r\n", ColorAdjust[5]);
+	    return;
+	}
+}
+
+void
 start_doc(FILE *ofp)
 {
     time_t	now;
@@ -847,6 +876,7 @@ start_doc(FILE *ofp)
     case MODEL_CLP620:
 	fprintf(ofp, "@PJL SET RESOLUTION=600\r\n");
 	fprintf(ofp, "@PJL SET BITSPERPIXEL=%d\r\n", ResX / 600);
+	color_adjust(ofp);
 	break;
     }
 
@@ -1666,12 +1696,27 @@ int
 main(int argc, char *argv[])
 {
     int	c;
+    int	rc;
     int i, j;
 
     while ( (c = getopt(argc, argv,
-		    "cd:g:n:m:p:r:s:tu:l:z:L:ABPJ:S:U:X:D:V?h")) != EOF)
+		    "a:cd:g:n:m:p:r:s:tu:l:z:L:ABPJ:S:U:X:D:V?h")) != EOF)
 	switch (c)
 	{
+	case 'a':
+			rc = sscanf(optarg, "%d,%d,%d,%d,%d,%d",
+			    &ColorAdjust[0], &ColorAdjust[1],
+			    &ColorAdjust[2], &ColorAdjust[3],
+			    &ColorAdjust[4], &ColorAdjust[5]);
+			if (rc != 6)
+			    error(1, "Color Adjust error: need 6 parms for "
+				"-a <b>,<c>,<s>,<cr>,<mg>,<yb>, but got '%s'\n",
+				optarg);
+			for (i = 0; i < 6; ++i)
+			    if (ColorAdjust[i] < 0 || ColorAdjust[i] > 100)
+				error(1, "Color Adjust out of range 0-100 for"
+				    " parameter %d\n", i);
+			break;
 	case 'c':	Mode = MODE_COLOR; break;
 	case 'S':	Color2Mono = atoi(optarg);
 			Mode = MODE_COLOR;

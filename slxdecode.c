@@ -1,5 +1,5 @@
 /*
- * $Id: slxdecode.c,v 1.15 2009/03/08 00:27:02 rick Exp $
+ * $Id: slxdecode.c,v 1.16 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -83,7 +83,7 @@ usage(void)
 "\n"
 "	Decode a SLX stream into human readable form.\n"
 "\n"
-"	A SLX stream is the printer langauge used by some Lexmark\n"
+"	A SLX stream is the printer language used by some Lexmark\n"
 "	printers, such as the C500n.\n"
 "\n"
 "	More information on SLX Stream can be found at:\n"

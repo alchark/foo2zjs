@@ -1,5 +1,5 @@
 /*
- * $Id: hipercdecode.c,v 1.7 2013/11/18 15:09:04 rick Exp $
+ * $Id: hipercdecode.c,v 1.8 2014/01/24 19:25:47 rick Exp $
  */
 
 /*b
@@ -86,7 +86,7 @@ usage(void)
 "	Decode a HIPERC into human readable form.  Uncompressed and JBIG\n"
 "	are handled.\n"
 "\n"
-"	A HIPERC stream is the printer langauge used by the Oki Data C310dn,\n"
+"	A HIPERC stream is the printer language used by the Oki Data C310dn,\n"
 "	C3100, C3200n, C3250n, C3300n, C3400n, C5100n, C5250n, C5500n, C5600,\n"
 "	and the C5800n printers.\n"
 "\n"

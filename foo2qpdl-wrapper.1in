@@ -159,6 +159,14 @@ model	Description
 These are the options used to control the quality of color output.
 Color correction is currently a WORK IN PROGRESS.
 .TP
+.BI \-a\0 parm=val
+Color Adjust.  \fIparm\fP is b, c, s, cr, mg, yb for
+brightness, contrast, saturation, cyan-red balance, magenta-green balance,
+and yellow-blue balance.
+\fIval\fP is 0 to 100.  Multiple options are allowed.
+The default is "-ab=50 -ac=50 -as=50 -acr=50 -amg=50 -ayb=50".
+This only works when the -z3 (e.g. CLP-365) model is set!
+.TP
 .BI \-g\0 gsopts
 Additional options to pass to Ghostscript, such as -g\(lq-dDITHERPPI=nnn\(rq,
 etc.  This option may appear more than once.
