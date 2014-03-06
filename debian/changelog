@@ -1,3 +1,17 @@
+foo2zjs (20140302dfsg0-1) unstable; urgency=medium
+
+  * New 20140302 upstream release.
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+  * Move the repository from collab-maint to printing; update the VCS-* fields
+    accordingly
+  * Refresh patches
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 06 Mar 2014 17:23:13 +0100
+
 foo2zjs (20140209dfsg0-1) unstable; urgency=medium
 
   * New 20140209 upstream release.
