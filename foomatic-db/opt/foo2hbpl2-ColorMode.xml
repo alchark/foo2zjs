@@ -38,6 +38,9 @@
 		    <make>Epson</make> <model>AcuLaser M1400</model>
 		</constraint>
 		<constraint sense="false">
+		    <make>Fuji Xerox</make> <model>DocuPrint M215</model>
+		</constraint>
+		<constraint sense="false">
 		    <make>Fuji Xerox</make> <model>DocuPrint P205</model>
 		</constraint>
 		<constraint sense="false">
