@@ -176,7 +176,7 @@ Last-Update: 2014-01-07
  
  install-desktop:
  	#
-@@ -1029,6 +1024,7 @@
+@@ -1031,6 +1026,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -184,7 +184,7 @@ Last-Update: 2014-01-07
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1412,10 +1408,9 @@
+@@ -1415,10 +1411,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +196,7 @@ Last-Update: 2014-01-07
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1844,7 +1839,7 @@
+@@ -1847,7 +1842,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c
