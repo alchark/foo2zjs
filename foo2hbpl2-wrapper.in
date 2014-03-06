@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hbpl2-wrapper.in,v 1.6 2014/02/09 18:32:40 rick Exp $'
+VERSION='$Id: foo2hbpl2-wrapper.in,v 1.7 2014/03/01 21:04:47 rick Exp $'
 
 #
 # Printer Notes:
@@ -27,6 +27,7 @@ VERSION='$Id: foo2hbpl2-wrapper.in,v 1.6 2014/02/09 18:32:40 rick Exp $'
 # Dell C1765 Multifunction Color Printer 
 # Epson AcuLaser M1400
 # Fuji Xerox DocuPrint CM205 Multifunction Color Printer
+# Fuji Xerox DocuPrint M215 
 # Fuji Xerox DocuPrint P205 
 # Xerox WorkCentre 3045 Multifunction Monochrome Printer 
 # Xerox WorkCentre 6015 Multifunction Color Printer 

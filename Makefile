@@ -957,6 +957,8 @@ install-hotplug-test:
 	    echo "      *** 	# rpm -e --nodeps system-config-printer-udev"; \
 	    echo "      *** OR (Ubuntu, Debian)"; \
 	    echo "      *** 	$$ sudo apt-get remove system-config-printer-udev"; \
+	    echo "      *** OR (SUSE)"; \
+	    echo "      *** 	# zypper rm udev-configure-printer"; \
 	    echo "      *** OR (generic linux)"; \
 	    echo "      ***	# rm -f $(LIBUDEVDIR)/*-printers.rules"; \
 	    echo "      ***"; \
@@ -1408,6 +1410,7 @@ ppd:
 	    *C1765*)		driver=foo2hbpl2;; \
 	    *CM205*)		driver=foo2hbpl2;; \
 	    *P205*|*3045*)	driver=foo2hbpl2;; \
+	    *M215*)		driver=foo2hbpl2;; \
 	    *M1400*)		driver=foo2hbpl2;; \
 	    *)                  driver=foo2zjs;; \
 	    esac; \

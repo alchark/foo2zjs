@@ -1,5 +1,5 @@
 /*
- * $Id: hbpldecode.c,v 1.48 2014/01/24 19:36:32 rick Exp $
+ * $Id: hbpldecode.c,v 1.50 2014/02/12 13:11:28 rick Exp $
  */
 
 /*b
@@ -86,14 +86,14 @@ usage(void)
 "\n"
 "	There are two versions of HBPL in existence.\n"
 "\n"
-"	Version one is an HBPL stream with Huffman RLE data. This data is\n"
+"	Version one is an HBPL stream with JBIG2 (?) data. This data is\n"
 "	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
 "	cp105b, and similar printers. These printers are unsupported.\n"
 "\n"
 "	Version two is an HBPL stream with JBIG encoded data. This data\n"
 "	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"
-"	and the Dell 1355c. These printers are supported by foo2hbpl2-wrapper\n"
-"	et al.\n"
+"	Dell 1355c, and similar printers. These printers are supported by\n"
+"	foo2hbpl2-wrapper et al.\n"
 "\n"
 "	Both versions can be decoded by hbpldecode.\n"
 "\n"
@@ -389,28 +389,32 @@ decode2(FILE *fp, int curOff)
 		proff(curOff);
 		printf("Yellow BIH:\n");
 		print_bih(mbuf);
-		printf("\t\t...yellow data skipped...\n");
+		printf("\t\t... %d(0x%x) of yellow data skipped...\n",
+		    offbih[0]-20, offbih[0]-20);
 		decode_image(DecFile, pageNum, 3,
 		    mbuf, mbuf+20, offbih[0]-20);
 
 		proff(curOff + offbih[0]);
 		printf("Magenta BIH:\n");
 		print_bih(mbuf + offbih[0]);
-		printf("\t\t...magenta data skipped...\n");
+		printf("\t\t... %d(0x%x) of magenta data skipped...\n",
+		    offbih[1]-20, offbih[1]-20);
 		decode_image(DecFile, pageNum, 2,
 		    mbuf, mbuf+20+offbih[0], offbih[1]-20);
 
 		proff(curOff + offbih[0] + offbih[1]);
 		printf("Cyan BIH:\n");
 		print_bih(mbuf + offbih[0] + offbih[1]);
-		printf("\t\t...cyan data skipped...\n");
+		printf("\t\t... %d(0x%x) of cyan data skipped...\n",
+		    offbih[2]-20, offbih[2]-20);
 		decode_image(DecFile, pageNum, 1,
 		    mbuf, mbuf+20+offbih[0]+offbih[1], offbih[2]-20);
 
 		proff(curOff + offbih[0] + offbih[1] + offbih[2]);
 		printf("Black BIH:\n");
 		print_bih(mbuf + offbih[0] + offbih[1] + offbih[2]);
-		printf("\t\t...black data skipped...\n");
+		printf("\t\t... %d(0x%x) of black data skipped...\n",
+		    offbih[3]-20, offbih[3]-20);
 		decode_image(DecFile, pageNum, 4,
 		    mbuf, mbuf+20+offbih[0]+offbih[1]+offbih[2], offbih[3]-20);
 	    }
@@ -420,7 +424,8 @@ decode2(FILE *fp, int curOff)
 		printf("Black BIH:\n");
 		// hexdump(stdout, 0, "", "", &bih[0], 20);
 		print_bih(mbuf);
-		printf("\t\t...black data skipped...\n");
+		printf("\t\t... %d(0x%x) of black data skipped...\n",
+		    offbih[3]-20, offbih[3]-20);
 		decode_image(DecFile, pageNum, 0, mbuf, mbuf+20, offbih[3]-20);
 	    }
 	    free(mbuf);
