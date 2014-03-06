@@ -14,8 +14,8 @@ Build-Depends: debhelper (>= 9),
  libjbig-dev
 Standards-Version: 3.9.5
 Homepage: http://foo2zjs.rkkda.com/
-Vcs-Git: git://anonscm.debian.org/collab-maint/foo2zjs.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/foo2zjs.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/printing/foo2zjs.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=printing/foo2zjs.git
 
 Package: printer-driver-foo2zjs
 Architecture: any
