@@ -1,3 +1,28 @@
+2014-03-22	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: another redundancy from Dave Coffin
+
+2014-03-18	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: More envelope sizes.
+
+2014-03-17	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hbpl2.c: Bug, was using A4(1) instead of letter(4) by default
+	* hbpldecode: Print out paper codes.
+
+2014-03-15	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: More changes from Dave.  Still gets 
+	    Segmentation fault (core dumped)
+	* hbpldecode: Changed unsigned to int in 2 places.  Works good!!!
+
+2014-03-13	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: Bug with no -d/-r.
+
+2014-03-13	Rick Richardson <rick.richardson@comcast.net>
+	* hbpldecode: Changes to pick apart version 1 from
+	    Dave Coffin <dcoffin@cybercom.net>
+	* I get:
+	    Decoding page 1 to page-01.ppm ...
+	    Segmentation fault (core dumped)
+
 2014-03-02	Rick Richardson <rick.richardson@comcast.net>
 	* New Printer: Fuji Xerox DocuPrint M215 MFP using the foo2hbpl2 driver.
 

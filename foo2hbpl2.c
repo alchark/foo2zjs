@@ -55,7 +55,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.30 2014/03/01 21:04:48 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.31 2014/03/17 11:24:24 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,7 +77,8 @@ int	Debug = 0;
 int	ResX = 1200;
 int	ResY = 600;
 int	Bpp = 1;
-int	PaperCode = DMPAPER_LETTER;
+#define PAPER_LETTER	4
+int	PaperCode = PAPER_LETTER;
 int	PageWidth = 1200 * 8.5;
 int	PageHeight = 600 * 11;
 int	UpperLeftX = 0;
