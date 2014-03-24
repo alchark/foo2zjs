@@ -1,9 +1,9 @@
 /*
- * $Id: hbpldecode.c,v 1.50 2014/02/12 13:11:28 rick Exp $
+ * $Id: hbpldecode.c,v 1.62 2014/03/22 20:55:26 rick Exp $
  */
 
 /*b
- * Copyright (C) 2011-2012  Rick Richardson, peter
+ * Copyright (C) 2011-2014
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * Authors: Rick Richardson <rick.richardson@comcast.net>
- * 	    Peter Korf <peter@niendo.de>
+ * 	    Peter Korf <peter@niendo.de> (HBPL version 2)
+ * 	    Dave Coffin <dcoffin@cybercom.net> (HBPL version 1)
 b*/
 
 #include <stdio.h>
@@ -86,7 +87,7 @@ usage(void)
 "\n"
 "	There are two versions of HBPL in existence.\n"
 "\n"
-"	Version one is an HBPL stream with JBIG2 (?) data. This data is\n"
+"	Version one is an HBPL stream with Huffman RLE data. This data is\n"
 "	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
 "	cp105b, and similar printers. These printers are unsupported.\n"
 "\n"
@@ -232,6 +233,8 @@ decode_image(char *filename, int pagenum, int planenum,
     char			buf[512];
     int				rc;
 
+    if (filename == 0)
+	return;
     jbg_dec_init(&s);
     rc = jbg_dec_in(&s, bih, 20, &cnt);
     if (rc == JBG_EIMPL)
@@ -448,95 +451,362 @@ decode2(FILE *fp, int curOff)
 /*
  * Version 1 stuff
  */
-int
-payload(FILE *fp, int *curoffp, unsigned char *data, int *vp)
+
+unsigned short
+get2(FILE *fp)
 {
-    int	type;
-    int subtype;
-    int len = 2;
-    int val2 = 0;
+    unsigned char buf[2];
+    if (fread (buf, 2, 1, fp))
+	return getLEword (buf);
+    return 0xffff;
+}
 
-    type = fgetc(fp);
-again:
-    subtype = fgetc(fp);
-    switch (subtype)
-    {
-    case 0xa1:
-	data[0] = fgetc(fp);
-	len += 1;
-	*vp = data[0];
-	break;
-    case 0xa2:
-	data[0] = fgetc(fp);
-	data[1] = fgetc(fp);
-	len += 2;
-	*vp = getLEword(data);
-	break;
-    case 0xa4:
-	data[0] = fgetc(fp);
-	data[1] = fgetc(fp);
-	data[2] = fgetc(fp);
-	data[3] = fgetc(fp);
-	len += 4;
-	*vp = getLEdword(data);
-	break;
-    case 0xc2: case 0xc3:
-	data[0] = fgetc(fp);
-	data[1] = fgetc(fp);
-	data[2] = fgetc(fp);
-	data[3] = fgetc(fp);
-	len += 4;
-	*vp = getLEdword(data);
-	break;
-    case 0xc4:
-	data[0] = fgetc(fp);
-	data[1] = fgetc(fp);
-	data[2] = fgetc(fp);
-	data[3] = fgetc(fp);
-	data[4] = fgetc(fp);
-	data[5] = fgetc(fp);
-	data[6] = fgetc(fp);
-	data[7] = fgetc(fp);
-	len += 8;
-	*vp = getLEdword(data);
-	val2 = getLEdword(data + 4);
-	break;
-    case 0xb1:
-	len += 1;
-	goto again;
-	break;
-    default:
-	error(1, "Unknown subtype 0x%02x\n", subtype);
-	break;
-    }
-    proff(*curoffp);
-    switch (type)
-    {
-    case 0x99:
-	printf("	%x %x: %d [PAGECNT]\n", type, subtype, *vp);
-	break;
-    case 0x9a:
-	printf("	%x %x: %dx%d [WxH]\n", type, subtype, *vp, val2);
-	break;
-    case 0x9d:
-	printf("	%x %x: 0x%x [%s]\n", type, subtype, *vp,
-			    *vp == 9 ? "Mono" : "Color");
-	break;
-    case 0xa2:
-	printf("	%x %x: %dx%d (0x%x x 0x%x) [WxH]\n",
-	    type, subtype, *vp, val2, *vp, val2);
-	break;
-    case 0xa4:
-	printf("	%x %x: %d (0x%x) bytes of data...\n",
-	    type, subtype, *vp, *vp);
-	break;
-    default:
-	printf("	%x %x: 0x%x\n", type, subtype, *vp);
-	break;
-    }
-    *curoffp += len;
+unsigned
+get4(FILE *fp)
+{
+    unsigned char buf[4];
+    if (fread (buf, 4, 1, fp))
+	return getLEdword(buf);
+    return 0xffffffff;
+}
 
-    return type;
+typedef struct stream
+{
+    unsigned char *p;
+    unsigned buf, bits;
+} STREAM;
+
+unsigned int
+getbits(STREAM *s, int nbits)
+{
+    while (s->bits < nbits)
+    {
+	s->buf = (s->buf << 8) + *s->p++;
+	s->bits += 8;
+    }
+    s->bits -= nbits;
+    return s->buf << (32-s->bits-nbits) >> (32-nbits);
+}
+
+char
+gethuff(STREAM *s, const char *huff)
+{
+    int i;
+    i = getbits(s,huff[0]) * 2;
+    s->bits += huff[0] - huff[i+2];
+    return huff[i+1];
+}
+
+/*
+   Runlengths are integers between 1 and 17057 encoded as follows:
+
+	1	00
+	2	010
+	3	011
+	4	100 0
+	5	100 1
+	6	101 00
+	7	101 01
+	8	101 10
+	9	101 11
+	10	110 0000
+	11	110 0001
+	12	110 0010
+	   ...
+	25	110 1111
+	26	111 000 000
+	27	111 000 001
+	28	111 000 010
+	29	111 000 011
+	   ...
+	33	111 000 111
+	34	111 001 000
+	   ...
+	41	111 001 111
+	42	111 010 000
+	50	111 011 0000
+	66	111 100 00000
+	98	111 101 000000
+	162	111 110 000000000
+	674	111 111 00000000000000
+	17057	111 111 11111111111111
+*/
+unsigned int
+get_len(STREAM *s)
+{
+    const short code[] = { 3,3,3,4,5,6,9,14,26,34,42,50,66,98,162,674 };
+    int i;
+
+    switch (getbits(s,3))
+    {
+    case 0:
+    case 1: s->bits++;
+	  return  1;
+    case 2: return  2;
+    case 3: return  3;
+    case 4: return  4 + getbits(s,1);
+    case 5: return  6 + getbits(s,2);
+    case 6: return 10 + getbits(s,4);
+    }
+    i = getbits(s,3);
+    return code[8+i] + getbits(s,code[i]);
+}
+
+/*
+   CMYK byte differences are encoded as follows:
+
+	 0	000
+	+1	001
+	-1	010
+	 2	011s0	s = 0 for +, 1 for -
+	 3	011s1
+	 4	100s00
+	 5	100s01
+	 6	100s10
+	 7	100s11
+	 8	101s000
+	 9	101s001
+	    ...
+	 14	101s110
+	 15	101s111
+	 16	110s00000
+	 17	110s00001
+	 18	110s00010
+	    ...
+	 46	110s11110
+	 47	110s11111
+	 48	1110s00000
+	 49	1110s00001
+	    ...
+	 78	1110s11110
+	 79	1110s11111
+	 80	1111s000000
+	 81	1111s000001
+	    ...
+	 126	1111s101110
+	 127	1111s101111
+	 128	11111110000
+*/
+signed char
+get_diff(STREAM *s)
+{
+    const short code[] = { 1,2,3,5,5,6,2,4,8,16,48,80 };
+    int i, sign;
+
+    switch (i = getbits(s, 3))
+    {
+      case 0: return 0;
+      case 1: return 1;
+      case 2: return -1;
+      case 7: i += getbits(s, 1);
+    }
+    sign = getbits(s, 1);
+    i = code[i+3] + getbits(s, code[i-3]);
+    return sign ? -i:i;
+}
+
+void
+decode1(FILE *fp, int ilen, int page, int color, int width, int height)
+{
+    static const char huff[2][68] =
+    {
+	{
+	    5,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+	    0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+	    5,2,5,2,5,2,5,2,5,2,5,2,5,2,5,2,
+	    1,3,1,3,1,3,1,3,2,5,3,5,4,5,6,5
+	},
+	{
+	    5,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,
+	    5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,
+	    0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,2,
+	    1,3,1,3,1,3,1,3,2,5,3,5,4,5,6,5
+	},
+    };
+    unsigned char *in, *stop;
+    struct stream stream[5];
+    int size, hsel = 0, bit = 0, token, raw, dir, run, r, s;
+    int off = 0, row, col;
+    union { int i; unsigned char c[4]; } *kcmy = NULL;
+    char name[512], (*rgb)[3], rotor[]="01234";
+    int dirs[] = { -1, 0, -1, 1, 2 };
+    FILE *dfp;
+
+    if (!(in = malloc (ilen))) return;
+    r = fread (in, 1, ilen, fp);
+    if (!DecFile)
+    {
+	free (in);
+	printf ("Page %d image found -- use \"-d basename\" to decode\n", page);
+	return;
+    }
+    size = width * (height+2) * 4;
+    if (!size || size / width / (height+2) != 4 || !(kcmy = malloc (size)))
+    {
+	free (in);
+	error (1, "Invalid dimensions for HBPLv1\n");
+    }
+    sprintf (name, "%s-%02d.p%cm", DecFile, page, color ? 'p':'g');
+    printf ("Decoding page %d to %s ...\n", page, name);
+
+    memset (stream, 0, sizeof stream);
+    stream[0].p = in+48;
+    for (s = 0; s < 4; s++)
+	stream[s+1].p = stream[s].p + getLEdword (in+32+s*4);
+    stop = stream[1].p;
+    for (r = 1; r < 5; r++)
+	dirs[r] -= width;
+    if (!color) dirs[4] = -8;
+  
+    memset (kcmy, -color, size);
+    rgb = (void *) kcmy;
+    kcmy += width+1;
+
+    while (stream[0].p < stop && off < height * width)
+    {
+	token = gethuff (stream, huff[hsel]);
+	switch (token)
+	{
+	case 6:
+	    hsel = !hsel;
+	    getbits (stream, 1);
+	    break;
+	case 5:
+	    for (s = 0; s <= color*3; s++)
+		kcmy[off].c[s] = kcmy[off-1].c[s] + get_diff (stream+1+s);
+	    off++;
+	    bit = 0;
+	    break;
+	default:
+	    run = get_len (stream);
+	    raw = token + bit;
+	    dir = dirs[rotor[raw]-'0'];
+	    bit = (run < 17057);
+	    while (run--)
+	    {
+		kcmy[off].i = kcmy[off+dir].i;
+		off++;
+	    }
+	    if (raw)
+	    {
+		s = rotor[raw];
+		for (r = raw; r; r--)
+		    rotor[r] = rotor[r-1];
+		rotor[0] = s;
+	    }
+	    break;
+	}
+    }
+    free (in);
+    if (!(dfp = fopen (name, "w")))
+	error (1, name);
+    fprintf (dfp, "P%d %d %d 255\n", 5+color, width, height);
+    for (off = row = 0; row < height; row++)
+    {
+	for (col = 0; col < width; col++)
+	{
+	    if (color)
+		for (s = 0; s < 3; s++)
+		    rgb[col][s] = (kcmy[off].c[0]^255) *
+				(kcmy[off].c[s+1]^255) / 255;
+	    else
+		rgb[0][col] = kcmy[off].c[0]^255;
+	    off++;
+	}
+	fwrite (rgb, color*2+1, width, dfp);
+    }
+    fclose (dfp);
+    free (rgb);
+}
+
+int
+parse1(FILE *fp, int *curOff)
+{
+    int rectype, stoptype, type, subtype;
+    int val[2] = { 0,0 }, page = 0, color = 0, width = 0, height = 0;
+    int i;
+    char *strsize[256] = {
+	/*00*/	"Letter", "Legal", "A4", "Executive", "unk",
+	/*05*/	"unk", "env#10", "envMonarch", "envC5", "envDL",
+	/*10*/	"unk", "B5", "unk", "unk", "unk",
+	/*15*/	"A5", "unk", "unk", "unk", "unk",
+	};
+    // 205 == "folio",  Sheesh
+    for (i = 0; i < 256; ++i)
+	if (strsize[i] == NULL)
+	    strsize[i] = "unk";
+    strsize[205] = "folio";	// 8.5x13
+
+    while ((proff(*curOff), (*curOff)++, rectype = fgetc(fp)) != EOF)
+    {
+	printf("RECTYPE '%c' [0x%x]:\n", rectype, rectype);
+	stoptype = 0;
+	switch (rectype)
+	{
+	case 0x41:  stoptype = 0x83;	break;
+	case 0x43:  stoptype = 0xA2;	break;
+	case 0x52:  stoptype = 0xA4;	break;
+	case 0x20:
+	case 0x51:
+	case 0x53:
+	case 0x44:  break;
+	case 0x42:  return 0;
+	default:
+		    (*curOff)--;
+		    ungetc (rectype, fp);
+		    printf ("Unknown rectype 0x%x at 0x%x(%d)\n",
+				    rectype, *curOff, *curOff);
+		    return 1;
+	}
+	if (!stoptype) continue;
+	do
+	{
+	    type = fgetc(fp);
+	    (*curOff)++;
+again:	    switch ((*curOff)++, subtype = fgetc(fp))
+	    {
+	    case 0xa1: val[0] = fgetc(fp);  (*curOff)++;   break;
+	    case 0xa2: val[0] = get2(fp);   *curOff += 2;  break;
+	    case 0xc4: val[1] = get4(fp);   *curOff += 4;
+	    case 0xc3:
+	    case 0xc2:
+	    case 0xa4: val[0] = get4(fp);   *curOff += 4;  break;
+	    case 0xb1: goto again;
+	    default: error (1, "Unknown subtype 0x%02x\n", subtype);
+	    }
+	    proff(*curOff);
+	    printf("	%x %x: ", type, subtype);
+	    switch (type)
+	    {
+	    case 0x94:
+		printf("%d [paper=%s]\n", val[0], STRARY(val[0], strsize));
+		break;
+	    case 0x99:
+		printf("%d [page]\n", val[0]);
+		page = val[0];
+		break;
+	    case 0x9d:
+		printf("0x%x [%s]\n", val[0], val[0] == 9 ? "Mono" : "Color");
+		color = val[0] != 9;
+		break;
+	    case 0x9a:
+	    case 0xa2:
+		printf("%dx%d (0x%x x 0x%x) [WxH]\n",
+			val[1], val[0], val[1], val[0]);
+		width  = val[1];
+		height = val[0];
+		break;
+	    case 0xa4:
+		printf("%d (0x%x) bytes of data...\n", val[0], val[0]);
+		decode1 (fp, val[0], page, color, width, height);
+		*curOff += val[0];
+		break;
+	    default:
+		printf("0x%x\n", val[0]);
+	    }
+	} while (type != stoptype);
+    }
+    return 0;
 }
 
 void
@@ -589,117 +859,12 @@ decode(FILE *fp)
 	goto done;
     }
 
-/*
-00000000: 41 81 a1 00 82 a2 07 00  83 a2 01 00 43 91 a1 00 | A...........C... |
-             -------- -----------  -----------    --------
-00000010: 92 a1 01 93 a1 01 94 a1  00 95 c2 00 00 00 00 96 | ................ |
-          -------- -------- --------- ----------------- --
-00000020: a1 00 97 c3 00 00 00 00  98 a1 00 99 a4 01 00 00 | ................ |
-          ----- -----------------  -------- --------------
-00000030: 00 9a c4 f0 13 00 00 c8  19 00 00 9b a1 00 9c a1 | ................ |
-          -- ------------------------------ -------- -----
-00000040: 01 9d a1 8b 9e a1 02 9f  a1 05 a0 a1 08 a1 a1 00 | ................ |
-          -- -------- -------- --------- -------- --------
-00000050: a2 c4 f0 13 00 00 c8 19  00 00 51 52 a3 a1 00 a4 | ..........QR.... |
-          -------------------------------      -------- --
-00000060: b1 a4 ff 2a 01 00 20 00  00 00 00 01 01 00 10 32 | ...*.. ........2 |
-          -----------------
-                LEN??
-00000060: b1 a2 39 19 20 00 00 00  08 01 00 00 10 32 04 00 | ..9. ........2.. |
-
-00000070: 04 00 a1 42 00 00 00 00  ff 00 00 00 00 00 00 00 | ...B............ |
-00000080: 00 00 00 00 00 00 18 fc  00 00 01 0b 00 00 5f 0c | .............._. |
-00000090: 00 00 a7 0b 00 00 a7 e8  a6 3f ff fd ff ff ef ff | .........?...... |
-000000a0: ff 7f ff fb ff ff df ff  fe ff ff f7 ff ff bf ff | ................ |
-000000b0: fd ff ff ef ff ff 7f ff  fb ff ff df ff fe ff ff | ................ |
-000000c0: f7 ff ff bf ff fd ff ff  ef ff ff 7f ff fb ff ff | ................ |
-000000d0: df ff fe ff ff f7 ff ff  bf ff fd ff ff ef ff ff | ................ |
-000000e0: 7f ff fb ff ff df ff fe  ff ff f7 ff ff bf ff fd | ................ |
-000000f0: ff ff ef ff ff 7f ff fb  ff ff df ff fe ff ff f7 | ................ |
-*/
-
-    for (;;)
+    if (parse1 (fp, &curOff))
     {
-	// int	reclen;
-	int	rectype;
-	// int	w, h, comp, stripe;
-	int	datatype;
-	unsigned char	data[512];
-	int	val;
-
-	rectype = fgetc(fp);
-	if (rectype == EOF)
-	    break;
-
-	proff(curOff);
-	printf("RECTYPE '%c' [0x%x]:\n", rectype, rectype);
-	curOff++;
-
-	switch (rectype)
-	{
-	case 0x41:
-	    for (;;)
-	    {
-		datatype = payload(fp, &curOff, data, &val);
-		if (datatype == 0x83)
-		    break;
-	    }
-	    break;
-	case 0x43:
-	    for (;;)
-	    {
-		datatype = payload(fp, &curOff, data, &val);
-		if (datatype == 0xA2)
-		    break;
-	    }
-	    break;
-	case 0x51:
-	    break;
-	case 0x52:
-	    for (;;)
-	    {
-		datatype = payload(fp, &curOff, data, &val);
-		if (datatype == 0xA4)
-		{
-		    FILE *ofp = NULL;
-
-		    if (Debug > 1)
-			ofp = fopen("/tmp/hblp.out", "w");
-		    while (val--)
-		    {
-			int c;
-
-			c = fgetc(fp); curOff++;
-			if (ofp)
-			    putc(c, ofp);
-		    }
-		    if (ofp)
-			fclose(ofp);
-		    break;
-		}
-	    }
-	    break;
-	case 0x20:
-	    break;
-	case 0x53:
-	    break;
-	case 0x42:
-	    goto done;
-	case 0x44:
-	    break;
-	default:
-	    {
-		printf("Unknown rectype 0x%x at 0x%x(%d)\n",
-			    rectype, curOff, curOff);
-		printf("Continuing with hexdump...\n");
-		ungetc(rectype, fp);
-		if ( (len = fread(buf, 1, sizeof(buf), fp)) )
-		hexdump(stdout, 0, "", "", buf, len);
-		exit(1);
-	    }
-	    break;
-	}
-
+	printf ("Continuing with hexdump...\n");
+	if ( (len = fread(buf, 1, sizeof(buf), fp)) )
+	hexdump (stdout, 0, "", "", buf, len);
+	exit(1);
     }
 
 done:
