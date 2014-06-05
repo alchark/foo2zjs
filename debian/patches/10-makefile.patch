@@ -130,7 +130,7 @@ Last-Update: 2014-01-07
  
  #
  # Installation rules
-@@ -638,8 +636,6 @@
+@@ -640,8 +638,6 @@
  	#
      
  
@@ -139,7 +139,7 @@ Last-Update: 2014-01-07
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -647,8 +643,7 @@
+@@ -649,8 +645,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -149,7 +149,7 @@ Last-Update: 2014-01-07
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -834,10 +829,10 @@
+@@ -836,10 +831,10 @@
  	    fi; \
  	done
  
@@ -163,7 +163,7 @@ Last-Update: 2014-01-07
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -895,9 +890,9 @@
+@@ -897,9 +892,9 @@
  	    done; \
  	fi
  
@@ -176,7 +176,7 @@ Last-Update: 2014-01-07
  
  install-desktop:
  	#
-@@ -1031,6 +1026,7 @@
+@@ -1033,6 +1028,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -184,7 +184,7 @@ Last-Update: 2014-01-07
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1415,10 +1411,9 @@
+@@ -1417,10 +1413,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +196,7 @@ Last-Update: 2014-01-07
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1847,7 +1842,7 @@
+@@ -1849,7 +1844,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

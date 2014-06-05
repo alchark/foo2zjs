@@ -1,8 +1,9 @@
 Description: Fix various spelling errors:
  precission
  supress
+ langauge
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2014-02-11
+Last-Update: 2014-06-05
 --- a/icc2ps/cmsio1.c
 +++ b/icc2ps/cmsio1.c
 @@ -1162,7 +1162,7 @@
@@ -78,3 +79,25 @@ Last-Update: 2014-02-11
         // will speed greately some trivial operations
  
         if (AllLinear != 3)
+--- a/oakdecode.c
++++ b/oakdecode.c
+@@ -101,7 +101,7 @@
+ "Options:\n"
+ "       -d basename Basename of .pbm file for saving decompressed planes\n"
+ "       -r basename Basename of .jbg file for saving raw planes\n"
+-"       -i          Supress display of image records\n"
++"       -i          Suppress display of image records\n"
+ "       -o          Print file offsets\n"
+ "       -D lvl      Set Debug level [%d]\n"
+     , Debug
+--- a/qpdldecode.c
++++ b/qpdldecode.c
+@@ -82,7 +82,7 @@
+ "\n"
+ "	Decode a QPDL stream into human readable form.\n"
+ "\n"
+-"	A Quick Page Description Langauge (QPDL) is the printer language"
++"	A Quick Page Description language (QPDL) is the printer language"
+ "	used by some Samsung printers, such as the CLP-600n.\n"
+ "\n"
+ "	Also known as SPLC."
