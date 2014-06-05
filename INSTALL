@@ -185,6 +185,11 @@ GHOSTSCRIPT BUGS
       So if you want BEST COLORS, you'll have to install gs 8.54 or better
       if you don't have it.
 
+	OPTIONAL: 
+	    # yum install cups-devel
+		-OR-
+	    $ sudo apt-get install cups-dev
+
 	$ gs --version
 	8.15.2
 	

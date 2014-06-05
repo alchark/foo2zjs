@@ -62,7 +62,7 @@
 
 
 
-*HWMargins: 12.00 12.00 12 12
+*HWMargins: 18 14.40 18 14.4
 *VariablePaperSize: True
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
@@ -160,17 +160,17 @@
 *CloseUI: *PageRegion
 
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter: "12.00 12.00 600.00 780.00"
-*ImageableArea A4/A4: "12.00 12.00 583.00 830.00"
-*ImageableArea A5/A5: "12.00 12.00 408.00 583.00"
-*ImageableArea B5/B5: "12.00 12.00 486.00 696.00"
-*ImageableArea Env10/Env #10: "12.00 12.00 285.00 672.00"
-*ImageableArea EnvC5/Env C5: "12.00 12.00 447.00 637.00"
-*ImageableArea EnvDL/Env DL: "12.00 12.00 299.00 611.00"
-*ImageableArea EnvISOB5/Env ISO B5: "12.00 12.00 486.00 696.00"
-*ImageableArea EnvMonarch/Env Monarch: "12.00 12.00 267.00 528.00"
-*ImageableArea Executive/Executive: "12.00 12.00 510.00 744.00"
-*ImageableArea Legal/Legal: "12.00 12.00 600.00 996.00"
+*ImageableArea Letter/Letter: "18 14.40 594 777.60"
+*ImageableArea A4/A4: "18 14.40 577 827.60"
+*ImageableArea A5/A5: "18 14.40 402 580.60"
+*ImageableArea B5/B5: "18 14.40 480 693.60"
+*ImageableArea Env10/Env #10: "18 14.40 279 669.60"
+*ImageableArea EnvC5/Env C5: "18 14.40 441 634.60"
+*ImageableArea EnvDL/Env DL: "18 14.40 293 608.60"
+*ImageableArea EnvISOB5/Env ISO B5: "18 14.40 480 693.60"
+*ImageableArea EnvMonarch/Env Monarch: "18 14.40 261 525.60"
+*ImageableArea Executive/Executive: "18 14.40 504 741.60"
+*ImageableArea Legal/Legal: "18 14.40 594 993.60"
 
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"

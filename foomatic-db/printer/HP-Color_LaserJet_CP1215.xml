@@ -13,10 +13,10 @@
 	<margins>
 	    <general>
 		<unit>inch</unit>
-		<top>0.166666</top>
-		<bottom>0.166666</bottom>
-		<left>0.166666</left>
-		<right>0.166666</right>
+		<top>0.2</top>
+		<bottom>0.2</bottom>
+		<left>0.25</left>
+		<right>0.25</right>
 	    </general>
 	</margins>
 	<consumables>

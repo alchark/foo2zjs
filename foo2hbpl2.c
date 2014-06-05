@@ -10,6 +10,7 @@ With this utility, you can print to some Xerox and Dell, such as these:
     - Dell C1765nf/nfw MFP		B/W and color
     - Epson AcuLaser_M1400		B/W
     - Fuji Xerox DocuPrint CM205	B/W and color
+    - Fuji Xerox DocuPrint CM215	B/W and color
     - Fuji Xerox DocuPrint M215		B/W
     - Fuji Xerox DocuPrint P205		B/W
     - Xerox WorkCentre 3045		B/W
@@ -55,7 +56,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.31 2014/03/17 11:24:24 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.32 2014/04/17 17:09:30 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
