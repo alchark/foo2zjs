@@ -135,7 +135,7 @@
 
 *OpenUI *PageRegion: PickOne
 *OrderDependency: 135 AnySetup *PageRegion
-*DefaultPageRegion: ev/foo2hbpl2-PageSize-0
+*DefaultPageRegion: Letter
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *PageRegion B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
@@ -149,7 +149,7 @@
 *PageRegion Legal/Legal: "%% FoomaticRIPOptionSetting: PageSize=Legal"
 *CloseUI: *PageRegion
 
-*DefaultImageableArea: ev/foo2hbpl2-PageSize-0
+*DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "9 12.00 603 780.00"
 *ImageableArea A4/A4: "9 12.00 586 830.00"
 *ImageableArea B5jis/B5 (JIS): "9 12.00 509 715.00"
@@ -162,7 +162,7 @@
 *ImageableArea Folio/Folio: "9 12.00 603 924.00"
 *ImageableArea Legal/Legal: "9 12.00 603 996.00"
 
-*DefaultPaperDimension: ev/foo2hbpl2-PageSize-0
+*DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
 *PaperDimension B5jis/B5 (JIS): "518 727"

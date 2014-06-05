@@ -34,12 +34,6 @@
 	</constraint>
 	<constraint sense="true">
 	    <make>Dell</make>
-	    <model>C1760</model>
-	    <driver>foo2hbpl2</driver>
-	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
-	</constraint>
-	<constraint sense="true">
-	    <make>Dell</make>
 	    <model>C1765</model>
 	    <driver>foo2hbpl2</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
@@ -47,6 +41,12 @@
 	<constraint sense="true">
 	    <make>Fuji Xerox</make>
 	    <model>DocuPrint_CM205</model>
+	    <driver>foo2hbpl2</driver>
+	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
+	</constraint>
+	<constraint sense="true">
+	    <make>Fuji Xerox</make>
+	    <model>DocuPrint_CM215</model>
 	    <driver>foo2hbpl2</driver>
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
 	</constraint>

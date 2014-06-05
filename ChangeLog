@@ -1,3 +1,21 @@
+2014-05-19	Rick Richardson <rick.richardson@comcast.net>
+	* HP CLJ CP1215:  Adjust margins: *HWMargins: 18 14.40 18 14
+
+2014-05-04	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hbpl2-wrapper: Change PAPER=21 to PAPER=0 for custom page sizes.
+
+2014-04-17	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Fuji Xerox DocuPrint CM215 MFP using the foo2hbpl2
+	driver.
+
+2014-04-08	Rick Richardson <rick.richardson@comcast.net>
+	* Upgrade to JBIGKIT 2.1
+
+2014-04-01	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hbpl2 foomatic-db files and PPDs:
+	    Bug with default PageSize.
+	    PLEASE delete and recreate the foo2hbpl2 printers.
+
 2014-03-22	Rick Richardson <rick.richardson@comcast.net>
 	* hbpldecode: another redundancy from Dave Coffin
 

@@ -1,5 +1,5 @@
 /*
- * $Id: hbpldecode.c,v 1.62 2014/03/22 20:55:26 rick Exp $
+ * $Id: hbpldecode.c,v 1.64 2014/05/04 21:45:12 rick Exp $
  */
 
 /*b
@@ -89,7 +89,8 @@ usage(void)
 "\n"
 "	Version one is an HBPL stream with Huffman RLE data. This data is\n"
 "	used by the Dell 1250c, Dell C1660w, Epson AcuLaser C1700, Fuji-Xerox\n"
-"	cp105b, and similar printers. These printers are unsupported.\n"
+"	cp105b, and similar printers. These printers are supported by\n"
+"	foo2hbpl1-wrapper et al.\n"
 "\n"
 "	Version two is an HBPL stream with JBIG encoded data. This data\n"
 "	is used by the Xerox WorkCentre 6015, Fuji Xerox Docuprint CM205\n"
@@ -287,7 +288,7 @@ decode2(FILE *fp, int curOff)
 	((X) >= 0 && (X) < sizeof(A)/sizeof(A[0])) \
 	? A[X] : "UNK"
     char *strsize[] = {
-	/*00*/	"unk", "A4", "B5", "unk", "Letter",
+	/*00*/	"Custom", "A4", "B5", "unk", "Letter",
 	/*05*/	"Executive", "FanFoldGermanLegal", "Legal", "unk", "env#10",
 	/*10*/	"envMonarch", "envC5", "envDL", "unk", "unk",
 	};
@@ -734,7 +735,7 @@ parse1(FILE *fp, int *curOff)
     // 205 == "folio",  Sheesh
     for (i = 0; i < 256; ++i)
 	if (strsize[i] == NULL)
-	    strsize[i] = "unk";
+	    strsize[i] = "Custom";
     strsize[205] = "folio";	// 8.5x13
 
     while ((proff(*curOff), (*curOff)++, rectype = fgetc(fp)) != EOF)
@@ -766,10 +767,10 @@ parse1(FILE *fp, int *curOff)
 again:	    switch ((*curOff)++, subtype = fgetc(fp))
 	    {
 	    case 0xa1: val[0] = fgetc(fp);  (*curOff)++;   break;
+	    case 0xc2: val[1] = get2(fp);   *curOff += 2;
 	    case 0xa2: val[0] = get2(fp);   *curOff += 2;  break;
 	    case 0xc4: val[1] = get4(fp);   *curOff += 4;
 	    case 0xc3:
-	    case 0xc2:
 	    case 0xa4: val[0] = get4(fp);   *curOff += 4;  break;
 	    case 0xb1: goto again;
 	    default: error (1, "Unknown subtype 0x%02x\n", subtype);
@@ -780,6 +781,10 @@ again:	    switch ((*curOff)++, subtype = fgetc(fp))
 	    {
 	    case 0x94:
 		printf("%d [paper=%s]\n", val[0], STRARY(val[0], strsize));
+		break;
+	    case 0x95:
+		printf("%dx%d%s\n", val[1], val[0],
+			val[0] ? " [WxH in 0.1mm units]":"");
 		break;
 	    case 0x99:
 		printf("%d [page]\n", val[0]);
