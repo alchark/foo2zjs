@@ -8,6 +8,9 @@ by Rick Richardson 07/31/11
 
 1) Browse to:
     http://developer.apple.com/xcode/
+	OR
+    https://developer.apple.com/downloads/index.action
+	Search for "Command Line Tools"
 
     Download and install "Xcode 3", the C compiler.  It is in the lower right:
 	"Looking for Xcode 3? Download Now"
@@ -23,7 +26,7 @@ by Rick Richardson 07/31/11
 	true if the COMMAND_LINE_INSTALL environment variable was set no
 	matter what version Mac OS X you are running.
 
-	It’s now possible to greatly simplify the installation process:
+	It's now possible to greatly simplify the installation process:
 
 	    Mount the Xcode 3.2.6 DMG
 	    Open Terminal

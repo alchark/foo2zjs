@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Dell-C1765-foo2hbpl2.ppd'
+*% You may save this file as 'Fuji_Xerox-DocuPrint_CM215-foo2hbpl2.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -28,16 +28,16 @@
 *LanguageVersion: English 
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2HBPL.PPD"
-*Manufacturer:	"Dell"
-*Product:	"(C1765)"
+*Manufacturer:	"Fuji Xerox"
+*Product:	"(DocuPrint CM215)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Dell C1765"
-*ShortNickName: "Dell C1765 foo2hbpl2"
-*NickName:      "Dell C1765 Foomatic/foo2hbpl2 (recommended)"
+*ModelName:     "Fuji Xerox DocuPrint CM215"
+*ShortNickName: "Fuji Xerox D.P. CM215 foo2hbpl2"
+*NickName:      "Fuji Xerox DocuPrint CM215 Foomatic/foo2hbpl2 (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "DRV:Dfoo2hbpl2,R1,M0,TF;"
+*1284DeviceID: "MFG:FUJI XEROX;MDL:DocuPrint CM215;CMD:HBPL;DRV:Dfoo2hbpl2,R1,M0,TF;"
 
 *driverName foo2hbpl2/foo2hbpl2: ""
 *driverType F/Filter: ""
@@ -77,7 +77,7 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Dell-C1765 foo2hbpl2
+*FoomaticIDs: Fuji_Xerox-DocuPrint_CM215 foo2hbpl2
 *FoomaticRIPCommandLine: "foo2hbpl2-wrapper %A"
 
 *OpenGroup: General/General

@@ -12,7 +12,7 @@
     <constraints>
 	<constraint sense="true">
 	<driver>foo2hbpl2</driver>
-	<arg_defval>ev/foo2hbpl2-PageSize-0</arg_defval>
+	<arg_defval>ev/foo2hbpl2-PageSize-4</arg_defval>
 	</constraint>
     </constraints>
     <enum_vals>

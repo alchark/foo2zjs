@@ -622,6 +622,8 @@ install-test:
 	#
 	@if [ -f /usr/local/libexec/cups/filter/foomatic-rip ]; then \
 	    : ; \
+	elif [ -f /usr/libexec/cups/filter/foomatic-rip ]; then \
+	    : ; \
 	elif [ -f /usr/lib/cups/filter/foomatic-rip ]; then \
 	    : ; \
 	elif [ -f /usr/lib/lp/bin/foomatic-rip ]; then \
@@ -1408,7 +1410,7 @@ ppd:
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
 	    *6015*|*1355*)	driver=foo2hbpl2;; \
 	    *C1765*)		driver=foo2hbpl2;; \
-	    *CM205*)		driver=foo2hbpl2;; \
+	    *CM2[01]5*)		driver=foo2hbpl2;; \
 	    *P205*|*3045*)	driver=foo2hbpl2;; \
 	    *M215*)		driver=foo2hbpl2;; \
 	    *M1400*)		driver=foo2hbpl2;; \
