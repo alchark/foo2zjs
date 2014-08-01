@@ -1,3 +1,12 @@
+foo2zjs (20140519dfsg0-2) unstable; urgency=medium
+
+  * Add autopkgtest suite
+  * Use the Debian-provided liblcms1
+    - Add liblcms1-dev to Build-Depends;
+    - Add 20-system-liblcms.patch.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 01 Aug 2014 16:59:15 +0200
+
 foo2zjs (20140519dfsg0-1) unstable; urgency=medium
 
   * New 20140519 upstream release.
