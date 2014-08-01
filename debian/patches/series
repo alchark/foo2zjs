@@ -1,6 +1,7 @@
 10-makefile.patch
 12-fix-implicit-declaration.patch
 20-system-libjbig.patch
+20-system-liblcms.patch
 # in debian/rules: 20-honour-papersize.patch
 # in debian/rules: 20-PDF-input-data-in-PPDs.patch
 30-udev-rules.patch
