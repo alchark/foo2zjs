@@ -1,3 +1,10 @@
+foo2zjs (20140519dfsg0-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Use psicc from lcms2 (closes: #757384).
+
+ -- Michael Gilbert <mgilbert@debian.org>  Sun, 28 Sep 2014 21:34:38 +0000
+
 foo2zjs (20140519dfsg0-2) unstable; urgency=medium
 
   * Add autopkgtest suite
