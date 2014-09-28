@@ -8,7 +8,6 @@ usr/bin/foo2qpdl
 usr/bin/foo2slx
 usr/bin/foo2xqx
 usr/bin/foo2zjs
-usr/bin/foo2zjs-icc2ps
 usr/bin/gipddecode
 usr/bin/hbpldecode
 usr/bin/hipercdecode

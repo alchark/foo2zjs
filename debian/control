@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9),
  foomatic-filters,
  foomatic-db-engine,
  libcups2-dev,
- liblcms1-dev,
+ liblcms2-utils,
  dc,
  time,
  pyppd (>= 1.0.2-1~),
@@ -21,7 +21,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=printing/foo2zjs.git
 
 Package: printer-driver-foo2zjs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${ubuntu:mscompress}, foomatic-filters, dc, printer-driver-foo2zjs-common (>= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${ubuntu:mscompress}, foomatic-filters, dc, printer-driver-foo2zjs-common (>= ${source:Version}), liblcms2-utils
 Recommends: wget, unzip, ${debian:mscompress}, cups, cups-client
 Suggests: psutils, hannah-foo2zjs
 Breaks: udev (<< 136-1), cups (<< 1.5.0-3~), foo2zjs (<< 20111023dfsg0-1~)
