@@ -3,7 +3,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
 
 --- a/Makefile
 +++ b/Makefile
-@@ -184,13 +184,6 @@ FILES	=	\
+@@ -188,13 +188,6 @@
  		foomatic-db/*/*.xml \
  		foomatic-test \
  		getweb.in \
@@ -17,7 +17,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  		osx-hotplug/Makefile \
  		osx-hotplug/*.m \
  		osx-hotplug/*.1in \
-@@ -371,7 +364,7 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent op
+@@ -375,7 +368,7 @@
  # The usual build rules
  #
  all:	all-test $(PROGS) $(BINPROGS) $(SHELLS) getweb \
@@ -26,7 +26,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  	all-done
  
  all-test:
-@@ -593,7 +586,7 @@ command2foo2lava-pjl.o: command2foo2lava
+@@ -597,7 +590,7 @@
  #
  # Installation rules
  #
@@ -35,7 +35,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  	    install-extra install-crd install-foo install-ppd \
  	    install-gui install-desktop install-filter \
  	    install-man install-doc
-@@ -1109,7 +1102,6 @@ uninstall:
+@@ -1113,7 +1106,6 @@
  	-rm -f $(MANDIR)/man1/foo2hbpl*.1 $(MANDIR)/man1/hbpldecode.1
  	-rm -f $(MANDIR)/man1/gipddecode.1
  	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
@@ -43,7 +43,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  	-rm -rf /usr/share/foo2zjs/
  	-rm -rf /usr/share/foo2hp/
  	-rm -rf /usr/share/foo2oak/
-@@ -1134,7 +1126,6 @@ uninstall:
+@@ -1138,7 +1130,6 @@
  	-rm -f /usr/bin/hbpldecode
  	-rm -f /usr/bin/opldecode
  	-rm -f /usr/bin/rodecode
@@ -51,7 +51,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  	-rm -f /usr/bin/foo2zjs-pstops
  	-rm -f /usr/bin/command2foo2lava-pjl
  	-rm -f /usr/lib/cups/filter/command2foo2lava-pjl
-@@ -1177,7 +1168,6 @@ clean:
+@@ -1181,7 +1172,6 @@
  	-rm -f *.zjs *.zm *.zc *.zc? *.zc?? *.oak *.pbm *.pksm *.cmyk
  	-rm -f pksm2bitcmyk
  	-rm -f *.icm.*.ps
@@ -59,7 +59,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  	cd osx-hotplug; $(MAKE) $@
  
  #
-@@ -1327,7 +1317,7 @@ pprtest-3.oak: FRC
+@@ -1331,7 +1321,7 @@
  #
  #	icc2ps regression tests
  #
@@ -68,7 +68,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  icctest:
  	for g in *.icm; do \
  	    for i in 0 1 2 3; do \
-@@ -1424,7 +1414,7 @@ oldppd:
+@@ -1428,7 +1418,7 @@
  # Manpage generation.  No, I am not interested in "info" files or
  # HTML documentation.
  #
@@ -77,7 +77,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  
  $(MANPAGES): macros.man includer-man
  
-@@ -1491,7 +1481,6 @@ install-man: man
+@@ -1495,7 +1485,6 @@
  	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
@@ -85,7 +85,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  ifeq ($(UNAME),Darwin)
  	cd osx-hotplug; $(MAKE) install-man
  endif
-@@ -1512,10 +1501,9 @@ install-doc: doc
+@@ -1516,10 +1505,9 @@
  
  GROFF=/usr/local/test/bin/groff
  GROFF=groff

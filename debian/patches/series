@@ -1,5 +1,6 @@
 10-makefile.patch
 12-fix-implicit-declaration.patch
+20-system-lcms.patch
 20-system-libjbig.patch
 20-system-liblcms.patch
 # in debian/rules: 20-honour-papersize.patch
@@ -18,4 +19,3 @@
 92-udev-firmware-script-fixes.patch
 95-udev-firmware-script-no-hplip-rules-removal.patch
 96-hplj1000-fix-cups-usb-backend-firmware-upload.patch
-99-system-lcms.patch
