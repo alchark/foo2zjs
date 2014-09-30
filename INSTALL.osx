@@ -55,6 +55,7 @@ by Rick Richardson 07/31/11
     $ sudo port install coreutils
     $ sudo port install gsed
     $ sudo port install wget
+    $ sudo port install a2ps
     $ sudo port install ghostscript
 
 	NOTE: Use ghostscript 8.63 or before OR 8.64_2 or after if you want

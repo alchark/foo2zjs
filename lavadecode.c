@@ -1,5 +1,5 @@
 /*
- * $Id: lavadecode.c,v 1.35 2014/01/24 19:25:47 rick Exp $
+ * $Id: lavadecode.c,v 1.36 2014/06/27 14:41:37 rick Exp $
  */
 
 /*b
@@ -250,7 +250,7 @@ decode(FILE *fp)
 		    else
 		    {
 			proff(curOff-1);
-			printf("ch=0x%x\n", c);
+			printf("ch=0x%x (%s)\n", c, c==0x0c ? "form feed" : "");
 		    }
 		    break;
 		case '\033':

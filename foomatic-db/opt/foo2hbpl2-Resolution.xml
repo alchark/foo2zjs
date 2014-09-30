@@ -52,6 +52,12 @@
 		    <make>Epson</make> <model>AcuLaser M1400</model>
 	        </constraint>
 	        <constraint sense="true">
+		    <make>Fuji Xerox</make> <model>DocuPrint CM205</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <make>Fuji Xerox</make> <model>DocuPrint CM215</model>
+	        </constraint>
+	        <constraint sense="true">
 		    <make>Fuji Xerox</make> <model>DocuPrint M215</model>
 	        </constraint>
 	        <constraint sense="true">
@@ -95,6 +101,12 @@
 	        </constraint>
 	        <constraint sense="true">
 		    <make>Epson</make> <model>AcuLaser M1400</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <make>Fuji Xerox</make> <model>DocuPrint CM205</model>
+	        </constraint>
+	        <constraint sense="true">
+		    <make>Fuji Xerox</make> <model>DocuPrint CM215</model>
 	        </constraint>
 	        <constraint sense="true">
 		    <make>Fuji Xerox</make> <model>DocuPrint M215</model>

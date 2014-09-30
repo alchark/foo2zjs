@@ -56,7 +56,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.32 2014/04/17 17:09:30 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.33 2014/09/25 14:36:32 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -184,7 +184,7 @@ usage(void)
 "                    6=envelope, 7=recycled, 8=plain2, 9=bond2,\n"
 "                    10=lwcard2, 11=lwgcard2, 12=recycled2\n"
 "-p paper          Paper code to send to printer [%d]\n"
-"                    1=A4, 2=B5, 4=letter, 5=executive,\n"
+"                    1=A4, 2=B5, 3=A5, 4=letter, 5=executive,\n"
 "                    6=fanfoldgermanlegal/folio, 7=legal, 9=env#10,\n"
 "                    10=envMonarch, 11=envC5, 12=envDL\n"
 "-n copies         Number of copies [%d]\n"
