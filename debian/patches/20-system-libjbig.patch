@@ -15,7 +15,7 @@ Last-Update: 2012-04-26
  		zjsdecode.c \
  		zjsdecode.1in \
  		zjs.h \
-@@ -280,7 +276,7 @@
+@@ -273,7 +269,7 @@
  MANPAGES+=	gipddecode.1
  MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
  MANPAGES+=	printer-profile.1

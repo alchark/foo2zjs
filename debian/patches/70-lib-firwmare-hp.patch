@@ -1,7 +1,7 @@
 Firmware directory is /lib/firmware/hp/ (Closes: #517957)
 --- a/getweb.in
 +++ b/getweb.in
-@@ -125,7 +125,7 @@
+@@ -126,7 +126,7 @@
  putfw() {
      inputname=$1
      outputname=$2

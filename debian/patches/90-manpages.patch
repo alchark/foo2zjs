@@ -389,7 +389,7 @@ Last-Update: 2014-06-05
  .TE
  .TP
  .BI \-d\0 duplex
-@@ -119,9 +119,9 @@
+@@ -120,9 +120,9 @@
  Orientation used for N-up.
  .TS
  l l l.
@@ -402,7 +402,7 @@ Last-Update: 2014-06-05
  .TE
  .SS Printer Tweaking Options
  These are the options used to customize the operation of \fBfoo2hbpl2\fP
-@@ -140,13 +140,13 @@
+@@ -141,13 +141,13 @@
  been tested on any other printers.
  .TP
  .BI \-L\0 mask
@@ -418,7 +418,7 @@ Last-Update: 2014-06-05
  good in most cases.
  .TS
  l l.
-@@ -172,7 +172,7 @@
+@@ -173,7 +173,7 @@
  Color correction is currently a WORK IN PROGRESS.
  .TP
  .BI \-g\0 gsopts
@@ -427,7 +427,7 @@ Last-Update: 2014-06-05
  etc.  This option may appear more than once.
  .TP
  .BI \-G\0 profile.icm
-@@ -217,7 +217,7 @@
+@@ -218,7 +218,7 @@
  .nf
  foo2hbpl2-wrapper testpage.ps > testpage.prn
  hbpl2decode < testpage.prn
@@ -436,7 +436,7 @@ Last-Update: 2014-06-05
  .fi
  .RE
  .P
-@@ -225,7 +225,7 @@
+@@ -226,7 +226,7 @@
  
  .RS
  .nf
@@ -447,7 +447,7 @@ Last-Update: 2014-06-05
  
 --- a/foo2hbpl2.1in
 +++ b/foo2hbpl2.1in
-@@ -126,7 +126,7 @@
+@@ -127,7 +127,7 @@
  lower right corner, in pixels [0x0].
  .TP
  .BI \-L\0 mask
@@ -456,7 +456,7 @@ Last-Update: 2014-06-05
  .TS
  l l.
  0	don't send any logical clipping amounts
-@@ -174,10 +174,10 @@
+@@ -175,10 +175,10 @@
  
  .RS
  .nf
@@ -471,7 +471,7 @@ Last-Update: 2014-06-05
  .fi
  .RE
  .P
-@@ -185,10 +185,10 @@
+@@ -186,10 +186,10 @@
  
  .RS
  .nf
