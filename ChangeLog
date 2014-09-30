@@ -1,3 +1,10 @@
+2014-09-25	Rick Richardson <rick.richardson@comcast.net>
+	* foo2hblp2, foo2hblp2-wrapper, foomatic et al:
+	    Add paper size A5.
+	* foo2hblp2 foomatic db entries:
+	    Changed resolution to 600x600, 1200x600, and 1200x1200.
+	    Note: need to recreate the printers if you want more choices!
+
 2014-05-19	Rick Richardson <rick.richardson@comcast.net>
 	* HP CLJ CP1215:  Adjust margins: *HWMargins: 18 14.40 18 14
 

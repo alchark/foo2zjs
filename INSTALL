@@ -68,6 +68,7 @@ and firmware.  Select the model number for your printer:
     $ ./getweb 300      # Get Samsung CLP-300 .ICM files
     $ ./getweb 315      # Get Samsung CLP-315 .ICM files
     $ ./getweb 325      # Get Samsung CLP-325 .ICM files
+    $ ./getweb 360      # Get Samsung CLP-360 .ICM files
     $ ./getweb 365      # Get Samsung CLP-365 .ICM files
     $ ./getweb 600      # Get Samsung CLP-600 .ICM files
     $ ./getweb 610      # Get Samsung CLP-610 .ICM files
@@ -831,7 +832,7 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 	Dell 1355 or Xerox 6015		default resolution
 	Samsung CLP-315			default resolution
 	Samsung CLP-325			default resolution
-	Samsung CLP-365			default resolution
+	Samsung CLP-360 or 365		default resolution
 	Samsung CLP-600			default resolution
 	Samsung CLP-610			default resolution
 	Samsung CLP-620			default resolution

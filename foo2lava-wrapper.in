@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2lava-wrapper.in,v 1.47 2011/01/14 23:21:39 rick Exp $'
+VERSION='$Id: foo2lava-wrapper.in,v 1.48 2014/06/27 14:34:46 rick Exp $'
 
 #
 # Printer Notes:
@@ -31,6 +31,7 @@ VERSION='$Id: foo2lava-wrapper.in,v 1.47 2011/01/14 23:21:39 rick Exp $'
 #	Konica Minolta magicolor 1680MF -	-z2
 #	Konica Minolta magicolor 1690MF -	-z2
 #	Oki C110 -				-z2
+#	Xerox Phaser 6121MFP -			-z2
 #
 # OPL:
 #	Konica Minolta 2480 MF -		-z1

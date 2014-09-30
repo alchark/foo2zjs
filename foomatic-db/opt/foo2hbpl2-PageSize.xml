@@ -26,6 +26,11 @@
 	    <ev_shortname> <en>B5jis</en> </ev_shortname>
 	    <ev_driverval>2</ev_driverval>
 	</enum_val>
+	<enum_val id="ev/foo2hbpl2-PageSize-3">
+	    <ev_longname> <en>A5</en> </ev_longname>
+	    <ev_shortname> <en>A5</en> </ev_shortname>
+	    <ev_driverval>3</ev_driverval>
+	</enum_val>
 	<enum_val id="ev/foo2hbpl2-PageSize-4">
 	    <ev_longname> <en>Letter</en> </ev_longname>
 	    <ev_shortname> <en>Letter</en> </ev_shortname>
