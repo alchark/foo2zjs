@@ -102,8 +102,17 @@
 *FoomaticRIPOptionSetting ColorMode=Monochrome: " "
 *CloseUI: *ColorMode
 
-*FoomaticRIPOption Resolution: enum CmdLine A 130
+*OpenUI *Resolution/Resolution: PickOne
+*FoomaticRIPOption Resolution: enum CmdLine A
+*OrderDependency: 130 AnySetup *Resolution
+*DefaultResolution: 1200x600dpi
+*Resolution 600x600dpi/600x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=600x600dpi"
+*FoomaticRIPOptionSetting Resolution=600x600dpi: "-r600x600 "
+*Resolution 1200x600dpi/1200x600 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x600dpi"
 *FoomaticRIPOptionSetting Resolution=1200x600dpi: "-r1200x600 "
+*Resolution 1200x1200dpi/1200x1200 dpi: "%% FoomaticRIPOptionSetting: Resolution=1200x1200dpi"
+*FoomaticRIPOptionSetting Resolution=1200x1200dpi: "-r1200x1200 "
+*CloseUI: *Resolution
 
 *OpenUI *PageSize/Page Size: PickOne
 *FoomaticRIPOption PageSize: enum CmdLine A
@@ -113,6 +122,8 @@
 *FoomaticRIPOptionSetting PageSize=Letter: "-p4 "
 *PageSize A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
 *FoomaticRIPOptionSetting PageSize=A4: "-p1 "
+*PageSize A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
+*FoomaticRIPOptionSetting PageSize=A5: "-p3 "
 *PageSize B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
 *FoomaticRIPOptionSetting PageSize=B5jis: "-p2 "
 *PageSize Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
@@ -138,6 +149,7 @@
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter: "%% FoomaticRIPOptionSetting: PageSize=Letter"
 *PageRegion A4/A4: "%% FoomaticRIPOptionSetting: PageSize=A4"
+*PageRegion A5/A5: "%% FoomaticRIPOptionSetting: PageSize=A5"
 *PageRegion B5jis/B5 (JIS): "%% FoomaticRIPOptionSetting: PageSize=B5jis"
 *PageRegion Env10/Env #10: "%% FoomaticRIPOptionSetting: PageSize=Env10"
 *PageRegion EnvC5/Env C5: "%% FoomaticRIPOptionSetting: PageSize=EnvC5"
@@ -152,6 +164,7 @@
 *DefaultImageableArea: Letter
 *ImageableArea Letter/Letter: "9 12.00 603 780.00"
 *ImageableArea A4/A4: "9 12.00 586 830.00"
+*ImageableArea A5/A5: "9 12.00 411 583.00"
 *ImageableArea B5jis/B5 (JIS): "9 12.00 509 715.00"
 *ImageableArea Env10/Env #10: "9 12.00 288 672.00"
 *ImageableArea EnvC5/Env C5: "9 12.00 450 637.00"
@@ -165,6 +178,7 @@
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter: "612 792"
 *PaperDimension A4/A4: "595 842"
+*PaperDimension A5/A5: "420 595"
 *PaperDimension B5jis/B5 (JIS): "518 727"
 *PaperDimension Env10/Env #10: "297 684"
 *PaperDimension EnvC5/Env C5: "459 649"

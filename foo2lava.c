@@ -21,6 +21,7 @@ such as these:
      - Konica Minolta magicolor 1690MF		B/W and color
      - Konica Minolta magicolor 4690MF		B/W and color
      - Oki C110					B/W and color
+     - Xerox Phaser 6121MFP			B/W and color
 
 AUTHORS
 It also uses Markus Kuhn's jbig-kit compression library (included, but
@@ -57,7 +58,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2lava.c,v 1.39 2011/06/09 13:33:01 rick Exp $";
+static char Version[] = "$Id: foo2lava.c,v 1.40 2014/06/27 14:34:46 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>

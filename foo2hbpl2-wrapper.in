@@ -18,7 +18,7 @@
 #*
 #* Authors: Rick Richardson <rick.richardson@comcast.net>
 
-VERSION='$Id: foo2hbpl2-wrapper.in,v 1.9 2014/05/04 21:45:12 rick Exp $'
+VERSION='$Id: foo2hbpl2-wrapper.in,v 1.10 2014/09/25 14:36:32 rick Exp $'
 
 #
 # Printer Notes:
@@ -67,7 +67,7 @@ Normal Options:
 		    6=envelope, 7=recycled, 8=plain2, 9=bond2,
 		    10=lwcard2, 11=lwgcard2, 12=recycled2
 -p paper          Paper code [$PAPER]
-		    1=A4, 2=B5, 4=letter, 5=executive,
+		    1=A4, 2=B5, 3=A5, 4=letter, 5=executive,
 		    6=fanfoldgermanlegal/folio, 7=legal, 9=env#10,
 		    10=envMonarch, 11=envC5, 12=envDL
 -n copies         Number of copies [$COPIES]
@@ -433,6 +433,9 @@ Custom*)
 2|b5jis|B5jis)	PAPER=2;	paper=b5;        XDIM="8598";  YDIM="6070"
 		set_clipping 138 100	138 100		# modulo 256
 		;;
+3|a5|A5)	PAPER=3;	paper=a5;        XDIM="6992";  YDIM="4960"
+		set_clipping 168 100	168 100		# modulo 256
+		;;
 4|letter)	PAPER=4;	paper=letter;    XDIM="10200"; YDIM="6600"
 		set_clipping 150 100	150 100
 		;;
@@ -458,9 +461,6 @@ Custom*)
 12|envDL)	PAPER=12;	paper=envDL;     XDIM="5200";  YDIM="5200"
 		set_clipping 168 100	168 100		# modulo 256
 		;;
-#16|a5|A5)	PAPER=16;	paper=a5;        XDIM="6992";  YDIM="4960"
-#		set_clipping 168 100	168 100		# modulo 256
-#		;;
 #24|folio)	PAPER=24;	paper=folio;     XDIM="9922"; YDIM="7796"
 #		set_clipping 150 100	150 100
 #		;;
