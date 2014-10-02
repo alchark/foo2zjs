@@ -1,0 +1,48 @@
+Description: Prevent an infinite loop when loading the firmware.
+ When using the load_cups method, the CUPS backend will internally
+ unload and reload the usblp module. This will generate
+ SUBSYSTEM=usbmisc events that need to be ignored in the CUPS code
+ path, or this script will be rerun in an infite loop.
+   
+ But when using the load_usblp method, the usblp module is obviously
+ needed. So in this situation we need to ignore the SUBSYSTEM=usb
+ events.
+Bug-Debian: http://bugs.debian.org/663868
+Author: Peter De Wachter <pdewacht@gmail.com>
+Last-Update: 2014-10-02
+--- a/hplj1000
++++ b/hplj1000
+@@ -24,11 +24,6 @@
+ #		Mike Morgan (2004)
+ #
+ 
+-# udev calls us twice on FC4! Just want /dev/usb/lp<N>
+-case "$DEVNAME" in
+-/dev/usb/usb*)	exit;;
+-esac
+-
+ PROGNAME="$0"
+ 
+ #
+@@ -260,6 +255,7 @@
+     #
+     # force downloading to a specific device
+     #
++    if [ "$SUBSYSTEM" != "usbmisc" ]; then exit; fi
+     load_usblp "$DEV"
+ elif [ -x $USB_BACKEND ]; then
+         #
+@@ -267,11 +263,13 @@
+         # not need to care whether the system uses the usblp kernel module or
+         # libusb 
+         #
++        if [ "$SUBSYSTEM" != "usb" ]; then exit; fi
+         load_cups
+ elif [ -x $PRINTERID ]; then
+ 	#
+ 	# Sniff around for printers that need a firmware download
+ 	#
++	if [ "$SUBSYSTEM" != "usbmisc" ]; then exit; fi
+ 	usblps=`find /dev/usb -type c -name 'lp*'`" "`find /dev -type c -name 'usblp*'`
+ 	for dev in $usblps; do
+ 	    status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
