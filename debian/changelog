@@ -1,3 +1,14 @@
+foo2zjs (20140925dfsg0-3) unstable; urgency=medium
+
+  [ Peter De Wachter ]
+  * Fix laserjet1018 appearance and disappearance loop: (Closes: #663868)
+    - update the 30-udev-rules.patch to add an 'ACTION="add"' to avoid running
+      the firmware upload script on unplug,
+    - add patch 97-hplj1000-fix-firmware-upload-infite-loop.patch to ignore the
+      irrelevant events and thus cut the loop short.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 02 Oct 2014 22:51:47 +0200
+
 foo2zjs (20140925dfsg0-2) unstable; urgency=medium
 
   * Put tix to Recommends on Debian and to Suggests on Ubuntu and derivatives
