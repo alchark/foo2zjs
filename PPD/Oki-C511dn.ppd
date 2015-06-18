@@ -20,7 +20,7 @@
 *% DO NOT cut and paste this file into an editor with your mouse. This can
 *% introduce additional line breaks which lead to unexpected results.
 *%
-*% You may save this file as 'Oki-C5100-foo2hiperc.ppd'
+*% You may save this file as 'Oki-C511dn-foo2hiperc.ppd'
 *%
 *%
 *FormatVersion:	"4.3"
@@ -29,15 +29,15 @@
 *LanguageEncoding: ISOLatin1
 *PCFileName:	"FOO2HIPE.PPD"
 *Manufacturer:	"Oki"
-*Product:	"(C5100)"
+*Product:	"(C511dn)"
 *cupsVersion:	1.0
 *cupsManualCopies: True
 *cupsModelNumber:  2
 *cupsFilter:	"application/vnd.cups-postscript 0 foomatic-rip"
 *%pprRIP:        foomatic-rip other
-*ModelName:     "Oki C5100"
-*ShortNickName: "Oki C5100 foo2hiperc"
-*NickName:      "Oki C5100 Foomatic/foo2hiperc (recommended)"
+*ModelName:     "Oki C511dn"
+*ShortNickName: "Oki C511dn foo2hiperc"
+*NickName:      "Oki C511dn Foomatic/foo2hiperc (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -77,7 +77,7 @@
 *ParamCustomPageSize WidthOffset: 4 points 0 0
 *ParamCustomPageSize HeightOffset: 5 points 0 0
 
-*FoomaticIDs: Oki-C5100 foo2hiperc
+*FoomaticIDs: Oki-C511dn foo2hiperc
 *FoomaticRIPCommandLine: "foo2hiperc-wrapper %A"
 
 *OpenGroup: General/General

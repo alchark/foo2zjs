@@ -9,7 +9,7 @@
 # be displayed to the human that is running this.
 #
 
-VERSION='$Id: getweb.in,v 1.113 2014/09/14 18:32:51 rick Exp $'
+VERSION='$Id: getweb.in,v 1.114 2015/02/12 00:22:02 rick Exp $'
 
 WGETOPTS="--passive-ftp -q"
 
@@ -62,6 +62,7 @@ Usage:
 
     $ ./getweb 301	# Get Oki C301dn .ICM files
     $ ./getweb c310	# Get Oki C310dn .ICM files
+    $ ./getweb c511	# Get Oki C511dn .ICM files
     $ ./getweb c810	# Get Oki C810 .ICM files
     $ ./getweb 3100	# Get Oki C3100 .ICM files
     $ ./getweb 3200	# Get Oki C3200 .ICM files
@@ -358,11 +359,17 @@ getone() {
 	    ""
 	copyright "(c) Copyright Okidata 2010"
 	;;
+    c511)
+	gettgz \
+	    http://foo2hiperc.rkkda.com/icm okic511.tar.gz \
+	    ""
+	copyright "(c) Copyright Okidata 2012"
+	;;
     c810)
 	gettgz \
 	    http://foo2hiperc.rkkda.com/icm okic810.tar.gz \
 	    ""
-	copyright "(c) Copyright Okidata 2008"
+	copyright "(c) Copyright Okidata 2012"
 	;;
     3100|3200|5100|5150|5200|5250)
 	gettgz \
@@ -500,6 +507,7 @@ do
 
 	getone 301
 	getone c310
+	getone c511
 	getone c810
 	getone 3200
 	getone 3400

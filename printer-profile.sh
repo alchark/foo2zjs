@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PROGNAME="$0"
 
@@ -17,7 +17,7 @@ DESCRIPTION
     Manuf is "sam".  Model is "clp-300", "clp-315", "clp-325" or "clp-365".
     Manuf is "hp".  Model is "2600" or "cp1215" or "cp1025".
     Manuf is "km".  Model is "1600" or "2300" or "2530".
-    Manuf is "dell". Model is "1355".
+    Manuf is "dell". Model is "1355" or "1765"
 
     "rgb" is the usual setting.  "patches" is a multiple 196 per page.
 
@@ -38,7 +38,7 @@ BUGS
     gs 8.64 and before has problems with 32-bit machines and color profile
     data.  Don't use!
 
-    You need Argyll_V1.5.1 or later in $ARGYLL_BIN.
+    You need Argyll_V1.6.3 or later in $ARGYLL_BIN.
 
 SEE ALSO
     http://www.xritephoto.com/html/colormunkisplash.htm
@@ -90,6 +90,7 @@ ARGYLL_VER=1.3.4
 ARGYLL_VER=1.3.5
 ARGYLL_VER=1.5.0
 ARGYLL_VER=1.5.1
+ARGYLL_VER=1.6.3
 ARGYLL_ROOT=$HOME/src/Argyll_V${ARGYLL_VER}
 ARGYLL_REF=$ARGYLL_ROOT/ref
 ARGYLL_BIN=$ARGYLL_ROOT/bin
@@ -234,7 +235,7 @@ hp*)
 dell*)
     MANUF=dell
     case "$MODEL" in
-    *1355*)
+    *1355*|*1765*)
         FOO=foo2hbpl2
         WRAPPER="foo2hbpl2-wrapper $RES_r -c -C10 -Gnone.icm"
         OUT="nc 192.168.178.41 9100 < xxx.prn"
