@@ -37,7 +37,7 @@
 *%pprRIP:        foomatic-rip other
 *ModelName:     "Xerox Phaser 6115MFP"
 *ShortNickName: "Xerox Phaser 6115MFP foo2lava"
-*NickName:      "Xerox Phaser 6115MFP Foomatic/foo2lava"
+*NickName:      "Xerox Phaser 6115MFP Foomatic/foo2lava (recommended)"
 *PSVersion:	"(3010.000) 550"
 *PSVersion:	"(3010.000) 651"
 *PSVersion:	"(3010.000) 652"
@@ -52,7 +52,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*1284DeviceID: "DRV:Dfoo2lava,R0,M0,TF;"
+*1284DeviceID: "DRV:Dfoo2lava,R1,M0,TF;"
 
 *driverName foo2lava/foo2lava: ""
 *driverType F/Filter: ""

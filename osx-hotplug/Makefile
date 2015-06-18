@@ -42,6 +42,7 @@ install: all
 	$(INSTALL) -c osx-hplj-hotplug $(BIN)/
 
 install-hotplug:
+	$(INSTALL) -c local.localhost.startup.plist /Library/LaunchDaemons/
 	( \
 		echo "g/osx-hplj-hotplug/d"; \
 		echo "\$$a"; \
@@ -52,6 +53,7 @@ install-hotplug:
 		echo "."; \
 		echo "w"; \
 	) | ex $(RC)
+	chmod +x $(RC)
 	-killall osx-hplj-hotplug
 	nohup osx-hplj-hotplug >/tmp/osx-hplj-hotplug 2>&1 &
 

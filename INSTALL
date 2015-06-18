@@ -18,6 +18,7 @@ TOPICS
     * HP SMART INSTALL NOTES
     * PSUTILS AND 2/4-UP CAPABILITY
     * CUSTOM PAGE SIZE
+    * LANDSCAPE ORIENTATION
     * SET DEFAULT MEDIA WITH CUPS
     * MANUAL DUPLEX
     * UPDATE
@@ -82,6 +83,7 @@ and firmware.  Select the model number for your printer:
 
     $ ./getweb 301      # Get Oki C301dn .ICM files
     $ ./getweb c310     # Get Oki C310dn .ICM files
+    $ ./getweb c511     # Get Oki C511dn .ICM files
     $ ./getweb c810     # Get Oki C810 .ICM files
     $ ./getweb 3200     # Get Oki C3200 .ICM files
     $ ./getweb 3300     # Get Oki C3300 .ICM files
@@ -194,7 +196,7 @@ GHOSTSCRIPT BUGS
 	$ gs --version
 	8.15.2
 	
-	$ wget "http://mirror.cs.wisc.edu/pub/mirrors/ghost/GPL/gs871/ghostscript-8.71.tar.gz"
+	$ wget "http://ghostscript.com/releases/ghostscript-8.71.tar.gz"
 	$ tar zxf ghostscript-8.71.tar.gz
 	$ cd ghostscript-8.71
 	$ ./autogen.sh
@@ -682,6 +684,20 @@ CUSTOM PAGE SIZE
     Or, use a GUI that allows the custom size parameters, e.g.
     "evince" - PostScript and PDF File Viewer.
 
+LANDSCAPE ORIENTATION
+---------------------
+    This driver just prints Postscript and doesn't know what the
+    orientation is (*).  Other higher level programs format your
+    data into Postscript, e.g CUPS. 
+
+    The CUPS -o landscape option will rotate the page 90 degrees to print
+    in landscape orientation:
+
+    $ lp -o landscape filename
+    $ lpr -o landscape filename
+
+    (*) except for N-up printing, because psnup (from psutils) requires it!
+
 SET DEFAULT MEDIA WITH CUPS
 ---------------------------
     $ sudo
@@ -840,6 +856,10 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 	HP Color LaserJet CP1215	default resolution, 1-bit and 2-bit
 	HP Color LaserJet 2600n		2-bit, default resolution
 
+    NOTE:
+    This works only if you have ghostscript 8.x. If you have gs 9.x, then
+    read "GHOSTSCRIPT BUGS" and prepare /usr/bin/gs.foo from gs 8.x.
+
     0)	Pick a vendor, e.g.
 	    google: "Custom Printer Profiles"
 
@@ -919,6 +939,10 @@ CUSTOM ICC/ICM COLOR PRINTER PROFILE (BUY)
 
 CUSTOM ICC/ICM COLOR PRINTER PROFILE (ARGYLL)
 ---------------------------------------------
+    NOTE:
+    This works only if you have ghostscript 8.x. If you have gs 9.x, then
+    read "GHOSTSCRIPT BUGS" and prepare /usr/bin/gs.foo from gs 8.x.
+
     Reference:
 	firefox http://www.xritephoto.com/html/colormunkisplash.htm
 	firefox http://www.argyllcms.com/

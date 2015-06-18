@@ -200,6 +200,7 @@ FILES	=	\
 		osx-hotplug/Makefile \
 		osx-hotplug/*.m \
 		osx-hotplug/*.1in \
+		osx-hotplug/*.plist \
 		ppd-adjust \
 		PPD/*.ppd \
 		crd/zjs/*.crd \
@@ -1038,16 +1039,27 @@ install-filter:
 
 CUPSDCONF=/etc/cups/cupsd.conf
 CUPSFILESCONF=/etc/cups/cups-files.conf
+CUPSPRINTERS=/etc/cups/printers.conf
 MACLOAD=/System/Library/LaunchDaemons/org.cups.cupsd.plist
+# cups-config doesn't exist on Ubuntu unless apt-get install libcups2-dev ...
+CUPSMAJVER=cups-config --version | sed "s/[.].*//"
+# ... so we use another way
+CUPSMAJVER=head -1 $(CUPSPRINTERS) | sed -e 's/.*CUPS v//' -e 's/\..*//'
 
 cups:	FRC
-	# C
+	# CUPS
 	if [ -r $(CUPSFILESCONF) ]; then \
 	    (	echo "g/^FileDev/d"; \
 		echo "g/ foo2zjs.../d"; \
+	    	echo "g/^Sandboxing/d"; \
 		echo '$$a'; \
 		echo "# 'FileDevice Yes' line installed by foo2zjs..."; \
 		echo "FileDevice Yes"; \
+		CUPS_MAJVER=`$(CUPSMAJVER)`; \
+		if [ "$$CUPS_MAJVER" = 2 ]; then \
+		    echo "# 'Sandboxing Relaxed' installed by foo2zjs..."; \
+		    echo "Sandboxing Relaxed"; \
+		fi; \
 		echo "."; \
 		echo "w"; \
 	    ) | ex $(CUPSFILESCONF); \
@@ -1082,7 +1094,12 @@ cups:	FRC
 	    cp /usr/local/etc/rc.d/cups.sh.sample /usr/local/etc/rc.d/cups.sh; \
 	    /usr/local/etc/rc.d/cups.sh restart; \
 	elif [ -x /bin/systemctl ]; then \
-	    systemctl restart cups.service; \
+	    CUPS_MAJVER=`$(CUPSMAJVER)`; \
+	    if [ "$$CUPS_MAJVER" = 2 ]; then \
+		systemctl restart org.cups.cupsd.service; \
+	    else \
+		systemctl restart cups.service; \
+	    fi \
 	elif [ -x /bin/launchctl ]; then \
 	    /bin/launchctl unload $(MACLOAD); \
 	    /bin/launchctl load $(MACLOAD); \
@@ -1403,6 +1420,7 @@ ppd:
 	    *1215*)		driver=foo2hp;; \
 	    *C500*)             driver=foo2slx;; \
 	    *C301*|*C310*)      driver=foo2hiperc;; \
+	    *C511*)	        driver=foo2hiperc;; \
 	    *C810*)             driver=foo2hiperc-z1;; \
 	    *C3[1234]00*)       driver=foo2hiperc;; \
 	    *C3530*)	        driver=foo2hiperc;; \
@@ -1659,6 +1677,7 @@ zjsindex: foo2zjs.html archzjs.gif thermometer.gif webphotos
 	ncftpput -m -f $(FTPSITE) foo2zjs \
 	    index.html style.css archzjs.gif thermometer.gif \
 	    images/flags.png INSTALL INSTALL.osx images/zjsfavicon.png \
+	    Laserjet-1005-Series-MacOSX-10.pdf \
 	    tablesort.js printer-photos/printers.jpg;
 
 oakindex: foo2oak.html archoak.gif thermometer.gif webphotos
@@ -1760,6 +1779,7 @@ webicm: \
 	icm/lexc500.tar.gz \
 	icm/okic301.tar.gz \
 	icm/okic310.tar.gz \
+	icm/okic511.tar.gz \
 	icm/okic3200.tar.gz \
 	icm/okic3400.tar.gz icm/okic5600.tar.gz \
 	icm/okic810.tar.gz
@@ -1776,6 +1796,7 @@ webicm: \
 	ncftpput -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic301.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic310.tar.gz;
+	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic511.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
 	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
@@ -1807,6 +1828,8 @@ icm/okic301.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OKC301*.icm
 icm/okic310.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OKC310*.icm
+icm/okic511.tar.gz: FRC
+	cd icm; tar -c -z -f ../$@ OKC511*.icm
 icm/okic3200.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ OK32*.icm
 icm/okic3400.tar.gz: FRC
