@@ -26,7 +26,7 @@ Last-Update: 2014-01-07
  
  # User ID's
  LPuid=-oroot
-@@ -450,32 +448,32 @@
+@@ -451,32 +449,32 @@
  
  
  foo2zjs: foo2zjs.o $(LIBJBG)
@@ -69,7 +69,7 @@ Last-Update: 2014-01-07
  
  
  foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
-@@ -555,46 +553,46 @@
+@@ -556,46 +554,46 @@
  endif
  
  ok: ok.o $(LIBJBG)
@@ -130,7 +130,7 @@ Last-Update: 2014-01-07
  
  #
  # Installation rules
-@@ -640,8 +638,6 @@
+@@ -641,8 +639,6 @@
  	#
      
  
@@ -139,7 +139,7 @@ Last-Update: 2014-01-07
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -649,8 +645,7 @@
+@@ -650,8 +646,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -149,7 +149,7 @@ Last-Update: 2014-01-07
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -836,10 +831,10 @@
+@@ -837,10 +832,10 @@
  	    fi; \
  	done
  
@@ -163,7 +163,7 @@ Last-Update: 2014-01-07
  VARPPD=/var/lp/ppd
  install-ppd:
  	#
-@@ -897,9 +892,9 @@
+@@ -898,9 +893,9 @@
  	    done; \
  	fi
  
@@ -176,7 +176,7 @@ Last-Update: 2014-01-07
  
  install-desktop:
  	#
-@@ -1033,6 +1028,7 @@
+@@ -1034,6 +1029,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -184,7 +184,7 @@ Last-Update: 2014-01-07
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1417,10 +1413,9 @@
+@@ -1435,10 +1431,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +196,7 @@ Last-Update: 2014-01-07
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1849,7 +1844,7 @@
+@@ -1872,7 +1867,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

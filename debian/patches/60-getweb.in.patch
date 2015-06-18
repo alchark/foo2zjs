@@ -14,7 +14,7 @@ Improve getweb also for installing the firmware
  #
  # PLEASE don't remove the copyright statements.  They should 
 @@ -12,6 +14,13 @@
- VERSION='$Id: getweb.in,v 1.113 2014/09/14 18:32:51 rick Exp $'
+ VERSION='$Id: getweb.in,v 1.114 2015/02/12 00:22:02 rick Exp $'
  
  WGETOPTS="--passive-ftp -q"
 +ARM2HPDL="/usr/bin/arm2hpdl"
@@ -27,7 +27,7 @@ Improve getweb also for installing the firmware
  
  usage() {
  cat <<EOF
-@@ -78,7 +87,7 @@
+@@ -79,7 +88,7 @@
  
      $ ./getweb 1000	# Get HP LJ 1000 firmware file
      $ ./getweb 1005	# Get HP LJ 1005 firmware file
@@ -36,7 +36,7 @@ Improve getweb also for installing the firmware
      $ ./getweb 1020	# Get HP LJ 1020 firmware file
  
      $ ./getweb p1005	# Get HP LJ P1005 firmware file
-@@ -90,8 +99,6 @@
+@@ -91,8 +100,6 @@
      $ ./getweb all	# Get everything above
  
      $ ./getweb 2300dl_fw # Get Minolta 2300DL v2.55 firmware (experts only)
@@ -45,7 +45,7 @@ Improve getweb also for installing the firmware
  EOF
      exit 1
  }
-@@ -106,7 +113,7 @@
+@@ -107,7 +114,7 @@
  }
  
  SYSTEM=`uname -s`
@@ -54,7 +54,7 @@ Improve getweb also for installing the firmware
  if [ "$SYSTEM" = Darwin -a "$WGET" = "" ]
  then
      WGETOPTS=
-@@ -116,6 +123,18 @@
+@@ -117,6 +124,18 @@
      }
  fi
  
@@ -73,7 +73,7 @@ Improve getweb also for installing the firmware
  #
  #	Download a .EXE file from the web, unzip it, and extract the
  #	files we want
-@@ -162,6 +181,7 @@
+@@ -163,6 +182,7 @@
  	    #lj1488en.exe \
  	    #sihp1000.img
  	copyright "(c) Copyright Hewlett-Packard 2001"
@@ -81,7 +81,7 @@ Improve getweb also for installing the firmware
  	;;
      lj1005|1005)
  	gettgz \
-@@ -177,12 +197,14 @@
+@@ -178,12 +198,14 @@
  	    http://foo2zjs.rkkda.com/firmware sihpP1005.tar.gz \
  	    ""
  	copyright "(c) Copyright Hewlett-Packard 2009"
@@ -96,7 +96,7 @@ Improve getweb also for installing the firmware
  	;;
      lj1020|1020)
  	# http://ftp.hp.com/pub/softlib/software8/COL14041/lj-39322-2/hp_LJ_1020-1022_Full_Solution.exe
-@@ -190,24 +212,28 @@
+@@ -191,24 +213,28 @@
  	    http://foo2zjs.rkkda.com/firmware sihp1020.tar.gz \
  	    ""
  	copyright "(c) Copyright Hewlett-Packard 2005"
@@ -125,7 +125,7 @@ Improve getweb also for installing the firmware
  	;;
      2200dl|2200)
  	if true; then
-@@ -220,6 +246,7 @@
+@@ -221,6 +247,7 @@
  		"*.icm"
  	fi
  	copyright "(c) Copyright Minolta-QMS 1999"
@@ -133,7 +133,7 @@ Improve getweb also for installing the firmware
  	;;
      2300dl|2300)
  	if true; then
-@@ -235,6 +262,7 @@
+@@ -236,6 +263,7 @@
  	    http://foo2zjs.rkkda.com/icm km2430.tar.gz \
  	    ""
  	copyright "(c) Copyright Minolta-QMS 2001"
@@ -141,7 +141,7 @@ Improve getweb also for installing the firmware
  	;;
      2300dl_fw)
  	# 2300DL firmware upgrade to v2.55
-@@ -263,12 +291,14 @@
+@@ -264,12 +292,14 @@
  	    done
  	fi
  	copyright "(c) Copyright Minolta-QMS 1998"
@@ -156,7 +156,7 @@ Improve getweb also for installing the firmware
  	;;
      2530|2490|6115|2480|1600w|1680|1690|4690|110|6121)
  	gettgz \
-@@ -280,6 +310,7 @@
+@@ -281,6 +311,7 @@
  	    http://foo2lava.rkkda.com/icm km-1600.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2009.  All Rights Reserved"
@@ -164,7 +164,7 @@ Improve getweb also for installing the firmware
  	;;
      1500)
  	gettgz \
-@@ -291,12 +322,14 @@
+@@ -292,12 +323,14 @@
  	    ""
  	copyright "(c) Copyright Hewlett-Packard 2003"
  	copyright "(c) Copyright Rick Richardson 2006.  All Rights Reserved"
@@ -179,7 +179,7 @@ Improve getweb also for installing the firmware
  	;;
      1215|1600|2600*)
  	gettgz \
-@@ -311,6 +344,7 @@
+@@ -312,6 +345,7 @@
  	    http://foo2hp.rkkda.com/icm hp1215.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
@@ -187,7 +187,7 @@ Improve getweb also for installing the firmware
  	;;
      300|310|315|325|360|365|2160|3160|3175|3185|6110)
  	gettgz \
-@@ -321,6 +355,7 @@
+@@ -322,6 +356,7 @@
  	    http://foo2qpdl.rkkda.com/icm samclp315.tar.gz \
  	    ""
  	copyright "(c) Copyright Rick Richardson 2008.  All Rights Reserved"
@@ -195,7 +195,7 @@ Improve getweb also for installing the firmware
  	;;
      600|610)
  	;;
-@@ -330,6 +365,7 @@
+@@ -331,6 +366,7 @@
  	    http://foo2slx.rkkda.com/icm lexc500.tar.gz \
  	    ""
  	copyright "(c) Copyright Lexmark 2006"
@@ -203,7 +203,7 @@ Improve getweb also for installing the firmware
  	;;
  
      oki)
-@@ -345,42 +381,49 @@
+@@ -346,48 +382,56 @@
  	    mv "$base.ICM" "$base.icm"
  	done
  	copyright "(c) Copyright Okidata 2005, 2006"
@@ -223,11 +223,18 @@ Improve getweb also for installing the firmware
  	copyright "(c) Copyright Okidata 2010"
 +	puticm foo2hiperc
  	;;
+     c511)
+ 	gettgz \
+ 	    http://foo2hiperc.rkkda.com/icm okic511.tar.gz \
+ 	    ""
+ 	copyright "(c) Copyright Okidata 2012"
++	puticm foo2hiperc
+ 	;;
      c810)
  	gettgz \
  	    http://foo2hiperc.rkkda.com/icm okic810.tar.gz \
  	    ""
- 	copyright "(c) Copyright Okidata 2008"
+ 	copyright "(c) Copyright Okidata 2012"
 +	puticm foo2hiperc
  	;;
      3100|3200|5100|5150|5200|5250)
@@ -253,7 +260,7 @@ Improve getweb also for installing the firmware
  	;;
  
      xPPD)
-@@ -436,23 +479,6 @@
+@@ -443,23 +487,6 @@
  		# | sed -e 's/\(^\*NickName.*\)"/\1 (foo2zjs recommended)"/'
  	done
  	;;
@@ -277,7 +284,7 @@ Improve getweb also for installing the firmware
      "")
  	usage
  	;;
-@@ -467,6 +493,10 @@
+@@ -474,6 +501,10 @@
      usage
  fi
  
@@ -288,7 +295,7 @@ Improve getweb also for installing the firmware
  for i in $*
  do
      case "$1" in
-@@ -510,3 +540,6 @@
+@@ -518,3 +549,6 @@
  	;;
      esac
  done
