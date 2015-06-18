@@ -103,6 +103,9 @@
 		<constraint sense="false">
 		    <make>Oki</make><model>C310dn</model>
 		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C511dn</model>
+		</constraint>
 		<constraint sense="true">
 		    <make>Oki</make><model>C810</model>
 		</constraint>
@@ -154,6 +157,9 @@
 		</constraint>
 		<constraint sense="false">
 		    <make>Oki</make><model>C310dn</model>
+		</constraint>
+		<constraint sense="false">
+		    <make>Oki</make><model>C511dn</model>
 		</constraint>
 		<constraint sense="true">
 		    <make>Oki</make><model>C810</model>

@@ -121,7 +121,10 @@ GENERAL
     mats  to monochrome or color HIPERC streams, for driving the Oki C3200,
     C3300n, C3400n, C5100n, and the C5500n HIPERC printers.
 
+	- Oki C301dn
 	- Oki C310dn
+	- Oki C511dn
+	- Oki C810dn
 	- Oki C3100n/C3200n
 	- Oki C3300n/C3400n
 	- Oki C3530n MFP

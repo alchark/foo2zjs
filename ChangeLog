@@ -1,3 +1,16 @@
+2015-05-11	Rick Richardson <rick.richardson@comcast.net>
+	* Bug in foomatic-db/printer/Xerox-Phaser_6115MFP.xml . Should use
+	  foo2lava driver. Thanks to user "ophers".
+
+2015-02-11	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Oki C511 using foo2hiperc.
+
+2014-12-21	Rick Richardson <rick.richardson@comcast.net>
+	* osx-hotplug: make it work with OS X 10.10
+
+2014-12-04	Rick Richardson <rick.richardson@comcast.net>
+	* make cups: add "Sandboxing Relaxed" to cups-files.conf iff cups >= 2
+
 2014-09-25	Rick Richardson <rick.richardson@comcast.net>
 	* foo2hblp2, foo2hblp2-wrapper, foomatic et al:
 	    Add paper size A5.
