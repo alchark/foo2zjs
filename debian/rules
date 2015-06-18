@@ -93,12 +93,12 @@ UPSTREAM_VERSION ?= `date +%Y%m%d`
 
 get-orig-source:
 	- quilt pop -af ; rm -Rf .pc
-	git checkout -f upstream
+	git checkout -f upstream/latest
 	wget -O ../foo2zjs_$(UPSTREAM_VERSION).orig.tar.gz 'http://foo2zjs.rkkda.com/foo2zjs.tar.gz'
-	git import-orig --no-pristine-tar --upstream-version=$(UPSTREAM_VERSION) --no-merge --upstream-branch=upstream-nodfsg ../foo2zjs_$(UPSTREAM_VERSION).orig.tar.gz
+	gbp import-orig --no-pristine-tar --upstream-version=$(UPSTREAM_VERSION) --no-merge --upstream-branch=upstream/nodfsg ../foo2zjs_$(UPSTREAM_VERSION).orig.tar.gz
 	git merge upstream/$(UPSTREAM_VERSION)
 	git tag upstream/$(UPSTREAM_VERSION)dfsg0
 	git archive --format=tar --prefix=foo2zjs-$(UPSTREAM_VERSION)dfsg0/ upstream/$(UPSTREAM_VERSION)dfsg0 | xz -6e > ../foo2zjs_$(UPSTREAM_VERSION)dfsg0.orig.tar.xz
 	pristine-tar commit ../foo2zjs_$(UPSTREAM_VERSION)dfsg0.orig.tar.xz upstream/$(UPSTREAM_VERSION)dfsg0
-	git checkout -f master
+	git checkout -f debian/sid
 	git merge upstream/$(UPSTREAM_VERSION)dfsg0
