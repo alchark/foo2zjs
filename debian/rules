@@ -100,5 +100,5 @@ get-orig-source:
 	git tag upstream/$(UPSTREAM_VERSION)dfsg0
 	git archive --format=tar --prefix=foo2zjs-$(UPSTREAM_VERSION)dfsg0/ upstream/$(UPSTREAM_VERSION)dfsg0 | xz -6e > ../foo2zjs_$(UPSTREAM_VERSION)dfsg0.orig.tar.xz
 	pristine-tar commit ../foo2zjs_$(UPSTREAM_VERSION)dfsg0.orig.tar.xz upstream/$(UPSTREAM_VERSION)dfsg0
-	git checkout -f debian/sid
+	git checkout -f debian/master
 	git merge upstream/$(UPSTREAM_VERSION)dfsg0
