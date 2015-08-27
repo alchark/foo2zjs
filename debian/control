@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 9),
  pyppd (>= 1.0.2-1~),
  libjbig-dev
 XS-Testsuite: autopkgtest
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Homepage: http://foo2zjs.rkkda.com/
 Vcs-Git: https://alioth.debian.org/anonscm/git/printing/foo2zjs.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=printing/foo2zjs.git
