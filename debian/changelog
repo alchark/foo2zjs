@@ -1,3 +1,17 @@
+foo2zjs (20150704dfsg0-1) experimental; urgency=low
+
+  * New 20150704 upstream release
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Refresh patches
+  * Add gbp.conf
+  * Bump Standards-Version to 3.9.6 without changes needed
+  * Update the Vcs-* entries for the https variants
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 27 Aug 2015 13:48:47 +0200
+
 foo2zjs (20150511dfsg0-1) unstable; urgency=medium
 
   * New 20150511 upstream release
