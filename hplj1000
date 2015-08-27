@@ -26,7 +26,8 @@
 
 # udev calls us twice on FC4! Just want /dev/usb/lp<N>
 case "$DEVNAME" in
-/dev/usb/usb*)	exit;;
+/dev/usb/usb*)	exit;;	# Bug: FC4
+/dev/bus/usb/*)	exit;;	# Bug: Ubuntu 14
 esac
 
 PROGNAME="$0"
