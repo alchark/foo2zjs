@@ -1,7 +1,7 @@
 Delay firmware transfer for UDEV automatic printer setup
 --- a/hplj1000
 +++ b/hplj1000
-@@ -32,6 +32,15 @@
+@@ -33,6 +33,15 @@
  PROGNAME="$0"
  
  #

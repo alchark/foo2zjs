@@ -1,7 +1,7 @@
 Firmware directory is /lib/firmware/hp/ (Closes: #517957)
 --- a/getweb.in
 +++ b/getweb.in
-@@ -126,7 +126,7 @@
+@@ -127,7 +127,7 @@
  putfw() {
      inputname=$1
      outputname=$2
@@ -12,7 +12,7 @@ Firmware directory is /lib/firmware/hp/ (Closes: #517957)
  
 --- a/hplj1000
 +++ b/hplj1000
-@@ -47,7 +47,7 @@
+@@ -48,7 +48,7 @@
  #
  # Directory to find downloadable HP firmware files sihpMMMM.dl
  #

@@ -12,19 +12,20 @@ Author: Peter De Wachter <pdewacht@gmail.com>
 Last-Update: 2014-10-02
 --- a/hplj1000
 +++ b/hplj1000
-@@ -24,11 +24,6 @@
+@@ -24,12 +24,6 @@
  #		Mike Morgan (2004)
  #
  
 -# udev calls us twice on FC4! Just want /dev/usb/lp<N>
 -case "$DEVNAME" in
--/dev/usb/usb*)	exit;;
+-/dev/usb/usb*)	exit;;	# Bug: FC4
+-/dev/bus/usb/*)	exit;;	# Bug: Ubuntu 14
 -esac
 -
  PROGNAME="$0"
  
  #
-@@ -260,6 +255,7 @@
+@@ -261,6 +255,7 @@
      #
      # force downloading to a specific device
      #
@@ -32,7 +33,7 @@ Last-Update: 2014-10-02
      load_usblp "$DEV"
  elif [ -x $USB_BACKEND ]; then
          #
-@@ -267,11 +263,13 @@
+@@ -268,11 +263,13 @@
          # not need to care whether the system uses the usblp kernel module or
          # libusb 
          #

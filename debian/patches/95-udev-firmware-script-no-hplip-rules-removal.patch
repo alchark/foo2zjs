@@ -6,7 +6,7 @@ Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/foo2zjs/+bug/783389
 Last-Update: 2011-07-23
 --- a/hplj1000
 +++ b/hplj1000
-@@ -151,16 +151,6 @@
+@@ -152,16 +152,6 @@
  esac
  
  #
