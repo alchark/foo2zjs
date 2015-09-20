@@ -1,3 +1,9 @@
+foo2zjs (20150704dfsg0-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 20 Sep 2015 18:02:31 +0200
+
 foo2zjs (20150704dfsg0-1) experimental; urgency=low
 
   * New 20150704 upstream release
