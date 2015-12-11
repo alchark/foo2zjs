@@ -184,7 +184,7 @@ Last-Update: 2014-01-07
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1435,10 +1431,9 @@
+@@ -1436,10 +1432,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +196,7 @@ Last-Update: 2014-01-07
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1872,7 +1867,7 @@
+@@ -1873,7 +1868,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

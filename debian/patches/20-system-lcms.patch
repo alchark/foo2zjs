@@ -68,7 +68,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  icctest:
  	for g in *.icm; do \
  	    for i in 0 1 2 3; do \
-@@ -1446,7 +1436,7 @@
+@@ -1447,7 +1437,7 @@
  # Manpage generation.  No, I am not interested in "info" files or
  # HTML documentation.
  #
@@ -77,7 +77,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  
  $(MANPAGES): macros.man includer-man
  
-@@ -1513,7 +1503,6 @@
+@@ -1514,7 +1504,6 @@
  	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
@@ -85,7 +85,7 @@ Author: Michael Gilbert <mgilbert@debian.org>
  ifeq ($(UNAME),Darwin)
  	cd osx-hotplug; $(MAKE) install-man
  endif
-@@ -1534,10 +1523,9 @@
+@@ -1535,10 +1524,9 @@
  
  GROFF=/usr/local/test/bin/groff
  GROFF=groff
