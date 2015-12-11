@@ -39,6 +39,12 @@
 	    <arg_defval>ev/foo2qpdl-ICM-none</arg_defval>
 	</constraint>
 	<constraint sense="true">
+	    <make>Epson</make>
+	    <model>AcuLaser CX17NF</model>
+	    <driver>foo2hbpl2</driver>
+	    <arg_defval>ev/foo2hbpl2-ICM-none</arg_defval>
+	</constraint>
+	<constraint sense="true">
 	    <make>Fuji Xerox</make>
 	    <model>DocuPrint_CM205</model>
 	    <driver>foo2hbpl2</driver>
