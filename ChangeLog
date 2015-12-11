@@ -1,3 +1,10 @@
+2015-10-24	Rick Richardson <rick.richardson@comcast.net>
+	* foomatic-db/printer/Epson-AcuLaser_CX17NF.xml:
+		Change margins on Epson AcuLaser CX17NF.
+
+2015-10-11	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Epson AcuLaser CX17NF using the foo2hbpl2 driver.
+
 2015-07-04	pavel.shvagirev	<pavel.shvagirev@gmail.com>
 	* Modify: hplj10XX to not call us twice on Ubuntu 14.
 

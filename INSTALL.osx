@@ -1,4 +1,13 @@
 ==============================================================================
+How to Disable System Integrity Protection (rootless) in OS X El Capitan
+==============================================================================
+
+You need to disable rootless in Mac OSX 10.11 or greater.  Please follow
+these instructions:
+
+    http://osxdaily.com/2015/10/05/disable-rootless-system-integrity-protection-mac-os-x/
+
+==============================================================================
 MAC OSX INSTALLATION NOTES -
 
 HP LaserJet 1018/1020 and Color LaserJet 1600/2600n and Color LaserJet CP1215

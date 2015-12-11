@@ -1428,6 +1428,7 @@ ppd:
 	    *CLP*|*CLX*|*6110*) driver=foo2qpdl;; \
 	    *6015*|*1355*)	driver=foo2hbpl2;; \
 	    *C1765*)		driver=foo2hbpl2;; \
+	    *CX17*)		driver=foo2hbpl2;; \
 	    *CM2[01]5*)		driver=foo2hbpl2;; \
 	    *P205*|*3045*)	driver=foo2hbpl2;; \
 	    *M215*)		driver=foo2hbpl2;; \
