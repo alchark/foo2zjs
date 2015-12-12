@@ -1,3 +1,15 @@
+foo2zjs (20151024dfsg0-1) unstable; urgency=medium
+
+  * New 20151024 upstream release
+    - New Printer: Epson AcuLaser CX17NF using the foo2hbpl2 driver
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Refresh patches
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 12 Dec 2015 17:29:39 +0100
+
 foo2zjs (20150704dfsg0-2) unstable; urgency=medium
 
   * Upload to unstable
