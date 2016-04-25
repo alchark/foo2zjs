@@ -1,3 +1,15 @@
+foo2zjs (20160313dfsg0-1) unstable; urgency=medium
+
+  * New 20160313 upstream release
+
+  * DFSG repack (no changes from previous releases).
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Refresh patches
+  * Bump S-V to 3.9.8 without changes needed
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 25 Apr 2016 22:04:14 +0200
+
 foo2zjs (20151024dfsg0-2) unstable; urgency=medium
 
   * Add patch to build manpages & manual reproducibly
