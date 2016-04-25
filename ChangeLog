@@ -1,3 +1,6 @@
+2016-03-13	Rick Richardson <rick.richardson@comcast.net>
+	* icc2ps/lcms.h: USE_CUSTOM_SWAB defined.
+
 2015-10-24	Rick Richardson <rick.richardson@comcast.net>
 	* foomatic-db/printer/Epson-AcuLaser_CX17NF.xml:
 		Change margins on Epson AcuLaser CX17NF.
