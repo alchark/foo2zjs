@@ -1077,6 +1077,7 @@ cups:	FRC
 		echo "w"; \
 	    ) | ex $(CUPSDCONF); \
 	fi
+	# systemctl uses 2 things and no way to differentiate!
 	if [ -x /etc/init.d/cups ]; then \
 	    /etc/init.d/cups restart; \
 	    if [ $$? != 0 ]; then \
@@ -1094,12 +1095,7 @@ cups:	FRC
 	    cp /usr/local/etc/rc.d/cups.sh.sample /usr/local/etc/rc.d/cups.sh; \
 	    /usr/local/etc/rc.d/cups.sh restart; \
 	elif [ -x /bin/systemctl ]; then \
-	    CUPS_MAJVER=`$(CUPSMAJVER)`; \
-	    if [ "$$CUPS_MAJVER" = 2 ]; then \
-		systemctl restart org.cups.cupsd.service; \
-	    else \
-		systemctl restart cups.service; \
-	    fi \
+	    systemctl restart cups.service org.cups.cupsd.service || exit 0; \
 	elif [ -x /bin/launchctl ]; then \
 	    /bin/launchctl unload $(MACLOAD); \
 	    /bin/launchctl load $(MACLOAD); \
