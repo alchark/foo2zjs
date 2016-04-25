@@ -2,7 +2,7 @@ Description: Build manpages reproducibly, through reading the MODTIME from
  debian/changelog exclusively, and giving LC_ALL=C.UTF-8 TZ=UTC to various
  commands
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2016-02-26
+Last-Update: 2016-04-25
 --- a/Makefile
 +++ b/Makefile
 @@ -79,6 +79,8 @@
@@ -14,7 +14,7 @@ Last-Update: 2016-02-26
  
  #
  # Files for tarball
-@@ -1519,12 +1521,12 @@
+@@ -1515,12 +1517,12 @@
  	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
  
  GROFF=/usr/local/test/bin/groff
