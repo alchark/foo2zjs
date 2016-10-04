@@ -48,7 +48,7 @@ USB_BACKEND=/usr/lib/cups/backend/usb
 #
 # Directory to find downloadable HP firmware files sihpMMMM.dl
 #
-FWDIR=/usr/share/foo2zjs/firmware
+FWDIR=/lib/firmware/hp
 
 #
 # Program used to determine USB printer id information
