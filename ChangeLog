@@ -1,3 +1,9 @@
+2016-09-02	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Xerox Phaser 3040 using the foo2hbpl2 driver.
+
+2016-08-30	Rick Richardson <rick.richardson@comcast.net>
+	* New Printer: Xerox Phaser 3010 using the foo2hbpl2 driver.
+
 2016-03-13	Rick Richardson <rick.richardson@comcast.net>
 	* icc2ps/lcms.h: USE_CUSTOM_SWAB defined.
 

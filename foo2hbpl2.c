@@ -14,6 +14,8 @@ With this utility, you can print to some Xerox and Dell, such as these:
     - Fuji Xerox DocuPrint CM215	B/W and color
     - Fuji Xerox DocuPrint M215		B/W
     - Fuji Xerox DocuPrint P205		B/W
+    - Xerox Phaser 3010			B/W
+    - Xerox Phaser 3040			B/W
     - Xerox WorkCentre 3045		B/W
     - Xerox WorkCentre 6015		B/W and color
 
@@ -57,7 +59,7 @@ yourself.
 
 */
 
-static char Version[] = "$Id: foo2hbpl2.c,v 1.34 2015/10/11 19:24:50 rick Exp $";
+static char Version[] = "$Id: foo2hbpl2.c,v 1.36 2016/09/02 19:21:11 rick Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
