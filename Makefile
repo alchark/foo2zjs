@@ -79,6 +79,8 @@ endif
 ifeq ($(UNAME),SunOS)
     MODTIME= `ls -e $$1 | cut -c42-61`
 endif
+# Define modtime from the debian changelog, for all files
+MODTIME= LC_ALL=C.UTF-8 TZ=UTC date -d "$$(dpkg-parsechangelog -SDate)" "+%a %b %d %T %Y"
 
 #
 # Files for tarball
@@ -1526,12 +1528,12 @@ install-doc: doc
 	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
 
 GROFF=/usr/local/test/bin/groff
-GROFF=groff
+GROFF=LC_ALL=C.UTF-8 TZ=UTC groff
 manual.pdf: $(MANPAGES) osx-hotplug/osx-hplj-hotplug.1
 	-$(GROFF) -t -man \
 	    `ls $(MANPAGES) \
 		osx-hotplug/osx-hplj-hotplug.1 \
-		| sort` \
+		| LC_ALL=C.UTF-8 sort` \
 	    | ps2pdf - $@
 
 README: README.in
