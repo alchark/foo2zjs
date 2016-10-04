@@ -240,6 +240,7 @@ FILES	=	\
 		hplj10xx.conf \
 		modify-ppd \
 		command2foo2lava-pjl.c \
+		myftpput \
 		$(NULL)
 
 # CUPS vars
@@ -310,8 +311,10 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
 
 .fig.gif:
 	fig2dev -L gif $*.fig | giftrans -t "#ffffff" -o $*.gif
-	# fig2dev -L ppm  $*.fig | pnmquant -fs 256 \
-	    #| ppmtogif -transparent rgb:ff/ff/ff >$*.gif
+
+# old .fig.gif
+# fig2dev -L ppm  $*.fig | pnmquant -fs 256 \
+# | ppmtogif -transparent rgb:ff/ff/ff >$*.gif
 
 .ps.cups:
 	gs $(GSOPTS) -r600x600 \
@@ -837,10 +840,10 @@ install-extra:
 	    fi; \
 	done
 
-MODEL=$(DESTDIR)/usr/share/cups/model
+MODEL=$(PREFIX)/share/cups/model
 LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
 MACMODEL=/Library/Printers/PPDs/Contents/Resources
-PPD=$(DESTDIR)/usr/share/ppd
+PPD=$(PREFIX)/share/ppd
 VARPPD=/var/lp/ppd
 install-ppd:
 	#
@@ -1047,7 +1050,9 @@ CUPSMAJVER=cups-config --version | sed "s/[.].*//"
 CUPSMAJVER=head -1 $(CUPSPRINTERS) | sed -e 's/.*CUPS v//' -e 's/\..*//'
 
 cups:	FRC
+	#
 	# CUPS
+	#
 	if [ -r $(CUPSFILESCONF) ]; then \
 	    (	echo "g/^FileDev/d"; \
 		echo "g/ foo2zjs.../d"; \
@@ -1077,7 +1082,9 @@ cups:	FRC
 		echo "w"; \
 	    ) | ex $(CUPSDCONF); \
 	fi
-	# systemctl uses 2 things and no way to differentiate!
+	#
+	# CUPS restart
+	#
 	if [ -x /etc/init.d/cups ]; then \
 	    /etc/init.d/cups restart; \
 	    if [ $$? != 0 ]; then \
@@ -1095,7 +1102,10 @@ cups:	FRC
 	    cp /usr/local/etc/rc.d/cups.sh.sample /usr/local/etc/rc.d/cups.sh; \
 	    /usr/local/etc/rc.d/cups.sh restart; \
 	elif [ -x /bin/systemctl ]; then \
-	    systemctl restart cups.service org.cups.cupsd.service || exit 0; \
+	    systemctl restart cups.service; \
+	    if [ $$? != 0 ]; then \
+		systemctl restart org.cups.cupsd.service; \
+	    fi \
 	elif [ -x /bin/launchctl ]; then \
 	    /bin/launchctl unload $(MACLOAD); \
 	    /bin/launchctl load $(MACLOAD); \
@@ -1427,6 +1437,7 @@ ppd:
 	    *CX17*)		driver=foo2hbpl2;; \
 	    *CM2[01]5*)		driver=foo2hbpl2;; \
 	    *P205*|*3045*)	driver=foo2hbpl2;; \
+	    *3010*|*3040*)	driver=foo2hbpl2;; \
 	    *M215*)		driver=foo2hbpl2;; \
 	    *M1400*)		driver=foo2hbpl2;; \
 	    *)                  driver=foo2zjs;; \
@@ -1651,12 +1662,17 @@ foo2zjs.html foo2oak.html foo2hp.html \
 	    -e "s/\$${MODtarball}/$$MODtarball $$TZ/"
 	chmod -w $@
 
+myftpput: ../geo/myftpput
+	rm -f myftpput
+	cp -a ../geo/myftpput .
+	chmod 555 myftpput
+
 web: test tar manual.pdf webindex
-	ncftpput -m -f $(FTPSITE) foo2zjs \
+	./myftpput -S -m -f $(FTPSITE) foo2zjs \
 	    ChangeLog INSTALL manual.pdf foo2zjs.tar.gz;
 
 webt: tar manual.pdf webindex
-	ncftpput -m -f $(FTPSITE) foo2zjs \
+	./myftpput -S -m -f $(FTPSITE) foo2zjs \
 	    ChangeLog INSTALL manual.pdf foo2zjs.tar.gz;
 
 webworld: web webpics
@@ -1671,7 +1687,7 @@ webphotos:
 
 zjsindex: foo2zjs.html archzjs.gif thermometer.gif webphotos
 	ln -sf foo2zjs.html index.html
-	ncftpput -m -f $(FTPSITE) foo2zjs \
+	./myftpput -S -m -f $(FTPSITE) foo2zjs \
 	    index.html style.css archzjs.gif thermometer.gif \
 	    images/flags.png INSTALL INSTALL.osx images/zjsfavicon.png \
 	    Laserjet-1005-Series-MacOSX-10.pdf \
@@ -1679,56 +1695,56 @@ zjsindex: foo2zjs.html archzjs.gif thermometer.gif webphotos
 
 oakindex: foo2oak.html archoak.gif thermometer.gif webphotos
 	ln -sf foo2oak.html index.html
-	ncftpput -m -f $(FTPSITE) foo2oak \
+	./myftpput -S -m -f $(FTPSITE) foo2oak \
 	    index.html style.css archoak.gif thermometer.gif \
 	    images/flags.png INSTALL \
 	    printer-photos/printers.jpg;
 
 hpindex: foo2hp.html archhp.gif thermometer.gif webphotos
 	ln -sf foo2hp.html index.html
-	ncftpput -m -f $(FTPSITE) foo2hp \
+	./myftpput -S -m -f $(FTPSITE) foo2hp \
 	    index.html style.css archhp.gif thermometer.gif \
 	    images/flags.png INSTALL images/hpfavicon.png \
 	    printer-photos/printers.jpg;
 
 xqxindex: foo2xqx.html archxqx.gif thermometer.gif webphotos
 	ln -sf foo2xqx.html index.html
-	ncftpput -m -f $(FTPSITE) foo2xqx \
+	./myftpput -S -m -f $(FTPSITE) foo2xqx \
 	    index.html style.css archxqx.gif thermometer.gif \
 	    images/flags.png INSTALL images/xqxfavicon.png \
 	    printer-photos/printers.jpg;
 
 lavaindex: foo2lava.html archlava.gif thermometer.gif webphotos
 	ln -sf foo2lava.html index.html
-	ncftpput -m -f $(FTPSITE) foo2lava \
+	./myftpput -S -m -f $(FTPSITE) foo2lava \
 	    index.html style.css archlava.gif thermometer.gif \
 	    images/flags.png INSTALL images/lavafavicon.png \
 	    printer-photos/printers.jpg;
 
 qpdlindex: foo2qpdl.html archqpdl.gif thermometer.gif webphotos
 	ln -sf foo2qpdl.html index.html
-	ncftpput -m -f $(FTPSITE) foo2qpdl \
+	./myftpput -S -m -f $(FTPSITE) foo2qpdl \
 	    index.html style.css archqpdl.gif thermometer.gif \
 	    images/flags.png INSTALL images/qpdlfavicon.png \
 	    printer-photos/printers.jpg;
 
 slxindex: foo2slx.html archslx.gif thermometer.gif webphotos
 	ln -sf foo2slx.html index.html
-	ncftpput -m -f $(FTPSITE) foo2slx \
+	./myftpput -S -m -f $(FTPSITE) foo2slx \
 	    index.html style.css archslx.gif thermometer.gif \
 	    images/flags.png INSTALL images/slxfavicon.png \
 	    printer-photos/printers.jpg;
 
 hcindex: foo2hiperc.html archhiperc.gif thermometer.gif webphotos
 	ln -sf foo2hiperc.html index.html
-	ncftpput -m -f $(FTPSITE) foo2hiperc \
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc \
 	    index.html style.css archhiperc.gif thermometer.gif \
 	    images/flags.png INSTALL images/hipercfavicon.png \
 	    printer-photos/printers.jpg;
 
 hbplindex: foo2hbpl.html archhbpl.gif thermometer.gif webphotos
 	ln -sf foo2hbpl.html index.html
-	ncftpput -m -f $(FTPSITE) foo2hbpl \
+	./myftpput -S -m -f $(FTPSITE) foo2hbpl \
 	    index.html style.css archhbpl.gif thermometer.gif \
 	    images/flags.png INSTALL images/hbplfavicon.png \
 	    printer-photos/printers.jpg;
@@ -1780,24 +1796,24 @@ webicm: \
 	icm/okic3200.tar.gz \
 	icm/okic3400.tar.gz icm/okic5600.tar.gz \
 	icm/okic810.tar.gz
-	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/dl2300.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/km2430.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2zjs/icm icm/hp-cp1025.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hpclj2500.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hpclj2600n.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hp/icm icm/hp1215.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2lava/icm icm/km2530.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2lava/icm icm/km-1600.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp300.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2qpdl/icm icm/samclp315.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic301.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic310.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic511.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
-	ncftpput -m -f $(FTPSITE) foo2hiperc/icm icm/okic810.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2zjs/icm icm/dl2300.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2zjs/icm icm/km2430.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2zjs/icm icm/hp-cp1025.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hp/icm icm/hpclj2500.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hp/icm icm/hpclj2600n.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hp/icm icm/hp1215.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2lava/icm icm/km2530.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2lava/icm icm/km-1600.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2qpdl/icm icm/samclp300.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2qpdl/icm icm/samclp315.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2slx/icm icm/lexc500.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic301.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic310.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic511.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic3200.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic3400.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic5600.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2hiperc/icm icm/okic810.tar.gz;
 
 icm/dl2300.tar.gz: FRC
 	cd icm; tar -c -z -f ../$@ CP*.icm DL*.icm
@@ -1844,7 +1860,7 @@ webfw:	firmware/sihp1000.tar.gz \
 	firmware/sihpP1006.tar.gz \
 	firmware/sihpP1505.tar.gz \
 	$(NULL)
-	ncftpput -m -f $(FTPSITE) foo2zjs/firmware firmware/*.tar.gz;
+	./myftpput -S -m -f $(FTPSITE) foo2zjs/firmware firmware/*.tar.gz;
 
 firmware/sihp1000.tar.gz: FRC
 	cd firmware; tar -c -z -f ../$@ sihp1000.img
