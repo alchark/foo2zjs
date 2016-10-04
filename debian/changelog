@@ -1,3 +1,17 @@
+foo2zjs (20160902dfsg0-1) unstable; urgency=medium
+
+  * New 20160902 upstream release
+    - New printers:
+      + Xerox Phaser 3010 using the foo2hbpl2 driver
+      + Xerox Phaser 3040 using the foo2hbpl2 driver
+
+  * DFSG repack (no changes from previous releases)
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Initialize git-dpm and rephrase most patches' descriptions
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 04 Oct 2016 11:54:01 +0200
+
 foo2zjs (20160313dfsg0-2) unstable; urgency=medium
 
   [ Colin Watson ]
