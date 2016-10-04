@@ -40,7 +40,7 @@ Decode an HIPERC stream file created by foo2hiperc.
 
 .nf
 .ft CW
-$ foo2hiperc-wrapper testpage.ps | hipercdecode -h
+$ foo2hiperc-wrapper testpage.ps | hipercdecode \-h
      0:	\\033%-12345X@PJL
      f:	@PJL RDYMSG DISPLAY = "Unknown"
     30:	@PJL SET OKIJOBACCOUNTJOB USERID="Unknown" JOBNAME="Unknown"
@@ -62,7 +62,7 @@ $ foo2hiperc-wrapper testpage.ps | hipercdecode -h
    289:	RECTYPE 0 (len=52,0x34 cnt=1)
    291:		BLKNUM 0, nbie=1, pn=3 [black] uc=0,0, wid=4864 ud=0,100
    2a5:		BLKNUM 1 (len=20), uncompressed=1, bie:
-		DL = 48, D = 48, P = 49, - = 48, XY = 4864 x 6816
+		DL = 48, D = 48, P = 49, \- = 48, XY = 4864 x 6816
 		L0 = 256, MX = 0, MY = 0
 		Order   = 0 
 		Options = 0 
