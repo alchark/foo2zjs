@@ -60,7 +60,7 @@ FWDIR=/usr/share/foo2zjs/firmware
 #    [snip]
 #    # Mount all other filesystems (except for NFS and /proc, which is already
 #
-PRINTERID=/bin/usb_printerid
+PRINTERID=`which usb_printerid`
 
 #
 #	Figure out how to log our messages
