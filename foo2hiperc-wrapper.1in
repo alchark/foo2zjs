@@ -37,7 +37,7 @@ Print in color (else monochrome).
 Color correction mode [0].
 .TS
 n l .
-10	ICM color profile (using -G *.icm file)
+10	ICM color profile (using \-G *.icm file)
 .TE
 .TP
 .BI \-d\0 duplex
@@ -66,7 +66,7 @@ Paper size code to send to printer [2].
 box;
 | n l | n l.
 1	A4	2	letter
-3	legal	-	-	
+3	legal	\-	\-	
 5	A5	6	B5jis
 7	A6	8	env Monarch
 9	env DL	10	env C5
@@ -100,9 +100,9 @@ Print in N-up.  Requires the \fBpsutils\fP package.
 Orientation used for N-up.
 .TS
 l l l.
-Portrait	-op	(normal)
-Landscape	-ol	(rotated 90 degrees anticlockwise)
-Seascape	-os	(rotated 90 degrees clockwise)
+Portrait	\-op	(normal)
+Landscape	\-ol	(rotated 90 degrees anticlockwise)
+Seascape	\-os	(rotated 90 degrees clockwise)
 .TE
 .SS Printer Tweaking Options
 These are the options used to customize the operation of \fBfoo2hiperc\fP
@@ -117,13 +117,13 @@ Set the offset of the end of the printable region from the
 lower right corner, in pixels [varies with paper size].
 .TP
 .BI \-L\0 mask
-Send the logical clipping values from -u/-l in the HIPERC stream.
+Send the logical clipping values from \-u/-l in the HIPERC stream.
 \fBfoo2hiperc-wrapper\fP always runs Ghostscript with the ideal page dimensions,
 so that the scale of the image is correct,
 regardless whether or not the printer has unprintable regions.
 This option is used to move the position of the clipped image
 back to where it belongs on the page.  The default is to send
-the amount which was clipped by -u and -l, and should be
+the amount which was clipped by \-u and \-l, and should be
 good in most cases.
 .TS
 l l.
@@ -145,7 +145,7 @@ These are the options used to control the quality of color output.
 Color correction is currently a WORK IN PROGRESS.
 .TP
 .BI \-g\0 gsopts
-Additional options to pass to Ghostscript, such as -g\(lq-dDITHERPPI=nnn\(rq,
+Additional options to pass to Ghostscript, such as \-g\(lq-dDITHERPPI=nnn\(rq,
 etc.  This option may appear more than once.
 .TP
 .BI \-G\0 profile.icm
@@ -198,7 +198,7 @@ Create a color HIPERC stream from a Postscript document:
 
 .RS
 .nf
-foo2hiperc-wrapper -c testpage.ps > testpage.hc
+foo2hiperc-wrapper \-c testpage.ps > testpage.hc
 .fi
 .RE
 
