@@ -90,37 +90,31 @@ case "$0" in
     MODEL=P1005; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3d17	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1006)
     MODEL=P1006; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3e17	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1007)
     MODEL=P1007; FWMODEL=P1005		# Alias
     USB1=0x03f0	#Vendor
     USB2=0x4817	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1008)
     MODEL=P1008; FWMODEL=P1006		# Alias
     USB1=0x03f0	#Vendor
     USB2=0x4917	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1505)
     MODEL=P1505; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3f17	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1505n)
     MODEL=P1505n; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x4017	#Model
-    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *1000)
     MODEL=1000; FWMODEL=$MODEL
