@@ -9,3 +9,4 @@ Icon=/usr/share/pixmaps/hplj1020_icon.png
 StartupNotify=true
 Categories=System;
 X-Desktop-File-Install-Version=0.10
+NoDisplay=true
