@@ -127,7 +127,7 @@ fi
 putfw() {
     inputname=$1
     outputname=$2
-    $ARM2HPDL $inputname > /usr/share/foo2zjs/firmware/$outputname
+    $ARM2HPDL $inputname > /lib/firmware/hp/$outputname
     rm $inputname
 }
 
