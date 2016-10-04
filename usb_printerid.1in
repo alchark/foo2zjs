@@ -26,7 +26,7 @@ GET_DEVICE_ID string:
 MFG:Hewlett-Packard;MDL:HP LaserJet 1020;CMD:ACL;CLS:PRINTER;\e
 DES:HP LaserJet 1020;
 
-# cp /usr/share/foo2zjs/firmware/sihp1020.dl /dev/usb/lp0
+# cp /lib/firmware/hp/sihp1020.dl /dev/usb/lp0
 
 # usb_printerid /dev/usb/lp0
 GET_DEVICE_ID string:
@@ -37,7 +37,7 @@ DES:HP LaserJet 1020;FWVER:20050309;
 
 .SH FILES
 .BR /usr/bin/usb_printerid,
-.BR /usr/share/foo2*/firmware/*
+.BR /lib/firmware/hp/*
 .SH SEE ALSO
 .BR arm2hpdl (1)
 .SH "AUTHOR"
