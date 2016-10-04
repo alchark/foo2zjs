@@ -17,9 +17,7 @@ SYSNAME := $(shell uname -n)
 VERSION=0.0
 
 # Installation prefix...
-PREFIX=/usr/local
 PREFIX=/usr
-PREFIX=$(DESTDIR)/usr
 
 # Pathnames for this package...
 BIN=$(PREFIX)/bin
@@ -38,7 +36,7 @@ INSTALL=install
 ROOT=root
 
 # Pathnames for referenced packages...
-FOODB=$(DESTDIR)/usr/share/foomatic/db/source
+FOODB=$(PREFIX)/share/foomatic/db/source
 
 # User ID's
 LPuid=-oroot
@@ -454,32 +452,32 @@ all-done:
 
 
 foo2zjs: foo2zjs.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG) $(LDFLAGS)
 
 foo2hp: foo2hp.o $(LIBJBG)
-	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) /usr/local/lib/libdmalloc.a
-	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG)
+	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) $(LDFLAGS) /usr/local/lib/libdmalloc.a
+	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) $(LDFLAGS)
 
 foo2xqx: foo2xqx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG) $(LDFLAGS)
 
 foo2lava: foo2lava.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG) $(LDFLAGS)
 
 foo2qpdl: foo2qpdl.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG) $(LDFLAGS)
 
 foo2oak: foo2oak.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG) $(LDFLAGS)
 
 foo2slx: foo2slx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG) $(LDFLAGS)
 
 foo2hiperc: foo2hiperc.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG) $(LDFLAGS)
 
 foo2hbpl2: foo2hbpl2.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG) $(LDFLAGS)
 
 
 foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
@@ -559,46 +557,46 @@ ifeq ($(UNAME),Darwin)
 endif
 
 ok: ok.o $(LIBJBG)
-	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 gipddecode: gipddecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 hbpldecode: hbpldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 hipercdecode: hipercdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 lavadecode: lavadecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 oakdecode: oakdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 opldecode: opldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 qpdldecode: qpdldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 splcdecode: splcdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@
+	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@ $(LDFLAGS)
 
 slxdecode: slxdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 xqxdecode: xqxdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 zjsdecode: zjsdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 command2foo2lava-pjl: command2foo2lava-pjl.o
-	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@
+	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@ $(LDFLAGS)
 
 command2foo2lava-pjl.o: command2foo2lava-pjl.c
-	$(CC) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
 
 #
 # Installation rules
@@ -644,8 +642,6 @@ install-test:
 	#
     
 
-UDEVBIN=$(DESTDIR)/bin/
-
 install-prog:
 	#
 	# Install driver, wrapper, and development tools
@@ -653,8 +649,7 @@ install-prog:
 	$(INSTALL) -d $(BIN)
 	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
 	if [ "$(BINPROGS)" != "" ]; then \
-	    $(INSTALL) -d $(UDEVBIN); \
-	    $(INSTALL) -c $(BINPROGS) $(UDEVBIN); \
+	    $(INSTALL) -c $(BINPROGS) $(BIN); \
 	fi
 	#
 	# Install gamma correction files.  These are just templates,
@@ -841,7 +836,7 @@ install-extra:
 	done
 
 MODEL=$(PREFIX)/share/cups/model
-LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
+LOCALMODEL=$(PREFIX)/local/share/cups/model
 MACMODEL=/Library/Printers/PPDs/Contents/Resources
 PPD=$(PREFIX)/share/ppd
 VARPPD=/var/lp/ppd
@@ -901,9 +896,9 @@ install-ppd:
 	    done; \
 	fi
 
-APPL=$(DESTDIR)/usr/share/applications
-OLDAPPL=$(DESTDIR)/usr/share/gnome/apps/System
-PIXMAPS=$(DESTDIR)/usr/share/pixmaps
+APPL=$(PREFIX)/share/applications
+OLDAPPL=$(PREFIX)/share/gnome/apps/System
+PIXMAPS=$(PREFIX)/share/pixmaps
 
 install-desktop:
 	#
@@ -1037,6 +1032,7 @@ install-hotplug-osx:
 
 install-filter:
 	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
+	    mkdir -p $(CUPS_SERVERBIN)/filter/; \
 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
 	fi
 
@@ -1443,10 +1439,9 @@ ppd:
 	    *)                  driver=foo2zjs;; \
 	    esac; \
 	    echo $$driver - $$printer; \
-	    ENGINE=../foomatic/foomatic-db-engine; \
 	    PERL5LIB=$$ENGINE/lib \
 		FOOMATICDB=foomatic-db \
-		$$ENGINE/foomatic-ppdfile \
+		/usr/bin/foomatic-ppdfile \
 		-d $$driver -p $$printer \
 		> PPD/$$printer.ppd; \
 	done
@@ -1885,7 +1880,7 @@ FRC:
 misc: pksm2bitcmyk phorum-logo.gif
 
 pksm2bitcmyk: pksm2bitcmyk.c
-	$(CC) $(CFLAGS) pksm2bitcmyk.c -lnetpbm -o $@
+	$(CC) $(CFLAGS) pksm2bitcmyk.c -lnetpbm -o $@ $(LDFLAGS)
 
 phorum-logo.gif: archhp.fig
 	fig2dev -L gif -m.25 archhp.fig | giftrans -t "#ffffff" -o $@
