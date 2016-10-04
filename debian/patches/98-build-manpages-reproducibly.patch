@@ -14,7 +14,7 @@ Last-Update: 2016-04-25
  
  #
  # Files for tarball
-@@ -1515,12 +1517,12 @@
+@@ -1526,12 +1528,12 @@
  	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
  
  GROFF=/usr/local/test/bin/groff

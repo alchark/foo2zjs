@@ -26,7 +26,7 @@ Last-Update: 2016-04-16
  
  # User ID's
  LPuid=-oroot
-@@ -451,32 +449,32 @@
+@@ -454,32 +452,32 @@
  
  
  foo2zjs: foo2zjs.o $(LIBJBG)
@@ -69,7 +69,7 @@ Last-Update: 2016-04-16
  
  
  foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
-@@ -556,46 +554,46 @@
+@@ -559,46 +557,46 @@
  endif
  
  ok: ok.o $(LIBJBG)
@@ -130,7 +130,7 @@ Last-Update: 2016-04-16
  
  #
  # Installation rules
-@@ -641,8 +639,6 @@
+@@ -644,8 +642,6 @@
  	#
      
  
@@ -139,7 +139,7 @@ Last-Update: 2016-04-16
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -650,8 +646,7 @@
+@@ -653,8 +649,7 @@
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -149,21 +149,16 @@ Last-Update: 2016-04-16
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -837,10 +832,10 @@
- 	    fi; \
+@@ -841,7 +836,7 @@
  	done
  
--MODEL=$(DESTDIR)/usr/share/cups/model
+ MODEL=$(PREFIX)/share/cups/model
 -LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
-+MODEL=$(PREFIX)/share/cups/model
 +LOCALMODEL=$(PREFIX)/local/share/cups/model
  MACMODEL=/Library/Printers/PPDs/Contents/Resources
--PPD=$(DESTDIR)/usr/share/ppd
-+PPD=$(PREFIX)/share/ppd
+ PPD=$(PREFIX)/share/ppd
  VARPPD=/var/lp/ppd
- install-ppd:
- 	#
-@@ -898,9 +893,9 @@
+@@ -901,9 +896,9 @@
  	    done; \
  	fi
  
@@ -176,7 +171,7 @@ Last-Update: 2016-04-16
  
  install-desktop:
  	#
-@@ -1034,6 +1029,7 @@
+@@ -1037,6 +1032,7 @@
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -184,7 +179,7 @@ Last-Update: 2016-04-16
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1432,10 +1428,9 @@
+@@ -1443,10 +1439,9 @@
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -196,7 +191,7 @@ Last-Update: 2016-04-16
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1869,7 +1864,7 @@
+@@ -1885,7 +1880,7 @@
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c
