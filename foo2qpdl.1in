@@ -114,7 +114,7 @@ for a particular printer.
 Color Adjust: brightness, contrast, saturation, cyan-red balance,
 magenta-green balance, and yellow-blue balance from 0 to 100.
 The default is 50,50,50,50,50,50.
-This only works when the -z3 (e.g. CLP-365) model is set!
+This only works when the \-z3 (e.g. CLP\-365) model is set!
 .TP
 .BI \-u\0 xoff x yoff
 Set the offset of the start of the printable region from the
@@ -125,7 +125,7 @@ Set the offset of the end of the printable region from the
 lower right corner, in pixels [0x0].
 .TP
 .BI \-L\0 mask
-Send logical clipping amounts implied by -u/-l in the QPDL stream [3].
+Send logical clipping amounts implied by \-u/-l in the QPDL stream [3].
 .TS
 l l.
 0	don't send any logical clipping amounts
@@ -172,10 +172,10 @@ Create a black and white QPDL stream:
 
 .RS
 .nf
-gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \ 
-    -sPAPERSIZE=letter -r1200x600 -sDEVICE=pbmraw \ 
-    -sOutputFile=- - < testpage.ps \ 
-| foo2qpdl -r1200x600 -g10200x6600 -p0 >testpage.zm
+gs \-q \-dBATCH \-dSAFER \-dQUIET \-dNOPAUSE \ 
+    \-sPAPERSIZE=letter \-r1200x600 \-sDEVICE=pbmraw \ 
+    \-sOutputFile=- \- < testpage.ps \ 
+| foo2qpdl \-r1200x600 \-g10200x6600 \-p0 >testpage.zm
 .fi
 .RE
 .P
@@ -183,10 +183,10 @@ Create a color QPDL stream:
 
 .RS
 .nf
-gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \ 
-    -sPAPERSIZE=letter -g10200x6600 -r1200x600 -sDEVICE=bitcmyk \ 
-    -sOutputFile=- - < testpage.ps \ 
-| foo2qpdl -r1200x600 -g10200x6600 -p0 >testpage.zc
+gs \-q \-dBATCH \-dSAFER \-dQUIET \-dNOPAUSE \ 
+    \-sPAPERSIZE=letter \-g10200x6600 \-r1200x600 \-sDEVICE=bitcmyk \ 
+    \-sOutputFile=- \- < testpage.ps \ 
+| foo2qpdl \-r1200x600 \-g10200x6600 \-p0 >testpage.zc
 .fi
 .RE
 

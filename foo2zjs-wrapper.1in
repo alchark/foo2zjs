@@ -38,7 +38,7 @@ n l .
 1	Photos (using m2300w CRDs)
 2	Photos and text (using m2300w CRDs)
 3	Graphics and text (using m2300w CRDs)
-10	ICM color profile (using -G *.icm file)
+10	ICM color profile (using \-G *.icm file)
 .TE
 .TP
 .BI \-d\0 duplex
@@ -55,7 +55,7 @@ l r r r r r.
 _
 Media	2300DL	2200DL	HP 1018	HP P1102	HP
 \^	HP 1005		HP 1020	HP P1606	CP1025
-\^	-z0	-z0	-z1	-z2	-z3
+\^	\-z0	\-z0	\-z1	\-z2	\-z3
 _
 standard	1	1	1	1	1
 transparency	2	2	2	2	2
@@ -84,7 +84,7 @@ l r r r r.
 _
 Paper	MC 2300DL	HP 1018	HP P1102	HP
 \^	HP 1005	HP 1020	HP P1606	CP1025
-\^	-z0	-z1	-z2	-z3
+\^	\-z0	\-z1	\-z2	\-z3
 _
 letter	1	1	1	1
 legal	5	5	5	5
@@ -100,9 +100,11 @@ env Monarch	37	37	37	37
 postcard (japan)	na	260	43	43
 B5iso	na	259	na	na
 A6	na	262	70	70
-double postcard rotated	na	261	82	82
+double postcard	na	261	82	82
+ rotated	\^	\^	\^	\^
 16k 197x273	na	257	257	257
-fanfold german legal	na	258	258	258
+fanfold german	na	258	258	258
+ legal	\^	\^	\^	\^
 16k 184x260	na	na	263	263
 16k 195x270	na	na	264	264
 photo 4x6	na	na	na	268
@@ -137,9 +139,9 @@ Print in N-up.  Requires the \fBpsutils\fP package.
 Orientation used for N-up.
 .TS
 l l l.
-Portrait	-op	(normal)
-Landscape	-ol	(rotated 90 degrees anticlockwise)
-Seascape	-os	(rotated 90 degrees clockwise)
+Portrait	\-op	(normal)
+Landscape	\-ol	(rotated 90 degrees anticlockwise)
+Seascape	\-os	(rotated 90 degrees clockwise)
 .TE
 .SS Printer Tweaking Options
 These are the options used to customize the operation of \fBfoo2zjs\fP
@@ -158,13 +160,13 @@ The defaults should work on the 2200DL and 2300DL, and have not
 been tested on any other printers.
 .TP
 .BI \-L\0 mask
-Send the logical clipping values from -u/-l in the ZjStream.
+Send the logical clipping values from \-u/-l in the ZjStream.
 \fBfoo2zjs-wrapper\fP always runs Ghostscript with the ideal page dimensions,
 so that the scale of the image is correct,
 regardless whether or not the printer has unprintable regions.
 This option is used to move the position of the clipped image
 back to where it belongs on the page.  The default is to send
-the amount which was clipped by -u and -l, and should be
+the amount which was clipped by \-u and \-l, and should be
 good in most cases.
 .TS
 l l.
@@ -200,7 +202,7 @@ These are the options used to control the quality of color output.
 Color correction is currently a WORK IN PROGRESS.
 .TP
 .BI \-g\0 gsopts
-Additional options to pass to Ghostscript, such as -g\(lq-dDITHERPPI=nnn\(rq,
+Additional options to pass to Ghostscript, such as \-g\(lq-dDITHERPPI=nnn\(rq,
 etc.  This option may appear more than once.
 .TP
 .BI \-G\0 profile.icm
@@ -245,7 +247,7 @@ examine it, and then print it using a RAW print queue:
 .nf
 foo2zjs-wrapper testpage.ps > testpage.zm
 zjsdecode < testpage.zm
-lpr -P raw testpage.zm
+lpr \-P raw testpage.zm
 .fi
 .RE
 .P
@@ -253,7 +255,7 @@ Create a color ZjStream stream from a Postscript document:
 
 .RS
 .nf
-foo2zjs-wrapper -c testpage.ps > testpage.zc
+foo2zjs-wrapper \-c testpage.ps > testpage.zc
 .fi
 .RE
 
