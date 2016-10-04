@@ -620,7 +620,7 @@ void ReadReal(LPIT8 it8, int inum)
         if (it8->ch == '.') {        // Decimal point
 
                 double frac = 0.0;      // fraction
-                int prec = 0;           // precission
+                int prec = 0;           // precision
 
                 NextCh(it8);               // Eats dec. point
 
