@@ -71,6 +71,7 @@ void xswab(const void *from, void *to, size_t len)
 #undef STEP
 }
 #else
+#include <unistd.h>
 #define xswab swab
 #endif
 
@@ -1161,7 +1162,7 @@ LCMSBOOL ReadCLUT(LPLCMSICCPROFILE Icc, size_t Offset, LPLUT NewLUT)
          AdjustEndianessArray16(NewLUT ->T, NewLUT->Tsize / sizeof(WORD));
     }
     else {
-        cmsSignalError(LCMS_ERRC_ABORTED, "Unknow precission of '%d'", CLUT.prec); 
+        cmsSignalError(LCMS_ERRC_ABORTED, "Unknow precision of '%d'", CLUT.prec); 
         return FALSE;
     }
 

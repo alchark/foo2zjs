@@ -1,13 +1,20 @@
-Description: Patch the Makefiles
- This patch makes the Makefiles work correctly with LDFLAGS, Debian PREFIX usages, etc.
-Author: Steffen Joeris <white@debian.org>
+From 0cdb5358af1e9f413a49be21adccbb7ba8af9c03 Mon Sep 17 00:00:00 2001
+From: Steffen Joeris <white@debian.org>
+Date: Tue, 4 Oct 2016 11:43:43 +0200
+Subject: Update makefiles to Debian best-practices
+
 Author: Luca Capello <luca@pca.it>
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2016-04-16
+---
+ Makefile        | 71 +++++++++++++++++++++++++++------------------------------
+ icc2ps/Makefile |  4 ++--
+ 2 files changed, 35 insertions(+), 40 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 62b28ec..f607ddb 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -17,9 +17,7 @@
+@@ -17,9 +17,7 @@ SYSNAME := $(shell uname -n)
  VERSION=0.0
  
  # Installation prefix...
@@ -17,7 +24,7 @@ Last-Update: 2016-04-16
  
  # Pathnames for this package...
  BIN=$(PREFIX)/bin
-@@ -38,7 +36,7 @@
+@@ -38,7 +36,7 @@ INSTALL=install
  ROOT=root
  
  # Pathnames for referenced packages...
@@ -26,7 +33,7 @@ Last-Update: 2016-04-16
  
  # User ID's
  LPuid=-oroot
-@@ -454,32 +452,32 @@
+@@ -454,32 +452,32 @@ all-done:
  
  
  foo2zjs: foo2zjs.o $(LIBJBG)
@@ -69,7 +76,7 @@ Last-Update: 2016-04-16
  
  
  foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
-@@ -559,46 +557,46 @@
+@@ -559,46 +557,46 @@ ifeq ($(UNAME),Darwin)
  endif
  
  ok: ok.o $(LIBJBG)
@@ -130,7 +137,7 @@ Last-Update: 2016-04-16
  
  #
  # Installation rules
-@@ -644,8 +642,6 @@
+@@ -644,8 +642,6 @@ install-test:
  	#
      
  
@@ -139,7 +146,7 @@ Last-Update: 2016-04-16
  install-prog:
  	#
  	# Install driver, wrapper, and development tools
-@@ -653,8 +649,7 @@
+@@ -653,8 +649,7 @@ install-prog:
  	$(INSTALL) -d $(BIN)
  	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
  	if [ "$(BINPROGS)" != "" ]; then \
@@ -149,7 +156,7 @@ Last-Update: 2016-04-16
  	fi
  	#
  	# Install gamma correction files.  These are just templates,
-@@ -841,7 +836,7 @@
+@@ -841,7 +836,7 @@ install-extra:
  	done
  
  MODEL=$(PREFIX)/share/cups/model
@@ -158,7 +165,7 @@ Last-Update: 2016-04-16
  MACMODEL=/Library/Printers/PPDs/Contents/Resources
  PPD=$(PREFIX)/share/ppd
  VARPPD=/var/lp/ppd
-@@ -901,9 +896,9 @@
+@@ -901,9 +896,9 @@ install-ppd:
  	    done; \
  	fi
  
@@ -171,7 +178,7 @@ Last-Update: 2016-04-16
  
  install-desktop:
  	#
-@@ -1037,6 +1032,7 @@
+@@ -1037,6 +1032,7 @@ install-hotplug-osx:
  
  install-filter:
  	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
@@ -179,7 +186,7 @@ Last-Update: 2016-04-16
  	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
  	fi
  
-@@ -1443,10 +1439,9 @@
+@@ -1443,10 +1439,9 @@ ppd:
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -191,7 +198,7 @@ Last-Update: 2016-04-16
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1885,7 +1880,7 @@
+@@ -1885,7 +1880,7 @@ FRC:
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c
@@ -200,9 +207,11 @@ Last-Update: 2016-04-16
  
  phorum-logo.gif: archhp.fig
  	fig2dev -L gif -m.25 archhp.fig | giftrans -t "#ffffff" -o $@
+diff --git a/icc2ps/Makefile b/icc2ps/Makefile
+index fab1d01..0777b40 100644
 --- a/icc2ps/Makefile
 +++ b/icc2ps/Makefile
-@@ -9,7 +9,7 @@
+@@ -9,7 +9,7 @@ SRC=	icc2ps.c xgetopt.c
  LIB=	cmscam97.c cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
  	cmslut.c cmsmatsh.c cmsmtrx.c cmsnamed.c cmspack.c cmspcs.c cmsps2.c \
  	cmssamp.c cmswtpnt.c cmsxform.c cmsio0.c cmsvirt.c
@@ -211,7 +220,7 @@ Last-Update: 2016-04-16
  INSTALL=install
  ifeq ($(UNAME),SunOS)
      INSTALL=/usr/ucb/install
-@@ -21,7 +21,7 @@
+@@ -21,7 +21,7 @@ endif
  all: foo2zjs-icc2ps man
  
  foo2zjs-icc2ps: $(SRC) $(LIB)

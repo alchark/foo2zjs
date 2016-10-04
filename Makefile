@@ -17,9 +17,7 @@ SYSNAME := $(shell uname -n)
 VERSION=0.0
 
 # Installation prefix...
-PREFIX=/usr/local
 PREFIX=/usr
-PREFIX=$(DESTDIR)/usr
 
 # Pathnames for this package...
 BIN=$(PREFIX)/bin
@@ -38,7 +36,7 @@ INSTALL=install
 ROOT=root
 
 # Pathnames for referenced packages...
-FOODB=$(DESTDIR)/usr/share/foomatic/db/source
+FOODB=$(PREFIX)/share/foomatic/db/source
 
 # User ID's
 LPuid=-oroot
@@ -81,6 +79,8 @@ endif
 ifeq ($(UNAME),SunOS)
     MODTIME= `ls -e $$1 | cut -c42-61`
 endif
+# Define modtime from the debian changelog, for all files
+MODTIME= LC_ALL=C.UTF-8 TZ=UTC date -d "$$(dpkg-parsechangelog -SDate)" "+%a %b %d %T %Y"
 
 #
 # Files for tarball
@@ -127,10 +127,6 @@ FILES	=	\
 		Makefile \
 		foo2zjs.c \
 		foo2zjs.1in \
-		jbig.c \
-		jbig.h \
-		jbig_ar.c \
-		jbig_ar.h \
 		zjsdecode.c \
 		zjsdecode.1in \
 		zjs.h \
@@ -190,13 +186,6 @@ FILES	=	\
 		foomatic-db/*/*.xml \
 		foomatic-test \
 		getweb.in \
-		icc2ps/*.[ch] \
-		icc2ps/*.1in \
-		icc2ps/Makefile \
-		icc2ps/AUTHORS \
-		icc2ps/COPYING \
-		icc2ps/README \
-		icc2ps/README.foo2zjs \
 		osx-hotplug/Makefile \
 		osx-hotplug/*.m \
 		osx-hotplug/*.1in \
@@ -284,7 +273,7 @@ MANPAGES+=	foo2hbpl2-wrapper.1 foo2hbpl2.1 hbpldecode.1
 MANPAGES+=	gipddecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 MANPAGES+=	printer-profile.1
-LIBJBG	=	jbig.o jbig_ar.o
+LIBJBG =       -ljbig
 BINPROGS=
 
 ifeq ($(UNAME),Linux)
@@ -381,7 +370,7 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
 # The usual build rules
 #
 all:	all-test $(PROGS) $(BINPROGS) $(SHELLS) getweb \
-	all-icc2ps all-osx-hotplug man doc \
+	all-osx-hotplug man doc \
 	all-done
 
 all-test:
@@ -454,32 +443,32 @@ all-done:
 
 
 foo2zjs: foo2zjs.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG) $(LDFLAGS)
 
 foo2hp: foo2hp.o $(LIBJBG)
-	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) /usr/local/lib/libdmalloc.a
-	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG)
+	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) $(LDFLAGS) /usr/local/lib/libdmalloc.a
+	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) $(LDFLAGS)
 
 foo2xqx: foo2xqx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG) $(LDFLAGS)
 
 foo2lava: foo2lava.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG) $(LDFLAGS)
 
 foo2qpdl: foo2qpdl.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG) $(LDFLAGS)
 
 foo2oak: foo2oak.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG) $(LDFLAGS)
 
 foo2slx: foo2slx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG) $(LDFLAGS)
 
 foo2hiperc: foo2hiperc.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG) $(LDFLAGS)
 
 foo2hbpl2: foo2hbpl2.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG) $(LDFLAGS)
 
 
 foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
@@ -559,51 +548,51 @@ ifeq ($(UNAME),Darwin)
 endif
 
 ok: ok.o $(LIBJBG)
-	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 gipddecode: gipddecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 hbpldecode: hbpldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 hipercdecode: hipercdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 lavadecode: lavadecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 oakdecode: oakdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 opldecode: opldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 qpdldecode: qpdldecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 splcdecode: splcdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@
+	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@ $(LDFLAGS)
 
 slxdecode: slxdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 xqxdecode: xqxdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 zjsdecode: zjsdecode.o $(LIBJBG)
-	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
+	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@ $(LDFLAGS)
 
 command2foo2lava-pjl: command2foo2lava-pjl.o
-	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@
+	$(CC) $(CFLAGS) -L/usr/local/lib command2foo2lava-pjl.o -lcups -o $@ $(LDFLAGS)
 
 command2foo2lava-pjl.o: command2foo2lava-pjl.c
-	$(CC) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -I/usr/local/include -c command2foo2lava-pjl.c
 
 #
 # Installation rules
 #
-install: all install-test install-prog install-icc2ps install-osx-hotplug \
+install: all install-test install-prog install-osx-hotplug \
 	    install-extra install-crd install-foo install-ppd \
 	    install-gui install-desktop install-filter \
 	    install-man install-doc
@@ -644,8 +633,6 @@ install-test:
 	#
     
 
-UDEVBIN=$(DESTDIR)/bin/
-
 install-prog:
 	#
 	# Install driver, wrapper, and development tools
@@ -653,8 +640,7 @@ install-prog:
 	$(INSTALL) -d $(BIN)
 	$(INSTALL) -c $(PROGS) $(SHELLS) $(BIN)/
 	if [ "$(BINPROGS)" != "" ]; then \
-	    $(INSTALL) -d $(UDEVBIN); \
-	    $(INSTALL) -c $(BINPROGS) $(UDEVBIN); \
+	    $(INSTALL) -c $(BINPROGS) $(BIN); \
 	fi
 	#
 	# Install gamma correction files.  These are just templates,
@@ -841,7 +827,7 @@ install-extra:
 	done
 
 MODEL=$(PREFIX)/share/cups/model
-LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
+LOCALMODEL=$(PREFIX)/local/share/cups/model
 MACMODEL=/Library/Printers/PPDs/Contents/Resources
 PPD=$(PREFIX)/share/ppd
 VARPPD=/var/lp/ppd
@@ -901,9 +887,9 @@ install-ppd:
 	    done; \
 	fi
 
-APPL=$(DESTDIR)/usr/share/applications
-OLDAPPL=$(DESTDIR)/usr/share/gnome/apps/System
-PIXMAPS=$(DESTDIR)/usr/share/pixmaps
+APPL=$(PREFIX)/share/applications
+OLDAPPL=$(PREFIX)/share/gnome/apps/System
+PIXMAPS=$(PREFIX)/share/pixmaps
 
 install-desktop:
 	#
@@ -1037,6 +1023,7 @@ install-hotplug-osx:
 
 install-filter:
 	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
+	    mkdir -p $(CUPS_SERVERBIN)/filter/; \
 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
 	fi
 
@@ -1140,7 +1127,6 @@ uninstall:
 	-rm -f $(MANDIR)/man1/foo2hbpl*.1 $(MANDIR)/man1/hbpldecode.1
 	-rm -f $(MANDIR)/man1/gipddecode.1
 	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
-	-rm -f $(MANDIR)/man1/foo2zjs-icc2ps.1
 	-rm -rf /usr/share/foo2zjs/
 	-rm -rf /usr/share/foo2hp/
 	-rm -rf /usr/share/foo2oak/
@@ -1165,7 +1151,6 @@ uninstall:
 	-rm -f /usr/bin/hbpldecode
 	-rm -f /usr/bin/opldecode
 	-rm -f /usr/bin/rodecode
-	-rm -f /usr/bin/foo2zjs-icc2ps
 	-rm -f /usr/bin/foo2zjs-pstops
 	-rm -f /usr/bin/command2foo2lava-pjl
 	-rm -f /usr/lib/cups/filter/command2foo2lava-pjl
@@ -1208,7 +1193,6 @@ clean:
 	-rm -f *.zjs *.zm *.zc *.zc? *.zc?? *.oak *.pbm *.pksm *.cmyk
 	-rm -f pksm2bitcmyk
 	-rm -f *.icm.*.ps
-	cd icc2ps; $(MAKE) $@
 	cd osx-hotplug; $(MAKE) $@
 
 #
@@ -1358,7 +1342,7 @@ pprtest-3.oak: FRC
 #
 #	icc2ps regression tests
 #
-ICC2PS=./icc2ps/foo2zjs-icc2ps
+ICC2PS=/usr/bin/psicc
 icctest:
 	for g in *.icm; do \
 	    for i in 0 1 2 3; do \
@@ -1443,10 +1427,9 @@ ppd:
 	    *)                  driver=foo2zjs;; \
 	    esac; \
 	    echo $$driver - $$printer; \
-	    ENGINE=../foomatic/foomatic-db-engine; \
 	    PERL5LIB=$$ENGINE/lib \
 		FOOMATICDB=foomatic-db \
-		$$ENGINE/foomatic-ppdfile \
+		/usr/bin/foomatic-ppdfile \
 		-d $$driver -p $$printer \
 		> PPD/$$printer.ppd; \
 	done
@@ -1459,7 +1442,7 @@ oldppd:
 # Manpage generation.  No, I am not interested in "info" files or
 # HTML documentation.
 #
-man: $(MANPAGES) man-icc2ps man-osx-hotplug
+man: $(MANPAGES) man-osx-hotplug
 
 $(MANPAGES): macros.man includer-man
 
@@ -1526,7 +1509,6 @@ install-man: man
 	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
-	cd icc2ps; $(MAKE) install-man
 ifeq ($(UNAME),Darwin)
 	cd osx-hotplug; $(MAKE) install-man
 endif
@@ -1546,13 +1528,12 @@ install-doc: doc
 	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
 
 GROFF=/usr/local/test/bin/groff
-GROFF=groff
-manual.pdf: $(MANPAGES) icc2ps/foo2zjs-icc2ps.1 osx-hotplug/osx-hplj-hotplug.1
+GROFF=LC_ALL=C.UTF-8 TZ=UTC groff
+manual.pdf: $(MANPAGES) osx-hotplug/osx-hplj-hotplug.1
 	-$(GROFF) -t -man \
 	    `ls $(MANPAGES) \
-		icc2ps/foo2zjs-icc2ps.1 \
 		osx-hotplug/osx-hplj-hotplug.1 \
-		| sort` \
+		| LC_ALL=C.UTF-8 sort` \
 	    | ps2pdf - $@
 
 README: README.in
@@ -1885,7 +1866,7 @@ FRC:
 misc: pksm2bitcmyk phorum-logo.gif
 
 pksm2bitcmyk: pksm2bitcmyk.c
-	$(CC) $(CFLAGS) pksm2bitcmyk.c -lnetpbm -o $@
+	$(CC) $(CFLAGS) pksm2bitcmyk.c -lnetpbm -o $@ $(LDFLAGS)
 
 phorum-logo.gif: archhp.fig
 	fig2dev -L gif -m.25 archhp.fig | giftrans -t "#ffffff" -o $@

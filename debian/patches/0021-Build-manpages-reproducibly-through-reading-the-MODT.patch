@@ -1,11 +1,19 @@
-Description: Build manpages reproducibly, through reading the MODTIME from
+From dc95d5f58a371a962c3f5788b6f6d9035b2a5b8e Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:44:04 +0200
+Subject: Build manpages reproducibly, through reading the MODTIME from
+
  debian/changelog exclusively, and giving LC_ALL=C.UTF-8 TZ=UTC to various
  commands
-Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2016-04-25
+---
+ Makefile | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 5b9eba5..bdffd0d 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -79,6 +79,8 @@
+@@ -79,6 +79,8 @@ endif
  ifeq ($(UNAME),SunOS)
      MODTIME= `ls -e $$1 | cut -c42-61`
  endif
@@ -14,7 +22,7 @@ Last-Update: 2016-04-25
  
  #
  # Files for tarball
-@@ -1526,12 +1528,12 @@
+@@ -1526,12 +1528,12 @@ install-doc: doc
  	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
  
  GROFF=/usr/local/test/bin/groff

@@ -1,13 +1,20 @@
-Description: The firmware upload script tried to upload the firmware via
+From 53b75eec5bcde80a56592b228b10c026e695376d Mon Sep 17 00:00:00 2001
+From: Till Kamppeter <till.kamppeter@gmail.com>
+Date: Tue, 4 Oct 2016 11:44:02 +0200
+Subject: The firmware upload script tried to upload the firmware via
+
  the usblp kernel module and with the CUPS USB backend (using libusb) in
  parallel, making the printer crash.
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/1003843
-Author: Till Kamppeter <till.kamppeter@gmail.com>
-Last-Update: 2013-02-21
+---
+ hplj1000 | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
+diff --git a/hplj1000 b/hplj1000
+index 6bc0d18..2cd24b9 100755
 --- a/hplj1000
 +++ b/hplj1000
-@@ -262,8 +262,14 @@
+@@ -262,8 +262,14 @@ if [ "$DEV" != "" ]; then
      # force downloading to a specific device
      #
      load_usblp "$DEV"
@@ -24,7 +31,7 @@ Last-Update: 2013-02-21
  	#
  	# Sniff around for printers that need a firmware download
  	#
-@@ -282,20 +288,6 @@
+@@ -282,20 +288,6 @@ elif [ -x $PRINTERID -o -x $USB_BACKEND ]; then
  		fi
  	    fi
  	done

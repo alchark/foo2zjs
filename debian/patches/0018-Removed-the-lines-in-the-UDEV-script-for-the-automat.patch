@@ -1,12 +1,20 @@
-Description: Removed the lines in the UDEV script for the automatic firmware
+From c0efc7a32c7b56cf91e0cfbf95db75f7399a26d8 Mon Sep 17 00:00:00 2001
+From: Till Kamppeter <till.kamppeter@gmail.com>
+Date: Tue, 4 Oct 2016 11:44:01 +0200
+Subject: Removed the lines in the UDEV script for the automatic firmware
+
  upload into the printer which remove the UDEV rules files for HPLIP's
  automatic firmware upload.
-Author: Till Kamppeter <till.kamppeter@gmail.com>
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/foo2zjs/+bug/783389
-Last-Update: 2011-07-23
+---
+ hplj1000 | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/hplj1000 b/hplj1000
+index 6b74601..6bc0d18 100755
 --- a/hplj1000
 +++ b/hplj1000
-@@ -152,16 +152,6 @@
+@@ -152,16 +152,6 @@ case "$0" in
  esac
  
  #

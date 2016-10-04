@@ -1,7 +1,18 @@
-Use the same firmware folder for all HP LJ printers
+From 366250a653f0e363deb0ee176aa0ab7bb82e434b Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:43:55 +0200
+Subject: Use the same firmware folder for all HP LJ printers
+
+---
+ hplj1000      |  6 ------
+ hplj10xx.conf | 10 +++++-----
+ 2 files changed, 5 insertions(+), 11 deletions(-)
+
+diff --git a/hplj1000 b/hplj1000
+index bb87a79..2f22631 100755
 --- a/hplj1000
 +++ b/hplj1000
-@@ -90,37 +90,31 @@
+@@ -90,37 +90,31 @@ case "$0" in
      MODEL=P1005; FWMODEL=$MODEL
      USB1=0x03f0	#Vendor
      USB2=0x3d17	#Model
@@ -39,6 +50,8 @@ Use the same firmware folder for all HP LJ printers
      ;;
  *1000)
      MODEL=1000; FWMODEL=$MODEL
+diff --git a/hplj10xx.conf b/hplj10xx.conf
+index a2083bb..fe32eea 100644
 --- a/hplj10xx.conf
 +++ b/hplj10xx.conf
 @@ -15,35 +15,35 @@

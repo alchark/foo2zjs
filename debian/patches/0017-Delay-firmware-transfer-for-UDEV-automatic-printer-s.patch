@@ -1,7 +1,17 @@
-Delay firmware transfer for UDEV automatic printer setup
+From d972c0056d77f0a5111aedda08fd922445fdf51a Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:44:00 +0200
+Subject: Delay firmware transfer for UDEV automatic printer setup
+
+---
+ hplj1000 | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hplj1000 b/hplj1000
+index 21ca570..6b74601 100755
 --- a/hplj1000
 +++ b/hplj1000
-@@ -33,6 +33,15 @@
+@@ -33,6 +33,15 @@ esac
  PROGNAME="$0"
  
  #

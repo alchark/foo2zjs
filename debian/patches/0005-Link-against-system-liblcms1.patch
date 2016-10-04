@@ -1,9 +1,17 @@
-Description: Link against system liblcms1
-Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2014-08-01
+From e999ed655848954a33cf6377f6a1dcec4479e2ef Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:43:48 +0200
+Subject: Link against system liblcms1
+
+---
+ icc2ps/Makefile | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/icc2ps/Makefile b/icc2ps/Makefile
+index 846285a..e6e5ee2 100644
 --- a/icc2ps/Makefile
 +++ b/icc2ps/Makefile
-@@ -6,9 +6,7 @@
+@@ -6,9 +6,7 @@ BIN=	$(PREFIX)/bin
  MANDIR=$(PREFIX)/share/man
  
  SRC=	icc2ps.c xgetopt.c
@@ -14,7 +22,7 @@ Last-Update: 2014-08-01
  CFLAGS+=	-O3
  
  # _XOPEN_SOURCE is required for swab() but undefines strcasecmp(), so add _GNU_SOURCE as well:
-@@ -55,7 +53,7 @@
+@@ -55,7 +53,7 @@ install-man: man
  clean:
  	rm -f *.o foo2zjs-icc2ps *.1
  

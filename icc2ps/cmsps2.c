@@ -54,7 +54,7 @@ LCMSAPI DWORD LCMSEXPORT cmsGetPostScriptCRDEx(cmsHPROFILE hProfile, int Intent,
   Color Space Arrays (CSA) 
   ==================================================================================
 
-  In order to obtain precission, code chooses between three ways to implement
+  In order to obtain precision, code chooses between three ways to implement
   the device -> XYZ transform. These cases identifies monochrome profiles (often
   implemented as a set of curves), matrix-shaper and LUT-based.
 
@@ -1456,7 +1456,7 @@ int WriteOutputLUT(LPMEMSTREAM m, cmsHPROFILE hProfile, int Intent, DWORD dwFlag
     OutputFormat = CHANNELS_SH(nChannels) | BYTES_SH(2);
     
     // For absolute colorimetric, the LUT is encoded as relative 
-    // in order to preserve precission.
+    // in order to preserve precision.
 
     RelativeEncodingIntent = Intent;
     if (RelativeEncodingIntent == INTENT_ABSOLUTE_COLORIMETRIC)

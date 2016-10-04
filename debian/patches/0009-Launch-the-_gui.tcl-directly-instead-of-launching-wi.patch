@@ -1,7 +1,15 @@
-Description: Launch the _gui.tcl directly (instead of launching wish
- outside of it), avoids a lintian warning.
-Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2011-07-24
+From ce2f1d75f614d1620274250e695457cb18f59f91 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:43:52 +0200
+Subject: Launch the _gui.tcl directly (instead of launching wish outside of
+ it), avoids a lintian warning.
+
+---
+ hplj1020.desktop | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hplj1020.desktop b/hplj1020.desktop
+index 76adb31..6dd0b3f 100644
 --- a/hplj1020.desktop
 +++ b/hplj1020.desktop
 @@ -2,7 +2,7 @@

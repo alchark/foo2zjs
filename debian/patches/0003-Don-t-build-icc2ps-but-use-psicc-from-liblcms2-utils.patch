@@ -1,10 +1,17 @@
-Description: don't build icc2ps (instead use psicc from liblcms2-utils)
-Author: Michael Gilbert <mgilbert@debian.org>
-Last-Update: 2016-04-25
+From 142db2c7aea73d134da73f7ad98f151bf741e1fe Mon Sep 17 00:00:00 2001
+From: Michael Gilbert <mgilbert@debian.org>
+Date: Tue, 4 Oct 2016 11:43:45 +0200
+Subject: Don't build icc2ps but use psicc from liblcms2-utils instead
 
+---
+ Makefile | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f607ddb..38d65e1 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -188,13 +188,6 @@
+@@ -188,13 +188,6 @@ FILES	=	\
  		foomatic-db/*/*.xml \
  		foomatic-test \
  		getweb.in \
@@ -18,7 +25,7 @@ Last-Update: 2016-04-25
  		osx-hotplug/Makefile \
  		osx-hotplug/*.m \
  		osx-hotplug/*.1in \
-@@ -379,7 +372,7 @@
+@@ -379,7 +372,7 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
  # The usual build rules
  #
  all:	all-test $(PROGS) $(BINPROGS) $(SHELLS) getweb \
@@ -27,7 +34,7 @@ Last-Update: 2016-04-25
  	all-done
  
  all-test:
-@@ -601,7 +594,7 @@
+@@ -601,7 +594,7 @@ command2foo2lava-pjl.o: command2foo2lava-pjl.c
  #
  # Installation rules
  #
@@ -36,7 +43,7 @@ Last-Update: 2016-04-25
  	    install-extra install-crd install-foo install-ppd \
  	    install-gui install-desktop install-filter \
  	    install-man install-doc
-@@ -1136,7 +1129,6 @@
+@@ -1136,7 +1129,6 @@ uninstall:
  	-rm -f $(MANDIR)/man1/foo2hbpl*.1 $(MANDIR)/man1/hbpldecode.1
  	-rm -f $(MANDIR)/man1/gipddecode.1
  	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
@@ -44,7 +51,7 @@ Last-Update: 2016-04-25
  	-rm -rf /usr/share/foo2zjs/
  	-rm -rf /usr/share/foo2hp/
  	-rm -rf /usr/share/foo2oak/
-@@ -1161,7 +1153,6 @@
+@@ -1161,7 +1153,6 @@ uninstall:
  	-rm -f /usr/bin/hbpldecode
  	-rm -f /usr/bin/opldecode
  	-rm -f /usr/bin/rodecode
@@ -52,7 +59,7 @@ Last-Update: 2016-04-25
  	-rm -f /usr/bin/foo2zjs-pstops
  	-rm -f /usr/bin/command2foo2lava-pjl
  	-rm -f /usr/lib/cups/filter/command2foo2lava-pjl
-@@ -1204,7 +1195,6 @@
+@@ -1204,7 +1195,6 @@ clean:
  	-rm -f *.zjs *.zm *.zc *.zc? *.zc?? *.oak *.pbm *.pksm *.cmyk
  	-rm -f pksm2bitcmyk
  	-rm -f *.icm.*.ps
@@ -60,7 +67,7 @@ Last-Update: 2016-04-25
  	cd osx-hotplug; $(MAKE) $@
  
  #
-@@ -1354,7 +1344,7 @@
+@@ -1354,7 +1344,7 @@ pprtest-3.oak: FRC
  #
  #	icc2ps regression tests
  #
@@ -69,7 +76,7 @@ Last-Update: 2016-04-25
  icctest:
  	for g in *.icm; do \
  	    for i in 0 1 2 3; do \
-@@ -1454,7 +1444,7 @@
+@@ -1454,7 +1444,7 @@ oldppd:
  # Manpage generation.  No, I am not interested in "info" files or
  # HTML documentation.
  #
@@ -78,7 +85,7 @@ Last-Update: 2016-04-25
  
  $(MANPAGES): macros.man includer-man
  
-@@ -1521,7 +1511,6 @@
+@@ -1521,7 +1511,6 @@ install-man: man
  	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 usb_printerid.1 $(MANDIR)/man1/
  	$(INSTALL) -c -m 644 printer-profile.1 $(MANDIR)/man1/
@@ -86,7 +93,7 @@ Last-Update: 2016-04-25
  ifeq ($(UNAME),Darwin)
  	cd osx-hotplug; $(MAKE) install-man
  endif
-@@ -1542,10 +1531,9 @@
+@@ -1542,10 +1531,9 @@ install-doc: doc
  
  GROFF=/usr/local/test/bin/groff
  GROFF=groff

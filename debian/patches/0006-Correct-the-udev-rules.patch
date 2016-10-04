@@ -1,12 +1,20 @@
-Description: Correct the udev rules:
+From f26a93eb710e13894b8ff65923ed512d62e23866 Mon Sep 17 00:00:00 2001
+From: Luca Capello <luca@pca.it>
+Date: Tue, 4 Oct 2016 11:43:49 +0200
+Subject: Correct the udev rules:
+
  a) remove KERNEL=="lp*", as usblp is now blacklisted by CUPS (it will work without CUPS too).
  b) Replace paths: /etc/hotplug/usb/ by no path, as the binaries are shipped in /lib/udev/
  c) Drop the MODE specification
  d) Add ACTION=="ADD", otherwise the firmware script runs after unplugging as well
-Author: Luca Capello <luca@pca.it>
 Author: Didier Raboud <odyx@debian.org>
 Author: Peter De Wachter <pdewacht@gmail.com>
-Last-Update: 2014-01-02
+---
+ hplj10xx.rules | 58 +++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 31 insertions(+), 27 deletions(-)
+
+diff --git a/hplj10xx.rules b/hplj10xx.rules
+index ee0295d..3d69ca3 100644
 --- a/hplj10xx.rules
 +++ b/hplj10xx.rules
 @@ -2,38 +2,42 @@

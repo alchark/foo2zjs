@@ -1,8 +1,0 @@
-Do not display the icon by default (see #579154)
---- a/hplj1020.desktop
-+++ b/hplj1020.desktop
-@@ -9,3 +9,4 @@
- StartupNotify=true
- Categories=System;
- X-Desktop-File-Install-Version=0.10
-+NoDisplay=true

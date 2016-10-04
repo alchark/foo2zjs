@@ -1,15 +1,24 @@
-Description: Prevent an infinite loop when loading the firmware.
+From 75ae029e290d398a0b82acdbfd5aafcc507036bd Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 4 Oct 2016 11:44:03 +0200
+Subject: Prevent an infinite loop when loading the firmware.
+
  When using the load_cups method, the CUPS backend will internally
  unload and reload the usblp module. This will generate
  SUBSYSTEM=usbmisc events that need to be ignored in the CUPS code
  path, or this script will be rerun in an infite loop.
-   
+
  But when using the load_usblp method, the usblp module is obviously
  needed. So in this situation we need to ignore the SUBSYSTEM=usb
  events.
 Bug-Debian: http://bugs.debian.org/663868
 Author: Peter De Wachter <pdewacht@gmail.com>
-Last-Update: 2014-10-02
+---
+ hplj1000 | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/hplj1000 b/hplj1000
+index 2cd24b9..0461f24 100755
 --- a/hplj1000
 +++ b/hplj1000
 @@ -24,12 +24,6 @@
@@ -25,7 +34,7 @@ Last-Update: 2014-10-02
  PROGNAME="$0"
  
  #
-@@ -261,6 +255,7 @@
+@@ -261,6 +255,7 @@ if [ "$DEV" != "" ]; then
      #
      # force downloading to a specific device
      #
@@ -33,7 +42,7 @@ Last-Update: 2014-10-02
      load_usblp "$DEV"
  elif [ -x $USB_BACKEND ]; then
          #
-@@ -268,11 +263,13 @@
+@@ -268,11 +263,13 @@ elif [ -x $USB_BACKEND ]; then
          # not need to care whether the system uses the usblp kernel module or
          # libusb 
          #
