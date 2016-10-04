@@ -152,16 +152,6 @@ case "$0" in
 esac
 
 #
-#	Remove HPLIP proprietary rules!
-#
-model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
-rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
-rm -f /etc/udev/rules.d/*hpmud_support.rules
-rm -f /etc/udev/rules.d/*hpmud_plugin.rules
-rm -f /lib/udev/rules.d/*hpmud_support.rules
-rm -f /lib/udev/rules.d/*hpmud_plugin.rules
-
-#
 #	The special command line argument "install-usermap" will install
 #	the proper entry into the /etc/hotplug/usb.usermap file
 #
