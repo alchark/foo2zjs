@@ -11,13 +11,13 @@ foo2hiperc \- Convert Ghostscript pbmraw or bitcmyk format into a
 HIPERC printer stream
 .SH SYNOPSIS
 .B foo2hiperc
-.RI [ options "] <" pbmraw-file " >" hiperc-file
+.RI [ options "] <" pbmraw\-file " >" hiperc\-file
 .sp 1
 .B foo2hiperc
-.RI [ options "] <" bitcmyk-file " >" hiperc-file
+.RI [ options "] <" bitcmyk\-file " >" hiperc\-file
 .sp 1
 .B foo2hiperc
-.RI [ options "] <" pksmraw-file " >" hiperc-file
+.RI [ options "] <" pksmraw\-file " >" hiperc\-file
 .SH DESCRIPTION
 .B foo2hiperc
 converts Ghostscript pbmraw, bitcmyk, or pksmraw output formats to monochrome
@@ -63,7 +63,7 @@ Paper code to send to printer [2].
 box;
 | n l | n l.
 1	A4	2	letter
-3	legal	-	-	
+3	legal	\-	\-	
 5	A5	6	B5jis
 7	A6	8	env Monarch
 9	env DL	10	env C5
@@ -108,7 +108,7 @@ Set the offset of the end of the printable region from the
 lower right corner, in pixels [0x0].
 .TP
 .BI \-L\0 mask
-Send logical clipping amounts implied by -u/-l in the HIPERC stream [3].
+Send logical clipping amounts implied by \-u/-l in the HIPERC stream [3].
 .TS
 l l.
 0	don't send any logical clipping amounts
@@ -147,10 +147,10 @@ Create a black and white HIPERC stream:
 
 .RS
 .nf
-gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \ 
-    -sPAPERSIZE=letter -r600x600 -sDEVICE=pbmraw \ 
-    -sOutputFile=- - < testpage.ps \ 
-| foo2hiperc -r600x600 -g5100x6600 -p0 >testpage.zm
+gs \-q \-dBATCH \-dSAFER \-dQUIET \-dNOPAUSE \ 
+    \-sPAPERSIZE=letter \-r600x600 \-sDEVICE=pbmraw \ 
+    \-sOutputFile=- \- < testpage.ps \ 
+| foo2hiperc \-r600x600 \-g5100x6600 \-p0 >testpage.zm
 .fi
 .RE
 .P
@@ -158,10 +158,10 @@ Create a color HIPERC stream:
 
 .RS
 .nf
-gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \ 
-    -sPAPERSIZE=letter -g5100x6600 -r600x600 -sDEVICE=bitcmyk \ 
-    -sOutputFile=- - < testpage.ps \ 
-| foo2hiperc -r600x600 -g5100x6600 -p0 >testpage.zc
+gs \-q \-dBATCH \-dSAFER \-dQUIET \-dNOPAUSE \ 
+    \-sPAPERSIZE=letter \-g5100x6600 \-r600x600 \-sDEVICE=bitcmyk \ 
+    \-sOutputFile=- \- < testpage.ps \ 
+| foo2hiperc \-r600x600 \-g5100x6600 \-p0 >testpage.zc
 .fi
 .RE
 
