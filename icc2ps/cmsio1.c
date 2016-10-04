@@ -71,6 +71,7 @@ void xswab(const void *from, void *to, size_t len)
 #undef STEP
 }
 #else
+#include <unistd.h>
 #define xswab swab
 #endif
 
