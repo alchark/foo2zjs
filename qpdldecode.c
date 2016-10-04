@@ -82,7 +82,7 @@ usage(void)
 "\n"
 "	Decode a QPDL stream into human readable form.\n"
 "\n"
-"	A Quick Page Description Langauge (QPDL) is the printer language"
+"	A Quick Page Description language (QPDL) is the printer language"
 "	used by some Samsung printers, such as the CLP-600n.\n"
 "\n"
 "	Also known as SPLC."
