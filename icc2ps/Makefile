@@ -6,9 +6,7 @@ BIN=	$(PREFIX)/bin
 MANDIR=$(PREFIX)/share/man
 
 SRC=	icc2ps.c xgetopt.c
-LIB=	cmscam97.c cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
-	cmslut.c cmsmatsh.c cmsmtrx.c cmsnamed.c cmspack.c cmspcs.c cmsps2.c \
-	cmssamp.c cmswtpnt.c cmsxform.c cmsio0.c cmsvirt.c
+LIB=	-llcms
 CFLAGS+=	-O3
 
 # _XOPEN_SOURCE is required for swab() but undefines strcasecmp(), so add _GNU_SOURCE as well:
@@ -55,7 +53,7 @@ install-man: man
 clean:
 	rm -f *.o foo2zjs-icc2ps *.1
 
-foo2zjs-icc2ps: icc34.h lcms.h
+foo2zjs-icc2ps: icc34.h
 
 regress: all
 	@./foo2zjs-icc2ps a b 2>&1 | grep "little cms P"
