@@ -125,10 +125,6 @@ FILES	=	\
 		Makefile \
 		foo2zjs.c \
 		foo2zjs.1in \
-		jbig.c \
-		jbig.h \
-		jbig_ar.c \
-		jbig_ar.h \
 		zjsdecode.c \
 		zjsdecode.1in \
 		zjs.h \
@@ -275,7 +271,7 @@ MANPAGES+=	foo2hbpl2-wrapper.1 foo2hbpl2.1 hbpldecode.1
 MANPAGES+=	gipddecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 MANPAGES+=	printer-profile.1
-LIBJBG	=	jbig.o jbig_ar.o
+LIBJBG =       -ljbig
 BINPROGS=
 
 ifeq ($(UNAME),Linux)
