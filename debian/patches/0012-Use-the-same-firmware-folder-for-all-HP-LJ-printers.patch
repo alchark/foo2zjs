@@ -1,4 +1,4 @@
-From 366250a653f0e363deb0ee176aa0ab7bb82e434b Mon Sep 17 00:00:00 2001
+From 723dd04218ef05e82fbcbd2e1239867c004c4db4 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:55 +0200
 Subject: Use the same firmware folder for all HP LJ printers

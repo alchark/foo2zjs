@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e 
+set -e
 
 #
 # (c) Copyright Rick Richardson 2008
@@ -133,7 +133,9 @@ putfw() {
 
 puticm() {
     drivername=$1
-    mv *.icm /usr/share/"$drivername"/icm/
+    icmfolder=/usr/share/"$drivername"/icm/
+    [ -d $icmfolder ] || mkdir -p $icmfolder
+    mv *.icm $icmfolder
 }
 
 #

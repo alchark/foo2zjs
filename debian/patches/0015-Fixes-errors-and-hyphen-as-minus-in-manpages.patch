@@ -1,4 +1,4 @@
-From 0274bb59d5bffd970d403fbdcb5867dff0b8b46c Mon Sep 17 00:00:00 2001
+From abcfb3933bd0a8c0b77296af9363cf732dea6bb8 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:58 +0200
 Subject: Fixes errors and hyphen-as-minus in manpages

@@ -1,4 +1,4 @@
-From dc95d5f58a371a962c3f5788b6f6d9035b2a5b8e Mon Sep 17 00:00:00 2001
+From d1147170930a24a197a4d22198bc341ec5b5307a Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:44:04 +0200
 Subject: Build manpages reproducibly, through reading the MODTIME from

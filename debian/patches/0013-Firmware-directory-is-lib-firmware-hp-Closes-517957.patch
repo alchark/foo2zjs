@@ -1,4 +1,4 @@
-From 51ca351bf99eb732d5e6ca2560dde8deadd843c5 Mon Sep 17 00:00:00 2001
+From 2239fa29e1fe45a11e2db67530190650c0f5c5c4 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:56 +0200
 Subject: Firmware directory is /lib/firmware/hp/ (Closes: #517957)
@@ -24,7 +24,7 @@ index 213d21b..33e6ccd 100644
  .BR foo2zjs (1)
  .SH "AUTHOR"
 diff --git a/getweb.in b/getweb.in
-index 9364d34..f86a556 100755
+index 11f2aa6..3322de6 100755
 --- a/getweb.in
 +++ b/getweb.in
 @@ -127,7 +127,7 @@ fi
