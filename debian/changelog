@@ -1,3 +1,17 @@
+foo2zjs (20170320dfsg0-1) experimental; urgency=low
+
+  * New 20170320 upstream release
+    - Add ddstdecode, for decoding some Ricoh printers:
+      - Ricoh SP 112
+      - Ricoh SP 201Nw
+
+  * Install the ddstdecode-related files
+  * DFSG repack (no changes from previous releases)
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 02 May 2017 11:58:23 +0200
+
 foo2zjs (20160902dfsg0-2) unstable; urgency=medium
 
   * Update patch to getweb to fix installation of icm files
