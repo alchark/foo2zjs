@@ -32,6 +32,7 @@ SHAREQPDL=$(PREFIX)/share/foo2qpdl
 SHARESLX=$(PREFIX)/share/foo2slx
 SHAREHC=$(PREFIX)/share/foo2hiperc
 SHAREHBPL=$(PREFIX)/share/foo2hbpl
+SHAREDDST=$(PREFIX)/share/foo2ddst
 MANDIR=$(PREFIX)/share/man
 DOCDIR=$(PREFIX)/share/doc/foo2zjs/
 INSTALL=install
@@ -149,6 +150,8 @@ FILES	=	\
 		hbpl.h \
 		foo2hbpl2.c \
 		foo2hbpl2.1in \
+		foo2ddst.c \
+		foo2ddst.1in \
 		cups.h \
 		xqx.h \
 		xqxdecode.c \
@@ -167,6 +170,9 @@ FILES	=	\
 		gipddecode.1in \
 		hbpldecode.c \
 		hbpldecode.1in \
+		ddst.h \
+		ddstdecode.c \
+		ddstdecode.1in \
 		foo2zjs-wrapper.in \
 		foo2zjs-wrapper.1in \
 		foo2hp2600-wrapper.in \
@@ -183,6 +189,8 @@ FILES	=	\
 		foo2hiperc-wrapper.1in \
 		foo2hbpl2-wrapper.in \
 		foo2hbpl2-wrapper.1in \
+		foo2ddst-wrapper.in \
+		foo2ddst-wrapper.1in \
 		gamma.ps \
 		gamma-lookup.ps \
 		align.ps \
@@ -260,6 +268,7 @@ PROGS+=		foo2slx slxdecode
 PROGS+=		foo2hiperc hipercdecode
 PROGS+=		foo2hbpl2 hbpldecode
 PROGS+=		gipddecode
+PROGS+=		foo2ddst ddstdecode
 ifneq ($(CUPS_SERVERBIN),)
     ifneq ($(CUPS_DEVEL),)
 	ifneq ($(CUPS_GOODAPI),)
@@ -269,7 +278,8 @@ ifneq ($(CUPS_SERVERBIN),)
 endif
 SHELLS=		foo2zjs-wrapper foo2oak-wrapper foo2hp2600-wrapper \
 		foo2xqx-wrapper foo2lava-wrapper foo2qpdl-wrapper \
-		foo2slx-wrapper foo2hiperc-wrapper foo2hbpl2-wrapper
+		foo2slx-wrapper foo2hiperc-wrapper foo2hbpl2-wrapper \
+		foo2ddst-wrapper
 SHELLS+=	foo2zjs-pstops
 SHELLS+=	printer-profile
 MANPAGES=	foo2zjs-wrapper.1 foo2zjs.1 zjsdecode.1
@@ -281,6 +291,7 @@ MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1 qpdldecode.1
 MANPAGES+=	foo2slx-wrapper.1 foo2slx.1 slxdecode.1
 MANPAGES+=	foo2hiperc-wrapper.1 foo2hiperc.1 hipercdecode.1
 MANPAGES+=	foo2hbpl2-wrapper.1 foo2hbpl2.1 hbpldecode.1
+MANPAGES+=	foo2ddst-wrapper.1 foo2ddst.1 ddstdecode.1
 MANPAGES+=	gipddecode.1
 MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 MANPAGES+=	printer-profile.1
@@ -307,7 +318,7 @@ GSOPTS=	-q -dBATCH -dSAFER -dQUIET -dNOPAUSE -sPAPERSIZE=letter -r$(GXR)x$(GYR)
 JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
 
 .SUFFIXES: .ps .pbm .pgm .pgm2 .ppm .ppm2 .zjs .cmyk .pksm .zc .zm .jbg \
-	   .cups .cupm .1 .1in .fig .gif .xqx .lava .qpdl .slx .hc .hbpl
+	   .cups .cupm .1 .1in .fig .gif .xqx .lava .qpdl .slx .hc .hbpl .ddst
 
 .fig.gif:
 	fig2dev -L gif $*.fig | giftrans -t "#ffffff" -o $*.gif
@@ -376,6 +387,9 @@ JBGOPTS=-m 16 -d 0 -p 92	# Equivalent options for pbmtojbg
 
 .pbm.hbpl:
 	./foo2hbpl2 < $*.pbm > $*.hbpl
+
+.pbm.ddst:
+	./foo2ddst < $*.pbm > $*.ddst
 
 #
 # The usual build rules
@@ -453,36 +467,44 @@ all-done:
 	@echo "yourself."
 
 
-foo2zjs: foo2zjs.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG)
-
-foo2hp: foo2hp.o $(LIBJBG)
-	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) /usr/local/lib/libdmalloc.a
-	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG)
-
-foo2xqx: foo2xqx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG)
-
-foo2lava: foo2lava.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG)
-
-foo2qpdl: foo2qpdl.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
-
-foo2oak: foo2oak.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
-
-foo2slx: foo2slx.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
-
-foo2hiperc: foo2hiperc.o $(LIBJBG)
-	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
+foo2ddst: foo2ddst.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2ddst.o $(LIBJBG)
 
 foo2hbpl2: foo2hbpl2.o $(LIBJBG)
 	$(CC) $(CFLAGS) -o $@ foo2hbpl2.o $(LIBJBG)
 
+foo2hp: foo2hp.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG)
 
-foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
+foo2hiperc: foo2hiperc.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
+
+foo2lava: foo2lava.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG)
+
+foo2oak: foo2oak.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
+
+foo2qpdl: foo2qpdl.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
+
+foo2slx: foo2slx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
+
+foo2xqx: foo2xqx.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG)
+
+foo2zjs: foo2zjs.o $(LIBJBG)
+	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG)
+
+
+foo2ddst-wrapper: foo2ddst-wrapper.in Makefile
+	[ ! -f $@ ] || chmod +w $@
+	sed < $@.in > $@ \
+	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
+	chmod 555 $@
+
+foo2hbpl2-wrapper: foo2hbpl2-wrapper.in Makefile
 	[ ! -f $@ ] || chmod +w $@
 	sed < $@.in > $@ \
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
@@ -494,7 +516,7 @@ foo2hp2600-wrapper: foo2hp2600-wrapper.in Makefile
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
 	chmod 555 $@
 
-foo2xqx-wrapper: foo2xqx-wrapper.in Makefile
+foo2hiperc-wrapper: foo2hiperc-wrapper.in Makefile
 	[ ! -f $@ ] || chmod +w $@
 	sed < $@.in > $@ \
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
@@ -524,13 +546,13 @@ foo2slx-wrapper: foo2slx-wrapper.in Makefile
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
 	chmod 555 $@
 
-foo2hiperc-wrapper: foo2hiperc-wrapper.in Makefile
+foo2xqx-wrapper: foo2xqx-wrapper.in Makefile
 	[ ! -f $@ ] || chmod +w $@
 	sed < $@.in > $@ \
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
 	chmod 555 $@
 
-foo2hbpl2-wrapper: foo2hbpl2-wrapper.in Makefile
+foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
 	[ ! -f $@ ] || chmod +w $@
 	sed < $@.in > $@ \
 	    -e 's@^PREFIX=.*@PREFIX=$(PREFIX)@' || (rm -f $@ && exit 1)
@@ -560,6 +582,9 @@ endif
 
 ok: ok.o $(LIBJBG)
 	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
+
+ddstdecode: ddstdecode.o $(LIBJBG)
+	$(CC) $(CFLAGS) ddstdecode.o $(LIBJBG) -o $@
 
 gipddecode: gipddecode.o $(LIBJBG)
 	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
@@ -839,6 +864,13 @@ install-extra:
 		$(INSTALL) -c -m 644 $$i $(SHAREHBPL)/icm/; \
 	    fi; \
 	done
+	# foo2ddst ICM files (if any)
+	$(INSTALL) $(LPuid) $(LPgid) -m 775 -d $(SHAREDDST)/icm/
+	for i in ddst*.icm; do \
+	    if [ -f $$i ]; then \
+		$(INSTALL) -c -m 644 $$i $(SHAREDDST)/icm/; \
+	    fi; \
+	done
 
 MODEL=$(PREFIX)/share/cups/model
 LOCALMODEL=$(DESTDIR)/usr/local/share/cups/model
@@ -869,6 +901,7 @@ install-ppd:
 	    find $(PPD) -name '*foo2slx*' | xargs rm -rf; \
 	    find $(PPD) -name '*foo2hiperc*' | xargs rm -rf; \
 	    find $(PPD) -name '*foo2hbpl*' | xargs rm -rf; \
+	    find $(PPD) -name '*foo2ddst*' | xargs rm -rf; \
 	    [ -d $(PPD)/foo2zjs ] || mkdir $(PPD)/foo2zjs; \
 	    cd PPD; \
 	    for ppd in *.ppd; do \
@@ -996,11 +1029,15 @@ install-hotplug-prog:
 		version=`/sbin/udevd --version 2>/dev/null`; \
 	    elif [ -x /usr/lib/udev/udevd ]; then \
 		version=`/usr/lib/udev/udevd --version 2>/dev/null`; \
+	    elif [ -x /lib/systemd/systemd-udevd ]; then \
+		version=`/lib/systemd/systemd-udevd --version 2>/dev/null`; \
 	    elif [ -x /usr/lib/systemd/systemd-udevd ]; then \
 		version=`/usr/lib/systemd/systemd-udevd --version 2>/dev/null`; \
 	    fi; \
 	    if [ "$$version" = "" ]; then version=0; fi; \
+	    echo "***"; \
 	    echo "*** udev version $$version"; \
+	    echo "***"; \
 	    if [ "$$version" -lt 148 ]; then \
 		$(INSTALL) -c -m 644 $(RULES).old $(UDEVDIR)/11-$(RULES); \
 	    else \
@@ -1037,6 +1074,7 @@ install-hotplug-osx:
 
 install-filter:
 	if [ "$(CUPS_SERVERBIN)" != "" ]; then \
+	    $(INSTALL) -d $(CUPS_SERVERBIN)/filter; \
 	    ln -sf $(BIN)/command2foo2lava-pjl $(CUPS_SERVERBIN)/filter/; \
 	fi
 
@@ -1138,6 +1176,7 @@ uninstall:
 	-rm -f $(MANDIR)/man1/opldecode.1 $(MANDIR)/man1/rodecode.1
 	-rm -f $(MANDIR)/man1/foo2hiperc*.1 $(MANDIR)/man1/hipercdecode.1
 	-rm -f $(MANDIR)/man1/foo2hbpl*.1 $(MANDIR)/man1/hbpldecode.1
+	-rm -f $(MANDIR)/man1/foo2ddst*.1 $(MANDIR)/man1/ddstdecode.1
 	-rm -f $(MANDIR)/man1/gipddecode.1
 	-rm -f $(MANDIR)/man1/arm2hpdl.1 $(MANDIR)/man1/usb_printerid.1
 	-rm -f $(MANDIR)/man1/foo2zjs-icc2ps.1
@@ -1150,6 +1189,7 @@ uninstall:
 	-rm -rf /usr/share/foo2slx/
 	-rm -rf /usr/share/foo2hiperc/
 	-rm -rf /usr/share/foo2hbpl/
+	-rm -rf /usr/share/foo2ddst/
 	-rm -f /usr/bin/arm2hpdl
 	-rm -f /usr/bin/foo2zjs-wrapper /usr/bin/foo2zjs /usr/bin/zjsdecode
 	-rm -f /usr/bin/foo2oak-wrapper /usr/bin/foo2oak /usr/bin/oakdecode
@@ -1159,10 +1199,11 @@ uninstall:
 	-rm -f /usr/bin/foo2qpdl-wrapper /usr/bin/foo2qpdl /usr/bin/qpdldecode
 	-rm -f /usr/bin/foo2slx-wrapper /usr/bin/foo2slx /usr/bin/slxdecode
 	-rm -f /usr/bin/foo2hiperc-wrapper /usr/bin/foo2hiperc
-	-rm -f /usr/bin/foo2hbpl2-wrapper /usr/bin/foo2hbpl2
 	-rm -f /usr/bin/hipercdecode
-	-rm -f /usr/bin/gipddecode
+	-rm -f /usr/bin/foo2hbpl2-wrapper /usr/bin/foo2hbpl2
 	-rm -f /usr/bin/hbpldecode
+	-rm -f /usr/bin/foo2ddst-wrapper /usr/bin/foo2ddst /usr/bin/ddstdecode
+	-rm -f /usr/bin/gipddecode
 	-rm -f /usr/bin/opldecode
 	-rm -f /usr/bin/rodecode
 	-rm -f /usr/bin/foo2zjs-icc2ps
@@ -1195,9 +1236,11 @@ clean:
 	-rm -f foo2hiperc.o hipercdecode.o
 	-rm -f foo2hbpl2.o hbpldecode.o
 	-rm -f opldecode.o gipddecode.o
+	-rm -f foo2dsst.o ddstdecode.o
 	-rm -f command2foo2lava-pjl.o
 	-rm -f foo2oak.html foo2zjs.html foo2hp.html foo2xqx.html foo2lava.html
 	-rm -f foo2slx.html foo2qpdl.html foo2hiperc.html foo2hbpl.html
+	-rm -f foo2ddst.html
 	-rm -f index.html
 	-rm -f arch*.gif
 	-rm -f sihp*.dl
@@ -1214,25 +1257,29 @@ clean:
 #
 # Header dependencies
 #
-zjsdecode.o: jbig.h zjs.h
-foo2zjs.o: jbig.h zjs.h
-foo2oak.o: jbig.h oak.h
 jbig.o: jbig.h
+
+foo2ddst.o: jbig.h ddst.h
+foo2hiperc.o: jbig.h hiperc.h
 foo2hp.o: jbig.h zjs.h cups.h
-foo2xqx.o: jbig.h xqx.h
+foo2hbpl2.o: jbig.h hbpl.h
 foo2lava.o: jbig.h
+foo2oak.o: jbig.h oak.h
 foo2qpdl.o: jbig.h qpdl.h
 foo2slx.o: jbig.h slx.h
-foo2hiperc.o: jbig.h hiperc.h
-foo2hbpl2.o: jbig.h hbpl.h
-hipercdecode.o: hiperc.h jbig.h
+foo2xqx.o: jbig.h xqx.h
+foo2zjs.o: jbig.h zjs.h
+
+ddstdecode.o: ddst.h jbig.h
+gipddecode.o: slx.h jbig.h
 hbpldecode.o: jbig.h
+hipercdecode.o: hiperc.h jbig.h
 lavadecode.o: jbig.h
-qpdldecode.o: jbig.h
 opldecode.o: jbig.h
+qpdldecode.o: jbig.h
 slxdecode.o: slx.h jbig.h
 xqxdecode.o: xqx.h jbig.h
-gipddecode.o: slx.h jbig.h
+zjsdecode.o: jbig.h zjs.h
 
 #
 # foo2* Regression tests
@@ -1440,6 +1487,7 @@ ppd:
 	    *3010*|*3040*)	driver=foo2hbpl2;; \
 	    *M215*)		driver=foo2hbpl2;; \
 	    *M1400*)		driver=foo2hbpl2;; \
+	    *SP_*)		driver=foo2ddst;; \
 	    *)                  driver=foo2zjs;; \
 	    esac; \
 	    echo $$driver - $$printer; \
@@ -1484,9 +1532,10 @@ man-osx-hotplug:
 	    -e "s@\$${URLSLX}@$(URLSLX)@" \
 	    -e "s@\$${URLHC}@$(URLHC)@" \
 	    -e "s@\$${URLHBPL}@$(URLHBPL)@" \
+	    -e "s@\$${URLDDST}@$(URLDDST)@" \
 	    -e "s/\$${MODpage}/$$MODpage/" \
 	    -e "s/\$${MODver}/$$MODver/"
-	chmod -w $*.1
+	chmod a-w $*.1
 
 install-man: man
 	#
@@ -1521,6 +1570,9 @@ install-man: man
 	$(INSTALL) -c -m 644 foo2hbpl2.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 foo2hbpl2-wrapper.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 hbpldecode.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 foo2ddst.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 foo2ddst-wrapper.1 $(MANDIR)/man1/
+	$(INSTALL) -c -m 644 ddstdecode.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 gipddecode.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 foo2zjs-pstops.1 $(MANDIR)/man1/
 	$(INSTALL) -c -m 644 arm2hpdl.1 $(MANDIR)/man1/
@@ -1560,7 +1612,7 @@ README: README.in
 	sed < $@.in > $@ \
 	    -e "s@\$${URLOAK}@$(URLOAK)@" \
 	    -e "s@\$${URLZJS}@$(URLZJS)@"
-	chmod -w $@
+	chmod a-w $@
 
 INSTALL: INSTALL.in Makefile
 	rm -f $@
@@ -1572,7 +1624,7 @@ INSTALL: INSTALL.in Makefile
 	    -e "s@\$${URLOAK}@$(URLOAK)@" \
 	    -e "s@\$${URLZJS}@$(URLZJS)@"
 	rm -f $@.tmp
-	chmod -w $@
+	chmod a-w $@
 
 #
 #	Check db files against current foomatic to see if any changes
@@ -1635,17 +1687,20 @@ URLQPDL=http://foo2qpdl.rkkda.com
 URLSLX=http://foo2slx.rkkda.com
 URLHC=http://foo2hiperc.rkkda.com
 URLHBPL=http://foo2hbpl.rkkda.com
+URLDDST=http://foo2ddst.rkkda.com
 FTPSITE=~/.ncftp-website
 
 foo2zjs.html foo2oak.html foo2hp.html \
     foo2xqx.html foo2lava.html foo2qpdl.html \
-    foo2slx.html foo2hiperc.html foo2hbpl.html: thermometer.gif FRC
+    foo2slx.html foo2hiperc.html foo2hbpl.html \
+    foo2ddst.html: thermometer.gif FRC
 	rm -f $@
 	HERE=`basename $$PWD`; \
 	TZ=`date | cut -c 21-24`; \
 	modtime() { $(MODTIME); }; \
 	MODindex=`modtime $@.in`; \
 	MODtarball=`modtime $$HERE.tar.gz`; \
+	MODsha=`sha1sum $$HERE.tar.gz | awk '{print $$1}'` ; \
 	PRODUCT=`basename $@ .html`; \
 	./includer-html $@.in | sed > $@ \
 	    -e "s@\$${URLOAK}@$(URLOAK)@g" \
@@ -1657,10 +1712,12 @@ foo2zjs.html foo2oak.html foo2hp.html \
 	    -e "s@\$${URLSLX}@$(URLSLX)@g" \
 	    -e "s@\$${URLHC}@$(URLHC)@g" \
 	    -e "s@\$${URLHBPL}@$(URLHBPL)@g" \
+	    -e "s@\$${URLDDST}@$(URLDDST)@g" \
 	    -e "s@\$${PRODUCT}@$$PRODUCT@g" \
 	    -e "s/\$${MODindex}/$$MODindex $$TZ/" \
-	    -e "s/\$${MODtarball}/$$MODtarball $$TZ/"
-	chmod -w $@
+	    -e "s/\$${MODtarball}/$$MODtarball $$TZ/" \
+	    -e "s/\$${MODsha}/$$MODsha/"
+	chmod a-w $@
 
 myftpput: ../geo/myftpput
 	rm -f myftpput
@@ -1678,7 +1735,7 @@ webt: tar manual.pdf webindex
 webworld: web webpics
 
 webindex: INSTALL zjsindex oakindex hpindex xqxindex lavaindex \
-	qpdlindex oakindex slxindex hcindex hbplindex
+	qpdlindex oakindex slxindex hcindex hbplindex ddstindex
 
 webpics: redhat suse ubuntu mandriva fedora
 
@@ -1749,6 +1806,13 @@ hbplindex: foo2hbpl.html archhbpl.gif thermometer.gif webphotos
 	    images/flags.png INSTALL images/hbplfavicon.png \
 	    printer-photos/printers.jpg;
 
+ddstindex: foo2ddst.html archddst.gif thermometer.gif webphotos
+	ln -sf foo2ddst.html index.html
+	./myftpput -S -m -f $(FTPSITE) foo2ddst \
+	    index.html style.css archddst.gif thermometer.gif \
+	    images/flags.png INSTALL images/ddstfavicon.png \
+	    printer-photos/printers.jpg;
+
 foo2zjs.html: warning.html contribute.html resources.html unsupported.html
 foo2hp.html: warning.html contribute.html resources.html unsupported.html
 foo2xqx.html: warning.html contribute.html resources.html unsupported.html
@@ -1758,6 +1822,7 @@ foo2slx.html: warning.html contribute.html resources.html unsupported.html
 foo2hiperc.html: warning.html contribute.html resources.html unsupported.html
 foo2oak.html: warning.html contribute.html resources.html unsupported.html
 foo2hbpl.html: warning.html contribute.html resources.html unsupported.html
+foo2ddst.html: warning.html contribute.html resources.html unsupported.html
 
 # RedHat
 redhat: FRC
