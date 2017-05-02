@@ -36,7 +36,7 @@ man:	osx-hplj-hotplug.1
 	    -e "s@\$${URLSLX}@$(URLSLX)@" \
 	    -e "s@\$${URLHC}@$(URLHC)@" \
 	    -e "s/\$${MODver}/$$MODver/"
-	chmod -w $*.1
+	chmod a-w $*.1
 
 install: all
 	$(INSTALL) -c osx-hplj-hotplug $(BIN)/
