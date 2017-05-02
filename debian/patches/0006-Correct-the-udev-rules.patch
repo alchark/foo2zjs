@@ -1,4 +1,4 @@
-From f26a93eb710e13894b8ff65923ed512d62e23866 Mon Sep 17 00:00:00 2001
+From a7d1c3e7206065ccc47d5d609e496d0927099452 Mon Sep 17 00:00:00 2001
 From: Luca Capello <luca@pca.it>
 Date: Tue, 4 Oct 2016 11:43:49 +0200
 Subject: Correct the udev rules:

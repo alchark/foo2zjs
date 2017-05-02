@@ -1,4 +1,4 @@
-From 8b6665af8dea2a493bd905ac3acf6e1e2827dce1 Mon Sep 17 00:00:00 2001
+From 7ceb24ed04d1d7405f45b8df0f156d337d74a008 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:57 +0200
 Subject: Don't delete printer-profile in clean target

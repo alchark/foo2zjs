@@ -1,4 +1,4 @@
-From 4f719bf41407960ac7f5f79302c5232a88718fcc Mon Sep 17 00:00:00 2001
+From 2c5506f4ed36ca664e128158aeb17fa970d130d0 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 4 Oct 2016 11:44:01 +0200
 Subject: Removed the lines in the UDEV script for the automatic firmware

@@ -1,4 +1,4 @@
-From e999ed655848954a33cf6377f6a1dcec4479e2ef Mon Sep 17 00:00:00 2001
+From d20224cb79790c6c25d0e95e1b635b6eb2e6fb7e Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:48 +0200
 Subject: Link against system liblcms1
@@ -8,7 +8,7 @@ Subject: Link against system liblcms1
  1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/icc2ps/Makefile b/icc2ps/Makefile
-index 846285a..e6e5ee2 100644
+index 0aa49ba..87f57b5 100644
 --- a/icc2ps/Makefile
 +++ b/icc2ps/Makefile
 @@ -6,9 +6,7 @@ BIN=	$(PREFIX)/bin

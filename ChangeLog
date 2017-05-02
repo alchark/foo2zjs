@@ -1,3 +1,10 @@
+2017-03-20	Rick Richardson <rick.richardson@comcast.net>
+	* Add ddstdecode, for decoding some Ricoh printers.
+
+2016-10-21	Rick Richardson <rick.richardson@comcast.net>
+	* Makefile: install-hotplug-prog
+	    Add /lib/systemd/systemd-udevd to the list for Ubuntu 16.
+
 2016-09-02	Rick Richardson <rick.richardson@comcast.net>
 	* New Printer: Xerox Phaser 3040 using the foo2hbpl2 driver.
 

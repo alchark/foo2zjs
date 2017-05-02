@@ -1,4 +1,4 @@
-From 06433363872ea15c514dd9fe17042fea92c9a89d Mon Sep 17 00:00:00 2001
+From ee843c3701c265c2667d63fa2e59c656091a6803 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:44:00 +0200
 Subject: Delay firmware transfer for UDEV automatic printer setup

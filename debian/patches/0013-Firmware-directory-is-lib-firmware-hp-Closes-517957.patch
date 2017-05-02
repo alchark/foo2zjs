@@ -1,4 +1,4 @@
-From 2239fa29e1fe45a11e2db67530190650c0f5c5c4 Mon Sep 17 00:00:00 2001
+From e71283f80209e670447dc1c84dab37906781d1da Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:56 +0200
 Subject: Firmware directory is /lib/firmware/hp/ (Closes: #517957)

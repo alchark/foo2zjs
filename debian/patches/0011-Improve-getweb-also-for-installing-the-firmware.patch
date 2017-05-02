@@ -1,4 +1,4 @@
-From 7f4bca2b285578c5ab846c8586cab1a715a3a94a Mon Sep 17 00:00:00 2001
+From 91bf0670e3085a9229e8fd0a8e6cdb08ae329044 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:54 +0200
 Subject: Improve getweb also for installing the firmware

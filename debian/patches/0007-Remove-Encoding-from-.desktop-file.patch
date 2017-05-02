@@ -1,4 +1,4 @@
-From 49bfc6f07393daf40a6843acb60373783304c81f Mon Sep 17 00:00:00 2001
+From 3cfa55d24a96c16982d1789d61c411e6d40067a1 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:50 +0200
 Subject: Remove 'Encoding' from .desktop file

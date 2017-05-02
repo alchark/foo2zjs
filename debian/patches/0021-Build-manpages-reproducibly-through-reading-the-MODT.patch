@@ -1,4 +1,4 @@
-From d1147170930a24a197a4d22198bc341ec5b5307a Mon Sep 17 00:00:00 2001
+From 11ab90b6a6c2e67f38ccebbf944b377fa7c18718 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:44:04 +0200
 Subject: Build manpages reproducibly, through reading the MODTIME from
@@ -10,10 +10,10 @@ Subject: Build manpages reproducibly, through reading the MODTIME from
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 5b9eba5..bdffd0d 100644
+index 4410c6f..2420cd3 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -79,6 +79,8 @@ endif
+@@ -80,6 +80,8 @@ endif
  ifeq ($(UNAME),SunOS)
      MODTIME= `ls -e $$1 | cut -c42-61`
  endif
@@ -22,7 +22,7 @@ index 5b9eba5..bdffd0d 100644
  
  #
  # Files for tarball
-@@ -1526,12 +1528,12 @@ install-doc: doc
+@@ -1578,12 +1580,12 @@ install-doc: doc
  	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
  
  GROFF=/usr/local/test/bin/groff

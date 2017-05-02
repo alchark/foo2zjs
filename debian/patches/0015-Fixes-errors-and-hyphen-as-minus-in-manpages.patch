@@ -1,4 +1,4 @@
-From abcfb3933bd0a8c0b77296af9363cf732dea6bb8 Mon Sep 17 00:00:00 2001
+From 6e6584878be3ec9e18e78f77d97632634568b94e Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:58 +0200
 Subject: Fixes errors and hyphen-as-minus in manpages
@@ -1429,7 +1429,7 @@ index 9706bb0..45d0544 100644
  				Order   = 3  ILEAVE SMID
  				Options = 92  LRLTWO TPDON TPBON DPON
 diff --git a/osx-hotplug/osx-hplj-hotplug.1in b/osx-hotplug/osx-hplj-hotplug.1in
-index 317c20f..8a3fe76 100644
+index 326d066..cd27b0e 100644
 --- a/osx-hotplug/osx-hplj-hotplug.1in
 +++ b/osx-hotplug/osx-hplj-hotplug.1in
 @@ -3,7 +3,7 @@
