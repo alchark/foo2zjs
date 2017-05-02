@@ -1,4 +1,5 @@
 usr/bin/arm2hpdl
+usr/bin/foo2ddst
 usr/bin/foo2hiperc
 usr/bin/foo2hbpl2
 usr/bin/foo2hp
@@ -8,6 +9,7 @@ usr/bin/foo2qpdl
 usr/bin/foo2slx
 usr/bin/foo2xqx
 usr/bin/foo2zjs
+usr/bin/ddstdecode
 usr/bin/gipddecode
 usr/bin/hbpldecode
 usr/bin/hipercdecode

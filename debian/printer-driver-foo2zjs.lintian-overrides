@@ -3,6 +3,8 @@ package-contains-empty-directory lib/firmware/hp/
 
 # Manpages are shipped in printer-driver-foo2zjs-common
 binary-without-manpage usr/bin/arm2hpdl
+binary-without-manpage usr/bin/ddstdecode
+binary-without-manpage usr/bin/foo2ddst
 binary-without-manpage usr/bin/foo2hbpl2
 binary-without-manpage usr/bin/foo2hiperc
 binary-without-manpage usr/bin/foo2hp

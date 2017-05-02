@@ -5,6 +5,7 @@ hplj1020.desktop usr/share/applications/
 hplj1020_icon.png usr/share/pixmaps
 PPD/* usr/share/ppd/foo2zjs/
 usr/bin/foo2zjs-pstops
+usr/bin/foo2ddst-wrapper
 usr/bin/foo2hiperc-wrapper
 usr/bin/foo2hbpl2-wrapper
 usr/bin/foo2hp2600-wrapper
@@ -32,6 +33,9 @@ usr/share/foo2zjs/gamma.ps
 usr/share/foo2zjs/hplj1020_icon.gif
 usr/share/foo2zjs/hplj10xx_gui.tcl
 usr/share/man/man1/arm2hpdl.1
+usr/share/man/man1/ddstdecode.1
+usr/share/man/man1/foo2ddst.1
+usr/share/man/man1/foo2ddst-wrapper.1
 usr/share/man/man1/foo2hbpl2.1
 usr/share/man/man1/foo2hbpl2-wrapper.1
 usr/share/man/man1/foo2hiperc.1
