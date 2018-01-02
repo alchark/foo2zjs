@@ -72,16 +72,17 @@ override_dh_gencontrol:
 ifeq ($(derives_from_ubuntu),yes)
 	# Ubuntu considers mscompress to be a Depends of printer-driver-foo2zjs
 	echo "ubuntu:mscompress=mscompress" >> debian/printer-driver-foo2zjs.substvars
+	# Ubuntu considers tix to be a Suggests of printer-driver-foo2zjs
+	echo "ubuntu:tix=tix" >> debian/printer-driver-foo2zjs-common.substvars
+	# Ubuntu considers tk to be a Suggests of printer-driver-foo2zjs
+	echo "ubuntu:tk=tk" >> debian/printer-driver-foo2zjs-common.substvars
 else
 	# Debian considers mscompress to be a Recommends of printer-driver-foo2zjs
 	echo "debian:mscompress=mscompress" >> debian/printer-driver-foo2zjs.substvars
-endif
-ifeq ($(derives_from_ubuntu),yes)
-	# Ubuntu considers tix to be a Suggest of printer-driver-foo2zjs
-	echo "ubuntu:tix=tix" >> debian/printer-driver-foo2zjs.substvars
-else
-	# Debian considers tix to be a Depends of printer-driver-foo2zjs
-	echo "debian:tix=tix" >> debian/printer-driver-foo2zjs.substvars
+	# Debian considers tix to be a Recommends of printer-driver-foo2zjs
+	echo "debian:tix=tix" >> debian/printer-driver-foo2zjs-common.substvars
+	# Debian considers tix to be a Recommends of printer-driver-foo2zjs
+	echo "debian:tk=tk" >> debian/printer-driver-foo2zjs-common.substvars
 endif
 	dh_gencontrol
 
