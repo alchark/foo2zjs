@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 9),
                time,
                pyppd (>= 1.0.2-1~),
                libjbig-dev
-Standards-Version: 3.9.8
+Standards-Version: 4.1.3
 Vcs-Browser: https://anonscm.debian.org/cgit/printing/foo2zjs.git
 Vcs-Git: https://anonscm.debian.org/git/printing/foo2zjs.git
 Homepage: http://foo2zjs.rkkda.com/
