@@ -1,3 +1,11 @@
+foo2zjs (20170320dfsg0-3) unstable; urgency=medium
+
+  * Update debian/control syntax with cme
+  * Bump Standards-Version to 4.1.3 without changes needed
+  * Update Vcs-* fields for the move to salsa.d.o
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 10 Feb 2018 14:30:11 +0100
+
 foo2zjs (20170320dfsg0-2) unstable; urgency=low
 
   * Migrate 20170320 to unstable
