@@ -58,7 +58,6 @@ Depends: ${misc:Depends}
 Recommends: ${debian:tix},
             ${debian:tk},
             printer-driver-foo2zjs (>= ${source:Version})
-Suggests: ${ubuntu:tix}
 Suggests: ${ubuntu:tix},
           ${ubuntu:tk}
 Enhances: printer-driver-foo2zjs (>= ${source:Version})
