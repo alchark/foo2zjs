@@ -1,3 +1,10 @@
+foo2zjs (20170320dfsg0-4) unstable; urgency=medium
+
+  [ Jeremy Bicha ]
+  * Don't recommend tk on Ubuntu (Closes: #886179)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 25 Feb 2018 16:41:56 +0100
+
 foo2zjs (20170320dfsg0-3) unstable; urgency=medium
 
   * Update debian/control syntax with cme
