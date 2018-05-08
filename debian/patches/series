@@ -19,3 +19,4 @@
 0019-The-firmware-upload-script-tried-to-upload-the-firmw.patch
 0020-Prevent-an-infinite-loop-when-loading-the-firmware.patch
 0021-Build-manpages-reproducibly-through-reading-the-MODT.patch
+0022-Don-t-try-to-install-hotplug-osx-on-all-UNAME-s.patch
