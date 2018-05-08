@@ -1,4 +1,4 @@
-From 99c7147a882a8caa7154d1885c1225dbfe31c311 Mon Sep 17 00:00:00 2001
+From dbdee6ffa5f1f3d158066497d8b390683db5be70 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:44:03 +0200
 Subject: Prevent an infinite loop when loading the firmware.

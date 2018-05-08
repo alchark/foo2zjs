@@ -1,4 +1,4 @@
-From 11ab90b6a6c2e67f38ccebbf944b377fa7c18718 Mon Sep 17 00:00:00 2001
+From 3d6b26ceeec84fdea364208f82329230ca63cf0d Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:44:04 +0200
 Subject: Build manpages reproducibly, through reading the MODTIME from
@@ -10,7 +10,7 @@ Subject: Build manpages reproducibly, through reading the MODTIME from
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 4410c6f..2420cd3 100644
+index 97e6990..f04acf2 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -80,6 +80,8 @@ endif
@@ -22,7 +22,7 @@ index 4410c6f..2420cd3 100644
  
  #
  # Files for tarball
-@@ -1578,12 +1580,12 @@ install-doc: doc
+@@ -1581,12 +1583,12 @@ install-doc: doc
  	$(INSTALL) -c -m 644 ChangeLog $(DOCDIR)
  
  GROFF=/usr/local/test/bin/groff

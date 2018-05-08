@@ -1,4 +1,4 @@
-From c8291b48413ee50d51a6c1f2b74f8a6c8a298e43 Mon Sep 17 00:00:00 2001
+From 5f8b9d683bfa27efc8abda4a184edf85437830eb Mon Sep 17 00:00:00 2001
 From: Steffen Joeris <white@debian.org>
 Date: Tue, 4 Oct 2016 11:43:43 +0200
 Subject: Update makefiles to Debian best-practices
@@ -6,12 +6,12 @@ Subject: Update makefiles to Debian best-practices
 Author: Luca Capello <luca@pca.it>
 Author: Didier Raboud <odyx@debian.org>
 ---
- Makefile        | 71 +++++++++++++++++++++++++++------------------------------
- icc2ps/Makefile |  4 ++--
+ Makefile        | 71 +++++++++++++++++++++++--------------------------
+ icc2ps/Makefile |  4 +--
  2 files changed, 35 insertions(+), 40 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index addc4b5..ec81e21 100644
+index 608147d..2f010b1 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -17,9 +17,7 @@ SYSNAME := $(shell uname -n)
@@ -183,7 +183,7 @@ index addc4b5..ec81e21 100644
  
  install-desktop:
  	#
-@@ -1491,10 +1487,9 @@ ppd:
+@@ -1494,10 +1490,9 @@ ppd:
  	    *)                  driver=foo2zjs;; \
  	    esac; \
  	    echo $$driver - $$printer; \
@@ -195,7 +195,7 @@ index addc4b5..ec81e21 100644
  		-d $$driver -p $$printer \
  		> PPD/$$printer.ppd; \
  	done
-@@ -1950,7 +1945,7 @@ FRC:
+@@ -1955,7 +1950,7 @@ FRC:
  misc: pksm2bitcmyk phorum-logo.gif
  
  pksm2bitcmyk: pksm2bitcmyk.c

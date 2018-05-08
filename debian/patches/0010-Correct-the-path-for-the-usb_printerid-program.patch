@@ -1,4 +1,4 @@
-From c274adc69ab1f2dbf851b3d06bbb7b3a0efe8ec0 Mon Sep 17 00:00:00 2001
+From 6d99b72af0fdef9c0c7cdf986489254b54baf7d4 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:53 +0200
 Subject: Correct the path for the usb_printerid program

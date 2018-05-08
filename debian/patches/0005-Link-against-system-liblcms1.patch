@@ -1,4 +1,4 @@
-From d20224cb79790c6c25d0e95e1b635b6eb2e6fb7e Mon Sep 17 00:00:00 2001
+From 15e925873bbe16b606a57028bf01f936a6fe9f43 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:48 +0200
 Subject: Link against system liblcms1

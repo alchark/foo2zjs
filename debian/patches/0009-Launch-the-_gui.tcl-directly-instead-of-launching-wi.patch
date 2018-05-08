@@ -1,4 +1,4 @@
-From 391f5c0da3e03b7066a20759b4e7ebbdda5f08f6 Mon Sep 17 00:00:00 2001
+From 28527559ed334fc00f7a3ce84c798975cb0b396f Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:52 +0200
 Subject: Launch the _gui.tcl directly (instead of launching wish outside of

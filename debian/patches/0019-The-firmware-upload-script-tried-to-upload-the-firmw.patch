@@ -1,4 +1,4 @@
-From 54d4732eb490606c210d82bbc4f406338144ef7f Mon Sep 17 00:00:00 2001
+From 793483305be8ca82acaa091d65047d48f8da3643 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 4 Oct 2016 11:44:02 +0200
 Subject: The firmware upload script tried to upload the firmware via

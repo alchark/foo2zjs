@@ -1,10 +1,10 @@
-From 7ceb24ed04d1d7405f45b8df0f156d337d74a008 Mon Sep 17 00:00:00 2001
+From 6ec076bfd1569db587276d34ee3c67f1b4bfe1fc Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:57 +0200
 Subject: Don't delete printer-profile in clean target
 
 ---
- printer-profile.in | 296 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ printer-profile.in | 296 +++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 296 insertions(+)
  create mode 100644 printer-profile.in
 

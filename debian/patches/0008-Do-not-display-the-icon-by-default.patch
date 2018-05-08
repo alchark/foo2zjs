@@ -1,4 +1,4 @@
-From 7670b594fd5f1455a40159b3d9b4e66e20602018 Mon Sep 17 00:00:00 2001
+From 690556c910f26229ad2b9a6def71a8347e43ce76 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:51 +0200
 Subject: Do not display the icon by default

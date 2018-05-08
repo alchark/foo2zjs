@@ -1,11 +1,11 @@
-From 91bf0670e3085a9229e8fd0a8e6cdb08ae329044 Mon Sep 17 00:00:00 2001
+From a49fd6b68ecb8d27909d448465ece35c9e99ecd4 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:54 +0200
 Subject: Improve getweb also for installing the firmware
 
 Fix the icm file installing code to create inexistant folders
 ---
- getweb.in | 80 +++++++++++++++++++++++++++++++++++++++++++++------------------
+ getweb.in | 80 ++++++++++++++++++++++++++++++++++++++++---------------
  1 file changed, 58 insertions(+), 22 deletions(-)
 
 diff --git a/getweb.in b/getweb.in

@@ -1,4 +1,4 @@
-From bb8bab316654333ca9fa92dcd3fe78a24fc54cfe Mon Sep 17 00:00:00 2001
+From 3887d6aa6f2c9993b22f83dc54624db0f95e1568 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:47 +0200
 Subject: Use the Debian-provided libjbig.
@@ -8,7 +8,7 @@ Subject: Use the Debian-provided libjbig.
  1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index d1cae6e..4410c6f 100644
+index ceaf89e..97e6990 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -126,10 +126,6 @@ FILES	=	\

@@ -1,9 +1,9 @@
-From c56817bb895f5964b891f7c140d26be614087e4c Mon Sep 17 00:00:00 2001
+From a2293218f2b4470dd623aeba0aa777742358f32c Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 4 Oct 2016 11:43:44 +0200
 Subject: Fix icc2ps build
 
-Include unistd.h to make sure the swab function is not implicitely declared,
+Include unistd.h to make sure the swab function is not implicitly declared,
 also declare _XOPEN_SOURCE to have it available  through unistd.h, and
 therefore declare _GNU_SOURCE to have  strcasecmp() and vsnprintf()
 ---
