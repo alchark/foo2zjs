@@ -4,7 +4,7 @@ derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes")
 DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
 %:
-	dh $@ 
+	dh $@
 
 override_dh_auto_build:
 	cp printer-profile.in printer-profile
@@ -30,7 +30,7 @@ override_dh_install:
 		-XINSTALL.OSX \
 		-XCOPYING \
 		-XChangeLog \
-		-Xcups/filter/command2foo2lava-pjl 
+		-Xcups/filter/command2foo2lava-pjl
 
 ifneq (,$(filter printer-driver-foo2zjs, $(shell dh_listpackages)))
 ifeq ($(DEB_HOST_ARCH_OS),linux)

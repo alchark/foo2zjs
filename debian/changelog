@@ -262,7 +262,7 @@ foo2zjs (20131225dfsg0-1) unstable; urgency=low
   * DFSG repack (no changes from previous releases).
     - remove binary file c5200mono.prn
     - remove crd/qpdl/CLP* , because copyright is unclear
-  
+
   * Refresh all patches
   * Add patch to avoid the implicit declaration of swab() in cmsio1.c
   * Update Makefile patch to push CPPFLAGS and LDFLAGS to all needed
@@ -537,7 +537,7 @@ foo2zjs (20110722dfsg-1) unstable; urgency=low
     - Enhance 60-getweb.in.patch to forbid live update of /usr/bin/getweb as it
       is packaged. Also correct the typo in getweb. (Closes: #632680)
     - Update 60-hplj1000.patch to use the correct paths in kFreeBSD too.
-    - Update 90-manpages.patch to fix more hyphen-used-as-minus mistakes. 
+    - Update 90-manpages.patch to fix more hyphen-used-as-minus mistakes.
     - Add 91-spelling-fixes.patch to fix 'precission' spelling mistake.
   * Convert to source format 3.0 (quilt)
   * Convert packaging to "tiny" dh7 style.
@@ -909,7 +909,7 @@ foo2zjs (20070718dfsg-6) unstable; urgency=low
         - Added the Homepage tag insted of displaing it in the long description
           (Closes: #439579).
         - Added Vcs-Svn tag.
-  * Now hannah-foo2zjs display the output of an error (Closes:444852) 
+  * Now hannah-foo2zjs display the output of an error (Closes:444852)
 
  -- Luca Bedogni <me@lucabedogni.it>  Fri, 02 Nov 2007 01:06:58 +0100
 
@@ -1014,7 +1014,7 @@ foo2zjs (20061224-2) unstable; urgency=low
   * Upload to unstable
 
  -- Steffen Joeris <white@debian.org>  Sun, 06 May 2007 18:57:46 +1000
- 
+
 foo2zjs (20061224-1) experimental; urgency=low
 
   * New upstream release
@@ -1040,7 +1040,7 @@ foo2zjs (20060625dfsg-4) unstable; urgency=medium
 
 foo2zjs (20060625dfsg-3) unstable; urgency=medium
 
-  * Correct the udev rules (30-udev-rules.dpatch) to make sure all of 
+  * Correct the udev rules (30-udev-rules.dpatch) to make sure all of
     the supported hp models work as expected (Closes: #390948)
   * Correct the path of the program location in hplj1000
     (40-path-correction.dpatch)
@@ -1085,7 +1085,7 @@ foo2zjs (20051220dfsg-1) unstable; urgency=low
 
   * new upstream release
   * again have to repack it for DFSG compatibility
-  * add additional explanation 
+  * add additional explanation
     (e.g. reason for repack and reformat of manpages) to README.Debian
 
   * Upload sponsored by Petter Reinholdtsen.
@@ -1112,7 +1112,7 @@ foo2zjs (20051120dfsg-1) unstable; urgency=low
 
 foo2zjs (20051113-1) unstable; urgency=low
 
-  * New Maintainer and Co-Maintainer (Closes: #294813) 
+  * New Maintainer and Co-Maintainer (Closes: #294813)
   * New upstream release (Closes: #339761)
   * Added new clean rules because of new version
   * bumped standard version
