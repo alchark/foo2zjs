@@ -3,7 +3,6 @@ Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: Luca Capello <luca@pca.it>,
            Didier Raboud <odyx@debian.org>
 Section: text
-Testsuite: autopkgtest
 Priority: optional
 Build-Depends: debhelper (>= 11),
                ghostscript,
