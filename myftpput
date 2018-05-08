@@ -95,8 +95,9 @@ if [ "$SFTP" = 0 ]; then
 	quit
 	EOF
 else
-    lftp sftp://$user@$host <<-EOF
+    lftp <<-EOF
 	set sftp:auto-confirm yes
+	open sftp://$host
 	user $user $pass
 	mkdir -f -p $DIR
 	cd $DIR
