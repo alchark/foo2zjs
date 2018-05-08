@@ -1,3 +1,19 @@
+foo2zjs (20171202dfsg0-1) unstable; urgency=medium
+
+  * New upstream version 20171202
+    - New Printers: HP LaserJet Pro M12a, M12w
+  * DFSG repack (no changes from previous releases)
+    - remove binary file c5200mono.prn
+    - remove crd/qpdl/CLP* , because copyright is unclear
+  * Packaging cleanup:
+    - Bump debhelper compat to 11
+    - Don't forcibly set DEB_HOST_ARCH_OS
+    - Add Files-Excluded in d/copyright
+    - Bump S-V to 4.1.4
+    - Remove superfluous Testsuite: field
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 08 May 2018 08:27:09 +0200
+
 foo2zjs (20170320dfsg0-4) unstable; urgency=medium
 
   [ Jeremy Bicha ]
