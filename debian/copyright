@@ -1,7 +1,8 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: foo2zjs
 Upstream-Contact: Rick Richardson <rick.richardson@comcast.net>
 Source: http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+Files-Excluded: c5200mono.prn  crd/qpdl/
 
 Files: *
 Copyright: 2006-2013 Rick Richardson <rick.richardson@comcast.net>
