@@ -5,7 +5,7 @@ Uploaders: Luca Capello <luca@pca.it>,
 Section: text
 Testsuite: autopkgtest
 Priority: optional
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 11),
                ghostscript,
                cups-filters | foomatic-filters,
                foomatic-db-engine,
