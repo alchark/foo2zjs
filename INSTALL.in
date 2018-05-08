@@ -185,6 +185,11 @@ GHOSTSCRIPT BUGS
 	$ ./configure  --without-jbig2dec
 	$ make CFLAGS+="-DHAVE_SYS_TIME_H=1"
 
+      If that doesn't compile (e.g. Fedora 26), try this:
+	$ cd ghostscript-8.71
+	$ ./configure  --without-jbig2dec --with-system-libtiff 
+	$ make CFLAGS+="-DHAVE_SYS_TIME_H=1"
+
     * Halftoning Bug:
         "The problems with WTS are primarily that it seems to fall down
 	on the halftone generation for some angles when the lpi is high for
@@ -499,6 +504,9 @@ CUPS USB NOTES
 	usb://HP/LaserJet%20P1007
 	usb://HP/LaserJet%20P1008
 	usb://HP/LaserJet%20P1505
+	usb://HP/LaserJet%20Professional%20M12a
+	usb://HP/LaserJet%20Professional%20M12w
+	usb://HP/LaserJet%20Professional%20P1102
 	usb://HP/LaserJet%20Professional%20P1102w
 
     Don't use hp://<whatever> because that is for hplip (a closed source,
@@ -601,9 +609,9 @@ HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1007/P1008/P1505 NOTES
 
 HP SMART INSTALL NOTES
 ----------------------
-    The printers HP LaserJet Pro P1102, HP LaserJet Pro CP1025, and simliar
-    models have a virtual CD-ROM (a fake USB CD drive) in USB mode.  You can
-    disable this three ways:
+    The printers HP LaserJet Pro M12a, HP LaserJet Pro P1102,
+    HP LaserJet Pro CP1025, and simliar models have a virtual CD-ROM
+    (a fake USB CD drive) in USB mode.  You can disable this three ways:
 
     Method 1:
 	NOTE: this is a non-open-source method!
