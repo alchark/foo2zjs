@@ -20,3 +20,4 @@
 0020-Prevent-an-infinite-loop-when-loading-the-firmware.patch
 0021-Build-manpages-reproducibly-through-reading-the-MODT.patch
 0022-Don-t-try-to-install-hotplug-osx-on-all-UNAME-s.patch
+0023-Don-t-test-for-stdio.h-in-fullpath.patch

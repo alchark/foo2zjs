@@ -399,15 +399,6 @@ all-test:
 	    echo "      ***"; \
 	    exit 1; \
 	fi
-	@if ! test -f /usr/include/stdio.h; then \
-	    echo "      ***"; \
-	    echo "      *** Error: /usr/include/stdio.h is not installed!"; \
-	    echo "      ***"; \
-	    echo "      *** Install Software Development (gcc) package"; \
-	    echo "      *** for Ubuntu: sudo apt-get install build-essential"; \
-	    echo "      ***"; \
-	    exit 1; \
-	fi
 	@if ! type gs >/dev/null 2>&1; then \
 	    echo "      ***"; \
 	    echo "      *** Error: gs is not installed!"; \
