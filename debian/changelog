@@ -1,3 +1,10 @@
+foo2zjs (20171202dfsg0-2) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Don't test for stdio.h in fullpath (Closes: #910322)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 05 Oct 2018 16:34:48 +0200
+
 foo2zjs (20171202dfsg0-1) unstable; urgency=medium
 
   * New upstream version 20171202
