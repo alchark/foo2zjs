@@ -1,7 +1,6 @@
 Source: foo2zjs
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
-Uploaders: Luca Capello <luca@pca.it>,
-           Didier Raboud <odyx@debian.org>
+Uploaders: Didier Raboud <odyx@debian.org>
 Section: text
 Priority: optional
 Build-Depends: debhelper (>= 11),
