@@ -1192,4 +1192,3 @@ foo2zjs (20030526-1) unstable; urgency=low
   * Initial Release.  (Closes: #194572)
 
  -- Chris Lawrence <lawrencc@debian.org>  Tue, 27 May 2003 16:03:54 -0500
-
