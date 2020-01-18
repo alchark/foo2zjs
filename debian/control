@@ -13,7 +13,7 @@ Build-Depends: debhelper-compat (= 12),
                time,
                pyppd (>= 1.0.2-1~),
                libjbig-dev
-Standards-Version: 4.1.4
+Standards-Version: 4.4.1
 Vcs-Browser: https://salsa.debian.org/printing-team/foo2zjs
 Vcs-Git: https://salsa.debian.org/printing-team/foo2zjs.git
 Homepage: http://foo2zjs.rkkda.com/
