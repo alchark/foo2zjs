@@ -1,3 +1,22 @@
+foo2zjs (20171202dfsg0-3) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Remove Luca Capello <luca@pca.it> from Uploaders with thanks for his past
+    work! (Closes: #926368)
+  * Packaging cleanup:
+    - Trim trailing whitespace.
+    - Bump debhelper from old 11 to 12. + debian/rules: Move --fail-missing
+      argument to dh_missing
+    - Rely on pre-initialized dpkg-architecture variables
+    - Bump Standards-Version to 4.4.1
+    - Convert to git-debrebase
+
+  [ Helmut Grohne ]
+  * Drop -lsomelib make dependencies to progress towards cross-buildability
+    (Closes: #949207)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 18 Jan 2020 12:37:30 +0100
+
 foo2zjs (20171202dfsg0-2) unstable; urgency=medium
 
   [ Helmut Grohne ]
