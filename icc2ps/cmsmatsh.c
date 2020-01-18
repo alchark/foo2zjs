@@ -75,7 +75,7 @@ int ComputeTables(LPGAMMATABLE Table[3], LPWORD Out[3], LPL16PARAMS p16)
         AllLinear   += cmsIsLinear(PtrW, p16 -> nSamples);
        }
 
-       // If is all linear, then suppress table interpolation (this
+       // If is all linear, then supress table interpolation (this
        // will speed greately some trivial operations. 
        // Return 1 if present, 0 if all linear
        
@@ -192,7 +192,7 @@ LPMATSHAPER cmsAllocMatShaper(LPMAT3 Matrix, LPGAMMATABLE Tables[], DWORD Behavi
         AllLinear   += cmsIsLinear(PtrW, NewMatShaper -> p16.nSamples);
        }
 
-       // If is all linear, then suppress table interpolation (this
+       // If is all linear, then supress table interpolation (this
        // will speed greately some trivial operations
 
        if (AllLinear != 3)

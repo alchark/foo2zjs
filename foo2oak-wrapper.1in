@@ -49,7 +49,7 @@ l l l
 l n n.
 _
 Media	HP CLJ 1500	KM-1635
-	\-z0	\-z1
+	-z0	-z1
 _
 autoselect	0	0
 plain	1	1
@@ -110,9 +110,9 @@ Print in N-up.  Requires the \fBpsutils\fP package.
 Orientation used for N-up.
 .TS
 l l l.
-Portrait	\-op	(normal)
-Landscape	\-ol	(rotated 90 degrees anticlockwise)
-Seascape	\-os	(rotated 90 degrees clockwise)
+Portrait	-op	(normal)
+Landscape	-ol	(rotated 90 degrees anticlockwise)
+Seascape	-os	(rotated 90 degrees clockwise)
 .TE
 .SS Printer Tweaking Options
 These are the options used to customize the operation of \fBfoo2oak\fP
@@ -131,13 +131,13 @@ The defaults should work on the 2200DL and 2300DL, and have not
 been tested on any other printers.
 .TP
 .BI \-L\0 mask
-Send the logical clipping values from \-u/-l in the OAKT stream.
+Send the logical clipping values from -u/-l in the OAKT stream.
 \fBfoo2oak-wrapper\fP always runs Ghostscript with the ideal page dimensions,
 so that the scale of the image is correct,
 regardless whether or not the printer has unprintable regions.
 This option is used to move the position of the clipped image
 back to where it belongs on the page.  The default is to send
-the amount which was clipped by \-u and \-l, and should be
+the amount which was clipped by -u and -l, and should be
 good in most cases.
 .TS
 l l.
@@ -155,7 +155,7 @@ These are the options used to control the quality of color output.
 Color correction is currently a WORK IN PROGRESS.
 .TP
 .BI \-g\0 gsopts
-Additional options to pass to Ghostscript, such as \-g\(lq-dDITHERPPI=nnn\(rq,
+Additional options to pass to Ghostscript, such as -g\(lq-dDITHERPPI=nnn\(rq,
 etc.  This option may appear more than once.
 .TP
 .BI \-G\0 profile.icm
@@ -200,7 +200,7 @@ examine it, and then print it using a RAW print queue:
 .nf
 foo2oak-wrapper testpage.ps > testpage.oak
 oakdecode < testpage.oak
-lpr \-P raw testpage.oak
+lpr -P raw testpage.oak
 .fi
 .RE
 .P
@@ -208,7 +208,7 @@ Create a color OAKT stream from a Postscript document:
 
 .RS
 .nf
-foo2oak-wrapper \-c testpage.ps > testpage.oak
+foo2oak-wrapper -c testpage.ps > testpage.oak
 .fi
 .RE
 

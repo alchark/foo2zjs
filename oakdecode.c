@@ -101,7 +101,7 @@ usage(void)
 "Options:\n"
 "       -d basename Basename of .pbm file for saving decompressed planes\n"
 "       -r basename Basename of .jbg file for saving raw planes\n"
-"       -i          Suppress display of image records\n"
+"       -i          Supress display of image records\n"
 "       -o          Print file offsets\n"
 "       -D lvl      Set Debug level [%d]\n"
     , Debug

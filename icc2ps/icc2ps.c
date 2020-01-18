@@ -139,8 +139,8 @@ void Help(void)
           
      fprintf(stderr, "%cb - Black point compensation (CRD only)\n", SW);    
      fprintf(stderr, "%cu - Do NOT generate resource name on CRD\n", SW);    
-     fprintf(stderr, "%cc<0,1,2> - Precision (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)\n", SW);     
-     fprintf(stderr, "%cn<gridpoints> - Alternate way to set precision, number of CLUT points (CRD only)\n", SW);     
+     fprintf(stderr, "%cc<0,1,2> - Precission (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)\n", SW);     
+     fprintf(stderr, "%cn<gridpoints> - Alternate way to set precission, number of CLUT points (CRD only)\n", SW);     
      
 	 fprintf(stderr, "\n");
      fprintf(stderr, "This program is intended to be a demo of the little cms\n"

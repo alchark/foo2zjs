@@ -49,12 +49,12 @@ Decode an HBPL stream file, version 1.
 
 .nf
 .ft CW
-$ hbpldecode \-h 1250c-mono.prn 
+$ hbpldecode -h 1250c-mono.prn 
      0:    \\033%-12345X@PJL JOB MODE=PRINTER
     1f:    @PJL SET STRINGCODESET=UTF8
     3b:    @PJL COMMENT DATE=06/01/2011
     58:    @PJL COMMENT TIME=13:28:30
-    73:    @PJL COMMENT DNAME=empty \- Notepad
+    73:    @PJL COMMENT DNAME=empty - Notepad
     96:    @PJL SET JOBATTR="@LUNA=rick"
     b4:    @PJL SET COPIES=1
     c6:    @PJL SET QTY=1
@@ -129,7 +129,7 @@ Decode an HBPL stream file, version 2.
 
 .nf
 .ft CW
-$ hbpldecode \-h 6015c-color.prn
+$ hbpldecode -h 6015c-color.prn
      0:    \033%-12345X@PJL JOB NAME=PRINTER
     20:    @PJL SET JOBATTR="HOST:dual.rkkda.org"
     48:    @PJL SET JOBATTR="USER:rick"
@@ -155,28 +155,28 @@ $ hbpldecode \-h 6015c-color.prn
                 w,h=5120x6406 res=600 color=1
                 mediatype=Plain(1) papersize=Letter(4)
    1cc:    Cyan BIH:
-                DL = 0, D = 0, P = 1, \- = 0, XY = 10240 x 6406
+                DL = 0, D = 0, P = 1, - = 0, XY = 10240 x 6406
                 L0 = 128, MX = 0, MY = 0
                 Order   = 0 
                 Options = 64  LRLTWO
                 51 stripes, 0 layers, 1 planes
                 ...cyan data skipped...
    2ac:    Magenta BIH:
-                DL = 0, D = 0, P = 1, \- = 0, XY = 10240 x 6406
+                DL = 0, D = 0, P = 1, - = 0, XY = 10240 x 6406
                 L0 = 128, MX = 0, MY = 0
                 Order   = 0 
                 Options = 64  LRLTWO
                 51 stripes, 0 layers, 1 planes
                 ...magenta data skipped...
    38c:    Yellow BIH:
-                DL = 0, D = 0, P = 1, \- = 0, XY = 10240 x 6406
+                DL = 0, D = 0, P = 1, - = 0, XY = 10240 x 6406
                 L0 = 128, MX = 0, MY = 0
                 Order   = 0 
                 Options = 64  LRLTWO
                 51 stripes, 0 layers, 1 planes
                 ...yellow data skipped...
    46c:    Black BIH:
-                DL = 0, D = 0, P = 1, \- = 0, XY = 10240 x 6406
+                DL = 0, D = 0, P = 1, - = 0, XY = 10240 x 6406
                 L0 = 128, MX = 0, MY = 0
                 Order   = 0 
                 Options = 64  LRLTWO

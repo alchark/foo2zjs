@@ -24,16 +24,13 @@
 #		Mike Morgan (2004)
 #
 
-PROGNAME="$0"
+# udev calls us twice on FC4! Just want /dev/usb/lp<N>
+case "$DEVNAME" in
+/dev/usb/usb*)	exit;;	# Bug: FC4
+/dev/bus/usb/*)	exit;;	# Bug: Ubuntu 14
+esac
 
-#
-# Wait some time before installing the firmware so that probing for
-# automatic printer setup which happens immediately after turning on
-# the printer does not interfere with the firmware transfer to the
-# printer
-# https://bugs.launchpad.net/ubuntu/+source/foo2zjs/+bug/543177
-#
-sleep 3
+PROGNAME="$0"
 
 #
 # Set $DEV to, e.g. /dev/usb/lp0, to force the device you want
@@ -51,7 +48,7 @@ USB_BACKEND=/usr/lib/cups/backend/usb
 #
 # Directory to find downloadable HP firmware files sihpMMMM.dl
 #
-FWDIR=/lib/firmware/hp
+FWDIR=/usr/share/foo2zjs/firmware
 
 #
 # Program used to determine USB printer id information
@@ -63,7 +60,7 @@ FWDIR=/lib/firmware/hp
 #    [snip]
 #    # Mount all other filesystems (except for NFS and /proc, which is already
 #
-PRINTERID=`which usb_printerid`
+PRINTERID=/bin/usb_printerid
 
 #
 #	Figure out how to log our messages
@@ -93,31 +90,37 @@ case "$0" in
     MODEL=P1005; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3d17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1006)
     MODEL=P1006; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3e17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1007)
     MODEL=P1007; FWMODEL=P1005		# Alias
     USB1=0x03f0	#Vendor
     USB2=0x4817	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1008)
     MODEL=P1008; FWMODEL=P1006		# Alias
     USB1=0x03f0	#Vendor
     USB2=0x4917	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1505)
     MODEL=P1505; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x3f17	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *P1505n)
     MODEL=P1505n; FWMODEL=$MODEL
     USB1=0x03f0	#Vendor
     USB2=0x4017	#Model
+    FWDIR=/usr/share/foo2xqx/firmware
     ;;
 *1000)
     MODEL=1000; FWMODEL=$MODEL
@@ -144,6 +147,16 @@ case "$0" in
     exit
     ;;
 esac
+
+#
+#	Remove HPLIP proprietary rules!
+#
+model=` echo "$MODEL" | tr 'A-Z' 'a-z' `
+rm -f /etc/udev/rules.d/*hpmud*laserjet_${model}*
+rm -f /etc/udev/rules.d/*hpmud_support.rules
+rm -f /etc/udev/rules.d/*hpmud_plugin.rules
+rm -f /lib/udev/rules.d/*hpmud_support.rules
+rm -f /lib/udev/rules.d/*hpmud_plugin.rules
 
 #
 #	The special command line argument "install-usermap" will install
@@ -255,21 +268,12 @@ if [ "$DEV" != "" ]; then
     #
     # force downloading to a specific device
     #
-    if [ "$SUBSYSTEM" != "usbmisc" ]; then exit; fi
     load_usblp "$DEV"
-elif [ -x $USB_BACKEND ]; then
-        #
-        # If we have CUPS installed, use the CUPS "usb" backend, as then we do
-        # not need to care whether the system uses the usblp kernel module or
-        # libusb 
-        #
-        if [ "$SUBSYSTEM" != "usb" ]; then exit; fi
-        load_cups
-elif [ -x $PRINTERID ]; then
+elif [ -x $PRINTERID -o -x $USB_BACKEND ]; then
+    if [ -x $PRINTERID ]; then
 	#
 	# Sniff around for printers that need a firmware download
 	#
-	if [ "$SUBSYSTEM" != "usbmisc" ]; then exit; fi
 	usblps=`find /dev/usb -type c -name 'lp*'`" "`find /dev -type c -name 'usblp*'`
 	for dev in $usblps; do
 	    status=`$PRINTERID $dev 2>/dev/null | grep -y "hp LaserJet $MODEL"`
@@ -285,6 +289,20 @@ elif [ -x $PRINTERID ]; then
 		fi
 	    fi
 	done
+	if [ "$usblps" != " " ]; then
+	    # All done!
+	    exit
+	fi
+    fi
+
+    if [ -x $USB_BACKEND ]; then
+	#
+	# If we have CUPS installed, use the CUPS "usb" backend, as then we do
+	# not need to care whether the system uses the usblp kernel module or
+	# libusb
+	#
+	load_cups
+    fi
 else
     log "HP LaserJet $MODEL firmware was not downloaded..."
     log "...couldn't find $PRINTERID, DEV is not set, and CUPS not installed."
