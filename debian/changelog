@@ -1,3 +1,13 @@
+foo2zjs (20171202dfsg0-4) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Bump Standards-Version to 4.5.0 without changes needed
+
+  [ Sam Morris ]
+  * Re-enable manual duplex printing for Samsung CLP 300 (Closes: #627542)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 30 Jan 2020 21:30:51 +0100
+
 foo2zjs (20171202dfsg0-3) unstable; urgency=medium
 
   [ Didier Raboud ]
