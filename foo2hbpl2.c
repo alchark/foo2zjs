@@ -61,6 +61,7 @@ yourself.
 
 static char Version[] = "$Id: foo2hbpl2.c,v 1.36 2016/09/02 19:21:11 rick Exp $";
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -756,8 +757,8 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
 	    );
 }
 
-static inline void jbg_enc_plane(int w, int h, unsigned char **bitmaps,
-                                 BIE_CHAIN **chain)
+static inline void
+jbg_enc_plane(int w, int h, unsigned char **bitmaps, BIE_CHAIN **chain)
 {
     struct jbg_enc_state se;
     jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, chain);
@@ -767,10 +768,44 @@ static inline void jbg_enc_plane(int w, int h, unsigned char **bitmaps,
     jbg_enc_free(&se);
 }
 
+static inline void
+enc_and_write_planes(unsigned char **bitmaps, int w, int h, FILE *ofp)
+{
+    BIE_CHAIN *chain[4];
+    int i;
+    unsigned char **planeK = bitmaps + 3;
+    bool onlyK = false;
+
+    for (i = 0; i < 4; ++i) {
+        chain[i] = NULL;
+    }
+
+    if (Color2Mono) {
+        onlyK = true;
+        planeK = bitmaps + Color2Mono - 1;
+    }
+
+    if (!AnyColor) {
+        onlyK = true;
+    }
+
+    w = (w + 127) & ~127;
+
+    jbg_enc_plane(w, h, planeK, &chain[3]);
+    if (!onlyK) {
+        for (i = 0; i < 3; ++i) {
+            jbg_enc_plane(w, h, &bitmaps[i], &chain[i]);
+        }
+        // Pages are: Y, M, C, K
+        write_page(&chain[2], &chain[1], &chain[0], &chain[3], ofp);
+        return;
+    }
+    write_page(&chain[3], NULL, NULL, NULL, ofp);
+}
+
 int
 cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 {
-    BIE_CHAIN *chain[4];
     int	i;
     int	bpl, bpl16;
     unsigned char *plane[4];
@@ -785,7 +820,6 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     {
 	plane[i] = malloc(bpl16 * h);
 	if (!plane[i]) error(3, "Cannot allocate space for bit plane\n");
-	chain[i] = NULL;
     }
 
     cmyk_planes(plane, raw, RealWidth, h);
@@ -804,17 +838,9 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 		fclose(dfp);
 	    }
 	}
-
-	jbg_enc_plane(w, h, &plane[i], &chain[i]);
     }
 
-    if (Color2Mono)
-	write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
-    else if (AnyColor)
-	// Pages are: Y, M, C, K
-	write_page(&chain[2], &chain[1], &chain[0], &chain[3], ofp);
-    else
-	write_page(&chain[3], NULL, NULL, NULL, ofp);
+    enc_and_write_planes(plane, w, h, ofp);
 
     for (i = 0; i < 4; ++i)
 	free(plane[i]);
@@ -824,24 +850,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 int
 pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 {
-    BIE_CHAIN *chain[4];
-    int i;
-
-    w = (w + 127) & ~127;
-
-    for (i = 0; i < 4; ++i) {
-	chain[i] = NULL;
-	jbg_enc_plane(w, h, &plane[i], &chain[i]);
-    }
-
-    if (Color2Mono)
-	write_page(&chain[Color2Mono-1], NULL, NULL, NULL, ofp);
-    else if (AnyColor)
-	// Pages are: Y, M, C, K
-	write_page(&chain[2], &chain[1], &chain[0], &chain[3], ofp);
-    else
-	write_page(&chain[3], NULL, NULL, NULL, ofp);
-
+    enc_and_write_planes(plane, w, h, ofp);
     return 0;
 }
 
