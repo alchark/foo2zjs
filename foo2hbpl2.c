@@ -121,8 +121,6 @@ int	PageNum = 0;
 int	RealWidth;
 int	EconoMode = 0;
 int     PrintDensity = 3;
-int	Dots[4];
-int	TotalDots;
 
 int	IsCUPS = 0;
 
@@ -196,7 +194,6 @@ usage(void)
 "                    1=upper 2=lower 4=manual 7=auto\n"
 "                    Code numbers may vary with printer model\n"
 "-t                Draft mode.  Every other pixel is white.\n"
-// "-T density        Print density (1-5) [%d].\n"
 "-J filename       Filename string to send to printer [%s]\n"
 "-U username       Username string to send to printer [%s]\n"
 "\n"
@@ -211,7 +208,6 @@ usage(void)
 "-P                Do not output START_PLANE codes.  May be needed by some\n"
 "                  some black and white only printers.\n"
 "-X padlen         Add extra zero padding to the end of BID segments [%d]\n"
-// "-z model          Model: [%d]\n"
 "\n"
 "Debugging Options:\n"
 "-S plane          Output just a single color plane from a color print [all]\n"
@@ -225,14 +221,12 @@ usage(void)
     , Copies
     , ResX , ResY
     , SourceCode
-//    , PrintDensity
     , Filename ? Filename : ""
     , Username ? Username : ""
     , UpperLeftX , UpperLeftY
     , LowerRightX , LowerRightY
     , LogicalClip
     , ExtraPad
-//    , Model
     , Debug
     , Version
     );
@@ -416,7 +410,6 @@ int
 write_plane(int planeNum, BIE_CHAIN **root, FILE *fp)
 {
     BIE_CHAIN	*current = *root;
-    // BIE_CHAIN	*next;
 
     debug(3, "Write Plane %d\n", planeNum); 
 
@@ -445,7 +438,6 @@ start_page(BIE_CHAIN **root, BIE_CHAIN **root2,
     BIE_CHAIN		*current = *root;
     unsigned long	w, h;
     static int		pageno = 0;
-    // int			nitems;
     HBPL_PS		ps;
     int			i;
 
@@ -482,7 +474,6 @@ start_page(BIE_CHAIN **root, BIE_CHAIN **root2,
 	    | ((long) current->data[ 9] << 16)
 	    | ((long) current->data[10] <<  8)
 	    | (long) current->data[11]);
-    TotalDots = w*h;
     debug(9, "start_page: w x h = %d x %d\n", w, h);
 
     memset(&ps, 0, sizeof(ps));
@@ -678,38 +669,6 @@ end_doc(FILE *fp)
     fprintf(fp, "\033%%-12345X@PJL EOJ\r\n");
 }
 
-void
-load_tray2(FILE *fp)
-{
-    // int			nitems;
-
-    // nitems = 0;
-    // chunk_write(ZJT_2600N_PAUSE, nitems, nitems * sizeof(ZJ_ITEM_UINT32), fp);
-}
-
-int
-compute_image_dots(int w, int h, unsigned char *bitmap)
-{
-#if 0
-    int dots = 0;
-    int x, y, bpl;
-
-    switch (Model)
-    {
-    case MODEL_HP_PRO_CP:
-	bpl = (w + 7) / 8;
-	for (y = 0; y < h; ++y)
-	    for (x = 0; x < bpl; ++x)
-		dots += BlackOnes[ bitmap[y*bpl + x] ];
-	return dots;
-    default:
-	return 0;
-    }
-#else
-    return 0;
-#endif
-}
-
 static int AnyColor;
 
 void
@@ -837,8 +796,6 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    }
 	}
 
-	Dots[i] = compute_image_dots(w, h, plane[i]);
-
 	*bitmaps[i] = plane[i];
 
 	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
@@ -877,8 +834,6 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 
     for (i = 0; i < 4; ++i)
     {
-	Dots[i] = compute_image_dots(w, h, plane[i]);
-
 	*bitmaps[i] = plane[i];
 
 	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
@@ -924,8 +879,6 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 	    for (x = 0; x < bpl16; ++x)
 		buf[y*bpl16 + x] &= 0xaa;
     }
-
-    Dots[3] = compute_image_dots(w, h, buf);
 
     *bitmaps = buf;
 
@@ -1306,8 +1259,6 @@ pbm_pages(FILE *ifp, FILE *ofp)
     int			bpl16 = 0;
     int			rc;
     int			p4eaten = 1;
-    //FILE		*tfp = NULL;
-    //long		tpos = 0;
 
     //
     // Save the original Upper Right clip values as the logical offset,
@@ -1361,52 +1312,11 @@ pbm_pages(FILE *ifp, FILE *ofp)
 		PageNum, SeekRec[SeekIndex].b, SeekRec[SeekIndex].e);
 	    SeekIndex++;
 	}
-#if 0
-	else if (Model == MODEL_HP_PRO
-	    && (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE) )
-	{
-	    /*
-	     * Duplex on P1606dn works like this:
-	     *   P2(norm), P1(rot180), P4(norm), P3(rot180)
-	     */
-	    if (odd_page(PageNum))
-	    {
-		tfp = tmpfile();
-		pbm_page(buf, w, h, tfp);
-		fflush(tfp);
-		tpos = ftell(tfp);
-		rewind(tfp);
-	    }
-	    else
-	    {
-		pbm_page(buf, w, h, ofp);
-		while (tpos--)
-		    putc(getc(tfp), ofp);
-		fclose(tfp);
-	    }
-	}
-#endif
 	else
 	    pbm_page(buf, w, h, ofp);
 
 	free(buf);
     }
-
-#if 0
-    if (Model == MODEL_HP_PRO
-	&& (Duplex == DMDUPLEX_LONGEDGE || Duplex == DMDUPLEX_SHORTEDGE)
-	&& odd_page(PageNum) )
-    {
-	/*
-	 * Duplex on P1606dn if there are an odd number of pages:
-	 *   P2(blank), P1(rot180)
-	 */
-	blank_page(ofp);
-	while (tpos--)
-	    putc(getc(tfp), ofp);
-	fclose(tfp);
-    }
-#endif
 
     return (0);
 }
@@ -1548,7 +1458,7 @@ main(int argc, char *argv[])
 	IsCUPS = 1;
 
     Bpp = ResX / ResY;
-    // ResX = 600;
+
     if (SaveToner)
     {
 	SaveToner = 0;
@@ -1602,11 +1512,6 @@ main(int argc, char *argv[])
 	    SeekIndex++;
 	}
 
-	/*
-	 *  Manual Pause
-	 */
-	load_tray2(stdout);
-
 	fseek(EvenPages, SeekMedia, 0L);
 	media = be32(DMMEDIA_LETTERHEAD);
 	rc = fwrite(&media, 1, sizeof(DWORD), EvenPages);
@@ -1626,5 +1531,5 @@ main(int argc, char *argv[])
 
     end_doc(stdout);
 
-    exit(0);
+    return 0;
 }
