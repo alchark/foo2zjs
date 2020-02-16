@@ -757,14 +757,24 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
 	    );
 }
 
+static inline void jbg_enc_plane(int w, int h, unsigned char **bitmaps,
+                                 BIE_CHAIN **chain)
+{
+    struct jbg_enc_state se;
+    jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, chain);
+    jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
+                    JbgOptions[2], JbgOptions[3], JbgOptions[4]);
+    jbg_enc_out(&se);
+    jbg_enc_free(&se);
+}
+
 int
 cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 {
     BIE_CHAIN *chain[4];
     int	i;
     int	bpl, bpl16;
-    unsigned char *plane[4], *bitmaps[4][1];
-    struct jbg_enc_state se[4]; 
+    unsigned char *plane[4];
 
     RealWidth = w;
     w = (w + 127) & ~127;
@@ -796,13 +806,7 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
 	    }
 	}
 
-	*bitmaps[i] = plane[i];
-
-	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
-	jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
-			JbgOptions[2], JbgOptions[3], JbgOptions[4]);
-	jbg_enc_out(&se[i]);
-	jbg_enc_free(&se[i]);
+	jbg_enc_plane(w, h, &plane[i], &chain[i]);
     }
 
     if (Color2Mono)
@@ -823,24 +827,13 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
 {
     BIE_CHAIN *chain[4];
     int i;
-    unsigned char *bitmaps[4][1];
-    struct jbg_enc_state se[4]; 
 
     RealWidth = w;
     w = (w + 127) & ~127;
 
-    for (i = 0; i < 4; ++i)
+    for (i = 0; i < 4; ++i) {
 	chain[i] = NULL;
-
-    for (i = 0; i < 4; ++i)
-    {
-	*bitmaps[i] = plane[i];
-
-	jbg_enc_init(&se[i], w, h, 1, bitmaps[i], output_jbig, &chain[i]);
-	jbg_enc_options(&se[i], JbgOptions[0], JbgOptions[1],
-			JbgOptions[2], JbgOptions[3], JbgOptions[4]);
-	jbg_enc_out(&se[i]);
-	jbg_enc_free(&se[i]);
+	jbg_enc_plane(w, h, &plane[i], &chain[i]);
     }
 
     if (Color2Mono)
@@ -858,8 +851,6 @@ int
 pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 {
     BIE_CHAIN		*chain = NULL;
-    unsigned char	*bitmaps[1];
-    struct jbg_enc_state se; 
 
     RealWidth = w;
     w = (w + 127) & ~127;
@@ -880,15 +871,8 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 		buf[y*bpl16 + x] &= 0xaa;
     }
 
-    *bitmaps = buf;
-
     debug(9, "w x h = %d x %d\n", w, h);
-    jbg_enc_init(&se, w, h, 1, bitmaps, output_jbig, &chain);
-    jbg_enc_options(&se, JbgOptions[0], JbgOptions[1],
-			JbgOptions[2], JbgOptions[3], JbgOptions[4]);
-    jbg_enc_out(&se);
-    jbg_enc_free(&se);
-
+    jbg_enc_plane(w, h, &buf, &chain);
     write_page(&chain, NULL, NULL, NULL, ofp);
 
     return 0;
