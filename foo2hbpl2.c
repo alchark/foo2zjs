@@ -678,10 +678,6 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     int			bpl = (w + 7) / 8;
     int			i;
     int			x, y;
-    unsigned char	byte;
-    unsigned char	mask[8] = { 128, 64, 32, 16, 8, 4, 2, 1 };
-    int			aib = AllIsBlack;
-    int			bc = BlackClears;
 
     bpl = (bpl + 15) & ~15;
     debug(1, "w=%d, bpl=%d, rawbpl=%d\n", w, bpl, rawbpl);
@@ -699,52 +695,56 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     {
 	for (x = 0; x < w; ++x)
 	{
-	    byte = raw[y*rawbpl + x/2];
+            size_t off = y*bpl + x/8;
+	    unsigned char byte = raw[y*rawbpl + x/2];
+            unsigned char bit = 1 << (7 - (x & 7));
 
-	    if (aib && (byte & 0xE0) == 0xE0)
+	    if (AllIsBlack && (byte & 0xE0) == 0xE0)
 	    {
-		plane[3][y*bpl + x/8] |= mask[x&7];
+		plane[3][off] |= bit;
 	    }
 	    else if (byte & 0x10)
 	    {
-		plane[3][y*bpl + x/8] |= mask[x&7];
-		if (!bc)
+		plane[3][off] |= bit;
+		if (!BlackClears)
 		{
-		    if (byte & 0x80) plane[0][y*bpl + x/8] |= mask[x&7];
-		    if (byte & 0x40) plane[1][y*bpl + x/8] |= mask[x&7];
-		    if (byte & 0x20) plane[2][y*bpl + x/8] |= mask[x&7];
+		    if (byte & 0x80) plane[0][off] |= bit;
+		    if (byte & 0x40) plane[1][off] |= bit;
+		    if (byte & 0x20) plane[2][off] |= bit;
 		    if (byte & 0xE0) AnyColor |= byte;
 		}
 	    }
 	    else
 	    {
-		if (byte & 0x80) plane[0][y*bpl + x/8] |= mask[x&7];
-		if (byte & 0x40) plane[1][y*bpl + x/8] |= mask[x&7];
-		if (byte & 0x20) plane[2][y*bpl + x/8] |= mask[x&7];
+		if (byte & 0x80) plane[0][off] |= bit;
+		if (byte & 0x40) plane[1][off] |= bit;
+		if (byte & 0x20) plane[2][off] |= bit;
 		if (byte & 0xE0) AnyColor |= byte;
 	    }
 
 	    ++x;
-	    if (aib && (byte & 0x0E) == 0x0E)
+            bit = 1 << (7 - (x & 7));
+            off = y*bpl + x/8;
+	    if (AllIsBlack && (byte & 0x0E) == 0x0E)
 	    {
-		plane[3][y*bpl + x/8] |= mask[x&7];
+		plane[3][off] |= bit;
 	    }
 	    else if (byte & 0x1)
 	    {
-		plane[3][y*bpl + x/8] |= mask[x&7];
-		if (!bc)
+		plane[3][off] |= bit;
+		if (!BlackClears)
 		{
-		    if (byte & 0x8) plane[0][y*bpl + x/8] |= mask[x&7];
-		    if (byte & 0x4) plane[1][y*bpl + x/8] |= mask[x&7];
-		    if (byte & 0x2) plane[2][y*bpl + x/8] |= mask[x&7];
+		    if (byte & 0x8) plane[0][off] |= bit;
+		    if (byte & 0x4) plane[1][off] |= bit;
+		    if (byte & 0x2) plane[2][off] |= bit;
 		    if (byte & 0xE) AnyColor |= byte;
 		}
 	    }
 	    else
 	    {
-		if (byte & 0x8) plane[0][y*bpl + x/8] |= mask[x&7];
-		if (byte & 0x4) plane[1][y*bpl + x/8] |= mask[x&7];
-		if (byte & 0x2) plane[2][y*bpl + x/8] |= mask[x&7];
+		if (byte & 0x8) plane[0][off] |= bit;
+		if (byte & 0x4) plane[1][off] |= bit;
+		if (byte & 0x2) plane[2][off] |= bit;
 		if (byte & 0xE) AnyColor |= byte;
 	    }
 	}
