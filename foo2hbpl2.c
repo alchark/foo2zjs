@@ -118,7 +118,6 @@ int	SaveToner = 0;
 int	PageNum = 0;
 	#define even_page(x) ( ((x) & 1) == 0 )
 	#define odd_page(x) ( ((x) & 1) == 1 )
-int	RealWidth;
 int	EconoMode = 0;
 int     PrintDensity = 3;
 
@@ -775,8 +774,8 @@ cmyk_page(unsigned char *raw, int w, int h, FILE *ofp)
     int	i;
     int	bpl, bpl16;
     unsigned char *plane[4];
+    int RealWidth = w;
 
-    RealWidth = w;
     w = (w + 127) & ~127;
     bpl = (w + 7) / 8;
     bpl16 = (bpl + 15) & ~15;
@@ -828,7 +827,6 @@ pksm_page(unsigned char *plane[4], int w, int h, FILE *ofp)
     BIE_CHAIN *chain[4];
     int i;
 
-    RealWidth = w;
     w = (w + 127) & ~127;
 
     for (i = 0; i < 4; ++i) {
@@ -852,7 +850,6 @@ pbm_page(unsigned char *buf, int w, int h, FILE *ofp)
 {
     BIE_CHAIN		*chain = NULL;
 
-    RealWidth = w;
     w = (w + 127) & ~127;
 
     if (SaveToner)
