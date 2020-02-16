@@ -1177,10 +1177,12 @@ pksm_pages(FILE *ifp, FILE *ofp)
 	    // See if we can optimize this to be a monochrome page
 	    if (!AnyColor && i != 3)
 	    {
-		unsigned char *p, *e;
+                // reading longs is usually faster than chars
+		long *p = (long *)plane[i];
+		long *e = (long *)((char *)p + bpl16 * h);
 
-		for (p = plane[i], e = p + bpl16*h; p < e; ++p)
-		    if (*p)
+		while (p < e)
+		    if (*p++)
 		    {
 			AnyColor |= 1<<i;
 			break;
