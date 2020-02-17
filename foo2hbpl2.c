@@ -69,6 +69,7 @@ static char Version[] = "$Id: foo2hbpl2.c,v 1.36 2016/09/02 19:21:11 rick Exp $"
 #include <unistd.h>
 #include <stdarg.h>
 #include <time.h>
+#include <arpa/inet.h>
 #ifdef linux
     #include <sys/utsname.h>
 #endif
@@ -671,6 +672,15 @@ end_doc(FILE *fp)
 
 static int AnyColor;
 
+static inline unsigned char
+deinterleave(uint32_t input)
+{
+    input = ((input & 0x10101010) >> 3) | (input & 0x01010101);
+    input |= ((input & 0x03000300) >> 6);
+    input |= ((input & 0x000f0000) >> 12);
+    return input;
+}
+
 void
 cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
 {
@@ -683,71 +693,41 @@ cmyk_planes(unsigned char *plane[4], unsigned char *raw, int w, int h)
     debug(1, "w=%d, bpl=%d, rawbpl=%d\n", w, bpl, rawbpl);
 
     AnyColor = 0;
-    for (i = 0; i < 4; ++i)
-	memset(plane[i], 0, bpl * h);
-
     //
     // Unpack the combined plane into individual color planes
-    //
-    // TODO: this can be speeded up using a 256 or 65536 entry lookup table
-    //
     for (y = 0; y < h; ++y)
     {
-	for (x = 0; x < w; ++x)
-	{
+        for (x = 0; x < w; x += 8)
+        {
             size_t off = y*bpl + x/8;
-	    unsigned char byte = raw[y*rawbpl + x/2];
-            unsigned char bit = 1 << (7 - (x & 7));
+            uint32_t bytes = ntohl(*((uint32_t *)(raw + y*rawbpl + x/2)));
 
-	    if (AllIsBlack && (byte & 0xE0) == 0xE0)
-	    {
-		plane[3][off] |= bit;
-	    }
-	    else if (byte & 0x10)
-	    {
-		plane[3][off] |= bit;
-		if (!BlackClears)
-		{
-		    if (byte & 0x80) plane[0][off] |= bit;
-		    if (byte & 0x40) plane[1][off] |= bit;
-		    if (byte & 0x20) plane[2][off] |= bit;
-		    if (byte & 0xE0) AnyColor |= byte;
-		}
-	    }
-	    else
-	    {
-		if (byte & 0x80) plane[0][off] |= bit;
-		if (byte & 0x40) plane[1][off] |= bit;
-		if (byte & 0x20) plane[2][off] |= bit;
-		if (byte & 0xE0) AnyColor |= byte;
-	    }
+            // Slight optimization for white space
+            if (bytes) {
+                if (AllIsBlack) {
+                    bytes |= ((bytes & 0x88888888) >> 3)
+                            & ((bytes & 0x44444444) >> 2)
+                            & ((bytes & 0x22222222) >> 1);
+                }
 
-	    ++x;
-            bit = 1 << (7 - (x & 7));
-            off = y*bpl + x/8;
-	    if (AllIsBlack && (byte & 0x0E) == 0x0E)
-	    {
-		plane[3][off] |= bit;
-	    }
-	    else if (byte & 0x1)
-	    {
-		plane[3][off] |= bit;
-		if (!BlackClears)
-		{
-		    if (byte & 0x8) plane[0][off] |= bit;
-		    if (byte & 0x4) plane[1][off] |= bit;
-		    if (byte & 0x2) plane[2][off] |= bit;
-		    if (byte & 0xE) AnyColor |= byte;
-		}
-	    }
-	    else
-	    {
-		if (byte & 0x8) plane[0][off] |= bit;
-		if (byte & 0x4) plane[1][off] |= bit;
-		if (byte & 0x2) plane[2][off] |= bit;
-		if (byte & 0xE) AnyColor |= byte;
-	    }
-	}
+                if (BlackClears) {
+                    uint32_t blacks = bytes & 0x11111111;
+                    bytes &= ~(blacks << 3);
+                    bytes &= ~(blacks << 2);
+                    bytes &= ~(blacks << 1);
+                }
+
+                AnyColor |= bytes & 0xeeeeeeee;
+
+                for (i = 0; i < 4; i++) {
+                    plane[i][off] = deinterleave(bytes >> (3 - i));
+                }
+            } else {
+                for (i = 0; i < 4; i++) {
+                    plane[i][off] = 0;
+                }
+            }
+        }
     }
     debug(2, "BlackClears = %d; AnyColor = %s %s %s\n",
 	    BlackClears,
