@@ -539,6 +539,7 @@ end_page(FILE *ofp)
     pe.hdr.type[2] = 'E';
     pe.hdr.len = le32(sizeof(pe) - 4);
     fwrite(&pe, 1, sizeof(pe), ofp);
+    fflush(ofp);
 }
 
 int
